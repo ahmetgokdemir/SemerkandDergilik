@@ -67,10 +67,12 @@ namespace Semerkand_Dergilik.Controllers
             
         }
 
-        public IActionResult LogIn()
+        public IActionResult LogIn(string ReturnUrl)
         {
-            return View();
+            // doğrudan member sayfasına giderse url'de returnurl çıkar ...
+            TempData["ReturnUrl"] = ReturnUrl;
 
+            return View();
         }
 
         // LogIn.cshtml sayfasından LoginViewModel post edilecek o yüzden parametre olarak LoginViewModel aldı..
@@ -83,18 +85,29 @@ namespace Semerkand_Dergilik.Controllers
 
                 if (user != null)
                 {
+                    // Kullanıcı Kilitli mi değil mi (veritabanında LockoutEnd tarihi kontrol edilir)
+                    if (await userManager.IsLockedOutAsync(user))
+                    {
+                        ModelState.AddModelError("", "Hesabınız bir süreliğine kilitlenmiştir. Lütfen daha sonra tekrar deneyiniz.");
+
+                        return View(userlogin);
+                    }
+
+
 
                     await signInManager.SignOutAsync(); // login işleminden önce çıkış yapılıdı amaç sistemdeki eski cookie'i silmek..
 
                     // PasswordSignInAsync ile Login işlemi gerçekleştirilir..
                     // opts.ExpireTimeSpan = System.TimeSpan.FromDays(60); (StartUp.cs'de) bunu aktif hale getirmek için userlogin.RememberMe true olması gerek
-                    // lockoutFailure: false lockoutFailure özelliği ile kullanıcı başarısız girişlerde kullanıcıyı kilitleyip kilitlememe durumu..
+                    // lockoutFailure: false lockoutFailure özelliği ile kullanıcı başarısız girişlerde kullanıcıyı kilitleyip kilitlememe durumu.. veritabanında LockoutEnabled kısmı etkiler..
                     // SignInResult ile hata verir bir Identity'den gelen SignInResult bir de ASPNET.Core.MVC den gelen var bu iki durum çakışıyor bunu engellemek için başına Microsoft.AspNetCore.Identity namespace'i eklendi..
-                    Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(user, userlogin.Password, false, false);
+                    Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(user, userlogin.Password, userlogin.RememberMe, false);
 
+                    // şifre doğru mu değil mi => SignInResult result 
                     if (result.Succeeded)
                     {
-                        //await userManager.ResetAccessFailedCountAsync(user);
+                        // doğru giriş durumunda veritabanındaki AccessFailedCount sıfırlanır..
+                        await userManager.ResetAccessFailedCountAsync(user);
 
                         if (TempData["ReturnUrl"] != null)
                         {
@@ -104,18 +117,35 @@ namespace Semerkand_Dergilik.Controllers
                         return RedirectToAction("Index", "Member"); // başarılı ise Member sayfasına yönlendirilir.. (sadece üyeler görebilir)
 
                     }
-                    else
+                    else // hatalı giriş durumunda
                     {
+                        // hatalı giriş durumunda veritabanındaki AccessFailedCount kısmı bir artar..
+                        await userManager.AccessFailedAsync(user);
 
+                        // başarısız giriş sayısını çekmek.. veritabanındaki AccessFailedCount kısmına denk gelir
+                        int fail = await userManager.GetAccessFailedCountAsync(user);
+                        ModelState.AddModelError("", $" {fail} kez başarısız giriş.");
+                        if (fail == 3)
+                        {
+                            // ne kadar sürelik kitleme süresi belirlenir..veritabanında lockoutend kısmı..
+                            await userManager.SetLockoutEndDateAsync(user, new System.DateTimeOffset(DateTime.Now.AddMinutes(20)));
+
+                            ModelState.AddModelError("", "Hesabınız 3 başarısız girişten dolayı 20 dakika süreyle kitlenmiştir. Lütfen daha sonra tekrar deneyiniz.");
+                        }
+                        else // başarısız girişimi 3 değilse
+                        {
+                            ModelState.AddModelError("", "Email adresiniz veya şifreniz yanlış."); // email hatası SignUp.cshtml'de sadece summary kısmında validation error verir..
+                        }
                     }
                 }
                 else
                 {
                     ModelState.AddModelError("", "Bu email adresine kayıtlı kullanıcı bulunamamıştır.");
+                    // bu else kısmında aslında parolayı kontrol etmiyor sadece kullanıcı adresini kontrol ediyor bak:                            await userManager.FindByEmailAsync(userlogin.Email);
                 }
             }
 
-            return View(userlogin); // ModelState başarısızsa geri döner aynı sayfaya
+            return View(userlogin); // ModelState başarısızsa kullanıcının bilgileri ile (userlogin) geri döner aynı sayfaya
         }
 
 
