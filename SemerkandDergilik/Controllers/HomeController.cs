@@ -17,10 +17,13 @@ namespace Semerkand_Dergilik.Controllers
         }*/
 
         public UserManager<AppUser> userManager { get; }
+        public SignInManager<AppUser> signInManager { get; }
 
-        public HomeController(UserManager<AppUser> userManager)
+
+        public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         public IActionResult Index()
@@ -69,6 +72,52 @@ namespace Semerkand_Dergilik.Controllers
             return View();
 
         }
+
+        // LogIn.cshtml sayfasından LoginViewModel post edilecek o yüzden parametre olarak LoginViewModel aldı..
+        [HttpPost]
+        public async Task<IActionResult> LogIn(LoginViewModel userlogin)
+        {
+            if (ModelState.IsValid)
+            {
+                AppUser user = await userManager.FindByEmailAsync(userlogin.Email); // böyle Kullanıcı mevcut mu bunun kontrolü
+
+                if (user != null)
+                {
+
+                    await signInManager.SignOutAsync(); // login işleminden önce çıkış yapılıdı amaç sistemdeki eski cookie'i silmek..
+
+                    // PasswordSignInAsync ile Login işlemi gerçekleştirilir..
+                    // opts.ExpireTimeSpan = System.TimeSpan.FromDays(60); (StartUp.cs'de) bunu aktif hale getirmek için userlogin.RememberMe true olması gerek
+                    // lockoutFailure: false lockoutFailure özelliği ile kullanıcı başarısız girişlerde kullanıcıyı kilitleyip kilitlememe durumu..
+                    // SignInResult ile hata verir bir Identity'den gelen SignInResult bir de ASPNET.Core.MVC den gelen var bu iki durum çakışıyor bunu engellemek için başına Microsoft.AspNetCore.Identity namespace'i eklendi..
+                    Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(user, userlogin.Password, false, false);
+
+                    if (result.Succeeded)
+                    {
+                        //await userManager.ResetAccessFailedCountAsync(user);
+
+                        if (TempData["ReturnUrl"] != null)
+                        {
+                            return Redirect(TempData["ReturnUrl"].ToString());
+                        }
+
+                        return RedirectToAction("Index", "Member"); // başarılı ise Member sayfasına yönlendirilir.. (sadece üyeler görebilir)
+
+                    }
+                    else
+                    {
+
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Bu email adresine kayıtlı kullanıcı bulunamamıştır.");
+                }
+            }
+
+            return View(userlogin); // ModelState başarısızsa geri döner aynı sayfaya
+        }
+
 
 
     }
