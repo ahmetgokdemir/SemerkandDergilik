@@ -146,6 +146,10 @@ namespace Semerkand_Dergilik.Controllers
             }
 
             return View(userlogin); // ModelState başarısızsa kullanıcının bilgileri ile (userlogin) geri döner aynı sayfaya
+
+            // bir denemedir !!!
+ 
+
         }
 
 
