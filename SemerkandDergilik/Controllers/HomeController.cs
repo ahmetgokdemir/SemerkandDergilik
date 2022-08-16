@@ -162,44 +162,86 @@ namespace Semerkand_Dergilik.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ResetPassword(PasswordResetViewModel passwordResetViewModel)
+        public IActionResult ResetPassword(PasswordResetViewModel passwordResetViewModel)
         {
-            if (TempData["durum"] == null)
-            {
+
                 // böyle bir kullanıcı var mı yok mu bakılmalı
-                AppUser user = await userManager.FindByEmailAsync(passwordResetViewModel.Email);
-                // AppUser user = await userManager.FindByEmailAsync(userlogin.Email).Result;
+                // AppUser user = await userManager.FindByEmailAsync(passwordResetViewModel.Email);
+                 AppUser user = userManager.FindByEmailAsync(passwordResetViewModel.Email).Result;
 
                 if (user != null)
 
                 {
                     // create token
-                    string passwordResetToken = await userManager.GeneratePasswordResetTokenAsync(user);
+                    // AddDefaultTokenProviders sayesinde aşağıdaki kod çalışır..
+                    string passwordResetToken = userManager.GeneratePasswordResetTokenAsync(user).Result;
 
-                    /*string passwordResetLink = Url.Action("ResetPasswordConfirm", "Home", new
+                    // create link 
+                    string passwordResetLink = Url.Action("ResetPasswordConfirm", "Home", new
                     {
+                        // ResetPasswordConfirm action metot'da querystring olarak kullanılacak
                         userId = user.Id,
                         token = passwordResetToken
                     }, HttpContext.Request.Scheme);
 
-                    //  www.bıdıbıdı.com/Home/ResetPasswordConfirm?userId=sdjfsjf&token=dfjkdjfdjf
+                    //  link görünümü: www.....com/Home/ResetPasswordConfirm?userId=sdjfsjf&token=dfjkdjfdjf
 
                     Helper.PasswordReset.PasswordResetSendEmail(passwordResetLink, user.Email);
 
                     ViewBag.status = "success";
-                    TempData["durum"] = true.ToString();*/
+                    //TempData["durum"] = true.ToString();
                 }
                 else
                 {
                     ModelState.AddModelError("", "Sistemde kayıtlı email adresi bulunamamıştır.");
                 }
                 return View(passwordResetViewModel);
+            
+
+
+            // StartUp.cs kısmında AddDefaultTokenProviders servisi eklenmeli..
+        }
+
+        // Url.Action("ResetPasswordConfirm", .. 
+        public IActionResult ResetPasswordConfirm(string userId, string token)
+        {
+            TempData["userId"] = userId;
+            TempData["token"] = token;
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPasswordConfirm([Bind("PasswordNew")] PasswordResetViewModel passwordResetViewModel)
+        {
+            string token = TempData["token"].ToString();
+            string userId = TempData["userId"].ToString();
+
+            AppUser user = await userManager.FindByIdAsync(userId);
+
+            if (user != null)
+            {
+                IdentityResult result = await userManager.ResetPasswordAsync(user, token, passwordResetViewModel.PasswordNew);
+
+                if (result.Succeeded)
+                {
+                    await userManager.UpdateSecurityStampAsync(user);
+
+                    ViewBag.status = "success";
+                }
+                else
+                {
+                    AddModelError(result);
+                }
             }
             else
             {
-                return RedirectToAction("ResetPassword");
+                ModelState.AddModelError("", "hata meydana gelmiştir. Lütfen daha sonra tekrar deneyiniz.");
             }
+
+            return View(passwordResetViewModel);
         }
+
 
 
 

@@ -9,10 +9,10 @@ namespace Semerkand_Dergilik.ViewModels
         [EmailAddress]
         public string Email { get; set; }
 
-        //[Display(Name = "Yeni şifreniz")]
-        //[Required(ErrorMessage = "Şifre alanı gereklidir")]
-        //[DataType(DataType.Password)]
-        //[MinLength(8, ErrorMessage = "şifreniz en az 8 karakterli olmalıdır.")]
-        //public string PasswordNew { get; set; }
+        [Display(Name = "Yeni şifreniz")]
+        [Required(ErrorMessage = "Şifre alanı gereklidir")]
+        [DataType(DataType.Password)]
+        [MinLength(8, ErrorMessage = "şifreniz en az 8 karakterli olmalıdır.")]
+        public string PasswordNew { get; set; }
     }
 }

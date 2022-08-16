@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Project.BLL.ServiceExtensions;
@@ -51,7 +52,8 @@ builder.Services.AddIdentity<AppUser, AppRole>(opts =>
 }).AddPasswordValidator<CustomPasswordValidator>().
 AddUserValidator<CustomUserValidator>().
 AddErrorDescriber<CustomIdentityErrorDescriber>().
-AddEntityFrameworkStores<SemerkandDergilikContext>();
+AddEntityFrameworkStores<SemerkandDergilikContext>().
+AddDefaultTokenProviders();
 
 
 /* Cookie */
@@ -88,6 +90,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStatusCodePages();
 app.UseStaticFiles();
 
 app.UseRouting();
