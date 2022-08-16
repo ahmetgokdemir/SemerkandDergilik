@@ -81,7 +81,10 @@ namespace Semerkand_Dergilik.Controllers
         {
             if (ModelState.IsValid)
             {
+                // kısmında aslında parolayı kontrol etmiyor sadece kullanıcı adresini kontrol ediyor  
                 AppUser user = await userManager.FindByEmailAsync(userlogin.Email); // böyle Kullanıcı mevcut mu bunun kontrolü
+
+               
 
                 if (user != null)
                 {
@@ -147,9 +150,55 @@ namespace Semerkand_Dergilik.Controllers
 
             return View(userlogin); // ModelState başarısızsa kullanıcının bilgileri ile (userlogin) geri döner aynı sayfaya
 
-            // bir denemedir !!!
-            // başka bir deneme...
+ 
 
+        }
+
+        // Şifremi unuttum mekanizması
+        public IActionResult ResetPassword()
+        {
+            // TempData["durum"] = null;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(PasswordResetViewModel passwordResetViewModel)
+        {
+            if (TempData["durum"] == null)
+            {
+                // böyle bir kullanıcı var mı yok mu bakılmalı
+                AppUser user = await userManager.FindByEmailAsync(passwordResetViewModel.Email);
+                // AppUser user = await userManager.FindByEmailAsync(userlogin.Email).Result;
+
+                if (user != null)
+
+                {
+                    // create token
+                    string passwordResetToken = await userManager.GeneratePasswordResetTokenAsync(user);
+
+                    /*string passwordResetLink = Url.Action("ResetPasswordConfirm", "Home", new
+                    {
+                        userId = user.Id,
+                        token = passwordResetToken
+                    }, HttpContext.Request.Scheme);
+
+                    //  www.bıdıbıdı.com/Home/ResetPasswordConfirm?userId=sdjfsjf&token=dfjkdjfdjf
+
+                    Helper.PasswordReset.PasswordResetSendEmail(passwordResetLink, user.Email);
+
+                    ViewBag.status = "success";
+                    TempData["durum"] = true.ToString();*/
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Sistemde kayıtlı email adresi bulunamamıştır.");
+                }
+                return View(passwordResetViewModel);
+            }
+            else
+            {
+                return RedirectToAction("ResetPassword");
+            }
         }
 
 
