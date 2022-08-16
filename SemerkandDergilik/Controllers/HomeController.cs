@@ -231,7 +231,7 @@ namespace Semerkand_Dergilik.Controllers
                 }
                 else
                 {
-                    AddModelError(result);
+                    //AddModelError(result);
                 }
             }
             else
