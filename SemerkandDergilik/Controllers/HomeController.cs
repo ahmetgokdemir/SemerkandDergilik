@@ -56,6 +56,7 @@ namespace Semerkand_Dergilik.Controllers
                 }
                 else
                 {
+                    //AddModelError(result);
                     foreach (IdentityError item in result.Errors)
                     {
                         ModelState.AddModelError("",item.Description);
@@ -202,7 +203,7 @@ namespace Semerkand_Dergilik.Controllers
             // StartUp.cs kısmında AddDefaultTokenProviders servisi eklenmeli..
         }
 
-        // Url.Action("ResetPasswordConfirm", .. 
+        // Url.Action("ResetPasswordConfirm", .. TempData'lar yukarıdaki koddan geliyor..
         public IActionResult ResetPasswordConfirm(string userId, string token)
         {
             TempData["userId"] = userId;
@@ -211,27 +212,36 @@ namespace Semerkand_Dergilik.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost] // PasswordResetViewModel, ResetPasswordConfirm.cshtml'den gelir.. PasswordResetViewModel'den Email property'si de geliyor bunu istemiyoruz bunun için Bind Attribute kullanılır..
+        // İstenmeyen property'ler için diğer bir yöntem.. [Bind(exclusive..
         public async Task<IActionResult> ResetPasswordConfirm([Bind("PasswordNew")] PasswordResetViewModel passwordResetViewModel)
         {
             string token = TempData["token"].ToString();
             string userId = TempData["userId"].ToString();
 
+            // öncekilerinin aksine bu sefer email yerine userid ile kontrol edilecek böyle bir user mevcut mu
             AppUser user = await userManager.FindByIdAsync(userId);
 
             if (user != null)
             {
+                //** ResetPasswordAsync: şifre sıfırlanacak
                 IdentityResult result = await userManager.ResetPasswordAsync(user, token, passwordResetViewModel.PasswordNew);
 
                 if (result.Succeeded)
                 {
+                    // SecurityStamp: veritabanındaki bir alan yeni bir SecurityStamp oluşturulacak (user ile ilgili bir bilgi değiştirildiği zaman yapılması gerekir)
+                    // nedeni: cookie içerisinde stamp bilgisi var ve user şifresini değiştirince artık yeni şifre ile login olmalı bu yüzden cookie/stamp değiştirilmeli
                     await userManager.UpdateSecurityStampAsync(user);
 
-                    ViewBag.status = "success";
+                    ViewBag.status = "success"; // ResetPasswordConfirm.cshtml'de kullanılacak..
                 }
                 else
                 {
                     //AddModelError(result);
+                    foreach (var item in result.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
                 }
             }
             else
