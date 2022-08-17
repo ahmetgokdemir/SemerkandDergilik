@@ -261,8 +261,7 @@ namespace Semerkand_Dergilik.Controllers
                     //AddModelError(result);
                     foreach (var item in result.Errors)
                     {
-                        ModelState.AddModelError("", item.Description);
-                        
+                        ModelState.AddModelError("", item.Description);                       
                         
                     }
                     // hata durumunda tempdata güncellenir..
