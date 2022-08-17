@@ -13,11 +13,12 @@ namespace Semerkand_Dergilik.CustomValidation
 
             if (password.ToLower().Contains(user.UserName.ToLower()))
             {
-                if (!user.Email.Contains(user.UserName)) // hem username için hem de email için hata vermemek için..
+                if (!(password.ToLower().Contains(user.Email.ToLower()))) // hem username için hem de email için hata vermemek için..
                 {
                     // Code Id'i temsil eder.. 
                     errors.Add(new IdentityError() { Code = "PasswordContainsUserName", Description = "şifre alanı kullanıcı adı içeremez" });
                 }
+                // user.Email.Contains(user.UserName)
             }
 
             // else if denmemeli hepsi ayrı ayrı kontrol edilmeli..

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using NuGet.Common;
 using Project.ENTITIES.Models;
 using Semerkand_Dergilik.Models;
 using Semerkand_Dergilik.ViewModels;
@@ -182,14 +184,18 @@ namespace Semerkand_Dergilik.Controllers
                     {
                         // ResetPasswordConfirm action metot'da querystring olarak kullanılacak
                         userId = user.Id,
-                        token = passwordResetToken
+                        token = passwordResetToken,
+                        email = user.Email
                     }, HttpContext.Request.Scheme);
 
                     //  link görünümü: www.....com/Home/ResetPasswordConfirm?userId=sdjfsjf&token=dfjkdjfdjf
 
-                    Helper.PasswordReset.PasswordResetSendEmail(passwordResetLink, user.Email);
+                    //******Helper.PasswordReset.PasswordResetSendEmail(passwordResetLink, user.Email);
 
-                    ViewBag.status = "success";
+                ViewBag.email = passwordResetLink;
+                  
+
+                ViewBag.status = "success";
                     //TempData["durum"] = true.ToString();
                 }
                 else
@@ -204,24 +210,39 @@ namespace Semerkand_Dergilik.Controllers
         }
 
         // Url.Action("ResetPasswordConfirm", .. TempData'lar yukarıdaki koddan geliyor..
-        public IActionResult ResetPasswordConfirm(string userId, string token)
+        public IActionResult ResetPasswordConfirm(string userId, string token, string email)
         {
             TempData["userId"] = userId;
             TempData["token"] = token;
+            TempData["email"] = email;
 
             return View();
         }
 
+
         [HttpPost] // PasswordResetViewModel, ResetPasswordConfirm.cshtml'den gelir.. PasswordResetViewModel'den Email property'si de geliyor bunu istemiyoruz bunun için Bind Attribute kullanılır..
         // İstenmeyen property'ler için diğer bir yöntem.. [Bind(exclusive..
-        public async Task<IActionResult> ResetPasswordConfirm([Bind("PasswordNew")] PasswordResetViewModel passwordResetViewModel)
+        public async Task<IActionResult> ResetPasswordConfirm(PasswordResetViewModel passwordResetViewModel)
         {
-            string token = TempData["token"].ToString();
-            string userId = TempData["userId"].ToString();
+            string userId;
+            string token;
+            AppUser user;
 
-            // öncekilerinin aksine bu sefer email yerine userid ile kontrol edilecek böyle bir user mevcut mu
-            AppUser user = await userManager.FindByIdAsync(userId);
+            if (TempData["userId"] == null || TempData["token"] == null)
+            {
+                user = userManager.FindByEmailAsync(passwordResetViewModel.Email).Result;
+                //userId = user.Id.ToString();
+                token = userManager.GeneratePasswordResetTokenAsync(user).Result;
+            }
+            else
+            {
+                userId = TempData["userId"].ToString();
+                token = TempData["token"].ToString();
+                // öncekilerinin aksine bu sefer email yerine userid ile kontrol edilecek böyle bir user mevcut mu
+                user = await userManager.FindByIdAsync(userId);
 
+            }      
+             
             if (user != null)
             {
                 //** ResetPasswordAsync: şifre sıfırlanacak
@@ -241,13 +262,20 @@ namespace Semerkand_Dergilik.Controllers
                     foreach (var item in result.Errors)
                     {
                         ModelState.AddModelError("", item.Description);
+                        // hata durumunda tempdata güncellenir..
+                        
                     }
+
+                    TempData["email"] = passwordResetViewModel.Email;
                 }
             }
             else
             {
                 ModelState.AddModelError("", "hata meydana gelmiştir. Lütfen daha sonra tekrar deneyiniz.");
             }
+            //string a = TempData["email"].ToString();
+
+            
 
             return View(passwordResetViewModel);
         }
