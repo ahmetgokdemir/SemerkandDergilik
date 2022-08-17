@@ -18,7 +18,8 @@ namespace Semerkand_Dergilik.CustomValidation
                     // Code Id'i temsil eder.. 
                     errors.Add(new IdentityError() { Code = "PasswordContainsUserName", Description = "şifre alanı kullanıcı adı içeremez" });
                 }
-                // user.Email.Contains(user.UserName)
+                // if (!user.Email.Contains(user.UserName)) iptal
+                // yerine if (!(password.ToLower().Contains(user.Email.ToLower()))) 
             }
 
             // else if denmemeli hepsi ayrı ayrı kontrol edilmeli..

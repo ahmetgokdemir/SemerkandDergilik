@@ -262,10 +262,10 @@ namespace Semerkand_Dergilik.Controllers
                     foreach (var item in result.Errors)
                     {
                         ModelState.AddModelError("", item.Description);
-                        // hata durumunda tempdata güncellenir..
+                        
                         
                     }
-
+                    // hata durumunda tempdata güncellenir..
                     TempData["email"] = passwordResetViewModel.Email;
                 }
             }
@@ -273,9 +273,7 @@ namespace Semerkand_Dergilik.Controllers
             {
                 ModelState.AddModelError("", "hata meydana gelmiştir. Lütfen daha sonra tekrar deneyiniz.");
             }
-            //string a = TempData["email"].ToString();
-
-            
+           
 
             return View(passwordResetViewModel);
         }
