@@ -68,7 +68,7 @@ builder.Services.ConfigureApplicationCookie(opts =>
 {
     opts.LoginPath = new PathString("/Home/Login"); // giriþ yapmadan üyelerin gezinebildiði sayfalara girerse kullanýcý buraya yönlendirilir..
     
-    //opts.LogoutPath = new PathString("/Member/LogOut");
+    opts.LogoutPath = new PathString("/Member/LogOut");
     
     opts.Cookie = cookieBuilder; // *** 
     

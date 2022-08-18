@@ -54,6 +54,7 @@ namespace Semerkand_Dergilik.Controllers
                 user.Email = userViewModel.Email;
                 user.PhoneNumber = userViewModel.PhoneNumber;
 
+                // validation işlemi yapılır
                 IdentityResult result = await userManager.CreateAsync(user, userViewModel.Password);
 
                 if (result.Succeeded)
@@ -113,6 +114,7 @@ namespace Semerkand_Dergilik.Controllers
                     // opts.ExpireTimeSpan = System.TimeSpan.FromDays(60); (StartUp.cs'de) bunu aktif hale getirmek için userlogin.RememberMe true olması gerek
                     // lockoutFailure: false lockoutFailure özelliği ile kullanıcı başarısız girişlerde kullanıcıyı kilitleyip kilitlememe durumu.. veritabanında LockoutEnabled kısmı etkiler..
                     // SignInResult ile hata verir bir Identity'den gelen SignInResult bir de ASPNET.Core.MVC den gelen var bu iki durum çakışıyor bunu engellemek için başına Microsoft.AspNetCore.Identity namespace'i eklendi..
+                    // validation işlemi yapılır
                     Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(user, userlogin.Password, userlogin.RememberMe, false);
 
                     // şifre doğru mu değil mi => SignInResult result 
@@ -227,7 +229,8 @@ namespace Semerkand_Dergilik.Controllers
 
 
         [HttpPost] // PasswordResetViewModel, ResetPasswordConfirm.cshtml'den gelir.. PasswordResetViewModel'den Email property'si de geliyor bunu istemiyoruz bunun için Bind Attribute kullanılır..
-        // İstenmeyen property'ler için diğer bir yöntem.. [Bind(exclusive..
+        // İstenmeyen property'ler için diğer bir yöntem.. [Bind("PasswordNew")]
+         //[Bind(Include = "Password")] attribute'da Email null gelir ve ModelState.IsValid olsa idi o kısımda hata verirdi..
         public async Task<IActionResult> ResetPasswordConfirm(PasswordResetViewModel passwordResetViewModel)
         {
             string userId;
@@ -251,7 +254,7 @@ namespace Semerkand_Dergilik.Controllers
              
             if (user != null)
             {
-                //** ResetPasswordAsync: şifre sıfırlanacak
+                //** ResetPasswordAsync: şifre sıfırlanacak.. validation işlemi yapılır..
                 IdentityResult result = await userManager.ResetPasswordAsync(user, token, passwordResetViewModel.PasswordNew);
 
                 if (result.Succeeded)

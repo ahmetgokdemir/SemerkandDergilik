@@ -54,7 +54,7 @@ namespace Semerkand_Dergilik.Controllers
 
                 if (exist) // şifre kontrolü başarılı
                 {
-                    // change işlemi eski şifreyi iptal eder.. 
+                    // change işlemi eski şifreyi iptal eder.. validation
                     IdentityResult result = userManager.ChangePasswordAsync(user, passwordChangeViewModel.PasswordOld, passwordChangeViewModel.PasswordNew).Result;
 
                     if (result.Succeeded)
@@ -120,9 +120,11 @@ namespace Semerkand_Dergilik.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UserEdit([Bind("UserName,Email,PhoneNumber")] UserViewModel userViewModel, IFormFile userPicture)
+        public async Task<IActionResult> UserEdit(UserViewModel userViewModel/*, IFormFile userPicture*/)
         {
-            //ModelState.Remove("Password"); [Bind(Include = "UserName,Email,PhoneNumber")] UserViewModel userViewMode dene!!
+            ModelState.Remove("Password");
+            //[Bind(Include = "UserName,Em..")] attribute'da Password null gelir ve ModelState.IsValid kısmında hata verir..
+
             //ViewBag.Gender = new SelectList(Enum.GetNames(typeof(Gender)));
 
             if (ModelState.IsValid)
@@ -168,7 +170,7 @@ namespace Semerkand_Dergilik.Controllers
                 //user.Gender = (int)userViewModel.Gender;
 
 
-                //  IdentityResult sayesinde backend validation'ları (Program.cs ve CustpmValidation kısımlarında) çalışır
+                //  IdentityResult sayesinde backend validation'ları (Program.cs ve CustomValidation kısımlarında) çalışır
                 IdentityResult result = await userManager.UpdateAsync(user);
 
                 if (result.Succeeded)
@@ -198,6 +200,18 @@ namespace Semerkand_Dergilik.Controllers
             return View(userViewModel); // aynı sayfaya bilgiler dolu gider.. ViewBag.success = "true"; ise o kısım gelmez
         }
 
+        /*
+        // Logout
+        public ActionResult LogOut()
+        {
+            signInManager.SignOutAsync();
+            return RedirectToAction("Index","Home");
+        }
+        */
+        public void LogOut()
+        {
+            signInManager.SignOutAsync(); // opts.LogoutPath = new PathString("/Member/LogOut"); çalışır
 
+        }
     }
 }
