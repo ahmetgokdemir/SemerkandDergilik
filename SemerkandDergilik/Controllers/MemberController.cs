@@ -6,6 +6,7 @@ using Mapster;
 using Semerkand_Dergilik.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security;
+using Semerkand_Dergilik.Enums;
 
 namespace Semerkand_Dergilik.Controllers
 {
@@ -114,7 +115,8 @@ namespace Semerkand_Dergilik.Controllers
 
             UserViewModel userViewModel = user.Adapt<UserViewModel>(); // automap
 
-            //ViewBag.Gender = new SelectList(Enum.GetNames(typeof(Gender)));
+            ViewBag.Gender = new SelectList(Enum.GetNames(typeof(Gender)));
+            // GetNames: gender enum'ın isimlerini alır
 
             return View(userViewModel); // güncellenecek bilgiler view'e gönderildi..
         }
