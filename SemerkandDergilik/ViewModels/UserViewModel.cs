@@ -23,7 +23,7 @@ namespace Semerkand_Dergilik.ViewModels
         public string Password { get; set; }
 
         [Display(Name = "Doğum tarihi")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.Date)] // input tag'ı type'ını datetime olarak düzenler
         public DateTime? BirthDay { get; set; }
 
         public string Picture { get; set; }

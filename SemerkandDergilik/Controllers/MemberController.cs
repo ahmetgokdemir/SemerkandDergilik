@@ -26,7 +26,12 @@ namespace Semerkand_Dergilik.Controllers
         public IActionResult Index()
         {
             // HttpContext.User.Identity.Name, veritabanındaki UserName karşılığıdır.. ama Identity.Name cookie den geliyor..
-            AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;            
+            AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
+
+            if (user == null)
+            {
+                return RedirectToAction("LogIn", "Home");
+            }
 
             // fazla property'si olan class'lar için kısayol automap.. (User class'ın daki bilgileri UserViewModel'e basar)
             // mapster kütüphanesi indirilsin (dependencies --> manage nuget)
@@ -49,6 +54,9 @@ namespace Semerkand_Dergilik.Controllers
             {
                 //AppUser user = CurrentUser;
                 AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
+
+                // UserViewModel userViewModel = user.Adapt<UserViewModel>(); // password null geliyor userviewmodelde o yüzden remove ediyoruz model state'te
+
 
                 // şifre kontrolü
                 bool exist = userManager.CheckPasswordAsync(user, passwordChangeViewModel.PasswordOld).Result;
@@ -87,6 +95,8 @@ namespace Semerkand_Dergilik.Controllers
                           artık yeni cookie oluşturuldu artık sistem logout olmaz.. 
                          */
 
+                        //AppUser user2 = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
+
                         ViewBag.success = "true";
                     }
                     else
@@ -113,6 +123,11 @@ namespace Semerkand_Dergilik.Controllers
         {
             AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
 
+            if (user == null)
+            {
+                return RedirectToAction("LogIn", "Home");
+            }
+
             UserViewModel userViewModel = user.Adapt<UserViewModel>(); // automap
 
             ViewBag.Gender = new SelectList(Enum.GetNames(typeof(Gender)));
@@ -122,12 +137,23 @@ namespace Semerkand_Dergilik.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UserEdit(UserViewModel userViewModel/*, IFormFile userPicture*/)
+        public async Task<IActionResult> UserEdit(UserViewModel userViewModel, IFormFile userPicture)
         {
             ModelState.Remove("Password");
             //[Bind(Include = "UserName,Em..")] attribute'da Password null gelir ve ModelState.IsValid kısmında hata verir..
 
-            //ViewBag.Gender = new SelectList(Enum.GetNames(typeof(Gender)));
+            ViewBag.Gender = new SelectList(Enum.GetNames(typeof(Gender))); // post işlemden sonra viewbag sıfırlandığı için tekrar yüklenmeli.. 
+
+            //if (userPicture==null || userViewModel.Picture == null)
+            //{
+                ModelState.Remove("Picture");
+                ModelState.Remove("userPicture");
+                //ModelState.Remove("Gender");
+                //ModelState.Remove("BirthDay");
+                //ModelState.Remove("City");
+
+            //}
+
 
             if (ModelState.IsValid)
             {
@@ -146,31 +172,35 @@ namespace Semerkand_Dergilik.Controllers
                     }
                 }
 
+                */
+
+                
                 if (userPicture != null && userPicture.Length > 0)
                 {
-                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(userPicture.FileName);
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(userPicture.FileName); // path oluşturma
 
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserPicture", fileName);
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserPicture", fileName); // server'a kayıt edilecek path => wwwroot/UserPicture/fileName
 
+                    // kayıt işlemi
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
-                        await userPicture.CopyToAsync(stream);
+                        await userPicture.CopyToAsync(stream); // userPicture'ı, stream'e kayıt
 
-                        // user.Picture = "/UserPicture/" + fileName;
+                        user.Picture = "/UserPicture/" + fileName;   // veritabanına kayıt (wwwroot belirtmeye gerek yok)
+                        
                     }
-                }*/
+                }
+                
 
                 // güncelleme işlemi
                 user.UserName = userViewModel.UserName;
                 user.Email = userViewModel.Email;
                 user.PhoneNumber = userViewModel.PhoneNumber;
+                user.City = userViewModel.City;                
+                user.BirthDay = userViewModel.BirthDay;                
+                user.Gender = (int)userViewModel.Gender;
 
-                //user.City = userViewModel.City;
-                //
-                //user.BirthDay = userViewModel.BirthDay;
-                //
-                //user.Gender = (int)userViewModel.Gender;
-
+                userViewModel.Picture = user.Picture;
 
                 //  IdentityResult sayesinde backend validation'ları (Program.cs ve CustomValidation kısımlarında) çalışır
                 IdentityResult result = await userManager.UpdateAsync(user);
@@ -182,8 +212,13 @@ namespace Semerkand_Dergilik.Controllers
 
                     await signInManager.SignOutAsync();
                     await signInManager.SignInAsync(user, true); // password ile giriş yapılmayacak
-                    //artık cookie yenilendi.. 30 dk sonra sistemden atılmayacak user
+                                                                 //artık cookie yenilendi.. 30 dk sonra sistemden atılmayacak user
 
+
+
+
+
+                    // AppUser user2 = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
 
                     ViewBag.success = "true";
                 }
