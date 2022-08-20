@@ -68,14 +68,14 @@ builder.Services.ConfigureApplicationCookie(opts =>
 {
     opts.LoginPath = new PathString("/Home/Login"); // giriþ yapmadan üyelerin gezinebildiði sayfalara girerse kullanýcý buraya yönlendirilir..
     
-    opts.LogoutPath = new PathString("/Member/LogOut");
-    
+    opts.LogoutPath = new PathString("/Member/LogOut"); //  asp-route-returnUrl="/Home/Index" tetiklenir..
+
     opts.Cookie = cookieBuilder; // *** 
     
     opts.SlidingExpiration = true; // 30 gün dolmadan 15.gün sonrasýnda kullanýcý tekrar login olursa ExpireTimeSpan 30 olarak tekrar güncellenir
     opts.ExpireTimeSpan = System.TimeSpan.FromDays(30); // cookie süresi.. bitince tekrar login olmak zorunda
     
-    //opts.AccessDeniedPath = new PathString("/Member/AccessDenied");
+    opts.AccessDeniedPath = new PathString("/Member/AccessDenied"); // bu path (Access Denied) eriþim yetkisi olmayan kullanýcýyý sayfadan Access Denied etme
 });
 
 

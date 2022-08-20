@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace Semerkand_Dergilik.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         //private readonly ILogger<HomeController> _logger;
 
@@ -18,6 +18,8 @@ namespace Semerkand_Dergilik.Controllers
             _logger = logger;
         }*/
 
+        /*
+         * tekrar eden kodlar
         public UserManager<AppUser> userManager { get; }
         public SignInManager<AppUser> signInManager { get; }
 
@@ -26,6 +28,12 @@ namespace Semerkand_Dergilik.Controllers
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+        }
+        */
+        public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : base(userManager, signInManager)
+        {          
+            //this.userManager = userManager;
+            //this.signInManager = signInManager;
         }
 
         public IActionResult Index()
@@ -65,11 +73,12 @@ namespace Semerkand_Dergilik.Controllers
                 }
                 else
                 {
-                    //AddModelError(result);
-                    foreach (IdentityError item in result.Errors)
+                    // kod tekrarı önlendi..
+                    AddModelError(result);
+                    /*foreach (IdentityError item in result.Errors)
                     {
                         ModelState.AddModelError("",item.Description);
-                    }
+                    }*/
                 }
             }
 
@@ -267,12 +276,14 @@ namespace Semerkand_Dergilik.Controllers
                 }
                 else
                 {
-                    //AddModelError(result);
-                    foreach (var item in result.Errors)
+                    // kod tekrarı önlendi..
+                    AddModelError(result);
+                    /*foreach (var item in result.Errors)
                     {
                         ModelState.AddModelError("", item.Description);                       
                         
-                    }
+                    }*/
+
                     // hata durumunda tempdata güncellenir..
                     TempData["email"] = passwordResetViewModel.Email;
                 }

@@ -11,22 +11,28 @@ using Semerkand_Dergilik.Enums;
 namespace Semerkand_Dergilik.Controllers
 {
     [Authorize]
-    public class MemberController : Controller
+    public class MemberController : BaseController
     {
-        public UserManager<AppUser> userManager { get; }
-        public SignInManager<AppUser> signInManager { get; }
+        // kod tekrarı önlendi..
+        //public UserManager<AppUser> userManager { get; }
+        //public SignInManager<AppUser> signInManager { get; }
 
 
-        public MemberController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public MemberController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : base(userManager, signInManager)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
+            // kod tekrarı önlendi..
+            //this.userManager = userManager;
+            //this.signInManager = signInManager;
         }
 
         public IActionResult Index()
         {
+
             // HttpContext.User.Identity.Name, veritabanındaki UserName karşılığıdır.. ama Identity.Name cookie den geliyor..
             AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
+            // kod tekrarı önlenemedi..
+            //AppUser user = base.CurrentUser;
+            //AppUser user = CurrentUser;
 
             if (user == null)
             {
@@ -52,6 +58,7 @@ namespace Semerkand_Dergilik.Controllers
         {
             if (ModelState.IsValid)
             {
+                // kod tekrarı önlenemedi..
                 //AppUser user = CurrentUser;
                 AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
 
@@ -101,11 +108,12 @@ namespace Semerkand_Dergilik.Controllers
                     }
                     else
                     {
-                        foreach (var item in result.Errors)
+                        // kod tekrarı önlendi..
+                        /*foreach (var item in result.Errors)
                         {
                             ModelState.AddModelError("", item.Description);
-                        }
-                        //AddModelError(result);
+                        }*/
+                        AddModelError(result);
 
                     }
                 }
@@ -121,7 +129,9 @@ namespace Semerkand_Dergilik.Controllers
         // Üye bilgilerini güncelleme 
         public IActionResult UserEdit()
         {
+            // kod tekrarı önlendi..
             AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
+            //AppUser user = CurrentUser;
 
             if (user == null)
             {
@@ -157,8 +167,9 @@ namespace Semerkand_Dergilik.Controllers
 
             if (ModelState.IsValid)
             {
+                // kod tekrarı önlendi..
                 AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
-                // AppUser user = CurrentUser;
+                //AppUser user = CurrentUser;
 
                 /*
                 string phone = userManager.GetPhoneNumberAsync(user).Result;
@@ -224,12 +235,14 @@ namespace Semerkand_Dergilik.Controllers
                 }
                 else
                 {
+                    // kod tekrarı önlendi..
+                    /*
                     foreach (var item in result.Errors)
                     {
                         ModelState.AddModelError("", item.Description);
-                    }
+                    }*/
 
-                    // AddModelError(result);
+                    AddModelError(result);
 
                 }
             }
@@ -249,6 +262,29 @@ namespace Semerkand_Dergilik.Controllers
         {
             signInManager.SignOutAsync(); // opts.LogoutPath = new PathString("/Member/LogOut"); çalışır
 
+        }
+
+        // // // erişim yetkisi olmayan kullanıcıyı sayfadan Access Denied etme 
+        public IActionResult AccessDenied(string ReturnUrl)
+        {
+            if (ReturnUrl.ToLower().Contains("violencegage"))
+            {
+                ViewBag.message = "Erişmeye çalıştığınız sayfa şiddet videoları içerdiğinden dolayı 15 yaşında büyük olmanız gerekmektedir";
+            }
+            else if (ReturnUrl.ToLower().Contains("ankarapage"))
+            {
+                ViewBag.message = "Bu sayfaya sadece şehir alanı ankara olan kullanıcılar erişebilir";
+            }
+            else if (ReturnUrl.ToLower().Contains("exchange"))
+            {
+                ViewBag.message = "30 günlük ücretsiz deneme hakkınız sona ermiştir.";
+            }
+            else
+            {
+                ViewBag.message = "Bu sayfaya erişim izniniz yoktur. Erişim izni almak için site yöneticisiyle görüşünüz";
+            }
+
+            return View();
         }
     }
 }
