@@ -9,7 +9,7 @@ namespace Semerkand_Dergilik.Controllers
     {
         protected UserManager<AppUser> userManager { get; }
         protected SignInManager<AppUser> signInManager { get; }
-        protected RoleManager<AppRole> roleManager { get; } // admincontroller'da kullanılacak.. AppRole
+        protected RoleManager<AppRole> roleManager { get; } // admincontroller'da kullanılacak.. AppRole class'ı
 
         protected AppUser CurrentUser => userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
         //AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
