@@ -28,6 +28,25 @@ namespace Project.DAL.Context
             builder.ApplyConfiguration(new AppUserRoleConfiguration());
             builder.ApplyConfiguration(new AppUserTokenConfiguration());
 
+            //builder.Entity<AppUserRole>(builder =>
+            //{
+            //    //builder.HasOne(userRole => userRole.AppRole).WithMany(role => role.AppUserRoles).HasForeignKey(userRole => userRole.RoleId).OnDelete(DeleteBehavior.Restrict);
+
+
+            //    //builder.HasOne(userRole => userRole.AppUser).WithMany(user => user.AppUserRoles).HasForeignKey(userRole => userRole.UserId);//.OnDelete(DeleteBehavior.Restrict);
+
+            //    //builder.Ignore(userRole => userRole.AppUserID);
+            //    //builder.Ignore(userRole => userRole.AppRoleID);
+
+            //    builder.ToTable("UserRole");
+                 
+            //    //builder.Property(roleClaim => roleClaim.RoleId).HasColumnName("Vendor Name");
+            //});
+
+ 
+
+ 
+
 
             /*
 

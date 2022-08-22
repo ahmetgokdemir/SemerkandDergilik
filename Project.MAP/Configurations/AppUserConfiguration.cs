@@ -17,7 +17,14 @@ namespace Project.MAP.Configurations
 
 
             builder.ToTable("User");
-            
+
+            builder.HasMany<AppUserClaim>().WithOne().HasForeignKey(uc => uc.UserId).IsRequired();
+            builder.HasMany<AppUserLogin>().WithOne().HasForeignKey(ul => ul.UserId).IsRequired();
+            builder.HasMany<AppUserToken>().WithOne().HasForeignKey(ut => ut.UserId).IsRequired();
+
+            builder.HasMany<AppUserRole>().WithOne().HasForeignKey(ur => ur.UserId).IsRequired();
+
+            builder.Property(user => user.UserName).HasColumnName("Kullanıcı Adı");
 
             //builder.HasOne(x => x.Profile).WithOne(x => x.AppUser).HasForeignKey<AppUserProfile>(x => x.ID); //birebir ilişki ayarımız icin talimat
             //builder.Ignore(x => x.ID); // ***  burada ID'imiz C#'ta kalsa da biz onu (kendi ID'imizi) Sql'e göndermedik

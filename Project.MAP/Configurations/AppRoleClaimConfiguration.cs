@@ -16,11 +16,13 @@ namespace Project.MAP.Configurations
         {
             base.Configure(builder);
 
-            builder.HasOne(roleClaim => roleClaim.AppRole).WithMany(role => role.AppRoleClaims).HasForeignKey(roleClaim => roleClaim.RoleId).OnDelete(DeleteBehavior.Restrict);
+           // builder.HasOne(roleClaim => roleClaim.AppRole).WithMany(role => role.AppRoleClaims).HasForeignKey(roleClaim => roleClaim.RoleId);//OnDelete(DeleteBehavior.Restrict);
 
             //builder.Property(roleClaim => roleClaim.Id).HasConversion<Guid>();
             //builder.HasIndex(roleClaim => roleClaim.Id).IsUnique();
             builder.HasKey(roleClaim => roleClaim.Id);
+
+            //builder.Ignore(roleClaim => roleClaim.AppRoleID);
 
             //builder.Entity<AppRoleClaim>().ToTable("RoleClaim");
             builder.ToTable("RoleClaim");

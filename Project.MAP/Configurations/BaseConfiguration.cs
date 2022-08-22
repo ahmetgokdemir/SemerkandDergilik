@@ -14,7 +14,8 @@ namespace Project.MAP.Configurations
         public virtual void Configure(EntityTypeBuilder<T> builder)
         {
             builder.Property(x => x.CreatedDate).HasColumnName("Oluşturulma Tarihi");
-            
+            builder.Property(x => x.DeletedDate).HasColumnName("Silinme Tarihi");
+            builder.Property(x => x.ModifiedDate).HasColumnName("Güncelleme Tarihi");
         }
     }
 }

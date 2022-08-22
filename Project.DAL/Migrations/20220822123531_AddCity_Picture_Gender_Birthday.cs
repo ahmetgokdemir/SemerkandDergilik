@@ -5,23 +5,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Project.DAL.Migrations
 {
-    public partial class AddPicture_Gender_Birthday : Migration
+    public partial class AddCity_Picture_Gender_Birthday : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "City",
-                table: "AspNetUsers",
-                type: "nvarchar(50)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(50)");
-
             migrationBuilder.AddColumn<DateTime>(
                 name: "BirthDay",
                 table: "AspNetUsers",
                 type: "datetime2",
                 nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "City",
+                table: "AspNetUsers",
+                type: "nvarchar(50)",
+                nullable: false,
+                defaultValue: "");
 
             migrationBuilder.AddColumn<int>(
                 name: "Gender",
@@ -45,20 +44,16 @@ namespace Project.DAL.Migrations
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(
+                name: "City",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
                 name: "Gender",
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(
                 name: "Picture",
                 table: "AspNetUsers");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "City",
-                table: "AspNetUsers",
-                type: "nvarchar(50)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
         }
     }
 }

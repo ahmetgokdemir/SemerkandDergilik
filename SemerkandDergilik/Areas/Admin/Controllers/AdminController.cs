@@ -128,5 +128,64 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             return View(roleViewModel);
         }
 
+        // Rol Atama
+        [Route("RoleAssign")]
+        public IActionResult RoleAssign(string id)
+        {
+            TempData["userId"] = id; // RoleAssign post metodunda kullanıldı..
+
+            AppUser user = userManager.FindByIdAsync(id).Result;
+
+            ViewBag.userName = user.UserName;// used in RoleAssign.cshtml
+
+            IQueryable<AppRole> roles = roleManager.Roles; // get all roles from database ([AspNetRoles]) tablosu.
+
+            List<string> userroles = userManager.GetRolesAsync(user).Result as List<string>; // get roles that belongs to user.. .Result => IList döner.. cast to List<>
+
+            // RoleAssignViewModel.cs
+            List<RoleAssignViewModel> roleAssignViewModels = new List<RoleAssignViewModel>();
+
+            foreach (var role in roles) //  all roles
+            {
+                RoleAssignViewModel r = new RoleAssignViewModel();
+                r.RoleId = role.Id.ToString();
+                r.RoleName = role.Name;
+
+                if (userroles.Contains(role.Name)) // compare user's roles to all roles
+                {
+                    r.Exist = true; // user own role
+                }
+                else
+                {
+                    r.Exist = false; // user not own role
+                }
+                roleAssignViewModels.Add(r);
+            }
+
+            return View(roleAssignViewModels); // RoleAssign.cshtml
+        }
+
+        [HttpPost]
+        [Route("RoleAssign")]
+        public async Task<IActionResult> RoleAssign(List<RoleAssignViewModel> roleAssignViewModels)
+        {
+            AppUser user = userManager.FindByIdAsync(TempData["userId"].ToString()).Result;
+
+            foreach (var item in roleAssignViewModels)
+            {
+                if (item.Exist)
+
+                {
+                    await userManager.AddToRoleAsync(user, item.RoleName); // assign to
+                }
+                else
+                {
+                    await userManager.RemoveFromRoleAsync(user, item.RoleName);
+                }
+            }
+
+            return RedirectToAction("Users");
+        }
+
     }
 }

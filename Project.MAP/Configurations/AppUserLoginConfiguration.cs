@@ -14,8 +14,15 @@ namespace Project.MAP.Configurations
         public override void Configure(EntityTypeBuilder<AppUserLogin> builder)
         {
             base.Configure(builder);
- 
-            builder.HasOne(userLogin => userLogin.AppUser).WithMany(user => user.AppUserLogins).HasForeignKey(userLogin => userLogin.UserId).OnDelete(DeleteBehavior.Restrict);
+
+            //  builder.HasOne(userLogin => userLogin.AppUser).WithMany(user => user.AppUserLogins).HasForeignKey(userLogin => userLogin.UserId);//.OnDelete(DeleteBehavior.Restrict);
+
+            // builder.Ignore(userLogin => userLogin.AppUserID);
+
+            // builder.HasKey(ul => new { ul.LoginProvider, ul.ProviderKey });
+
+            builder.Property(ul => ul.LoginProvider).HasMaxLength(128);
+            builder.Property(ul => ul.ProviderKey).HasMaxLength(128);
 
             builder.ToTable("UserLogin");
  

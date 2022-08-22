@@ -12,8 +12,8 @@ using Project.DAL.Context;
 namespace Project.DAL.Migrations
 {
     [DbContext(typeof(SemerkandDergilikContext))]
-    [Migration("20220818134546_AddCity")]
-    partial class AddCity
+    [Migration("20220822123531_AddCity_Picture_Gender_Birthday")]
+    partial class AddCity_Picture_Gender_Birthday
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,14 +39,17 @@ namespace Project.DAL.Migrations
                         .HasColumnName("Oluşturulma Tarihi");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Silinme Tarihi");
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Güncelleme Tarihi");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(256)")
+                        .HasColumnName("Rol Adı");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
@@ -73,9 +76,6 @@ namespace Project.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<Guid>("AppRoleId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
 
@@ -87,10 +87,12 @@ namespace Project.DAL.Migrations
                         .HasColumnName("Oluşturulma Tarihi");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Silinme Tarihi");
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Güncelleme Tarihi");
 
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
@@ -99,8 +101,6 @@ namespace Project.DAL.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppRoleId");
 
                     b.HasIndex("RoleId");
 
@@ -116,6 +116,9 @@ namespace Project.DAL.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("BirthDay")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("City")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -129,7 +132,8 @@ namespace Project.DAL.Migrations
                         .HasColumnName("Oluşturulma Tarihi");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Silinme Tarihi");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -138,6 +142,9 @@ namespace Project.DAL.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -145,7 +152,8 @@ namespace Project.DAL.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Güncelleme Tarihi");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -164,6 +172,10 @@ namespace Project.DAL.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Picture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -175,7 +187,8 @@ namespace Project.DAL.Migrations
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(256)")
+                        .HasColumnName("Kullanıcı Adı");
 
                     b.HasKey("Id");
 
@@ -198,9 +211,6 @@ namespace Project.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<Guid>("AppUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
 
@@ -212,10 +222,12 @@ namespace Project.DAL.Migrations
                         .HasColumnName("Oluşturulma Tarihi");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Silinme Tarihi");
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Güncelleme Tarihi");
 
                     b.Property<int?>("Status")
                         .HasColumnType("int");
@@ -225,8 +237,6 @@ namespace Project.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("AspNetUserClaims", (string)null);
@@ -235,23 +245,24 @@ namespace Project.DAL.Migrations
             modelBuilder.Entity("Project.ENTITIES.Models.AppUserLogin", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("AppUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Oluşturulma Tarihi");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Silinme Tarihi");
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Güncelleme Tarihi");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -263,8 +274,6 @@ namespace Project.DAL.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("AppUserId");
 
                     b.HasIndex("UserId");
 
@@ -279,30 +288,22 @@ namespace Project.DAL.Migrations
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AppRoleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AppUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Oluşturulma Tarihi");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Silinme Tarihi");
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Güncelleme Tarihi");
 
                     b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("AppRoleId");
-
-                    b.HasIndex("AppUserId");
 
                     b.HasIndex("RoleId");
 
@@ -320,18 +321,17 @@ namespace Project.DAL.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("AppUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Oluşturulma Tarihi");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Silinme Tarihi");
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Güncelleme Tarihi");
 
                     b.Property<int?>("Status")
                         .HasColumnType("int");
@@ -341,126 +341,58 @@ namespace Project.DAL.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.HasIndex("AppUserId");
-
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.AppRoleClaim", b =>
                 {
-                    b.HasOne("Project.ENTITIES.Models.AppRole", "AppRole")
-                        .WithMany("AppRoleClaims")
-                        .HasForeignKey("AppRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Project.ENTITIES.Models.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("AppRole");
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.AppUserClaim", b =>
                 {
-                    b.HasOne("Project.ENTITIES.Models.AppUser", "AppUser")
-                        .WithMany("AppUserClaims")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Project.ENTITIES.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.AppUserLogin", b =>
                 {
-                    b.HasOne("Project.ENTITIES.Models.AppUser", "AppUser")
-                        .WithMany("AppUserLogins")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Project.ENTITIES.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.AppUserRole", b =>
                 {
-                    b.HasOne("Project.ENTITIES.Models.AppRole", "AppRole")
-                        .WithMany("AppUserRoles")
-                        .HasForeignKey("AppRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Project.ENTITIES.Models.AppUser", "AppUser")
-                        .WithMany("AppUserRoles")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Project.ENTITIES.Models.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Project.ENTITIES.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("AppRole");
-
-                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.AppUserToken", b =>
                 {
-                    b.HasOne("Project.ENTITIES.Models.AppUser", "AppUser")
-                        .WithMany("AppUserTokens")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Project.ENTITIES.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("Project.ENTITIES.Models.AppRole", b =>
-                {
-                    b.Navigation("AppRoleClaims");
-
-                    b.Navigation("AppUserRoles");
-                });
-
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUser", b =>
-                {
-                    b.Navigation("AppUserClaims");
-
-                    b.Navigation("AppUserLogins");
-
-                    b.Navigation("AppUserRoles");
-
-                    b.Navigation("AppUserTokens");
                 });
 #pragma warning restore 612, 618
         }

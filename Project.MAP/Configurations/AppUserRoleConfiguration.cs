@@ -14,10 +14,14 @@ namespace Project.MAP.Configurations
         public override void Configure(EntityTypeBuilder<AppUserRole> builder)
         {
             base.Configure(builder);
- 
-            builder.HasOne(userRole => userRole.AppRole).WithMany(role => role.AppUserRoles).HasForeignKey(userRole => userRole.RoleId).OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(userRole => userRole.AppUser).WithMany(user => user.AppUserRoles).HasForeignKey(userRole => userRole.UserId).OnDelete(DeleteBehavior.Restrict);
+            //builder.HasOne(userRole => userRole.AppRole).WithMany(role => role.AppUserRoles).HasForeignKey(userRole => userRole.RoleId);//.OnDelete(DeleteBehavior.Restrict);
+
+            //builder.HasOne(userRole => userRole.AppUser).WithMany(user => user.AppUserRoles).HasForeignKey(userRole => userRole.UserId);//.OnDelete(DeleteBehavior.Restrict);
+
+           // builder.Ignore(userRole => userRole.AppUserID);
+           // builder.Ignore(userRole => userRole.AppRoleID);
+
 
             builder.ToTable("UserRole");
  

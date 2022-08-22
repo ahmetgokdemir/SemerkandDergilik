@@ -32,6 +32,19 @@
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
+           
+                <input type="hidden" asp-for="City" value="Istanbul" />
+
+
+            <input type="hidden" asp-for="BirthDay" value=11.11.1999 />
+
+
+            <input type="hidden" asp-for="Picture" value="/UserPicture/user.webp" />
+
+
+            <input type="hidden" asp-for="Gender" value="1" />
+            
+
             <div class="form-group mt-2">
                 <input type="submit" value="Üye oluştur" class="btn btn-primary" />
             </div>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using NuGet.Common;
 using Project.ENTITIES.Models;
+using Semerkand_Dergilik.Enums;
 using Semerkand_Dergilik.Models;
 using Semerkand_Dergilik.ViewModels;
 using System.Diagnostics;
@@ -55,12 +56,21 @@ namespace Semerkand_Dergilik.Controllers
         [HttpPost]
         public async Task<IActionResult> SignUp(UserViewModel userViewModel)
         {
+            // userViewModel.City = "Istanbul";
+            userViewModel.BirthDay = DateTime.Now;
+            // userViewModel.Picture = null;
+            userViewModel.Gender = Gender.Bay;
+
             if (ModelState.IsValid) // startup kısmında validationlar AppUser için ayarlandı -backend taraflı- 
             {
                 AppUser user = new AppUser();
                 user.UserName = userViewModel.UserName;
                 user.Email = userViewModel.Email;
                 user.PhoneNumber = userViewModel.PhoneNumber;
+                user.City = userViewModel.City;
+                user.BirthDay = userViewModel.BirthDay;
+                user.Picture = userViewModel.Picture;
+                user.Gender = (int)userViewModel.Gender;
 
                 // validation işlemi yapılır
                 IdentityResult result = await userManager.CreateAsync(user, userViewModel.Password);

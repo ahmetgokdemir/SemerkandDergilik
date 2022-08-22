@@ -16,6 +16,7 @@ namespace Project.ENTITIES.Models
         public DateTime? ModifiedDate { get; set; }
         public DataStatus? Status { get; set; }
 
-        public virtual AppUser AppUser { get; set; }
+        //public int AppUserID { get; set; }
+        //public virtual AppUser AppUser { get; set; }
     }
 }

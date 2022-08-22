@@ -16,8 +16,16 @@ namespace Project.MAP.Configurations
             base.Configure(builder);
            
             builder.ToTable("Roles");
-           
 
+            //builder.HasKey(r => r.Id);
+
+            builder.HasIndex(r => r.NormalizedName).IsUnique();
+            builder.Property(r => r.ConcurrencyStamp).IsConcurrencyToken();
+
+            builder.HasMany<AppUserRole>().WithOne().HasForeignKey(ur => ur.RoleId).IsRequired();
+            builder.HasMany<AppRoleClaim>().WithOne().HasForeignKey(rc => rc.RoleId).IsRequired();
+
+            builder.Property(role => role.Name).HasColumnName("Rol Adı");
         }
     }
 }

@@ -15,13 +15,14 @@ namespace Project.ENTITIES.Models
 
         //public override int Id { get; set; }
 
+
         public DateTime CreatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public DataStatus? Status { get; set; }
 
-
-        public virtual AppRole AppRole { get; set; }
+        //public int AppRoleID { get; set; }
+        //public virtual AppRole AppRole { get; set; }
 
     }
 }
