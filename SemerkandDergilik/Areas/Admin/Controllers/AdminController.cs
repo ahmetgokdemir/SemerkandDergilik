@@ -190,5 +190,15 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             return RedirectToAction("Users");
         }
 
+        // show default claims
+        [Route("Claims")]
+        public IActionResult Claims()
+        {
+            return View(User.Claims.ToList());
+        }
+
+
+
+
     }
 }

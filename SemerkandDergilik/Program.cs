@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,30 @@ builder.Services.AddDbContext<SemerkandDergilikContext>(opts =>
 {
     opts.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection"));
     // opts.UseSqlServer(configuration["ConnectionStrings:DefaultAzureConnectionString"]);
+});
+
+
+// policy of customized claims that used in MemberController (IActionResult IstanbulPage())
+builder.Services.AddAuthorization(opts =>
+{
+    opts.AddPolicy("IstanbulPolicy", policy =>
+    {
+        policy.RequireClaim("city", "istanbul");
+        //policy.RequireClaim("city");
+        //policy.RequireRole("Admin"); 
+        // policy.RequireRole("admin"); hata verir case sensitive
+
+        // ClaimProvider.cs'de Claim CityClaim = new Claim("city", user.City, ClaimValueTypes.String, "Internal");
+    });
+
+    opts.AddPolicy("ViolencePolicy", policy =>
+    {
+        policy.RequireClaim("violence");
+    });
+    /*opts.AddPolicy("ExchangePolicy", policy =>
+    {
+        policy.AddRequirements(new ExpireDateExchangeRequirement());
+    });*/
 });
 
 
@@ -77,6 +102,11 @@ builder.Services.ConfigureApplicationCookie(opts =>
     
     opts.AccessDeniedPath = new PathString("/Member/AccessDenied"); // bu path (Access Denied) eriþim yetkisi olmayan kullanýcýyý sayfadan Access Denied etme
 });
+
+
+//  Semerkand_Dergilik.ClaimProvider kullanýldýðýndan using gerek kalmadý
+builder.Services.AddScoped<IClaimsTransformation, Semerkand_Dergilik.ClaimProvider.ClaimProvider>();
+
 
 
 var app = builder.Build();

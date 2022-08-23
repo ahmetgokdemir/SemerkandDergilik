@@ -264,6 +264,7 @@ namespace Semerkand_Dergilik.Controllers
 
         }
 
+
         // // // erişim yetkisi olmayan kullanıcıyı sayfadan Access Denied etme 
         public IActionResult AccessDenied(string ReturnUrl)
         {
@@ -287,6 +288,7 @@ namespace Semerkand_Dergilik.Controllers
             return View();
         }
 
+
         // // // rollerin ulaşabileceği sayfalar, case sensitive  
         [Authorize(Roles = "Manager,Admin")]
         public IActionResult Manager()
@@ -298,6 +300,14 @@ namespace Semerkand_Dergilik.Controllers
         // // // rollerin ulaşabileceği sayfalar, case sensitive  
         [Authorize(Roles = "Editor,Admin")]
         public IActionResult Editor()
+        {
+            return View();
+        }
+
+        // customize claim , yetki yoksa Access Denied olur..
+        [Authorize(Policy = "IstanbulPolicy")]
+        [Route("IstanbulPage")]
+        public IActionResult IstanbulPage()
         {
             return View();
         }
