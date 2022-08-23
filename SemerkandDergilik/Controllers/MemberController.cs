@@ -286,5 +286,20 @@ namespace Semerkand_Dergilik.Controllers
 
             return View();
         }
+
+        // // // rollerin ulaşabileceği sayfalar, case sensitive  
+        [Authorize(Roles = "Manager,Admin")]
+        public IActionResult Manager()
+        {
+            return View();
+        }
+
+
+        // // // rollerin ulaşabileceği sayfalar, case sensitive  
+        [Authorize(Roles = "Editor,Admin")]
+        public IActionResult Editor()
+        {
+            return View();
+        }
     }
 }

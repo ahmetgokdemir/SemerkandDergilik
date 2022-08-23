@@ -1,14 +1,17 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Project.ENTITIES.Models;
 using Semerkand_Dergilik.Controllers;
 using Semerkand_Dergilik.ViewModels;
+using System.Data;
 
 namespace Semerkand_Dergilik.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin")]
+    [Authorize(Roles = "Admin")] // case sensitive  
     public class AdminController : BaseController
     {
         //private UserManager<AppUser> userManager { get; }
