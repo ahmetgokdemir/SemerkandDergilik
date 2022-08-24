@@ -77,8 +77,23 @@ namespace Semerkand_Dergilik.Controllers
 
                 if (result.Succeeded)
                 {
-                    //string confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                               
+                    // create token
+                    string confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                    // create link, ResetPasswordConfirm action metot'da querystring olarak kullanılacak
+                    string link = Url.Action("ConfirmEmail", "Home", new
+                    {
+                        userId = user.Id,
+                        token = confirmationToken
+                    }, protocol: HttpContext.Request.Scheme
+
+                    ); // Action bir aşağıda
+
+                    // link in SendEmail
+                    //Helper.EmailConfirmation.SendEmail(link, user.Email);
+
+                    TempData["EmailConfirmMessage"] = "Giriş yapabilmek için Email'inize gelen linki tıklayınız.";
+
                     return RedirectToAction("LogIn");
                 }
                 else
@@ -94,6 +109,24 @@ namespace Semerkand_Dergilik.Controllers
 
             return View(userViewModel); // aynı sayfaya yönlendirir..  AddModelError(result) kısmında hatalar eklenip kullanıcıya model(userViewModel) tekrar gönderilir..
             
+        }
+
+        // ConfirmEmail      
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+
+            IdentityResult result = await userManager.ConfirmEmailAsync(user, token);//**
+
+            if (result.Succeeded)
+            {
+                ViewBag.status = "Email adresiniz onaylanmıştır. Login ekranından giriş yapabilirsiniz.";
+            }
+            else
+            {
+                ViewBag.status = "Bir hata meydana geldi. lütfen daha sonra tekrar deneyiniz.";
+            }
+            return View();
         }
 
         public IActionResult LogIn(string ReturnUrl)
@@ -125,7 +158,14 @@ namespace Semerkand_Dergilik.Controllers
                         return View(userlogin);
                     }
 
-
+                    /*
+                    // user email'ini doğrularsa, ConfirmEmail action çalışır, ve sonra user, login olunca buradan geçebilir..
+                    if (userManager.IsEmailConfirmedAsync(user).Result == false)//**
+                    {
+                        ModelState.AddModelError("", "Email adresiniz onaylanmamıştır. Lütfen  epostanızı kontrol ediniz.");
+                        return View(userlogin);
+                    }
+                    */
 
                     await signInManager.SignOutAsync(); // login işleminden önce çıkış yapılıdı amaç sistemdeki eski cookie'i silmek..
 

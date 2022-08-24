@@ -5,11 +5,23 @@
     ViewData["Title"] = "LogIn";
 }
 
+
+
+
 <div class="row">
 
     <div class="col-md-4 offset-md-4">
         <h4>Üye Giriş Formu</h4>
         <hr />
+
+        @if (TempData["EmailConfirmMessage"] != null)
+        {
+             <div class="alert alert-danger">
+                @TempData["EmailConfirmMessage"]
+            </div>
+        }
+       
+
         <form asp-action="LogIn" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
