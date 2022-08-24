@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Project.BLL.ServiceExtensions;
 using Project.DAL.Context;
 using Project.ENTITIES.Models;
+using Semerkand_Dergilik.ClaimProvider;
 using Semerkand_Dergilik.CustomValidation;
 using System.Configuration;
 
@@ -34,13 +36,13 @@ builder.Services.AddDbContext<SemerkandDergilikContext>(opts =>
     // opts.UseSqlServer(configuration["ConnectionStrings:DefaultAzureConnectionString"]);
 });
 
-
+// AddScoped veya AddTransient eklendi.. 
 // policy of customized claims that used in MemberController (IActionResult IstanbulPage())
 builder.Services.AddAuthorization(opts =>
 {
     opts.AddPolicy("IstanbulPolicy", policy =>
     {
-        policy.RequireClaim("city", "istanbul");
+        policy.RequireClaim("city", "istanbul"); // claimprovider.cs
         //policy.RequireClaim("city");
         //policy.RequireRole("Admin"); 
         // policy.RequireRole("admin"); hata verir case sensitive
@@ -50,14 +52,16 @@ builder.Services.AddAuthorization(opts =>
 
     opts.AddPolicy("ViolencePolicy", policy =>
     {
-        policy.RequireClaim("violence");
+        policy.RequireClaim("violence"); // claimprovider.cs
 
         // Claim ViolenceClaim = new Claim("violence", true.ToString(), ClaimValueTypes.String, "Internal");
     });
-    /*opts.AddPolicy("ExchangePolicy", policy =>
+
+    opts.AddPolicy("ExchangePolicy", policy =>
     {
-        policy.AddRequirements(new ExpireDateExchangeRequirement());
-    });*/
+        policy.AddRequirements(new Semerkand_Dergilik.ClaimProvider.ExpireDateExchangeRequirement()); // requirement.cs
+    });
+
 });
 
 
@@ -109,7 +113,7 @@ builder.Services.ConfigureApplicationCookie(opts =>
 //  Semerkand_Dergilik.ClaimProvider kullanýldýðýndan using gerek kalmadý
 builder.Services.AddScoped<IClaimsTransformation, Semerkand_Dergilik.ClaimProvider.ClaimProvider>();
 
-
+builder.Services.AddTransient<IAuthorizationHandler, ExpireDateExchangeHandler>();
 
 var app = builder.Build();
 

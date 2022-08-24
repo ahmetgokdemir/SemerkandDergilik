@@ -30,14 +30,17 @@ namespace Semerkand_Dergilik.ClaimProvider
                 {
                     if (user.BirthDay != null)
                     {
-                        var tdy = DateTime.Today;
-                        var age = tdy.Year - user.BirthDay?.Year;
-
-                        if (age > 15)
+                        if (!principal.HasClaim(c => c.Type == "violence")) // not exits then create it.. ben ekledim!!
                         {
-                            Claim ViolenceClaim = new Claim("violence", true.ToString(), ClaimValueTypes.String, "Internal");
+                            var tdy = DateTime.Today;
+                            var age = tdy.Year - user.BirthDay?.Year;
 
-                            identity.AddClaim(ViolenceClaim);
+                            if (age > 15)
+                            {
+                                Claim ViolenceClaim = new Claim("violence", true.ToString(), ClaimValueTypes.String, "Internal");
+
+                                identity.AddClaim(ViolenceClaim);
+                            }
                         }
                     }
 
