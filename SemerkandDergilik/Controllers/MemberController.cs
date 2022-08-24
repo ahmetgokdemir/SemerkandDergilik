@@ -268,15 +268,17 @@ namespace Semerkand_Dergilik.Controllers
         // // // erişim yetkisi olmayan kullanıcıyı sayfadan Access Denied etme 
         public IActionResult AccessDenied(string ReturnUrl)
         {
-            if (ReturnUrl.ToLower().Contains("violencegage"))
+            string value = ReturnUrl.ToLower();
+
+            if (value.Contains("violencepage"))
             {
                 ViewBag.message = "Erişmeye çalıştığınız sayfa şiddet videoları içerdiğinden dolayı 15 yaşında büyük olmanız gerekmektedir";
             }
-            else if (ReturnUrl.ToLower().Contains("ankarapage"))
+            else if (value.Contains("ıstanbulpage")) // istanbul olmaz.. ıstanbulpage
             {
                 ViewBag.message = "Bu sayfaya sadece şehir alanı ankara olan kullanıcılar erişebilir";
             }
-            else if (ReturnUrl.ToLower().Contains("exchange"))
+            else if (value.Contains("exchange"))
             {
                 ViewBag.message = "30 günlük ücretsiz deneme hakkınız sona ermiştir.";
             }
@@ -311,5 +313,14 @@ namespace Semerkand_Dergilik.Controllers
         {
             return View();
         }
+
+        // 2. claim senoryosu
+        [Authorize(Policy = "ViolencePolicy")]
+        [Route("ViolencePage")]
+        public IActionResult ViolencePage()
+        {
+            return View();
+        }
+
     }
 }

@@ -30,8 +30,8 @@ namespace Semerkand_Dergilik.ClaimProvider
                 {
                     if (user.BirthDay != null)
                     {
-                        var today = DateTime.Today;
-                        var age = today.Year - user.BirthDay?.Year;
+                        var tdy = DateTime.Today;
+                        var age = tdy.Year - user.BirthDay?.Year;
 
                         if (age > 15)
                         {

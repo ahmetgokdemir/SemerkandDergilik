@@ -51,6 +51,8 @@ builder.Services.AddAuthorization(opts =>
     opts.AddPolicy("ViolencePolicy", policy =>
     {
         policy.RequireClaim("violence");
+
+        // Claim ViolenceClaim = new Claim("violence", true.ToString(), ClaimValueTypes.String, "Internal");
     });
     /*opts.AddPolicy("ExchangePolicy", policy =>
     {
