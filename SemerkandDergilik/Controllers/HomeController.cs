@@ -355,6 +355,11 @@ namespace Semerkand_Dergilik.Controllers
         public IActionResult FacebookLogin(string ReturnUrl)
 
         {
+            if (TempData["ReturnUrl"] != null)
+            {
+                ReturnUrl = TempData["ReturnUrl"].ToString(); // ben ekledim!!
+            }            
+         
             string RedirectUrl = Url.Action("ExternalResponse", "Home", new { ReturnUrl = ReturnUrl }); // Facebook ile login sonrası gideceği sayfa
 
             var properties = signInManager.ConfigureExternalAuthenticationProperties("Facebook", RedirectUrl); // Facebook ile bağlanmaya çalıştığını belirtir.. RedirectUrl ile facebook sayfasında giriş yaptıktan sonra gideceği sayfa belirtilir.
@@ -365,6 +370,8 @@ namespace Semerkand_Dergilik.Controllers
         // 
         public async Task<IActionResult> ExternalResponse(string ReturnUrl = "/")
         {
+            // string ReturnUrl = "/" => demek https://localhost:7112/Home/Index veya https://localhost:7112/Home demek 
+
             ExternalLoginInfo info = await signInManager.GetExternalLoginInfoAsync(); // User'ın facebook bilgileri..
             // info.LoginProvider: provider's name (example: facebook)
             // info.ProviderKey: UserId in provider (example: facebook UserId)
@@ -380,7 +387,8 @@ namespace Semerkand_Dergilik.Controllers
 
                 if (result.Succeeded) // user önceden kayıt olmuş demektir (AspNetUserLogins tablosuna)
                 {
-                    return Redirect(ReturnUrl); //** 
+                    return Redirect(ReturnUrl); 
+                    //**   https://localhost:7112/Home/Index veya https://localhost:7112/Home gider.. orada da return RedirectToAction("Index", "Member"); sayfasına gider..
                 }
                 else // ilk kez 3.party authentication olursa (AspNetUserLogins tablosunda kayıtlı değil)
                 {
