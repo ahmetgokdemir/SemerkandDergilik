@@ -419,12 +419,18 @@ namespace Semerkand_Dergilik.Controllers
 
                         if (loginResult.Succeeded)
                             {
-                               await signInManager.SignInAsync(user, true); //   otomatik olarak login işlemi gerçekleşecek
+                                // await signInManager.SignInAsync(user, true); //   otomatik olarak login işlemi gerçekleşecek
+                                   
+                                await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true);
+                            // kullanıcının 3.party authentication ile login olduğu anlaşılır zira SignInAsync işlemi ile Identity API tarafından, bu bilgi cookie'ye işlenir..
 
-                           
-                            //await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true);
+                            /*
+                            Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true);
+                            yukarıda olduğu gibi bu kodda da user'ın Identity API tarafından, 3.party authentication ile login olduğu cookie'ye işlenir..
+                             
+                             */
 
-                                return Redirect(ReturnUrl);
+                            return Redirect(ReturnUrl);
                             }
                             else
                             {
@@ -450,8 +456,15 @@ namespace Semerkand_Dergilik.Controllers
             List<string> errors = ModelState.Values.SelectMany(x => x.Errors).Select(y => y.ErrorMessage).ToList();
 
             return View("Error", errors);
+
+            //return RedirectToAction("Error");
+
         }
 
-
+        // 
+        public ActionResult Error()
+        {
+            return View();
+        }
     }
 }

@@ -68,7 +68,7 @@ builder.Services.AddAuthorization(opts =>
 
 
 // install Microsoft.AspNetCore.Authentication.Facebook from NugET
-// https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/social-without-identity?view=aspnetcore-6.0
+// kaynak: https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/social-without-identity?view=aspnetcore-6.0
 builder.Services
     .AddAuthentication(options =>
     {
