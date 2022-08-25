@@ -34,7 +34,7 @@ namespace Semerkand_Dergilik.Controllers
         }
         */
         public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : base(userManager, signInManager)
-        {          
+        {
             //this.userManager = userManager;
             //this.signInManager = signInManager;
         }
@@ -54,7 +54,7 @@ namespace Semerkand_Dergilik.Controllers
         {
             return View();
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> SignUp(UserViewModel userViewModel)
         {
@@ -110,7 +110,7 @@ namespace Semerkand_Dergilik.Controllers
             }
 
             return View(userViewModel); // aynı sayfaya yönlendirir..  AddModelError(result) kısmında hatalar eklenip kullanıcıya model(userViewModel) tekrar gönderilir..
-            
+
         }
 
         // ConfirmEmail      
@@ -148,7 +148,7 @@ namespace Semerkand_Dergilik.Controllers
                 // kısmında aslında parolayı kontrol etmiyor sadece kullanıcı adresini kontrol ediyor  
                 AppUser user = await userManager.FindByEmailAsync(userlogin.Email); // böyle Kullanıcı mevcut mu bunun kontrolü
 
-               
+
 
                 if (user != null)
                 {
@@ -223,7 +223,7 @@ namespace Semerkand_Dergilik.Controllers
 
             return View(userlogin); // ModelState başarısızsa kullanıcının bilgileri ile (userlogin) geri döner aynı sayfaya
 
- 
+
 
         }
 
@@ -238,42 +238,42 @@ namespace Semerkand_Dergilik.Controllers
         public IActionResult ResetPassword(PasswordResetViewModel passwordResetViewModel)
         {
 
-                // böyle bir kullanıcı var mı yok mu bakılmalı
-                // AppUser user = await userManager.FindByEmailAsync(passwordResetViewModel.Email);
-                 AppUser user = userManager.FindByEmailAsync(passwordResetViewModel.Email).Result;
+            // böyle bir kullanıcı var mı yok mu bakılmalı
+            // AppUser user = await userManager.FindByEmailAsync(passwordResetViewModel.Email);
+            AppUser user = userManager.FindByEmailAsync(passwordResetViewModel.Email).Result;
 
-                if (user != null)
+            if (user != null)
 
+            {
+                // create token
+                // AddDefaultTokenProviders sayesinde aşağıdaki kod çalışır..
+                string passwordResetToken = userManager.GeneratePasswordResetTokenAsync(user).Result;
+
+                // create link 
+                string passwordResetLink = Url.Action("ResetPasswordConfirm", "Home", new
                 {
-                    // create token
-                    // AddDefaultTokenProviders sayesinde aşağıdaki kod çalışır..
-                    string passwordResetToken = userManager.GeneratePasswordResetTokenAsync(user).Result;
+                    // ResetPasswordConfirm action metot'da querystring olarak kullanılacak
+                    userId = user.Id,
+                    token = passwordResetToken,
+                    email = user.Email
+                }, HttpContext.Request.Scheme);
 
-                    // create link 
-                    string passwordResetLink = Url.Action("ResetPasswordConfirm", "Home", new
-                    {
-                        // ResetPasswordConfirm action metot'da querystring olarak kullanılacak
-                        userId = user.Id,
-                        token = passwordResetToken,
-                        email = user.Email
-                    }, HttpContext.Request.Scheme);
+                //  link görünümü: www.....com/Home/ResetPasswordConfirm?userId=sdjfsjf&token=dfjkdjfdjf
 
-                    //  link görünümü: www.....com/Home/ResetPasswordConfirm?userId=sdjfsjf&token=dfjkdjfdjf
-
-                    //******Helper.PasswordReset.PasswordResetSendEmail(passwordResetLink, user.Email);
+                //******Helper.PasswordReset.PasswordResetSendEmail(passwordResetLink, user.Email);
 
                 ViewBag.email = passwordResetLink;
-                  
+
 
                 ViewBag.status = "success";
-                    //TempData["durum"] = true.ToString();
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Sistemde kayıtlı email adresi bulunamamıştır.");
-                }
-                return View(passwordResetViewModel);
-            
+                //TempData["durum"] = true.ToString();
+            }
+            else
+            {
+                ModelState.AddModelError("", "Sistemde kayıtlı email adresi bulunamamıştır.");
+            }
+            return View(passwordResetViewModel);
+
 
 
             // StartUp.cs kısmında AddDefaultTokenProviders servisi eklenmeli..
@@ -291,8 +291,8 @@ namespace Semerkand_Dergilik.Controllers
 
 
         [HttpPost] // PasswordResetViewModel, ResetPasswordConfirm.cshtml'den gelir.. PasswordResetViewModel'den Email property'si de geliyor bunu istemiyoruz bunun için Bind Attribute kullanılır..
-        // İstenmeyen property'ler için diğer bir yöntem.. [Bind("PasswordNew")]
-         //[Bind(Include = "Password")] attribute'da Email null gelir ve ModelState.IsValid olsa idi o kısımda hata verirdi..
+                   // İstenmeyen property'ler için diğer bir yöntem.. [Bind("PasswordNew")]
+                   //[Bind(Include = "Password")] attribute'da Email null gelir ve ModelState.IsValid olsa idi o kısımda hata verirdi..
         public async Task<IActionResult> ResetPasswordConfirm(PasswordResetViewModel passwordResetViewModel)
         {
             string userId;
@@ -312,8 +312,8 @@ namespace Semerkand_Dergilik.Controllers
                 // öncekilerinin aksine bu sefer email yerine userid ile kontrol edilecek böyle bir user mevcut mu
                 user = await userManager.FindByIdAsync(userId);
 
-            }      
-             
+            }
+
             if (user != null)
             {
                 //** ResetPasswordAsync: şifre sıfırlanacak.. validation işlemi yapılır..
@@ -345,7 +345,7 @@ namespace Semerkand_Dergilik.Controllers
             {
                 ModelState.AddModelError("", "hata meydana gelmiştir. Lütfen daha sonra tekrar deneyiniz.");
             }
-           
+
 
             return View(passwordResetViewModel);
         }
@@ -371,6 +371,21 @@ namespace Semerkand_Dergilik.Controllers
         }
 
 
+        // https://apps.dev.microsoft.com/#/appList ahmetgokdemirtc@hotmail.com
+        public IActionResult MicrosoftLogin(string ReturnUrl)
+
+        {
+            if (TempData["ReturnUrl"] != null)
+            {
+                ReturnUrl = TempData["ReturnUrl"].ToString(); // ben ekledim!!
+            }
+
+            string RedirectUrl = Url.Action("ExternalResponse", "Home", new { ReturnUrl = ReturnUrl });
+
+            var properties = signInManager.ConfigureExternalAuthenticationProperties("Microsoft", RedirectUrl);
+
+            return new ChallengeResult("Microsoft", properties);
+        }
 
 
 
@@ -381,8 +396,8 @@ namespace Semerkand_Dergilik.Controllers
             if (TempData["ReturnUrl"] != null)
             {
                 ReturnUrl = TempData["ReturnUrl"].ToString(); // ben ekledim!!
-            }            
-         
+            }
+
             string RedirectUrl = Url.Action("ExternalResponse", "Home", new { ReturnUrl = ReturnUrl }); // Facebook ile login sonrası gideceği sayfa
 
             var properties = signInManager.ConfigureExternalAuthenticationProperties("Facebook", RedirectUrl); // Facebook ile bağlanmaya çalıştığını belirtir.. RedirectUrl ile facebook sayfasında giriş yaptıktan sonra gideceği sayfa belirtilir.
@@ -410,7 +425,7 @@ namespace Semerkand_Dergilik.Controllers
 
                 if (result.Succeeded) // user önceden kayıt olmuş demektir (AspNetUserLogins tablosuna)
                 {
-                    return Redirect(ReturnUrl); 
+                    return Redirect(ReturnUrl);
                     //**   https://localhost:7112/Home/Index veya https://localhost:7112/Home gider.. orada da return RedirectToAction("Index", "Member"); sayfasına gider..
                 }
                 else // ilk kez 3.party authentication olursa (AspNetUserLogins tablosunda kayıtlı değil)
@@ -420,7 +435,7 @@ namespace Semerkand_Dergilik.Controllers
                     user.Email = info.Principal.FindFirst(ClaimTypes.Email).Value; // facebookdan gelen claim içerisindeki email (Ideniity API faceden alır ve claim'e çevirir)
                     string ExternalUserId = info.Principal.FindFirst(ClaimTypes.NameIdentifier).Value; // facebookdan gelen claim içerisindeki UserId, bu value userName'de kulllanılacak
 
-                    if (info.Principal.HasClaim(x => x.Type == ClaimTypes.Name)) 
+                    if (info.Principal.HasClaim(x => x.Type == ClaimTypes.Name))
                     {
                         string userName = info.Principal.FindFirst(ClaimTypes.Name).Value;  // facebookdan gelen claim içerisindeki userName
 
@@ -438,30 +453,30 @@ namespace Semerkand_Dergilik.Controllers
                     user.Picture = "/UserPicture/user.webp";
                     user.Gender = (int)Gender.Bay;
 
-                    //AppUser user2 = await userManager.FindByEmailAsync(user.Email);
+                    AppUser user2 = await userManager.FindByEmailAsync(user.Email);
 
-                    //if (user2 == null)
-                    //{
-                    IdentityResult createResult = await userManager.CreateAsync(user); // AspNetUsers tablosuna kayıt işlemi..
-
-                    if (createResult.Succeeded) // AspNetUsers tablosuna kayıt işlemi başarılı
+                    if (user2 == null) // böyle bir kullanıcı yoksa AspNetUsers tablosuna kayıt işlemi yapılmalı..
                     {
+                        IdentityResult createResult = await userManager.CreateAsync(user); // AspNetUsers tablosuna kayıt işlemi..
+
+                        if (createResult.Succeeded) // AspNetUsers tablosuna kayıt işlemi başarılı
+                        {
                             IdentityResult loginResult = await userManager.AddLoginAsync(user, info); // otomatik olarak login işleminden önce AspNetUserLogins tablosu doldurulacak
 
-                        if (loginResult.Succeeded)
+                            if (loginResult.Succeeded)
                             {
-                                // await signInManager.SignInAsync(user, true); //   otomatik olarak login işlemi gerçekleşecek
-                                   
+                                // await signInManager.SignInAsync(user, true); // otomatik olarak login işlemi gerçekleşecek
+
                                 await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true);
-                            // kullanıcının 3.party authentication ile login olduğu anlaşılır zira SignInAsync işlemi ile Identity API tarafından, bu bilgi cookie'ye işlenir..
+                                // kullanıcının 3.party authentication ile login olduğu anlaşılır zira SignInAsync işlemi ile Identity API tarafından, bu bilgi cookie'ye işlenir..
 
-                            /*
-                            Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true);
-                            yukarıda olduğu gibi bu kodda da user'ın Identity API tarafından, 3.party authentication ile login olduğu cookie'ye işlenir..
-                             
-                             */
+                                /*
+                                Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true);
+                                yukarıda olduğu gibi bu kodda da user'ın Identity API tarafından, 3.party authentication ile login olduğu cookie'ye işlenir..
 
-                            return Redirect(ReturnUrl);
+                                 */
+
+                                return Redirect(ReturnUrl);
                             }
                             else
                             {
@@ -472,15 +487,15 @@ namespace Semerkand_Dergilik.Controllers
                         {
                             AddModelError(createResult);
                         }
-                    //}
-                    //else
-                    //{
-                    //    IdentityResult loginResult = await userManager.AddLoginAsync(user2, info);
+                    }
+                    else // böyle bir kullanıcı varsa AspNetUsers tablosuna kayıt işlemi yapılmaz.. ama AspNetUserLogins kaydedilmeli zira başka providerdan (face, google, microsoft vs... ) giriş yapıyor..
+                    {
+                        IdentityResult loginResult = await userManager.AddLoginAsync(user2, info); // AspNetUserLogins tablosu doldurulacak
 
-                    //    await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true);
+                        await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true); // otomatik olarak login işlemi gerçekleşecek
 
-                    //    return Redirect(ReturnUrl);
-                    //}
+                        return Redirect(ReturnUrl);
+                    }
                 }
             }
 
