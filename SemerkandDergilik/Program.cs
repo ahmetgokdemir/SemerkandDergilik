@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Project.BLL.ServiceExtensions;
 using Project.DAL.Context;
 using Project.ENTITIES.Models;
@@ -74,12 +76,19 @@ builder.Services
     {
         options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
+        options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+
     })
     .AddCookie()
     .AddFacebook(options =>
     {
         options.AppId = builder.Configuration["Authentication:Facebook:AppId"];
         options.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+    }).AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientID"];
+
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
     });
 
 builder.Services.AddRazorPages();

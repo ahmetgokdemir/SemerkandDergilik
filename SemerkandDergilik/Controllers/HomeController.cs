@@ -351,6 +351,29 @@ namespace Semerkand_Dergilik.Controllers
         }
 
 
+
+        // https://console.cloud.google.com/projectselector2/apis/dashboard?supportedpurview=project
+        // Your Client ID 882283884932-4rcl90b3m4lgqb6a9766dh1qp649sfkj.apps.googleusercontent.com
+        // Your Client Secret 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
+        public IActionResult GoogleLogin(string ReturnUrl)
+
+        {
+            if (TempData["ReturnUrl"] != null)
+            {
+                ReturnUrl = TempData["ReturnUrl"].ToString(); // ben ekledim!!
+            }
+
+            string RedirectUrl = Url.Action("ExternalResponse", "Home", new { ReturnUrl = ReturnUrl });
+
+            var properties = signInManager.ConfigureExternalAuthenticationProperties("Google", RedirectUrl);
+
+            return new ChallengeResult("Google", properties);
+        }
+
+
+
+
+
         // App ID: 588387496267633 & App secret: 73c40dd7d1e6b50927a369da27d83cf4
         public IActionResult FacebookLogin(string ReturnUrl)
 
