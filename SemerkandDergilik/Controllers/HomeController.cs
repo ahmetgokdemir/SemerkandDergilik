@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using NuGet.Common;
+using NuGet.Protocol.Plugins;
 using Project.ENTITIES.Models;
 using Semerkand_Dergilik.Enums;
 using Semerkand_Dergilik.Models;
@@ -366,55 +367,62 @@ namespace Semerkand_Dergilik.Controllers
         {
             ExternalLoginInfo info = await signInManager.GetExternalLoginInfoAsync(); // User'ın facebook bilgileri..
             // info.LoginProvider: provider's name (example: facebook)
-            // info.ProviderKey: 
+            // info.ProviderKey: UserId in provider (example: facebook UserId)
 
+            // facebook bilgileri girilmemiş demek
             if (info == null)
             {
                 return RedirectToAction("LogIn");
             }
             else
             {
-                Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true);
+                Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true); // true: ExpireTimeSpan 30 days.. AspNetUserLogins tablosu kullanılacak..
 
-                if (result.Succeeded)
+                if (result.Succeeded) // user önceden kayıt olmuş demektir (AspNetUserLogins tablosuna)
                 {
-                    return Redirect(ReturnUrl);
+                    return Redirect(ReturnUrl); //** 
                 }
-                else
+                else // ilk kez 3.party authentication olursa (AspNetUserLogins tablosunda kayıtlı değil)
                 {
                     AppUser user = new AppUser();
 
-                    user.Email = info.Principal.FindFirst(ClaimTypes.Email).Value;
-                    string ExternalUserId = info.Principal.FindFirst(ClaimTypes.NameIdentifier).Value;
+                    user.Email = info.Principal.FindFirst(ClaimTypes.Email).Value; // facebookdan gelen claim içerisindeki email (Ideniity API faceden alır ve claim'e çevirir)
+                    string ExternalUserId = info.Principal.FindFirst(ClaimTypes.NameIdentifier).Value; // facebookdan gelen claim içerisindeki UserId, bu value userName'de kulllanılacak
 
-                    if (info.Principal.HasClaim(x => x.Type == ClaimTypes.Name))
+                    if (info.Principal.HasClaim(x => x.Type == ClaimTypes.Name)) 
                     {
-                        string userName = info.Principal.FindFirst(ClaimTypes.Name).Value;
+                        string userName = info.Principal.FindFirst(ClaimTypes.Name).Value;  // facebookdan gelen claim içerisindeki userName
 
                         userName = userName.Replace(' ', '-').ToLower() + ExternalUserId.Substring(0, 5).ToString();
-
+                        // + ExternalUserId.Substring(0, 5): Guid eklenecek ... aynı kullanıcı isimleri çakışmasın diye
                         user.UserName = userName;
-                    }
+                    } // ClaimTypes.Name yoksa
                     else
                     {
                         user.UserName = info.Principal.FindFirst(ClaimTypes.Email).Value;
                     }
 
-                    AppUser user2 = await userManager.FindByEmailAsync(user.Email);
+                    user.City = "Istanbul";
+                    user.BirthDay = DateTime.Now;
+                    user.Picture = "/UserPicture/user.webp";
+                    user.Gender = (int)Gender.Bay;
 
-                    if (user2 == null)
+                    //AppUser user2 = await userManager.FindByEmailAsync(user.Email);
+
+                    //if (user2 == null)
+                    //{
+                    IdentityResult createResult = await userManager.CreateAsync(user); // AspNetUsers tablosuna kayıt işlemi..
+
+                    if (createResult.Succeeded) // AspNetUsers tablosuna kayıt işlemi başarılı
                     {
-                        IdentityResult createResult = await userManager.CreateAsync(user);
+                            IdentityResult loginResult = await userManager.AddLoginAsync(user, info); // otomatik olarak login işleminden önce AspNetUserLogins tablosu doldurulacak
 
-                        if (createResult.Succeeded)
-                        {
-                            IdentityResult loginResult = await userManager.AddLoginAsync(user, info);
-
-                            if (loginResult.Succeeded)
+                        if (loginResult.Succeeded)
                             {
-                                //     await signInManager.SignInAsync(user, true);
+                               await signInManager.SignInAsync(user, true); //   otomatik olarak login işlemi gerçekleşecek
 
-                                await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true);
+                           
+                            //await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true);
 
                                 return Redirect(ReturnUrl);
                             }
@@ -427,15 +435,15 @@ namespace Semerkand_Dergilik.Controllers
                         {
                             AddModelError(createResult);
                         }
-                    }
-                    else
-                    {
-                        IdentityResult loginResult = await userManager.AddLoginAsync(user2, info);
+                    //}
+                    //else
+                    //{
+                    //    IdentityResult loginResult = await userManager.AddLoginAsync(user2, info);
 
-                        await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true);
+                    //    await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true);
 
-                        return Redirect(ReturnUrl);
-                    }
+                    //    return Redirect(ReturnUrl);
+                    //}
                 }
             }
 
