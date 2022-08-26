@@ -59,18 +59,26 @@ namespace Semerkand_Dergilik.Controllers
         public async Task<IActionResult> SignUp(UserViewModel userViewModel)
         {
             // userViewModel.City = "Istanbul";
-            userViewModel.BirthDay = DateTime.Now;
+            //userViewModel.BirthDay = DateTime.Now;
             // userViewModel.Picture = null;
             userViewModel.Gender = Gender.Bay;
 
             if (ModelState.IsValid) // startup kısmında validationlar AppUser için ayarlandı -backend taraflı- 
             {
+                // *** userManager.User, Any => bool
+                if (userManager.Users.Any(u => u.PhoneNumber == userViewModel.PhoneNumber))
+                {
+                    ModelState.AddModelError("", "Bu telefon numarası kayıtlıdır.");
+                    return View(userViewModel);
+                }
+
+
                 AppUser user = new AppUser();
                 user.UserName = userViewModel.UserName;
                 user.Email = userViewModel.Email;
                 user.PhoneNumber = userViewModel.PhoneNumber;
                 user.City = userViewModel.City;
-                user.BirthDay = userViewModel.BirthDay;
+                //user.BirthDay = userViewModel.BirthDay;
                 user.Picture = userViewModel.Picture;
                 user.Gender = (int)userViewModel.Gender;
 

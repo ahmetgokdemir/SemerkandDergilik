@@ -172,21 +172,30 @@ namespace Semerkand_Dergilik.Controllers
                 AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
                 //AppUser user = CurrentUser;
 
-                /*
+                
                 string phone = userManager.GetPhoneNumberAsync(user).Result;
 
+                // girdiği no (userViewModel.PhoneNumber), kendi numarasından(phone) farklı ise
                 if (phone != userViewModel.PhoneNumber)
                 {
+                    // girdiği no daha önceden başka user tarafından kaydedimiş mi öyle ise hata alır..
                     if (userManager.Users.Any(u => u.PhoneNumber == userViewModel.PhoneNumber))
                     {
                         ModelState.AddModelError("", "Bu telefon numarası başka üye tarafından kullanılmaktadır.");
                         return View(userViewModel);
                     }
+                    else // girdiği no daha önceden başka user tarafından kaydedimemiş ise
+                    {
+                        user.PhoneNumber = userViewModel.PhoneNumber;
+                    }
+                }
+                else // girdiği no (userViewModel.PhoneNumber), kendi numarasından(phone) aynı ise
+                {
+                    user.PhoneNumber = phone;
                 }
 
-                */
+                // girdiği no (userViewModel.PhoneNumber), kendi numarasıyla(phone) aynı ise bir işlem yapılmaz sadece user.PhoneNumber = userViewModel.PhoneNumber; yapılır..
 
-                
                 if (userPicture != null && userPicture.Length > 0)
                 {
                     var fileName = Guid.NewGuid().ToString() + Path.GetExtension(userPicture.FileName); // path oluşturma
@@ -207,7 +216,7 @@ namespace Semerkand_Dergilik.Controllers
                 // güncelleme işlemi
                 user.UserName = userViewModel.UserName;
                 user.Email = userViewModel.Email;
-                user.PhoneNumber = userViewModel.PhoneNumber;
+                // user.PhoneNumber = userViewModel.PhoneNumber;
                 user.City = userViewModel.City;                
                 user.BirthDay = userViewModel.BirthDay;                
                 user.Gender = (int)userViewModel.Gender;

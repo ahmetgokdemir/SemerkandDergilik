@@ -35,6 +35,12 @@ builder.Services.AddDbContext<SemerkandDergilikContext>(opts =>
             options => options.MigrationsAssembly("EFCoreApp")));
 */
 
+//////////////////////////////////////////////////////////////////////////
+// Program.cs'in 1.parçasý Configuration
+//////////////////////////////////////////////////////////////////////////
+///
+
+
 builder.Services.AddDbContext<SemerkandDergilikContext>(opts =>
 {
     opts.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection"));
@@ -152,6 +158,12 @@ builder.Services.AddScoped<IClaimsTransformation, Semerkand_Dergilik.ClaimProvid
 builder.Services.AddTransient<IAuthorizationHandler, ExpireDateExchangeHandler>();
 
 var app = builder.Build();
+
+
+//////////////////////////////////////////////////////////////////////////
+// Program.cs'in 2.parçasý Middleware
+//////////////////////////////////////////////////////////////////////////
+///
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
