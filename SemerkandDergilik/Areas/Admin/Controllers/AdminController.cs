@@ -198,6 +198,54 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         }
 
 
+        // ResetUserPassword by Admin
+        [Route("ResetUserPassword")]
+        public async Task<IActionResult> ResetUserPassword(string id)
+        {
+            AppUser user = await userManager.FindByIdAsync(id);
+
+            PasswordResetByAdminViewModel passwordResetByAdminViewModel = new PasswordResetByAdminViewModel();
+            passwordResetByAdminViewModel.UserId = user.Id.ToString();
+            passwordResetByAdminViewModel.UserName = user.UserName;
+            passwordResetByAdminViewModel.Email = user.Email;
+ 
+
+            return View(passwordResetByAdminViewModel);
+        }
+
+
+        [HttpPost]
+        [Route("ResetUserPassword")]
+        public async Task<IActionResult> ResetUserPassword(PasswordResetByAdminViewModel passwordResetByAdminViewModel)
+        {
+            AppUser user = await userManager.FindByIdAsync(passwordResetByAdminViewModel.UserId);
+
+            string token = await userManager.GeneratePasswordResetTokenAsync(user);
+
+            IdentityResult result = await userManager.ResetPasswordAsync(user, token, passwordResetByAdminViewModel.NewPassword);
+
+            if (result.Succeeded)
+            {
+                await userManager.UpdateSecurityStampAsync(user);
+                return RedirectToAction("Users");
+            }
+            else
+            {
+                AddModelError(result);
+            }
+
+            return View(passwordResetByAdminViewModel);
+
+            //securitystamp degerini  update etmezsem kullanıcı eski şifresiyle sitemizde dolaşmaya devam eder ne zaman çıkış yaparsa ozaman tekrar yeni şifreyle girmek zorunda
+            //eger update edersen kullanıcı  otomatik olarak  sitemize girdiği zaman login ekranına yönlendirilecek.
+
+            //Identity Mimarisi cookie tarafındaki securitystamp ile veritabanındaki security stamp değerini her 30 dakikada bir kontrol eder. Kullanıcı eski şifreyle en fazla server da session açıldıktan sonra 30 dakkika gezebilir. Bunu isterseniz 1 dakkikaya indirebilirsiniz. ama tavsiye edilmez. her bir dakika da  her kullanıcı için veritabanı kontrolü  yük getirir.
+
+
+        }
+
+
+
 
 
     }
