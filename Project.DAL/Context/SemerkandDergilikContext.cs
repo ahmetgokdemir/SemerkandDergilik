@@ -15,7 +15,7 @@ namespace Project.DAL.Context
     {
         public SemerkandDergilikContext(DbContextOptions<SemerkandDergilikContext> options) : base(options)
         {
-
+            //Database.SetInitializer(new CreateDatabaseIfNotExists<MyContext>());
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

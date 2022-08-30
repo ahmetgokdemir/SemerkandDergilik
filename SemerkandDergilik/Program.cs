@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Project.BLL.ServiceExtensions;
 using Project.DAL.Context;
+using Project.DAL.Strategy;
 using Project.ENTITIES.Models;
 using Semerkand_Dergilik.ClaimProvider;
 using Semerkand_Dergilik.CustomValidation;
@@ -157,8 +159,24 @@ builder.Services.AddScoped<IClaimsTransformation, Semerkand_Dergilik.ClaimProvid
 
 builder.Services.AddTransient<IAuthorizationHandler, ExpireDateExchangeHandler>();
 
+
 var app = builder.Build();
 
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    try
+    {
+        await InitRoles.InitializeAsync(services);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred seeding the DB.");
+    }
+}
 
 //////////////////////////////////////////////////////////////////////////
 // Program.cs'in 2.parçasý Middleware
