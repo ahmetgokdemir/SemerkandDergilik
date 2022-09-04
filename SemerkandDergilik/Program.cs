@@ -169,7 +169,7 @@ using (var scope = app.Services.CreateScope())
 
     try
     {
-        await InitRoles.InitializeAsync(services);
+        await SeedRoles.Seed(services);
     }
     catch (Exception ex)
     {

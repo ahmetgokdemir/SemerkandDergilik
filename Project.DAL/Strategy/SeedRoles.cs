@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace Project.DAL.Strategy
 {
-    public static class InitRoles
+    public static class SeedRoles
     {
-        public static async Task InitializeAsync(IServiceProvider serviceProvider)
+        public static async Task Seed(IServiceProvider serviceProvider)
         {
             using (UserManager<AppUser> _userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>())
             {
@@ -24,6 +24,19 @@ namespace Project.DAL.Strategy
                     new AppUser(){ UserName="ahmetgokdemir", PasswordHash= "ctz*9913", Email = "ahmetgokdemirtc@gmail.com", EmailConfirmed = true, Gender = 1, Picture = "/UserPicture/user.webp" }
                     // new AppUser(){UserName ="David@hotmial.com", Password="Abc12345!"}
                 };
+
+                /*
+                var userlistv2 = new AppUser()
+                {
+                    UserName = "ahmetgokdemir",
+                    PasswordHash = "ctz*9913",
+                    Email = "ahmetgokdemirtc@gmail.com",
+                    EmailConfirmed = true,
+                    Gender = 1,
+                    Picture = "/UserPicture/user.webp"
+
+                };
+                */
 
                 using (RoleManager<AppRole> _roleManager = serviceProvider.GetRequiredService<RoleManager<AppRole>>())
                 {
@@ -62,13 +75,7 @@ namespace Project.DAL.Strategy
 
 
                 }
-                //AppUser appUser = new AppUser();
 
-                //appUser.UserName = "ahmetgokdemir";
-                //appUser.Email = "ahmetgokdemirtc@gmail.com";
-                //appUser.EmailConfirmed = true;
-                //appUser.Gender = 1;
-                //appUser.Picture = "/ UserPicture/user.webp";
 
             }
         }
