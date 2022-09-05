@@ -21,7 +21,7 @@ namespace Project.DAL.Strategy
 
                 List<AppUser> userlist = new List<AppUser>()
                 {
-                    new AppUser(){ UserName="ahmetgokdemir", PasswordHash= "ctz*9913", Email = "ahmetgokdemirtc@gmail.com", EmailConfirmed = true, Gender = 1, Picture = "/UserPicture/user.webp" }
+                    new AppUser(){ UserName="ahmetgokdemir", PasswordHash= "ctz*9913", Email = "ahmetgokdemirtc@gmail.com", EmailConfirmed = true, Gender = 1, Picture = "/UserPicture/user.webp", City="Istanbul" }
                     // new AppUser(){UserName ="David@hotmial.com", Password="Abc12345!"}
                 };
 

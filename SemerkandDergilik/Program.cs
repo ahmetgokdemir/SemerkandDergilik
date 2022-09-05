@@ -15,6 +15,7 @@ using Project.DAL.Strategy;
 using Project.ENTITIES.Models;
 using Semerkand_Dergilik.ClaimProvider;
 using Semerkand_Dergilik.CustomValidation;
+using Semerkand_Dergilik.Helper;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -158,8 +159,19 @@ builder.Services.ConfigureApplicationCookie(opts =>
 builder.Services.AddScoped<IClaimsTransformation, Semerkand_Dergilik.ClaimProvider.ClaimProvider>();
 
 builder.Services.AddTransient<IAuthorizationHandler, ExpireDateExchangeHandler>();
+builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("TwoFactorOptions"));
+// wski versiyon =>  services.Configure<TwoFactorOptions>(configuration.GetSection("TwoFactorOptions"));
+builder.Services.AddScoped<EmailConfirmation>();
+builder.Services.AddScoped<PasswordReset>();
 
 
+/*
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.Name = "MainSession";
+});
+*/
 var app = builder.Build();
 
 
@@ -199,6 +211,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+//app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

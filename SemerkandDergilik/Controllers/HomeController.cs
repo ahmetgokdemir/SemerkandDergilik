@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using NuGet.Common;
 using NuGet.Protocol.Plugins;
 using Project.ENTITIES.Models;
 using Semerkand_Dergilik.Enums;
+using Semerkand_Dergilik.Helper;
 using Semerkand_Dergilik.Models;
 using Semerkand_Dergilik.ViewModels;
 using System.Diagnostics;
@@ -33,8 +35,15 @@ namespace Semerkand_Dergilik.Controllers
             this.signInManager = signInManager;
         }
         */
-        public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : base(userManager, signInManager)
+
+        private readonly EmailConfirmation _emailConfirmation;
+        private readonly PasswordReset _passwordReset;
+
+
+        public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, EmailConfirmation emailConfirmation, PasswordReset passwordReset) : base(userManager, signInManager)
         {
+            _emailConfirmation = emailConfirmation; // addscope unutma program.cs
+            _passwordReset = passwordReset;
             //this.userManager = userManager;
             //this.signInManager = signInManager;
         }
@@ -61,7 +70,7 @@ namespace Semerkand_Dergilik.Controllers
             // userViewModel.City = "Istanbul";
             //userViewModel.BirthDay = DateTime.Now;
             // userViewModel.Picture = null;
-            userViewModel.Gender = Gender.Bay;
+            //userViewModel.Gender = Gender.Bay;
 
             if (ModelState.IsValid) // startup kısmında validationlar AppUser için ayarlandı -backend taraflı- 
             {
@@ -101,6 +110,7 @@ namespace Semerkand_Dergilik.Controllers
 
                     // link in SendEmail
                     //Helper.EmailConfirmation.SendEmail(link, user.Email);
+                    _emailConfirmation.Send(link, user.Email);
 
                     TempData["EmailConfirmMessage"] = "Giriş yapabilmek için Email'inize gelen linki tıklayınız.";
 
@@ -168,14 +178,14 @@ namespace Semerkand_Dergilik.Controllers
                         return View(userlogin);
                     }
 
-                    /*
+                    
                     // user email'ini doğrularsa, ConfirmEmail action çalışır, ve sonra user, login olunca buradan geçebilir..
                     if (userManager.IsEmailConfirmedAsync(user).Result == false)//**
                     {
                         ModelState.AddModelError("", "Email adresiniz onaylanmamıştır. Lütfen  epostanızı kontrol ediniz.");
                         return View(userlogin);
                     }
-                    */
+                    
 
                     await signInManager.SignOutAsync(); // login işleminden önce çıkış yapılıdı amaç sistemdeki eski cookie'i silmek..
 
@@ -269,8 +279,9 @@ namespace Semerkand_Dergilik.Controllers
                 //  link görünümü: www.....com/Home/ResetPasswordConfirm?userId=sdjfsjf&token=dfjkdjfdjf
 
                 //******Helper.PasswordReset.PasswordResetSendEmail(passwordResetLink, user.Email);
+                _passwordReset.Send(passwordResetLink, user.Email);
 
-                ViewBag.email = passwordResetLink;
+                //ViewBag.email = passwordResetLink;
 
 
                 ViewBag.status = "success";
