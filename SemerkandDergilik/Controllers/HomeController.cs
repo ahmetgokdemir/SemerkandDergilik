@@ -36,7 +36,7 @@ namespace Semerkand_Dergilik.Controllers
         }
         */
 
-        private readonly EmailConfirmation _emailConfirmation;
+        private readonly EmailConfirmation _emailConfirmation; // addscope unutma program.cs
         private readonly PasswordReset _passwordReset;
 
 
