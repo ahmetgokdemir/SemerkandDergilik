@@ -44,11 +44,26 @@
                 <span asp-validation-for="City" class="text-danger"></span>
             </div>
 
-            @*select, asp-items="@ViewBag.Gender"*@
+
+            @*select, asp-items="@ViewBag.Gender"
+            1.yöntem backend ile, ViewBag.Gender kullanıldı
+            *@
             <div class="form-group">
                 <label asp-for="Gender" class="control-label"></label>
                 <select class="form-control" asp-for="Gender" asp-items="@ViewBag.Gender"></select>
             </div>
+            
+            @*              
+            2.yöntem frontend ile, Html.GetEnumSelectList kullanıldı
+            
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <select class="form-control" asp-for="Gender" asp-items="Html.GetEnumSelectList<Semerkand_Dergilik.Enums.Gender>()"></select>
+            </div>
+
+            asp-for : Model (UserViewModel) içerisindeki gender'e karşılık gelir. Kullanıcının gender bilgisidir
+            asp-items : dropdownda listelenecek olan itemlar enumdan gelir
+            *@
 
            <label class="control-label">Resim</label>
            <input class="form-control" type="file" name="userPicture" src="~/userpicture/user.webp" />    

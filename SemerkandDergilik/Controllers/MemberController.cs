@@ -141,8 +141,16 @@ namespace Semerkand_Dergilik.Controllers
 
             UserViewModel userViewModel = user.Adapt<UserViewModel>(); // automap
 
-            ViewBag.Gender = new SelectList(Enum.GetNames(typeof(Gender)));
+            ViewBag.Gender = new SelectList(Enum.GetNames(typeof(Gender))); // 1.yöntem 
+            // Html.GetEnumSelectList<Gender>() => 2.yöntem html'de kullanılır..
+
             // GetNames: gender enum'ın isimlerini alır
+
+            /*
+            AppUser userv2 = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
+            userViewModel.Gender = (Gender)userv2.Gender;
+            user.Adapt<UserViewModel>(); bu kod cast işlemini yapıyor dolayısıyla ilk iki koda gerek kalmıyor..
+            */
 
             return View(userViewModel); // güncellenecek bilgiler view'e gönderildi..
         }
