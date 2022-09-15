@@ -196,6 +196,10 @@ namespace Semerkand_Dergilik.Controllers
                     // validation işlemi yapılır
                     Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(user, userlogin.Password, userlogin.RememberMe, false);
 
+                    /*
+                      Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.CheckPasswordSignInAsync(user, userlogin.Password, false);                 
+                     */
+
                     // şifre doğru mu değil mi => SignInResult result 
                     if (result.Succeeded)
                     {
