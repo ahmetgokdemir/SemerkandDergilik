@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Project.ENTITIES.Models;
+using Project.ENTITIES.Identity_Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace Project.MAP.Configurations
+namespace Project.MAP.Identity_Configurations
 {
     public class AppUserRoleConfiguration : BaseConfiguration<AppUserRole>
     {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using NuGet.Common;
 using NuGet.Protocol.Plugins;
-using Project.ENTITIES.Models;
+using Project.ENTITIES.Identity_Models;
 using Semerkand_Dergilik.Enums;
 using Semerkand_Dergilik.Helper;
 using Semerkand_Dergilik.Models;
@@ -233,6 +233,7 @@ namespace Semerkand_Dergilik.Controllers
                         else // başarısız girişimi 3 değilse
                         {
                             ModelState.AddModelError("", "Email adresiniz veya şifreniz yanlış."); // email hatası SignUp.cshtml'de sadece summary kısmında validation error verir..
+                            // kullanıcıya hata bilgisi verirken specifik olarak hatanın nerede olduğu belirtilmemeli
                         }
                     }
                 }
@@ -345,8 +346,16 @@ namespace Semerkand_Dergilik.Controllers
                 if (result.Succeeded)
                 {
                     // SecurityStamp: veritabanındaki bir alan yeni bir SecurityStamp oluşturulacak (user ile ilgili bir bilgi değiştirildiği zaman yapılması gerekir)
-                    // nedeni: cookie içerisinde stamp bilgisi var ve user şifresini değiştirince artık yeni şifre ile login olmalı bu yüzden cookie/stamp değiştirilmeli
+                    // nedeni: cookie içerisinde stamp bilgisi var ve user şifresini değiştirince artık yeni şifre ile login olmalı bunun içinde cookie/stamp değiştirilmeli, zira cookie içerisindeki stamp de ile veritabanındaki stamp karşılaştırılır ve farklı olduklarından login sayfasına atar.. o yüzden cookie/stamp değiştirilmelidir..
                     await userManager.UpdateSecurityStampAsync(user);
+
+                    /*
+                     
+                    await signInManager.SignOutAsync();
+                    await signInManager.SignInAsync(user, true); // password ile giriş yapılmayacak
+                                                                 //artık cookie yenilendi.. 30 dk sonra sistemden atılmayacak user
+                     
+                     */
 
                     ViewBag.status = "success"; // ResetPasswordConfirm.cshtml'de kullanılacak..
                 }

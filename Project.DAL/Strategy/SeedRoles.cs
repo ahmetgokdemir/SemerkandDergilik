@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Project.DAL.Context;
-using Project.ENTITIES.Models;
+using Project.ENTITIES.Identity_Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

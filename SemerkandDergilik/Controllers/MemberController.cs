@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Project.ENTITIES.Models;
+using Project.ENTITIES.Identity_Models;
 using Mapster;
 using Semerkand_Dergilik.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;

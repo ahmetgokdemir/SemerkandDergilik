@@ -12,19 +12,19 @@ using Project.DAL.Context;
 namespace Project.DAL.Migrations
 {
     [DbContext(typeof(SemerkandDergilikContext))]
-    [Migration("20220822121854_FirstMigration")]
+    [Migration("20221007124359_FirstMigration")]
     partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("ProductVersion", "6.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppRole", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -68,7 +68,7 @@ namespace Project.DAL.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppRoleClaim", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppRoleClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -107,7 +107,7 @@ namespace Project.DAL.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUser", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -115,6 +115,13 @@ namespace Project.DAL.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("BirthDay")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -134,6 +141,9 @@ namespace Project.DAL.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -162,6 +172,10 @@ namespace Project.DAL.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Picture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -189,7 +203,7 @@ namespace Project.DAL.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUserClaim", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUserClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -228,7 +242,7 @@ namespace Project.DAL.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUserLogin", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUserLogin", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128)
@@ -266,7 +280,7 @@ namespace Project.DAL.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUserRole", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUserRole", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -296,7 +310,7 @@ namespace Project.DAL.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUserToken", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUserToken", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -330,51 +344,51 @@ namespace Project.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppRoleClaim", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppRoleClaim", b =>
                 {
-                    b.HasOne("Project.ENTITIES.Models.AppRole", null)
+                    b.HasOne("Project.ENTITIES.Identity_Models.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUserClaim", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUserClaim", b =>
                 {
-                    b.HasOne("Project.ENTITIES.Models.AppUser", null)
+                    b.HasOne("Project.ENTITIES.Identity_Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUserLogin", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUserLogin", b =>
                 {
-                    b.HasOne("Project.ENTITIES.Models.AppUser", null)
+                    b.HasOne("Project.ENTITIES.Identity_Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUserRole", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUserRole", b =>
                 {
-                    b.HasOne("Project.ENTITIES.Models.AppRole", null)
+                    b.HasOne("Project.ENTITIES.Identity_Models.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Project.ENTITIES.Models.AppUser", null)
+                    b.HasOne("Project.ENTITIES.Identity_Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUserToken", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUserToken", b =>
                 {
-                    b.HasOne("Project.ENTITIES.Models.AppUser", null)
+                    b.HasOne("Project.ENTITIES.Identity_Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

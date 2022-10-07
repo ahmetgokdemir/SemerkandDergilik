@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Project.ENTITIES.Models;
+using Project.ENTITIES.Identity_Models;
 using System.Security.Claims;
 
 namespace Semerkand_Dergilik.ClaimProvider

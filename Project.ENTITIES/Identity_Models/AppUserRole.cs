@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.ENTITIES.Models
+namespace Project.ENTITIES.Identity_Models
 {
-    public class AppUserClaim: IdentityUserClaim<Guid>,IEntity
+    public class AppUserRole: IdentityUserRole<Guid>, IEntity
     {
         public DateTime CreatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
@@ -17,7 +17,9 @@ namespace Project.ENTITIES.Models
         public DataStatus? Status { get; set; }
 
         //public int AppUserID { get; set; }
-        //public virtual AppUser AppUser { get; set; }
+        //public int AppRoleID { get; set; }
 
+        //public virtual AppUser AppUser { get; set; }
+        //public virtual AppRole AppRole { get; set; }
     }
 }

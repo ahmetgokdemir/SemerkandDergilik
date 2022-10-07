@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Project.ENTITIES.Models;
+using Project.ENTITIES.Identity_Models;
 using System.Xml.Linq;
 
 namespace Semerkand_Dergilik.Controllers

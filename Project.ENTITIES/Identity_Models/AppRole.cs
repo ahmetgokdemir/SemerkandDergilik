@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.ENTITIES.Models
+namespace Project.ENTITIES.Identity_Models
 {
     public class AppRole:IdentityRole<Guid>,IEntity
     {

@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 using Project.BLL.ServiceExtensions;
 using Project.DAL.Context;
 using Project.DAL.Strategy;
-using Project.ENTITIES.Models;
+using Project.ENTITIES.Identity_Models;
 using Semerkand_Dergilik.ClaimProvider;
 using Semerkand_Dergilik.CustomValidation;
 using Semerkand_Dergilik.Helper;

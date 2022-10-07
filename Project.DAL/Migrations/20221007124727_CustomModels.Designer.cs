@@ -12,19 +12,19 @@ using Project.DAL.Context;
 namespace Project.DAL.Migrations
 {
     [DbContext(typeof(SemerkandDergilikContext))]
-    [Migration("20220822123531_AddCity_Picture_Gender_Birthday")]
-    partial class AddCity_Picture_Gender_Birthday
+    [Migration("20221007124727_CustomModels")]
+    partial class CustomModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("ProductVersion", "6.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppRole", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -68,7 +68,7 @@ namespace Project.DAL.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppRoleClaim", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppRoleClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -107,7 +107,7 @@ namespace Project.DAL.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUser", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -203,7 +203,7 @@ namespace Project.DAL.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUserClaim", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUserClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -242,7 +242,7 @@ namespace Project.DAL.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUserLogin", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUserLogin", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128)
@@ -280,7 +280,7 @@ namespace Project.DAL.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUserRole", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUserRole", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -310,7 +310,7 @@ namespace Project.DAL.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUserToken", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUserToken", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -344,55 +344,196 @@ namespace Project.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppRoleClaim", b =>
+            modelBuilder.Entity("Project.ENTITIES.Models.Category", b =>
                 {
-                    b.HasOne("Project.ENTITIES.Models.AppRole", null)
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Kategori İsmi");
+
+                    b.Property<string>("CategoryPicture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Oluşturulma Tarihi");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Silinme Tarihi");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Güncelleme Tarihi");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Project.ENTITIES.Models.Coupon", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CouponExpireDay")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CouponName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Oluşturulma Tarihi");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Silinme Tarihi");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Güncelleme Tarihi");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Coupons");
+                });
+
+            modelBuilder.Entity("Project.ENTITIES.Models.Product", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Oluşturulma Tarihi");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Silinme Tarihi");
+
+                    b.Property<short?>("Discount")
+                        .HasColumnType("smallint");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Güncelleme Tarihi");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Ürün Adı");
+
+                    b.Property<string>("ProductPicture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("money");
+
+                    b.Property<short>("UnitsInStock")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CategoryID");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppRoleClaim", b =>
+                {
+                    b.HasOne("Project.ENTITIES.Identity_Models.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUserClaim", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUserClaim", b =>
                 {
-                    b.HasOne("Project.ENTITIES.Models.AppUser", null)
+                    b.HasOne("Project.ENTITIES.Identity_Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUserLogin", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUserLogin", b =>
                 {
-                    b.HasOne("Project.ENTITIES.Models.AppUser", null)
+                    b.HasOne("Project.ENTITIES.Identity_Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUserRole", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUserRole", b =>
                 {
-                    b.HasOne("Project.ENTITIES.Models.AppRole", null)
+                    b.HasOne("Project.ENTITIES.Identity_Models.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Project.ENTITIES.Models.AppUser", null)
+                    b.HasOne("Project.ENTITIES.Identity_Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.AppUserToken", b =>
+            modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppUserToken", b =>
                 {
-                    b.HasOne("Project.ENTITIES.Models.AppUser", null)
+                    b.HasOne("Project.ENTITIES.Identity_Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Project.ENTITIES.Models.Product", b =>
+                {
+                    b.HasOne("Project.ENTITIES.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Project.ENTITIES.Models.Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

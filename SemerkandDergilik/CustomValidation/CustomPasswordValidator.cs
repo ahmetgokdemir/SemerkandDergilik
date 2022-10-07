@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity; // IPasswordValidator kullanımını sağlar
-using Project.ENTITIES.Models;
+using Project.ENTITIES.Identity_Models;
 
 namespace Semerkand_Dergilik.CustomValidation
 {

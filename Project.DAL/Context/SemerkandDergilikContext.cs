@@ -5,9 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Project.ENTITIES.Models;
+using Project.ENTITIES.Identity_Models;
 using Microsoft.EntityFrameworkCore;
-using Project.MAP.Configurations;
+using Project.ENTITIES.Models;
+using Project.MAP.Identity_Configurations;
+using Project.MAP.Custom_Configurations;
 
 namespace Project.DAL.Context
 {
@@ -27,6 +29,11 @@ namespace Project.DAL.Context
             builder.ApplyConfiguration(new AppUserLoginConfiguration());
             builder.ApplyConfiguration(new AppUserRoleConfiguration());
             builder.ApplyConfiguration(new AppUserTokenConfiguration());
+            builder.ApplyConfiguration(new CategoryConfiguration());
+            builder.ApplyConfiguration(new CouponConfiguration());
+            builder.ApplyConfiguration(new ProductConfiguration());
+
+
 
             //builder.Entity<AppUserRole>(builder =>
             //{
@@ -39,13 +46,13 @@ namespace Project.DAL.Context
             //    //builder.Ignore(userRole => userRole.AppRoleID);
 
             //    builder.ToTable("UserRole");
-                 
+
             //    //builder.Property(roleClaim => roleClaim.RoleId).HasColumnName("Vendor Name");
             //});
 
- 
 
- 
+
+
 
 
             /*
@@ -101,6 +108,11 @@ namespace Project.DAL.Context
         public DbSet<AppUserLogin> AppUserLogins { get; set; }
         public DbSet<AppUserRole> AppUserRoles { get; set; }
         public DbSet<AppUserToken> AppUserTokens { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Coupon> Coupons { get; set; }
+        public DbSet<Product> Products { get; set; }
+
+
 
 
     }

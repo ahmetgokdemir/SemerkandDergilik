@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Project.ENTITIES.Models;
+using Project.ENTITIES.Identity_Models;
 using Semerkand_Dergilik.Controllers;
 using Semerkand_Dergilik.ViewModels;
 using System.Data;

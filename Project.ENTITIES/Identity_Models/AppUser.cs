@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Project.ENTITIES.Enums;
 
-namespace Project.ENTITIES.Models
+namespace Project.ENTITIES.Identity_Models
 {
     public class AppUser : IdentityUser<Guid>, IEntity
     {

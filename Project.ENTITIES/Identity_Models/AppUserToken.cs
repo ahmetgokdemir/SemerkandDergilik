@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.ENTITIES.Models
+namespace Project.ENTITIES.Identity_Models
 {
-    public class AppUserLogin : IdentityUserLogin<Guid>, IEntity
+    public class AppUserToken : IdentityUserToken<Guid>,IEntity
     {
         public DateTime CreatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
@@ -18,6 +18,5 @@ namespace Project.ENTITIES.Models
 
         //public int AppUserID { get; set; }
         //public virtual AppUser AppUser { get; set; }
-
     }
 }

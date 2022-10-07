@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.MAP.Configurations
+namespace Project.MAP.Identity_Configurations
 {
     public abstract class BaseConfiguration<T> : IEntityTypeConfiguration<T> where T : class, IEntity
     {

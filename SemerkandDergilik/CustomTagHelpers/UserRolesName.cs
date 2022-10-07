@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using Project.ENTITIES.Models;
+using Project.ENTITIES.Identity_Models;
 using System.Drawing;
 using System.Text.Encodings.Web;
 

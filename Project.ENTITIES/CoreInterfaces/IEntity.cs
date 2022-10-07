@@ -1,5 +1,4 @@
 ﻿using Project.ENTITIES.Enums;
-using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,8 @@ namespace Project.ENTITIES.CoreInterfaces
 {
     public interface IEntity
     {
+        // public int ID { get; set; } gerek yok Identity Sınıflarının Inheratancelarından zaten Guid tipinde ID geliyor.. (AppRole:IdentityRole<Guid> gibi) 
+
         public DateTime CreatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }

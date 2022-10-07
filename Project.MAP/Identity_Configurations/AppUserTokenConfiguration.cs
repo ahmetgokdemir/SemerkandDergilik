@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Project.ENTITIES.Models;
+using Project.ENTITIES.Identity_Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.MAP.Configurations
+namespace Project.MAP.Identity_Configurations
 {
     public class AppUserTokenConfiguration : BaseConfiguration<AppUserToken>
     {
