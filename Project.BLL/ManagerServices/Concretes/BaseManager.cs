@@ -1,5 +1,4 @@
-﻿using AutoMapper.Internal.Mappers;
-using Project.BLL.ManagerServices.Abstracts;
+﻿using Project.BLL.ManagerServices.Abstracts;
 using Project.DAL.Repositories.Abstracts;
 using Project.ENTITIES.CoreInterfaces;
 using Project.ENTITIES.Models;
@@ -21,7 +20,7 @@ namespace Project.BLL.ManagerServices.Concretes
             _iRep = irep;
         }
 
-        public async Task AddAsync(TEntity entity)
+        public virtual async Task AddAsync(TEntity entity)
         {            
             await _iRep.AddAsync(entity);
         }
