@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Project.DAL.Repositories.Abstracts
 {
 
-    public interface IRepository<T> where T : class, IEntity
+    public interface IRepository<T> where T : EntityBase, IEntity
     {
         // Task AddAsync(T item) gibi yorum satırına alınan crud işlemler Token dersinden
 
@@ -33,13 +33,13 @@ namespace Project.DAL.Repositories.Abstracts
         Task AddRangeAsync(List<T> list);
 
         // void Delete(T item);
-        void Remove(T entity);
-        void RemoveRange(List<T> list);
+        void Delete(T entity);
+        void DeleteRange(List<T> list);
 
-        void Destroy(T item);
+        void Destroy(T entity);
         void DestroyRange(List<T> list);
 
-        void Update(T item); // T Update(T entity);
+        void Update(T entity); // T Update(T entity);
         void UpdateRange(List<T> list);
 
         //Linq

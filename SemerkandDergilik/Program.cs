@@ -164,6 +164,7 @@ builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("TwoFa
 builder.Services.AddScoped<EmailConfirmation>();
 builder.Services.AddScoped<PasswordReset>();
 
+// builder.Services.AddAutoMapper();
 
 /*
 builder.Services.AddSession(options =>

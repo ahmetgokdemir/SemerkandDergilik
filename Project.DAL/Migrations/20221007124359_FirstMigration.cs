@@ -9,7 +9,7 @@ namespace Project.DAL.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
+            /*migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -224,6 +224,7 @@ namespace Project.DAL.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+            */
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

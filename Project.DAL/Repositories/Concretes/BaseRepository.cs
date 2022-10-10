@@ -11,20 +11,31 @@ using System.Threading.Tasks;
 
 namespace Project.DAL.Repositories.Concretes
 {
-    public class BaseRepository<T> : IRepository<T> where T : class, IEntity
+    public class BaseRepository<T> : IRepository<T> where T : EntityBase, IEntity
     {
         private readonly DbContext _context;
-        private readonly DbSet<IEntity> _dbSet;
+        //private readonly DbSet<IEntity> _dbSet;
 
         public BaseRepository(SemerkandDergilikContext context)
         {
             _context = context;
-            _dbSet = context.Set<IEntity>();
+            //_dbSet = context.Set<IEntity>();
+        }
+
+        void Save()
+        {
+            _context.SaveChanges();
+        }
+
+        public T Find(int id)
+        {
+            return _context.Set<T>().Find(id);
         }
 
         public async Task AddAsync(T entity)
         {
-            await _dbSet.AddAsync(entity);
+            _context.Set<T>().AddAsync(entity);
+            Save();
         }
 
         public Task AddRangeAsync(List<T> list)
@@ -37,9 +48,11 @@ namespace Project.DAL.Repositories.Concretes
             throw new NotImplementedException();
         }
 
-        public void Destroy(T item)
+        public void Destroy(T entity)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().Remove(entity);
+            Save();
+
         }
 
         public void DestroyRange(List<T> list)
@@ -59,15 +72,22 @@ namespace Project.DAL.Repositories.Concretes
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            //return _context.Set<T>().ToListAsync();
-            return (IEnumerable<T>)await _dbSet.ToListAsync();
+            return await _context.Set<T>().ToListAsync();
+            //return (IEnumerable<T>)await _dbSet.ToListAsync();
             //throw new NotImplementedException();
 
         }
 
-        public Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var entity = await _context.Set<T>().FindAsync(id);
+
+            if (entity != null)
+            {
+                _context.Entry(entity).State = EntityState.Detached;
+            }
+
+            return entity;
         }
 
         public Task<T> GetFirstDataAsync()
@@ -90,12 +110,14 @@ namespace Project.DAL.Repositories.Concretes
             throw new NotImplementedException();
         }
 
-        public void Remove(T entity)
+        public void Delete(T entity)
         {
-            throw new NotImplementedException();
+            entity.DeletedDate = DateTime.Now;
+            entity.Status = ENTITIES.Enums.DataStatus.Deleted;
+            Save();
         }
 
-        public void RemoveRange(List<T> list)
+        public void DeleteRange(List<T> list)
         {
             throw new NotImplementedException();
         }
@@ -110,9 +132,14 @@ namespace Project.DAL.Repositories.Concretes
             throw new NotImplementedException();
         }
 
-        public void Update(T item)
+        public void Update(T entity)
         {
-            throw new NotImplementedException();
+            entity.Status = ENTITIES.Enums.DataStatus.Updated;
+            entity.ModifiedDate = DateTime.Now;
+            // T toBeUpdated = Find(entity.ID);
+            var toBeUpdated = _context.Set<T>().FindAsync(entity.ID);
+            _context.Entry(toBeUpdated).CurrentValues.SetValues(entity);
+            Save();
         }
 
         public void UpdateRange(List<T> list)
@@ -122,7 +149,7 @@ namespace Project.DAL.Repositories.Concretes
 
         public IQueryable<T> Where(Expression<Func<T, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return _context.Set<T>().Where(predicate).AsQueryable();
         }
     }
 }
