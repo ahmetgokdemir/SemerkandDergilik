@@ -133,7 +133,7 @@ namespace Project.BLL.ManagerServices.Concretes
 
         public void Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            _iRep.Update(entity);
         }
 
         public void UpdateRange(List<TEntity> list)

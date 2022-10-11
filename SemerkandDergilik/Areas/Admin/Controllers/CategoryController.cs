@@ -26,9 +26,9 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         }
 
         [Route("CategoryList")]
-        public IActionResult CategoryList()
+        public async Task<IActionResult> CategoryList()
         {
-            IEnumerable<Category> categoryList = _icm.GetAllAsync().Result;
+            IEnumerable<Category> categoryList = await _icm.GetAllAsync();
 
             CategoryVM cvm = new CategoryVM
             {
@@ -47,6 +47,48 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             return PartialView("_AddCategoryPartial");
         }
 
+        [Route("AddCategory")]
+        [HttpPost]
+        public async Task<IActionResult> AddCategory(CategoryDTO cdto)
+        {          
+
+            if (ModelState.IsValid)
+            {
+                Category ctg = cdto.Adapt<Category>();
+
+                ctg.Status = (int)cdto.Status;
+
+                if (ctg.ID == null)
+                {
+                    await _icm.AddAsync(ctg);
+                }
+                else
+                {
+                    _icm.Update(ctg);
+
+                }
+               
+                return RedirectToAction("CategoryList");
+            }
+
+            TempData["mesaj"] = "Ürün adı ve statü giriniz..";
+            //ModelState.AddModelError("", "Ürün adı ve statü giriniz..");
+            return RedirectToAction("CategoryList");
+
+        }
+
+
+        [Route("UpdateCategoryAjax")]
+        public async Task<IActionResult> UpdateCategoryAjax(int id)
+        {
+            Category category_item = await _icm.GetByIdAsync(id);
+            CategoryDTO cDTO = category_item.Adapt<CategoryDTO>();
+
+            ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
+                               
+
+            return PartialView("_AddCategoryPartial", cDTO);
+        }
 
         [Route("CategoryIndex")]
         public IActionResult Index()

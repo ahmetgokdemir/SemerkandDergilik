@@ -5,26 +5,30 @@
     Layout = "~/Areas/Admin/Views/Admin/_AdminLayout.cshtml";
 }
 
+<h2 style="color:red;">@TempData["mesaj"] </h2>
+
+
+
 @if (Model.Categories.Count == 0)
 {
     <div class="jumbotron" id="tab1">
         Kategori Eklemek icin
-       <input type="submit" id="btnIslemYap" value="İşlem Yap" />
-        @* <button class="btn btn-info " value="addNewCategory">tıklayınız</button>*@
+        @*<input type="submit" id="btnIslemYap" value="İşlem Yap" />*@
 
+        <button class="btn btn-info " id="addNewCategory" value="addNewCategoryValue">tıklayınız</button>
     </div>
 }
 else
 {
     <div class="jumbotron" id="tab1">
         Kategori Eklemek icin
-        <button class ="btn btn-info " value="addNewCategory">tıklayınız</button>
+        <button class="btn btn-info " id="addNewCategory" value="addNewCategoryValue">tıklayınız</button>
     </div>
 
 
     <div class="panel panel-primary">
         <div class="panel panel-body">
-            <table class="table table-hover">
+            <table class="table table-hover" id="tab2">
                 <thead>
                     <tr>
                         <th>Kategori İsmi</th>
@@ -42,10 +46,13 @@ else
                             <td>@item.Status</td>
                             <td colspan="2" style="padding-left:150px">@item.CategoryPicture</td>
                             <td>
-                                <a asp-action="UpdateCategory" asp-controller="Category" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>
+                                @*<a asp-action="UpdateCategory" asp-controller="Category" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
+                                <button class="btn btn-warning " id="updateCategory" value="updateCategoryValue" data-id=@item.ID>Güncelle</button>
                             </td>
                             <td>
                                 <a asp-action="DeleteCategory" asp-controller="Category" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>
+                                
+
                             </td>
                         </tr>
                     }
@@ -60,7 +67,7 @@ else
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Kategori Ekranı</h4>
+                <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body" id="AddCategory">
             </div>
@@ -84,9 +91,32 @@ else
     }
 
     $(function () {
-        $("#btnIslemYap").click(function () {
+        //$("#addNewCategory").click(function () {
+        $("#tab1").on("click", "[value=addNewCategoryValue]", function () {
             $.ajax({
-                url: '@Url.Action("AddCategoryAjax","Category")',
+                //url: '@@Url.Action("AddCategoryAjax","Category")',
+                url: 'AddCategoryAjax',
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $("#AddCategory").html(data);
+                    AddCategoryModalLoaded();
+
+                },
+                error: function () {
+                    alert("Hata alındı.");
+                }
+            });
+        });
+    });
+
+    $(function () {
+        //$("#addNewCategory").click(function () {
+        $("#tab2").on("click", "[value=updateCategoryValue]", function () {
+            $.ajax({
+                //url: '@@Url.Action("AddCategoryAjax","Category")',
+                url: 'UpdateCategoryAjax',
+                data: { id: $(this).attr("data-id") },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {

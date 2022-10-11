@@ -15,7 +15,7 @@ namespace Project.BLL.ManagerServices.Concretes
         {
         }
 
-
+/*
         public override async Task AddAsync(Category item)
         {
 
@@ -26,6 +26,6 @@ namespace Project.BLL.ManagerServices.Concretes
                 //return "Kategori eklendi";
             }
             //return "Kategori ismi girilmemiş";
-        }
+        }*/
     }
 }
