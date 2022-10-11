@@ -14,7 +14,7 @@ namespace Project.MAP.Custom_Configurations
             builder.Property(x => x.CategoryName).HasColumnName("Kategori İsmi").IsRequired();
 
             //builder.HasMany<Product>().WithOne().HasForeignKey(p => p.CategoryID).IsRequired();
-            builder.ToTable("Kategoriler");
+            // builder.ToTable("Kategoriler");
         }
     }
 }

@@ -9,8 +9,12 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Project.BLL.ManagerServices.Abstracts;
+using Project.BLL.ManagerServices.Concretes;
 using Project.BLL.ServiceExtensions;
 using Project.DAL.Context;
+using Project.DAL.Repositories.Abstracts;
+using Project.DAL.Repositories.Concretes;
 using Project.DAL.Strategy;
 using Project.ENTITIES.Identity_Models;
 using Semerkand_Dergilik.ClaimProvider;
@@ -163,6 +167,16 @@ builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("TwoFa
 // wski versiyon =>  services.Configure<TwoFactorOptions>(configuration.GetSection("TwoFactorOptions"));
 builder.Services.AddScoped<EmailConfirmation>();
 builder.Services.AddScoped<PasswordReset>();
+
+
+//Repositories
+builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+//Managers
+builder.Services.AddScoped(typeof(IManager<>), typeof(BaseManager<>));
+builder.Services.AddScoped<ICategoryManager, CategoryManager>();
+
 
 // builder.Services.AddAutoMapper();
 

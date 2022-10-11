@@ -4,9 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    <script src="~/lib/jquery/jquery.js"></script>
-    <script src="~/lib/jquery-validate/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
 </head>
@@ -44,9 +42,14 @@
 
                 <a class="btn btn-outline-dark w-100 mb-2" asp-action="Roles" asp-controller="Admin">Roller</a>
 
+                <a class="btn btn-outline-dark w-100 mb-2" asp-action="CategoryList" asp-controller="Category">Kategori/Ürünler</a>
+
                 <a class="btn btn-outline-dark w-100 mb-2" asp-action="Logout" asp-controller="Member" asp-route-returnUrl="/Home/Index">Çıkış yap</a>
             </div>
         </div>
     </div>
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 </body>
 </html>
