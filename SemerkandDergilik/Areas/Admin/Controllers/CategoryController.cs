@@ -111,6 +111,19 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
                         }
                     }
+                    else
+                    {
+                        Category ctgv2 =  await _icm.GetByIdAsync(cdto.ID);
+
+                        if (ctgv2 != null)
+                        {
+                            if (ctgv2.CategoryPicture != null)
+                            {
+                                ctg.CategoryPicture = ctgv2.CategoryPicture;
+                            }
+                        }
+
+                    }
 
                     if (ctg.ID == 0)
                     {
