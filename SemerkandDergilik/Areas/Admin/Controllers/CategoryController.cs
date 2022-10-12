@@ -47,10 +47,28 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             return PartialView("_AddCategoryPartial");
         }
 
+
+
+
+        [Route("UpdateCategoryAjax")]
+        public async Task<IActionResult> UpdateCategoryAjax(int id)
+        {
+            Category category_item = await _icm.GetByIdAsync(id);
+            CategoryDTO cDTO = category_item.Adapt<CategoryDTO>();
+
+            ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
+
+
+            return PartialView("_AddCategoryPartial", cDTO);
+        }
+
+
+
         [Route("AddCategory")]
         [HttpPost]
-        public async Task<IActionResult> AddCategory(CategoryDTO cdto)
-        {          
+        public async Task<IActionResult> AddCategory(CategoryDTO cdto, IFormFile categoryPicture)
+        {
+            ModelState.Remove("CategoryPicture");
 
             if (ModelState.IsValid)
             {
@@ -58,7 +76,27 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
                 ctg.Status = (int)cdto.Status;
 
-                if (ctg.ID == null)
+
+
+                //////
+                ///
+                if (categoryPicture != null && categoryPicture.Length > 0)
+                {
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(categoryPicture.FileName); // path oluşturma
+
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/CategoryPicture", fileName); // server'a kayıt edilecek path => wwwroot/UserPicture/fileName
+
+                    // kayıt işlemi
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await categoryPicture.CopyToAsync(stream); // userPicture'ı, stream'e kayıt
+
+                        ctg.CategoryPicture = "/CategoryPicture/" + fileName;   // veritabanına kayıt (wwwroot belirtmeye gerek yok)
+
+                    }
+                }
+
+                if (ctg.ID == 0)
                 {
                     await _icm.AddAsync(ctg);
                 }
@@ -77,18 +115,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
         }
 
-
-        [Route("UpdateCategoryAjax")]
-        public async Task<IActionResult> UpdateCategoryAjax(int id)
-        {
-            Category category_item = await _icm.GetByIdAsync(id);
-            CategoryDTO cDTO = category_item.Adapt<CategoryDTO>();
-
-            ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
-                               
-
-            return PartialView("_AddCategoryPartial", cDTO);
-        }
+ 
 
         [Route("CategoryIndex")]
         public IActionResult Index()

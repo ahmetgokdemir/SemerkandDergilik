@@ -137,7 +137,8 @@ namespace Project.DAL.Repositories.Concretes
             entity.Status = ENTITIES.Enums.DataStatus.Updated;
             entity.ModifiedDate = DateTime.Now;
             // T toBeUpdated = Find(entity.ID);
-            var toBeUpdated = _context.Set<T>().FindAsync(entity.ID);
+            var toBeUpdated = _context.Set<T>().Find(entity.ID);
+            // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
             _context.Entry(toBeUpdated).CurrentValues.SetValues(entity);
             Save();
         }
