@@ -42,7 +42,7 @@ else
                     @foreach (CategoryDTO item in Model.Categories)
                     {
                         <tr>
-                            <td>@item.CategoryName</td>
+                            <td><a class="" asp-area="Admin" asp-controller="Product" asp-action="ProductList" asp-route-id="@item.ID">@item.CategoryName</a></td>
                             <td>@item.Status</td>
                             @*<td colspan="2" style="padding-left:150px">@item.CategoryPicture</td>*@
                             <td colspan="2" style="padding-left:150px"><img style="width:25%; height:25%" src="@item.CategoryPicture" /></td>

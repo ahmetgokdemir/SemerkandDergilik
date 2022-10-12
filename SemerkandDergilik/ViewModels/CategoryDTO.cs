@@ -8,7 +8,7 @@ namespace Semerkand_Dergilik.ViewModels
     {
         public int ID { get; set; }
 
-        [Required(ErrorMessage = "Kategori ismi gerekldir.")]
+        [Required(ErrorMessage = "Kategori ismi gereklidir.")]
         [Display(Name = "Kategori Adı")]
         public string CategoryName { get; set; }
 
