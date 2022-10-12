@@ -12,8 +12,8 @@ using Project.DAL.Context;
 namespace Project.DAL.Migrations
 {
     [DbContext(typeof(SemerkandDergilikContext))]
-    [Migration("20221007124727_CustomModels")]
-    partial class CustomModels
+    [Migration("20221012113232_FirstMigration")]
+    partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,6 +38,9 @@ namespace Project.DAL.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Oluşturulma Tarihi");
 
+                    b.Property<int?>("DataStatus")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Silinme Tarihi");
@@ -54,9 +57,6 @@ namespace Project.DAL.Migrations
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<int?>("Status")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -86,6 +86,9 @@ namespace Project.DAL.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Oluşturulma Tarihi");
 
+                    b.Property<int?>("DataStatus")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Silinme Tarihi");
@@ -96,9 +99,6 @@ namespace Project.DAL.Migrations
 
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int?>("Status")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -130,6 +130,9 @@ namespace Project.DAL.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Oluşturulma Tarihi");
+
+                    b.Property<int?>("DataStatus")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2")
@@ -179,9 +182,6 @@ namespace Project.DAL.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Status")
-                        .HasColumnType("int");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -221,6 +221,9 @@ namespace Project.DAL.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Oluşturulma Tarihi");
 
+                    b.Property<int?>("DataStatus")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Silinme Tarihi");
@@ -228,9 +231,6 @@ namespace Project.DAL.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Güncelleme Tarihi");
-
-                    b.Property<int?>("Status")
-                        .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -256,6 +256,9 @@ namespace Project.DAL.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Oluşturulma Tarihi");
 
+                    b.Property<int?>("DataStatus")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Silinme Tarihi");
@@ -266,9 +269,6 @@ namespace Project.DAL.Migrations
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Status")
-                        .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -292,6 +292,9 @@ namespace Project.DAL.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Oluşturulma Tarihi");
 
+                    b.Property<int?>("DataStatus")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Silinme Tarihi");
@@ -299,9 +302,6 @@ namespace Project.DAL.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Güncelleme Tarihi");
-
-                    b.Property<int?>("Status")
-                        .HasColumnType("int");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -325,6 +325,9 @@ namespace Project.DAL.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Oluşturulma Tarihi");
 
+                    b.Property<int?>("DataStatus")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Silinme Tarihi");
@@ -332,9 +335,6 @@ namespace Project.DAL.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Güncelleme Tarihi");
-
-                    b.Property<int?>("Status")
-                        .HasColumnType("int");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -363,6 +363,9 @@ namespace Project.DAL.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Oluşturulma Tarihi");
+
+                    b.Property<int?>("DataStatus")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2")
@@ -403,6 +406,9 @@ namespace Project.DAL.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Oluşturulma Tarihi");
 
+                    b.Property<int?>("DataStatus")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Silinme Tarihi");
@@ -410,9 +416,6 @@ namespace Project.DAL.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Güncelleme Tarihi");
-
-                    b.Property<int?>("Status")
-                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -433,6 +436,9 @@ namespace Project.DAL.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Oluşturulma Tarihi");
+
+                    b.Property<int?>("DataStatus")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2")

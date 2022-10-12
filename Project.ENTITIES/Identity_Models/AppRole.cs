@@ -14,18 +14,18 @@ namespace Project.ENTITIES.Identity_Models
         public DateTime CreatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
-        public DataStatus? Status { get; set; }
+        public DataStatus? DataStatus { get; set; }
 
         public AppRole() : base()
         {
             CreatedDate = DateTime.Now;
-            Status = DataStatus.Inserted;
+            DataStatus = Enums.DataStatus.Inserted;
         }
 
         public AppRole(string roleName) : base(roleName)
         {
             CreatedDate = DateTime.Now;
-            Status = DataStatus.Inserted;
+            DataStatus = Enums.DataStatus.Inserted;
         }
 
         //public virtual ICollection<AppUserRole> AppUserRoles { get; set; }

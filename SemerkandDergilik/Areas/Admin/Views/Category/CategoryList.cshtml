@@ -51,9 +51,9 @@ else
                                 <button class="btn btn-warning " id="updateCategory" value="updateCategoryValue" data-id=@item.ID>Güncelle</button>
                             </td>
                             <td>
-                                <a asp-action="DeleteCategory" asp-controller="Category" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>
-                                
+                                @*<a asp-action="DeleteCategory" asp-controller="Category" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
 
+                                <button class="btn btn-danger " id="deleteCategory" value="deleteCategoryValue" data-id=@item.ID>Sil</button>
                             </td>
                         </tr>
                     }
@@ -115,6 +115,28 @@ else
             $.ajax({
                 //url: '@@Url.Action("AddCategoryAjax","Category")',
                 url: 'UpdateCategoryAjax',
+                data: { id: $(this).attr("data-id") },
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $("#AddCategory").html(data);
+                    AddCategoryModalLoaded();
+
+                },
+                error: function () {
+                    alert("Hata alındı.");
+                }
+            });
+        });
+    });
+
+
+    $(function () {
+        //$("#addNewCategory").click(function () {
+        $("#tab2").on("click", "[value=deleteCategoryValue]", function () {
+            $.ajax({
+                //url: '@@Url.Action("AddCategoryAjax","Category")',
+                url: 'DeleteCategoryAjax',
                 data: { id: $(this).attr("data-id") },
                 type: 'GET',
                 dataType: 'html',

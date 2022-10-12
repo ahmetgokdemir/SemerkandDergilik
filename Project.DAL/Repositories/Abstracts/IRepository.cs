@@ -18,7 +18,7 @@ namespace Project.DAL.Repositories.Abstracts
         Task<IEnumerable<T>> GetAllAsync();
 
         //List<T> GetActives();
-        Task<IQueryable<T>> GetActivesAsync();
+        IQueryable<T> GetActivesAsync();
         // List<T> GetPassives();
         Task<IQueryable<T>> GetPassivesAsync();
 

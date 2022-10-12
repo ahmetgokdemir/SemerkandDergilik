@@ -13,38 +13,63 @@
     <div class="col-md-4">
         <form asp-action="AddCategory" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CategoryName" class="control-label"></label>
-                <input asp-for="CategoryName" class="form-control" />
-                <span asp-validation-for="CategoryName" class="text-danger"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select class="form-control" asp-for="Status" asp-items="@ViewBag.Status"></select>
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-             <label asp-for="CategoryPicture"  class="control-label"></label>
-            <input class="form-control" type="file" name="categoryPicture"   />
-            </div>
-
-            @if (Model == null)
+            @if (ViewBag.CRUD != "delete_operation")
             {
                 <div class="form-group">
-                    <input type="submit" value="Kategori Ekle" class="btn btn-primary mt-2" />
+                    <label asp-for="CategoryName" class="control-label"></label>
+                    <input asp-for="CategoryName" class="form-control" />
+                    <span asp-validation-for="CategoryName" class="text-danger"></span>
                 </div>
-            }
-            else{
+
+
+
+
                 <div class="form-group">
-                    <input type="submit" value="Kategori Güncelle" class="btn btn-primary mt-2" />
+                    <label asp-for="Status" class="control-label"></label>
+                    <select class="form-control" asp-for="Status" asp-items="@ViewBag.Status"></select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
                 </div>
+
+                <div class="form-group">
+                    <label asp-for="CategoryPicture" class="control-label"></label>
+                    <input class="form-control" type="file" name="categoryPicture" src="~/CategoryPicture" />
+                </div>
+
+                @if (Model == null)
+                {
+                    <div class="form-group">
+                        <input type="submit" value="Kategori Ekle" class="btn btn-primary mt-2" />
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        <input type="submit" value="Kategori Güncelle" class="btn btn-primary mt-2" />
+                    </div>
+                }
+
+                @if (Model != null)
+                {
+                    <input type="hidden" asp-for="ID" />
+                }
+
             }
 
-            @if (Model != null)
+            else
             {
-            <input type="hidden" asp-for="ID" />
+                <input type="hidden" asp-for="ID" />
+
+                <div class="form-group">
+                    <span asp-validation-for="CategoryName"></span> <label style="width:100%; height:100%"> silmek istediğinizden emin misiniz ?</label>
+ 
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Kategoriyi Sil" class="btn btn-primary mt-2" />
+                </div>
+
+                TempData["Deleted"] = "true";
             }
 
         </form>

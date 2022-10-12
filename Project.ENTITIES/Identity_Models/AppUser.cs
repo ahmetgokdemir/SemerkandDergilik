@@ -14,7 +14,7 @@ namespace Project.ENTITIES.Identity_Models
         public DateTime CreatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
-        public DataStatus? Status { get; set; }
+        public DataStatus? DataStatus { get; set; }
 
         ////////
 
@@ -26,13 +26,13 @@ namespace Project.ENTITIES.Identity_Models
         public AppUser() : base()
         {
             CreatedDate = DateTime.Now;
-            Status = DataStatus.Inserted;
+            DataStatus = Enums.DataStatus.Inserted;
         }
 
         public AppUser(string userName) : base(userName)
         {
             CreatedDate = DateTime.Now;
-            Status = DataStatus.Inserted;
+            DataStatus = Enums.DataStatus.Inserted;
         }
 
         //public virtual ICollection<AppUserToken> AppUserTokens { get; set; }        

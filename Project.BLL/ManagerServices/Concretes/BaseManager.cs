@@ -1,4 +1,5 @@
-﻿using Project.BLL.ManagerServices.Abstracts;
+﻿using Microsoft.EntityFrameworkCore;
+using Project.BLL.ManagerServices.Abstracts;
 using Project.DAL.Repositories.Abstracts;
 using Project.ENTITIES.CoreInterfaces;
 using Project.ENTITIES.Models;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Project.BLL.ManagerServices.Concretes
 {
-    public class BaseManager<TEntity> : IManager<TEntity> where TEntity : EntityBase, IEntity 
+    public class BaseManager<TEntity> : IManager<TEntity> where TEntity : EntityBase, IEntity
     {
         protected readonly IRepository<TEntity> _iRep;
 
@@ -21,7 +22,7 @@ namespace Project.BLL.ManagerServices.Concretes
         }
 
         public virtual async Task AddAsync(TEntity entity)
-        {            
+        {
             await _iRep.AddAsync(entity);
         }
 
@@ -35,17 +36,17 @@ namespace Project.BLL.ManagerServices.Concretes
             throw new NotImplementedException();
         }
 
-        public async Task Delete(int id)
+        public void Delete(TEntity entity)
         {
-            var isExistEntity = await _iRep.GetByIdAsync(id);
+            //var isExistEntity = await _iRep.GetByIdAsync(id);
 
 
-            if (isExistEntity == null)
-            {
-                //return "";
-            }
+            //if (isExistEntity == null)
+            //{
+            //    //return "";
+            //}
 
-            _iRep.Delete(isExistEntity);
+            _iRep.Delete(entity);
         }
 
         public void DeleteRange(List<TEntity> list)
@@ -53,18 +54,9 @@ namespace Project.BLL.ManagerServices.Concretes
             throw new NotImplementedException();
         }
 
-        public async Task Destroy(int id)
+        public void Destroy(TEntity entity)
         {
-            var isExistEntity = await _iRep.GetByIdAsync(id);            
-           
-
-            if (isExistEntity == null)
-            {
-                //return "";
-            }
-
-            _iRep.Destroy(isExistEntity);
-
+            _iRep.Destroy(entity);
         }
 
         public void DestroyRange(List<TEntity> list)
@@ -77,9 +69,11 @@ namespace Project.BLL.ManagerServices.Concretes
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TEntity>> GetActivesAsync()
+        public async Task<IEnumerable<TEntity>> GetActivesAsync()
         {
-            throw new NotImplementedException();
+            var products = await _iRep.GetActivesAsync().ToListAsync(); // convert ıqueryable to IEnumerable
+
+            return products;
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()

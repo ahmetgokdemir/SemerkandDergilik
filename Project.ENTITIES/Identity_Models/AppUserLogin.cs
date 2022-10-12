@@ -14,7 +14,7 @@ namespace Project.ENTITIES.Identity_Models
         public DateTime CreatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
-        public DataStatus? Status { get; set; }
+        public DataStatus? DataStatus { get; set; }
 
         //public int AppUserID { get; set; }
         //public virtual AppUser AppUser { get; set; }

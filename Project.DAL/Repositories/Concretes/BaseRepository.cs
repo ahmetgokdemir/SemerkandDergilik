@@ -2,6 +2,7 @@
 using Project.DAL.Context;
 using Project.DAL.Repositories.Abstracts;
 using Project.ENTITIES.CoreInterfaces;
+using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,9 +66,9 @@ namespace Project.DAL.Repositories.Concretes
             throw new NotImplementedException();
         }
 
-        public Task<IQueryable<T>> GetActivesAsync()
+        public IQueryable<T> GetActivesAsync()
         {
-            throw new NotImplementedException();
+            return _context.Set<T>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).AsQueryable(); ;
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -113,8 +114,13 @@ namespace Project.DAL.Repositories.Concretes
         public void Delete(T entity)
         {
             entity.DeletedDate = DateTime.Now;
-            entity.Status = ENTITIES.Enums.DataStatus.Deleted;
+            entity.DataStatus = ENTITIES.Enums.DataStatus.Deleted;
+
+            var toBeUpdated = _context.Set<T>().Find(entity.ID);
+            // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
+            _context.Entry(toBeUpdated).CurrentValues.SetValues(entity);
             Save();
+
         }
 
         public void DeleteRange(List<T> list)
@@ -134,11 +140,19 @@ namespace Project.DAL.Repositories.Concretes
 
         public void Update(T entity)
         {
-            entity.Status = ENTITIES.Enums.DataStatus.Updated;
+            entity.DataStatus = ENTITIES.Enums.DataStatus.Updated;
             entity.ModifiedDate = DateTime.Now;
             // T toBeUpdated = Find(entity.ID);
             var toBeUpdated = _context.Set<T>().Find(entity.ID);
             // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
+
+            //if (toBeUpdated is Category /* || entity is Product*/ )
+            //{
+            //    Category c = toBeUpdated as Category;
+
+
+            //}
+
             _context.Entry(toBeUpdated).CurrentValues.SetValues(entity);
             Save();
         }

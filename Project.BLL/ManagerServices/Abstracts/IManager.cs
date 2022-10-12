@@ -31,10 +31,10 @@ namespace Project.BLL.ManagerServices.Abstracts
         Task AddRangeAsync(List<TEntity> list);
 
         // void Delete(T item);
-        Task Delete(int id);
+        void Delete(TEntity entity);
         void DeleteRange(List<TEntity> list);
 
-        Task Destroy(int id);
+        void Destroy(TEntity entity);
         void DestroyRange(List<TEntity> list);
 
         void Update(TEntity entity); // T Update(T entity);

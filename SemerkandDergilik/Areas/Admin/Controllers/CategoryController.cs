@@ -28,12 +28,12 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         [Route("CategoryList")]
         public async Task<IActionResult> CategoryList()
         {
-            IEnumerable<Category> categoryList = await _icm.GetAllAsync();
+            IEnumerable<Category> categoryList = await _icm.GetActivesAsync();
 
             CategoryVM cvm = new CategoryVM
             {
                 Categories = categoryList.Adapt<IEnumerable<CategoryDTO>>().ToList(),
-                
+
             };
 
             return View(cvm);
@@ -63,49 +63,80 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         }
 
 
+        [Route("DeleteCategoryAjax")]
+        public async Task<IActionResult> DeleteCategoryAjax(int id)
+        {
+            Category category_item = await _icm.GetByIdAsync(id);
+            CategoryDTO cDTO = category_item.Adapt<CategoryDTO>();
+
+            //ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
+
+            ViewBag.CRUD = "delete_operation";
+
+            return PartialView("_AddCategoryPartial", cDTO);
+        }
+
+
 
         [Route("AddCategory")]
         [HttpPost]
         public async Task<IActionResult> AddCategory(CategoryDTO cdto, IFormFile categoryPicture)
         {
-            ModelState.Remove("CategoryPicture");
-
-            if (ModelState.IsValid)
+            if (TempData["Deleted"] == null)
             {
-                Category ctg = cdto.Adapt<Category>();
+                ModelState.Remove("CategoryPicture");
 
-                ctg.Status = (int)cdto.Status;
-
-
-
-                //////
-                ///
-                if (categoryPicture != null && categoryPicture.Length > 0)
+                if (ModelState.IsValid)
                 {
-                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(categoryPicture.FileName); // path oluşturma
+                    Category ctg = cdto.Adapt<Category>();
 
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/CategoryPicture", fileName); // server'a kayıt edilecek path => wwwroot/UserPicture/fileName
+                    ctg.Status = (int)cdto.Status;
 
-                    // kayıt işlemi
-                    using (var stream = new FileStream(path, FileMode.Create))
+
+
+                    //////
+                    ///
+                    if (categoryPicture != null && categoryPicture.Length > 0)
                     {
-                        await categoryPicture.CopyToAsync(stream); // userPicture'ı, stream'e kayıt
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(categoryPicture.FileName); // path oluşturma
 
-                        ctg.CategoryPicture = "/CategoryPicture/" + fileName;   // veritabanına kayıt (wwwroot belirtmeye gerek yok)
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/CategoryPicture", fileName); // server'a kayıt edilecek path => wwwroot/UserPicture/fileName
+
+                        // kayıt işlemi
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await categoryPicture.CopyToAsync(stream); // userPicture'ı, stream'e kayıt
+
+                            ctg.CategoryPicture = "/CategoryPicture/" + fileName;   // veritabanına kayıt (wwwroot belirtmeye gerek yok)
+
+                        }
+                    }
+
+                    if (ctg.ID == 0)
+                    {
+                        await _icm.AddAsync(ctg);
+                    }
+                    else
+                    {
+                        _icm.Update(ctg);
 
                     }
+
+                    return RedirectToAction("CategoryList");
                 }
 
-                if (ctg.ID == 0)
-                {
-                    await _icm.AddAsync(ctg);
-                }
-                else
-                {
-                    _icm.Update(ctg);
+            }
+            else
+            {
+                _icm.Delete(await _icm.GetByIdAsync(cdto.ID));
 
-                }
-               
+                // Category ctg = cdto.Adapt<Category>();
+
+                // _icm.Delete(ctg);
+                TempData["mesaj"] = "Kategori silindi..";
+
+                TempData["Deleted"] = null;
+
                 return RedirectToAction("CategoryList");
             }
 
@@ -115,7 +146,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
         }
 
- 
+
 
         [Route("CategoryIndex")]
         public IActionResult Index()
