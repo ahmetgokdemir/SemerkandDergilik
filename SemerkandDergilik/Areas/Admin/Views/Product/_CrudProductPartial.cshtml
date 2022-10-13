@@ -1,0 +1,78 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model ProductDTO
+
+
+<h3>Ürün Oluşturma</h3>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CRUDProduct" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @if (ViewBag.CRUD != "delete_operation")
+            {
+                <div class="form-group">
+                    <label asp-for="ProductName" class="control-label"></label>
+                    <input asp-for="ProductName" class="form-control" />
+                    <span asp-validation-for="ProductName" class="text-danger"></span>
+                </div>
+
+
+
+
+                <div class="form-group">
+                    <label asp-for="Status" class="control-label"></label>
+                    <select class="form-control" asp-for="Status" asp-items="@ViewBag.Status"></select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ProductPicture" class="control-label"></label>
+                    <input class="form-control" type="file" name="productPicture" src="ProductPicture" />
+                </div>
+
+                @if (Model == null)
+                {
+                    <div class="form-group">
+                        <input type="submit" value="Ürün Ekle" class="btn btn-primary mt-2" />
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" asp-for="ID" />
+
+                    <div class="form-group">
+                        <input type="submit" value="Ürün Güncelle" class="btn btn-primary mt-2" />
+                    </div>
+                }
+
+                @* @if (Model != null)
+                {
+                    <input type="hidden" asp-for="ID" />
+                }*@
+
+            }
+
+            else
+            {
+                <input type="hidden" asp-for="ID" />
+
+                <div class="form-group">
+                    <span asp-validation-for="ProductName"></span> <label style="width:100%; height:100%"> silmek istediğinizden emin misiniz ?</label>
+
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Ürünü Sil" class="btn btn-primary mt-2" />
+                </div>
+
+                TempData["Deleted"] = "true";
+            }
+
+        </form>
+    </div>
+</div>
