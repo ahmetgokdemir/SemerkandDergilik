@@ -1,4 +1,5 @@
-﻿using Project.ENTITIES.Models;
+﻿using Project.ENTITIES.CoreInterfaces;
+using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,8 @@ namespace Project.BLL.ManagerServices.Abstracts
 {
     public interface IProductManager : IManager<Product>
     {
+        Task<IEnumerable<Product>> GetActivesProductsByCategoryIDAsync(int category_id);
 
     }
- 
+
 }

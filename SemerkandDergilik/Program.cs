@@ -172,10 +172,12 @@ builder.Services.AddScoped<PasswordReset>();
 //Repositories
 builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 //Managers
 builder.Services.AddScoped(typeof(IManager<>), typeof(BaseManager<>));
 builder.Services.AddScoped<ICategoryManager, CategoryManager>();
+builder.Services.AddScoped<IProductManager, ProductManager>();
 
 
 // builder.Services.AddAutoMapper();

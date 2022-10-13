@@ -21,10 +21,19 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             _ipm = ipm;
         }
 
-        [Route("ProductList")]
-        public async Task<IActionResult> ProductList()
+        [Route("ProductIndex")]
+        public IActionResult Index()
         {
-            IEnumerable<Product> productList = await _ipm.GetActivesAsync();
+            return View();
+        }
+
+
+        [Route("ProductList")]
+        public async Task<IActionResult> ProductList(int id)
+        {
+            int category_id = id;
+
+            IEnumerable<Product> productList = await _ipm.GetActivesProductsByCategoryIDAsync(category_id);
 
             ProductVM pvm = new ProductVM
             {
@@ -36,9 +45,5 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         }
 
 
-        public IActionResult Index()
-        {
-            return View();
-        }
     }
 }

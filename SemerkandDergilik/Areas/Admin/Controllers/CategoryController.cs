@@ -25,6 +25,13 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             _icm = icm;
         }
 
+        [Route("CategoryIndex")]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+
         [Route("CategoryList")]
         public async Task<IActionResult> CategoryList()
         {
@@ -51,7 +58,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
 
         [Route("UpdateCategoryAjax")]
-        public async Task<IActionResult> UpdateCategoryAjax(int id)
+        public async Task<PartialViewResult> UpdateCategoryAjax(int id)
         {
             Category category_item = await _icm.GetByIdAsync(id);
             CategoryDTO cDTO = category_item.Adapt<CategoryDTO>();
@@ -64,7 +71,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
 
         [Route("DeleteCategoryAjax")]
-        public async Task<IActionResult> DeleteCategoryAjax(int id)
+        public async Task<PartialViewResult> DeleteCategoryAjax(int id)
         {
             Category category_item = await _icm.GetByIdAsync(id);
             CategoryDTO cDTO = category_item.Adapt<CategoryDTO>();
@@ -161,10 +168,6 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
 
 
-        [Route("CategoryIndex")]
-        public IActionResult Index()
-        {
-            return View();
-        }
+
     }
 }

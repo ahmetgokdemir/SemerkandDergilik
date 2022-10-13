@@ -14,7 +14,7 @@ namespace Project.DAL.Repositories.Concretes
 {
     public class BaseRepository<T> : IRepository<T> where T : EntityBase, IEntity
     {
-        private readonly DbContext _context;
+        protected readonly DbContext _context;
         //private readonly DbSet<IEntity> _dbSet;
 
         public BaseRepository(SemerkandDergilikContext context)
