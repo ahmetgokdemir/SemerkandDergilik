@@ -45,7 +45,7 @@ else
                         <th>Kategori Adı</th>
 
                         <th>Durum</th>
-                        <th colspan="2" style="padding-left:150px">Ürün Resim</th>
+                        <th colspan="2" style="padding-left:75px">Ürün Resim</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -64,7 +64,7 @@ else
 
                             <td>@item.Status</td>
                             @*<td colspan="2" style="padding-left:150px">@item.CategoryPicture</td>*@
-                            <td colspan="2" style="padding-left:150px"><img style="width:150%; height:150%" src="@item.ProductPicture" /></td>
+                            <td colspan="2" style="padding-left:75px"><img style="width:75%; height:75%" src="@item.ProductPicture" /></td>
                             <td>
                                 @*<a asp-action="UpdateCategory" asp-controller="Category" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
                                 @* BURASIIII  <button class="btn btn-warning " id="updateCategory" value="updateCategoryValue" data-id=@item.ID>Güncelle</button>*@
