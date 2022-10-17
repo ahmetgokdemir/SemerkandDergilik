@@ -139,8 +139,8 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                     Product prd = pdto.Adapt<Product>();
 
                     prd.Status = (int)pdto.Status; // casting bu olmadan dene
-                    prd.Category.Status = (int)pdto.Category.Status;
-
+                    prd.CategoryID = (int)TempData["CategoryID"];
+                    prd.Category = null;
 
                     //////
                     ///
