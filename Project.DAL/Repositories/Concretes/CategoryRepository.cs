@@ -22,11 +22,11 @@ namespace Project.DAL.Repositories.Concretes
             return _context.Set<Category>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).Select(x=> x.CategoryName).AsQueryable();
         }
 
-        public string GetCategoryNameAccordingToProductAsync(int category_id)
-        {
-            string categoryname = _context.Set<Category>().Where(x => x.ID == category_id).Select(x => x.CategoryName).ToString();
+        public async Task<string> GetCategoryNameAccordingToProductAsync(int category_id)
+        { 
+           string deneme =   _context.Set<Category>().Where(x => x.ID == category_id).Select(x => x.CategoryName).ToString();
 
-            return categoryname;
+            return deneme;
         }
 
     }

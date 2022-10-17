@@ -29,9 +29,9 @@ namespace Project.BLL.ManagerServices.Concretes
 
         public async Task<string> GetCategoryNameAccordingToProductAsync(int category_id)
         {
-            var categoryName = _crep.GetCategoryNameAccordingToProductAsync(category_id); // convert ıqueryable to IEnumerable
+            string deneme = _crep.GetCategoryNameAccordingToProductAsync(category_id).ToString(); // convert ıqueryable to IEnumerable
 
-            return categoryName;
+            return deneme;
         }
 
         /*

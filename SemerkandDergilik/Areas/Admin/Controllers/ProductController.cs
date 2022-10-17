@@ -7,6 +7,7 @@ using Project.ENTITIES.Models;
 using Semerkand_Dergilik.Enums;
 using Semerkand_Dergilik.ViewModels;
 using Semerkand_Dergilik.VMClasses;
+using System.Collections;
 using System.Data;
 
 namespace Semerkand_Dergilik.Areas.Admin.Controllers
@@ -47,6 +48,12 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
             };
 
+            if (pvm.Products.Count > 0)
+            {
+                TempData["CategoryName"] = pvm.Products[0].Category.CategoryName;
+            }
+            
+
             TempData["category_id"] = category_id;
 
             return View(pvm);
@@ -58,28 +65,42 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         {
 
             IEnumerable<string> categoryNames = await _icm.GetActivesCategoryNamesAsync();
-            string categoryNameAccordingToProduct = await _icm.GetCategoryNameAccordingToProductAsync((int)TempData["category_id"]);
+            // string categoryNameAccordingToProduct = await _icm.GetCategoryNameAccordingToProductAsync((int)TempData["category_id"]);
 
 
             //CategoryVM cvm = new CategoryVM
             //{
-            //    Categories = categoryNames.Adapt<IEnumerable<CategoryDTO>>().ToList(),
-
+            //    Categories = categoryNames.Adapt<IEnumerable<CategoryDTO>>().ToList()
             //};
 
 
             ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
 
-            ViewBag.CategoryNames = new SelectList(categoryNames.ToList());
+            ViewBag.CategoryNames = new SelectList(categoryNames); // html kısmında select tag'ı kullanıldığı için SelectList kullanıldı
 
-            ViewBag.CategoryName = (categoryNameAccordingToProduct);
+            // ViewBag.CategoryName = categoryNameAccordingToProduct;
+            ProductDTO pdto = new ProductDTO();
+          
+            //pdto.ProductName = "";
+          
+            //pdto.UnitPrice = 0;
+            //pdto.UnitsInStock = 0;
+            //pdto.Discount = 0;
+            //pdto.Status = 0;
+            //pdto.ProductPicture = "";
+
+            CategoryDTO cdto = new CategoryDTO();
+            //cdto.CategoryPicture = "";
+            //cdto.Status = 0;
+            cdto.CategoryName = TempData["CategoryName"].ToString();
+            pdto.Category = cdto;
 
 
-            int category_id = (int)TempData["category_id"];
+            // int category_id = (int)TempData["category_id"];
 
-            TempData["category_id"] = category_id;
+            TempData["CategoryName"] = cdto.CategoryName;
 
-            return PartialView("_CrudProductPartial");
+            return PartialView("_CrudProductPartial", pdto);
         }
 
 
