@@ -1,4 +1,5 @@
-﻿using Project.BLL.ManagerServices.Abstracts;
+﻿using Microsoft.EntityFrameworkCore;
+using Project.BLL.ManagerServices.Abstracts;
 using Project.DAL.Repositories.Abstracts;
 using Project.ENTITIES.Models;
 using System;
@@ -11,21 +12,39 @@ namespace Project.BLL.ManagerServices.Concretes
 {
     public class CategoryManager : BaseManager<Category>, ICategoryManager
     {
-        public CategoryManager(IRepository<Category> irep) : base(irep)
+        ICategoryRepository _crep;
+
+        public CategoryManager(IRepository<Category> irep, ICategoryRepository crep) : base(irep)
         {
+            _crep = crep;
         }
 
-/*
-        public override async Task AddAsync(Category item)
+
+        public async Task<IEnumerable<string>> GetActivesCategoryNamesAsync()
         {
+            var categoryNames = await _crep.GetActivesCategoryNamesAsync().ToListAsync(); // convert ıqueryable to IEnumerable
+
+            return categoryNames;
+        }
+
+        public async Task<string> GetCategoryNameAccordingToProductAsync(int category_id)
+        {
+            var categoryName = _crep.GetCategoryNameAccordingToProductAsync(category_id); // convert ıqueryable to IEnumerable
+
+            return categoryName;
+        }
+
+        /*
+                public override async Task AddAsync(Category item)
+                {
 
 
-            if (item.CategoryName != null)
-            {
-                _iRep.AddAsync(item);
-                //return "Kategori eklendi";
-            }
-            //return "Kategori ismi girilmemiş";
-        }*/
+                    if (item.CategoryName != null)
+                    {
+                        _iRep.AddAsync(item);
+                        //return "Kategori eklendi";
+                    }
+                    //return "Kategori ismi girilmemiş";
+                }*/
     }
 }

@@ -17,11 +17,15 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         readonly IProductManager _ipm;
+        readonly ICategoryManager _icm;
 
-        public ProductController(IProductManager ipm) // services.AddRepManServices(); 
+        public ProductController(IProductManager ipm, ICategoryManager icm) // services.AddRepManServices(); 
         {
             _ipm = ipm;
+            _icm = icm;
         }
+         
+ 
 
         [Route("ProductIndex")]
         public IActionResult Index()
@@ -46,6 +50,36 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             TempData["category_id"] = category_id;
 
             return View(pvm);
+        }
+
+
+        [Route("AddProductAjax")]
+        public async Task<PartialViewResult> AddProductAjax()
+        {
+
+            IEnumerable<string> categoryNames = await _icm.GetActivesCategoryNamesAsync();
+            string categoryNameAccordingToProduct = await _icm.GetCategoryNameAccordingToProductAsync((int)TempData["category_id"]);
+
+
+            //CategoryVM cvm = new CategoryVM
+            //{
+            //    Categories = categoryNames.Adapt<IEnumerable<CategoryDTO>>().ToList(),
+
+            //};
+
+
+            ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
+
+            ViewBag.CategoryNames = new SelectList(categoryNames.ToList());
+
+            ViewBag.CategoryName = (categoryNameAccordingToProduct);
+
+
+            int category_id = (int)TempData["category_id"];
+
+            TempData["category_id"] = category_id;
+
+            return PartialView("_CrudProductPartial");
         }
 
 

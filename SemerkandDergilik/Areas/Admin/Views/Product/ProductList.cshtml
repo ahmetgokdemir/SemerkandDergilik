@@ -20,7 +20,7 @@
         Ürün Eklemek icin
         @* BURASIIII DEĞİLLLL <input type="submit" id="btnIslemYap" value="İşlem Yap" />*@
 
-        @*BURASIIII <button class="btn btn-info " id="addNewCategory" value="addNewCategoryValue">tıklayınız</button>*@
+        <button class="btn btn-info " id="addNewProduct" value="addNewProductValue">tıklayınız</button>
     </div>
 }
 
@@ -28,7 +28,7 @@ else
 {
     <div id="tab1">
         Ürün Eklemek icin
-        @*<button class="btn btn-info " id="addNewCategory" value="addNewCategoryValue">tıklayınız</button>*@
+        <button class="btn btn-info " id="addNewProduct" value="addNewProductValue">tıklayınız</button>
     </div>
 
     <div class="container">
@@ -109,9 +109,30 @@ else
     }
 
 
-
     $(function () {
         //$("#addNewProduct").click(function () {
+        $("#tab1").on("click", "[value=addNewProductValue]", function () {
+            $.ajax({
+                //url: '@@Url.Action("AddCategoryAjax","Category")',
+                url: 'AddProductAjax',
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $("#CRUDProduct").html(data);
+                    CRUDProductModalLoaded();
+
+                },
+                error: function () {
+                    alert("Hata alındı.");
+                }
+            });
+        });
+    });
+
+
+
+    $(function () {
+        //$("#deleteProduct").click(function () {
         $("#tab2").on("click", "[value=deleteProductValue]", function () {
             $.ajax({
                 //url: '@@Url.Action("AddCategoryAjax","Category")',
