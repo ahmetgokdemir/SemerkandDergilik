@@ -5,8 +5,19 @@
 
 @model ProductDTO
 
+@if (Model.ID == 0 && ViewBag.CRUD != "delete_operation")
+{
+    <h3>Ürün Oluşturma Formu</h3>
+}
+else if (Model.ID != 0 && ViewBag.CRUD != "delete_operation")
+{
+    <h3>Ürün Güncelleme Formu</h3>
+}
+else if (Model.ID != 0 && ViewBag.CRUD == "delete_operation")
+{
+    <h3>Ürün Silme Formu</h3>
+}
 
-<h3>Ürün Oluşturma</h3>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -56,7 +67,7 @@
                     <input class="form-control" type="file" name="productPicture" src="ProductPicture" />
                 </div>
 
-                @if (Model == null)
+                @if (Model.ID == 0)
                 {
                     <div class="form-group">
                         <input type="submit" value="Ürün Ekle" class="btn btn-primary mt-2" />

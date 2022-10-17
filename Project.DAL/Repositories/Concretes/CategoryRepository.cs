@@ -19,14 +19,14 @@ namespace Project.DAL.Repositories.Concretes
 
         public IQueryable<string> GetActivesCategoryNamesAsync()
         {
-            return _context.Set<Category>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).Select(x=> x.CategoryName).AsQueryable();
+            return _context.Set<Category>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).Select(x=> x.CategoryName);
         }
 
-        public async Task<string> GetCategoryNameAccordingToProductAsync(int category_id)
-        { 
-           string deneme =   _context.Set<Category>().Where(x => x.ID == category_id).Select(x => x.CategoryName).ToString();
+        public IQueryable<string> GetCategoryNameAccordingToProductAsync(int category_id)
+        {
+            IQueryable<string> categoryNameAccordingToProduct = _context.Set<Category>().Where(x => x.ID == category_id).Select(x => x.CategoryName);
 
-            return deneme;
+            return categoryNameAccordingToProduct;
         }
 
     }

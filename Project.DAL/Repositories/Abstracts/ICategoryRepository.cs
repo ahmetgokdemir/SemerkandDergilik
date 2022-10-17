@@ -10,6 +10,7 @@ namespace Project.DAL.Repositories.Abstracts
     public interface ICategoryRepository : IRepository<Category>
     {
         IQueryable<string> GetActivesCategoryNamesAsync();
-        Task<string> GetCategoryNameAccordingToProductAsync(int category_id);
+        IQueryable<string> GetCategoryNameAccordingToProductAsync(int category_id);
+         
     }
 }
