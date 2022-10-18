@@ -33,5 +33,12 @@ namespace Project.BLL.ManagerServices.Concretes
 
             return products;
         }
+
+        public async Task<Product> GetProductByIdwithCategoryValueAsync(int product_id)
+        {
+            var product = await _prep.GetProductByIdwithCategoryValueAsync(product_id).ToListAsync(); // convert ıqueryable to IEnumerable
+
+            return product[0];
+        }
     }
 }

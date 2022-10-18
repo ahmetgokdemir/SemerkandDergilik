@@ -40,11 +40,14 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         {
             int category_id = id;
 
-            IEnumerable<Product> productList = await _ipm.GetActivesProductsByCategoryIDAsync(category_id);
+            IEnumerable<Product> productEnumerableList = await _ipm.GetActivesProductsByCategoryIDAsync(category_id);
+            
+            List<Product> productsLists = new List<Product>();
+            productsLists = productEnumerableList.ToList();
 
             ProductVM pvm = new ProductVM
             {
-                Products = productList.Adapt<IEnumerable<ProductDTO>>().ToList(),
+                Products = productEnumerableList.Adapt<IEnumerable<ProductDTO>>().ToList(),
 
             };
 
@@ -60,6 +63,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
 
             TempData["category_id"] = category_id;
+            TempData["CategoryName"] = productsLists[0].Category.CategoryName;
 
             return View(pvm);
         }
@@ -70,7 +74,8 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         {
 
             IEnumerable<string> categoryNames = await _icm.GetActivesCategoryNamesAsync();
-            string categoryNameAccordingToProduct = await _icm.GetCategoryNameAccordingToProductAsync((int)TempData["category_id"]);
+            
+            // *string categoryNameAccordingToProduct = await _icm.GetCategoryNameAccordingToProductAsync((int)TempData["category_id"]);
 
 
             //CategoryVM cvm = new CategoryVM
@@ -89,16 +94,18 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
             CategoryDTO cdto = new CategoryDTO(); // yazılmazsa null referance hatası verir.. 
             //cdto.CategoryName = TempData["CategoryName"].ToString(); // 2.yol
-            cdto.CategoryName = categoryNameAccordingToProduct;
+            // * categoryNameAccordingToProduct;
+            cdto.CategoryName = TempData["CategoryName"].ToString();
+            pdto.CategoryID = (int)TempData["category_id"];
             pdto.Category = cdto; // yazılmazsa null referance hatası verir.. 
 
 
-            int category_id = (int)TempData["category_id"];
-            TempData["category_id"] = category_id;
+            // *int category_id = (int)TempData["category_id"];
+            TempData["category_id"] = pdto.CategoryID;
 
-            // TempData["CategoryName"] = cdto.CategoryName; // 2.yol kullanılırsa gerekli olacak kod..
+            TempData["CategoryName"] = cdto.CategoryName; // 2.yol kullanılırsa gerekli olacak kod..
 
-            return PartialView("_CrudProductPartial", pdto);
+            return PartialView("_CrudProductPartial", pdto); // pdto değeri döndürmemizin nedeni cdto.CategoryName nin html'de dolu olması diğer değerler boş gelecek...
         }
 
 
@@ -107,11 +114,21 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         public async Task<PartialViewResult> UpdateProductAjax(int id)
         {
             Product product_item = await _ipm.GetByIdAsync(id);
+            
+            // * Product product_item = await _ipm.GetProductByIdwithCategoryValueAsync(id);
+
             ProductDTO pDTO = product_item.Adapt<ProductDTO>();
+
+            CategoryDTO cdto = new CategoryDTO();
+            cdto.CategoryName = TempData["CategoryName"].ToString();
+            pDTO.Category = cdto;
+
+            TempData["CategoryName"] = cdto.CategoryName;
 
             IEnumerable<string> categoryNames = await _icm.GetActivesCategoryNamesAsync();
             ViewBag.CategoryNames = new SelectList(categoryNames);
 
+            /*
             string categoryNameAccordingToProduct = await _icm.GetCategoryNameAccordingToProductAsync((int)TempData["category_id"]);
             //ProductDTO pdto = new ProductDTO();
 
@@ -119,15 +136,15 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             // cdto.CategoryName = TempData["CategoryName"].ToString(); // 2.yol
             cdto.CategoryName = categoryNameAccordingToProduct;
             pDTO.Category = cdto; // yazılmazsa null referance hatası verir.. 
-
-
-
+            */
 
 
             ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
 
-            int category_id = (int)TempData["category_id"];
+            /*
+             int category_id = (int)TempData["category_id"];
             TempData["category_id"] = category_id;
+            */
 
             return PartialView("_CrudProductPartial", pDTO);
         }
@@ -171,7 +188,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                     Product prd = pdto.Adapt<Product>();
 
                     prd.Status = (int)pdto.Status; // casting bu olmadan dene
-                    prd.CategoryID = (int)TempData["category_id"];
+                    //  <input type="hidden" asp-for="CategoryID" /> bunu kullandığımız için prd.CategoryID = (int)TempData["category_id"]; bu koda gerek kalmadı...  
                     // prd.Category = null;
 
                     //////

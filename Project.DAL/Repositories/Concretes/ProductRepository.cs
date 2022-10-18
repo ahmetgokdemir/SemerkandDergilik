@@ -18,9 +18,16 @@ namespace Project.DAL.Repositories.Concretes
 
         }
 
+        // Kategoriye göre Ürünler
         public IQueryable<Product> GetActivesProductsByCategoryIDAsync(int category_id)
         {
             return _context.Set<Product>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.CategoryID == category_id).Include(x=> x.Category).AsQueryable(); ;
+        }
+
+        // Ürünü, kategori bilgileri ile getirmek...
+        public IQueryable<Product> GetProductByIdwithCategoryValueAsync(int product_id)
+        {
+            return _context.Set<Product>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.ID == product_id).Include(x => x.Category).AsQueryable(); ;
         }
 
     }

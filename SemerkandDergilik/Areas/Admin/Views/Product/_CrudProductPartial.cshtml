@@ -50,6 +50,8 @@ else if (Model.ID != 0 && ViewBag.CRUD == "delete_operation")
                     <span asp-validation-for="Discount" class="text-danger"></span>
                 </div>
 
+                <input type="hidden" asp-for="CategoryID" />
+
                 <div class="form-group">
                     <label asp-for="Category.CategoryName" class="control-label"></label>
                     <select class="form-control" asp-for="Category.CategoryName" asp-items="@ViewBag.CategoryNames" disabled></select>

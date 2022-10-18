@@ -28,6 +28,7 @@ namespace Semerkand_Dergilik.ViewModels
 
 
         //public int CategoryID { get; set; }
+        public int CategoryID { get; set; }
 
         //[Display(Name = "Kategori Adı")]
         //public string CategoryName { get; set; } // Aktif, Pasif

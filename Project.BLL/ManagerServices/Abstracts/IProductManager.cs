@@ -11,7 +11,7 @@ namespace Project.BLL.ManagerServices.Abstracts
     public interface IProductManager : IManager<Product>
     {
         Task<IEnumerable<Product>> GetActivesProductsByCategoryIDAsync(int category_id);
-
+        Task<Product> GetProductByIdwithCategoryValueAsync(int product_id);
     }
 
 }

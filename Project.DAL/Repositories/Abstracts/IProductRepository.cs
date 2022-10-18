@@ -10,6 +10,7 @@ namespace Project.DAL.Repositories.Abstracts
     public interface IProductRepository : IRepository<Product>
     {
         IQueryable<Product> GetActivesProductsByCategoryIDAsync(int category_id);
+        IQueryable<Product> GetProductByIdwithCategoryValueAsync(int product_id);
     }
 
 }
