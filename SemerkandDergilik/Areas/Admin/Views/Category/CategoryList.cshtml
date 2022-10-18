@@ -11,18 +11,16 @@
 
 @if (Model.Categories.Count == 0)
 {
-    <div class="jumbotron" id="tab1">
-        Kategori Eklemek icin
+    <div class="jumbotron" id="tab1">        
         @*<input type="submit" id="btnIslemYap" value="İşlem Yap" />*@
 
-        <button class="btn btn-info " id="addNewCategory" value="addNewCategoryValue">tıklayınız</button>
+        <button class="btn btn-outline-success " id="addNewCategory" value="addNewCategoryValue">Kategori Eklemek için tıklayınız</button>
     </div>
 }
 else
 {
     <div id="tab1" class="mb-3">
-        Kategori Eklemek icin
-        <button class="btn btn-info " id="addNewCategory" value="addNewCategoryValue">tıklayınız</button>
+        <button class="btn btn-outline-success " id="addNewCategory" value="addNewCategoryValue">Kategori Eklemek için tıklayınız</button>
     </div>
 
 
@@ -63,14 +61,14 @@ else
     </div>
 }
 
-<div class="modal fade" id="AddCategoryModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="CRUDCategoryModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title"></h4>
             </div>
-            <div class="modal-body" id="AddCategory">
+            <div class="modal-body" id="CRUDCategory">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
@@ -86,8 +84,8 @@ else
 
 
 
-    function AddCategoryModalLoaded() {
-        $("#AddCategoryModal").modal('show'); // #MaintenanceRoomModal içinde MaintenanceRoom var (<div class="modal-body" id="MaintenanceRoom">) onun içinde de data var (_MaintenanceRoomPartial veya _UnMaintenanceRoomPartial)
+    function CRUDCategoryModalLoaded() {
+        $("#CRUDCategoryModal").modal('show'); // #MaintenanceRoomModal içinde MaintenanceRoom var (<div class="modal-body" id="MaintenanceRoom">) onun içinde de data var (_MaintenanceRoomPartial veya _UnMaintenanceRoomPartial)
     }
 
     $(function () {
@@ -99,8 +97,8 @@ else
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#AddCategory").html(data);
-                    AddCategoryModalLoaded();
+                    $("#CRUDCategory").html(data);
+                    CRUDCategoryModalLoaded();
 
                 },
                 error: function () {
@@ -120,8 +118,8 @@ else
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#AddCategory").html(data);
-                    AddCategoryModalLoaded();
+                    $("#CRUDCategory").html(data);
+                    CRUDCategoryModalLoaded();
 
                 },
                 error: function () {
@@ -142,8 +140,8 @@ else
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#AddCategory").html(data);
-                    AddCategoryModalLoaded();
+                    $("#CRUDCategory").html(data);
+                    CRUDCategoryModalLoaded();
 
                 },
                 error: function () {

@@ -145,6 +145,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
 
             ViewBag.CRUD = "delete_operation";
+            ViewBag.ProductNameDelete = pDTO.ProductName;
 
             return PartialView("_CrudProductPartial", pDTO);
         }

@@ -17,18 +17,18 @@
 @if (Model.Products.Count == 0)
 {
     <div class="jumbotron" id="tab1">
-        Ürün Eklemek icin
+        Ürün Eklemek için
         @* BURASIIII DEĞİLLLL <input type="submit" id="btnIslemYap" value="İşlem Yap" />*@
 
-        <button class="btn btn-info " id="addNewProduct" value="addNewProductValue">tıklayınız</button>
+        <button class="btn btn-outline-success " id="addNewProduct" value="addNewProductValue">tıklayınız</button>
     </div>
 }
 
 else
 {
     <div id="tab1" class="mb-3">
-        Ürün Eklemek icin
-        <button class="btn btn-info " id="addNewProduct" value="addNewProductValue">tıklayınız</button>
+
+        <button class="btn btn-outline-success " id="addNewProduct" value="addNewProductValue"> Ürün Eklemek için tıklayınız</button>
     </div>
 
     <div class="container">
@@ -81,6 +81,9 @@ else
         </div>
      </div>
 }
+
+
+    <a asp-action="CategoryList" asp-controller="Category" class="btn btn-outline-info">Geri Dön</a>
 
 
 <div class="modal fade" id="CRUDProductModal" tabindex="-1" role="dialog">

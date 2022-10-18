@@ -51,7 +51,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         {
             ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
 
-            return PartialView("_AddCategoryPartial");
+            return PartialView("_CrudCategoryPartial");
         }
 
 
@@ -66,7 +66,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
 
 
-            return PartialView("_AddCategoryPartial", cDTO);
+            return PartialView("_CrudCategoryPartial", cDTO);
         }
 
 
@@ -77,17 +77,18 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             CategoryDTO cDTO = category_item.Adapt<CategoryDTO>();
 
             //ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
+            ViewBag.CategoryNameDelete = cDTO.CategoryName;
 
             ViewBag.CRUD = "delete_operation";
 
-            return PartialView("_AddCategoryPartial", cDTO);
+            return PartialView("_CrudCategoryPartial", cDTO);
         }
 
 
 
-        [Route("AddCategory")]
+        [Route("CRUDCategory")]
         [HttpPost]
-        public async Task<IActionResult> AddCategory(CategoryDTO cdto, IFormFile categoryPicture)
+        public async Task<IActionResult> CRUDCategory(CategoryDTO cdto, IFormFile categoryPicture)
         {
             if (TempData["Deleted"] == null)
             {
