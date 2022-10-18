@@ -48,15 +48,15 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
             };
 
+            /*
             if (pvm.Products.Count > 0)
             {
                 TempData["CategoryName"] = pvm.Products[0].Category.CategoryName;
                 TempData["CategoryID"] = pvm.Products[0].Category.ID;
                 TempData["CategoryStatus"] = pvm.Products[0].Category.Status;
                 TempData["CategoryPicture"] = pvm.Products[0].Category.CategoryPicture;
-
-
             }
+            */
 
 
             TempData["category_id"] = category_id;
@@ -83,11 +83,12 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
             ViewBag.CategoryNames = new SelectList(categoryNames); // html kısmında select tag'ı kullanıldığı için SelectList kullanıldı
 
-            // ViewBag.CategoryName = categoryNameAccordingToProduct;
+            // ViewBag.CategoryName = categoryNameAccordingToProduct; --> asp-for, ViewBag kabul etmediği için pdto, cdto, cdto.CategoryName değerleri tanımlandı..
+            // asp-for="Category.CategoryName" değer atamak için pdto, cdto, cdto.CategoryName değerleri tanımlandı..
             ProductDTO pdto = new ProductDTO(); 
 
-            CategoryDTO cdto = new CategoryDTO();// yazılmazsa null referance hatası verir.. 
-            //cdto.CategoryName = TempData["CategoryName"].ToString();
+            CategoryDTO cdto = new CategoryDTO(); // yazılmazsa null referance hatası verir.. 
+            //cdto.CategoryName = TempData["CategoryName"].ToString(); // 2.yol
             cdto.CategoryName = categoryNameAccordingToProduct;
             pdto.Category = cdto; // yazılmazsa null referance hatası verir.. 
 
@@ -95,7 +96,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             int category_id = (int)TempData["category_id"];
             TempData["category_id"] = category_id;
 
-            // TempData["CategoryName"] = cdto.CategoryName;
+            // TempData["CategoryName"] = cdto.CategoryName; // 2.yol kullanılırsa gerekli olacak kod..
 
             return PartialView("_CrudProductPartial", pdto);
         }
@@ -124,13 +125,13 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                 ModelState.Remove("Category");
 
                
-                CategoryDTO cdto = new CategoryDTO();// yazılmazsa null referance hatası verir.. 
-                // cdto.ID = (int) TempData["CategoryID"];
-                pdto.Category = cdto;
-                pdto.Category.ID = (int)TempData["CategoryID"];
-                pdto.Category.CategoryName = TempData["CategoryName"].ToString();
-                pdto.Category.Status = (Status)TempData["CategoryStatus"];
-                pdto.Category.CategoryPicture = TempData["CategoryPicture"].ToString();
+                // CategoryDTO cdto = new CategoryDTO();// yazılmazsa null referance hatası verir.. 
+                // // cdto.ID = (int) TempData["CategoryID"];
+                // pdto.Category = cdto;
+                // pdto.Category.ID = (int)TempData["CategoryID"];
+                // pdto.Category.CategoryName = TempData["CategoryName"].ToString();
+                // pdto.Category.Status = (Status)TempData["CategoryStatus"];
+                // pdto.Category.CategoryPicture = TempData["CategoryPicture"].ToString();
 
               
 
@@ -139,8 +140,8 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                     Product prd = pdto.Adapt<Product>();
 
                     prd.Status = (int)pdto.Status; // casting bu olmadan dene
-                    prd.CategoryID = (int)TempData["CategoryID"];
-                    prd.Category = null;
+                    prd.CategoryID = (int)TempData["category_id"];
+                    // prd.Category = null;
 
                     //////
                     ///
@@ -177,19 +178,25 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                     if (prd.ID == 0)
                     {
                         await _ipm.AddAsync(prd);
+                        TempData["mesaj"] = "Ürün eklendi";
                     }
                     else
                     {
                         _ipm.Update(prd);
+                        TempData["mesaj"] = "Ürün güncellendi";
+
 
                     }
 
-                    var deneme = cdto.ID;
-                    TempData["CategoryID"] = cdto.ID;
-                    //pdto.Category.ID = (int)TempData["CategoryID"];
-                    //pdto.Category.CategoryName = TempData["CategoryName"].ToString();
-                    //pdto.Category.Status = (Status)TempData["CategoryStatus"];
-                    //pdto.Category.CategoryPicture = TempData["CategoryPicture"].ToString();
+
+                    int category_id = (int)TempData["category_id"];
+                    TempData["category_id"] = category_id;
+
+                    // var deneme = cdto.ID;
+                    // TempData["CategoryID"] = cdto.ID;                    
+                    // TempData["CategoryName"] = cdto.CategoryName;
+                    // TempData["Status"] = (Status) cdto.Status; 
+                    // TempData["CategoryPicture"] = cdto.CategoryPicture;
 
                     return RedirectToAction("ProductList", new { id = (int)TempData["category_id"] }); // comment'te alınırsa TempData["mesaj"] = "Ürün adı ve statü giriniz.."; da çalışır..
                 }

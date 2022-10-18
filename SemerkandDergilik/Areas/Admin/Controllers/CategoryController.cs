@@ -135,10 +135,12 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                     if (ctg.ID == 0)
                     {
                         await _icm.AddAsync(ctg);
+                        TempData["mesaj"] = "Kategori eklendi";
                     }
                     else
                     {
                         _icm.Update(ctg);
+                        TempData["mesaj"] = "Kategori güncellendi";
 
                     }
 
