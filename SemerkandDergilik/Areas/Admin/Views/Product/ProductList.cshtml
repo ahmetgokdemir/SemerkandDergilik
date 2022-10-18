@@ -33,7 +33,7 @@ else
 
     <div class="container">
         <div class="row">
-            <table class="table table-bordered table-striped" id="tab2">
+            <table class="table table-bordered table-hover" id="tab2">
                 <thead>
                     <tr>
                         <th>Ürün İsmi</th>
@@ -66,7 +66,7 @@ else
                             @*<td colspan="2" style="padding-left:150px">@item.CategoryPicture</td>*@
                             <td colspan="2" style="padding-left:75px"><img style="width:75%; height:75%" src="@item.ProductPicture" /></td>
                             <td>
-                                @*<a asp-action="UpdateCategory" asp-controller="Category" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
+                                <a class="btn btn-warning" value="updateProductValue" data-id=@item.ID>Güncelle</a>
                                 @* BURASIIII  <button class="btn btn-warning " id="updateCategory" value="updateCategoryValue" data-id=@item.ID>Güncelle</button>*@
                             </td>
                             <td>
@@ -113,7 +113,7 @@ else
         //$("#addNewProduct").click(function () {
         $("#tab1").on("click", "[value=addNewProductValue]", function () {
             $.ajax({
-                //url: '@@Url.Action("AddCategoryAjax","Category")',
+                //url: '@@Url.Action("AddProductAjax","Product")',
                 url: 'AddProductAjax',
                 type: 'GET',
                 dataType: 'html',
@@ -129,13 +129,32 @@ else
         });
     });
 
+    $(function () {
+        //$("#updateProduct").click(function () {
+        $("#tab2").on("click", "[value=updateProductValue]", function () {
+            $.ajax({
+                //url: '@@Url.Action("UpdateProductAjax","Product")',
+                url: 'UpdateProductAjax',
+                data: { id: $(this).attr("data-id") },
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $("#CRUDProduct").html(data);
+                    CRUDProductModalLoaded();
 
+                },
+                error: function () {
+                    alert("Hata alındı.");
+                }
+            });
+        });
+    });
 
     $(function () {
         //$("#deleteProduct").click(function () {
         $("#tab2").on("click", "[value=deleteProductValue]", function () {
             $.ajax({
-                //url: '@@Url.Action("AddCategoryAjax","Category")',
+                //url: '@@Url.Action("DeleteProductAjax","Product")',
                 url: 'DeleteProductAjax',
                 data: { id: $(this).attr("data-id") },
                 type: 'GET',

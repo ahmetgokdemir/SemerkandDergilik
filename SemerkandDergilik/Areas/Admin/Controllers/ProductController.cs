@@ -102,6 +102,37 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         }
 
 
+
+        [Route("UpdateProductAjax")]
+        public async Task<PartialViewResult> UpdateProductAjax(int id)
+        {
+            Product product_item = await _ipm.GetByIdAsync(id);
+            ProductDTO pDTO = product_item.Adapt<ProductDTO>();
+
+            IEnumerable<string> categoryNames = await _icm.GetActivesCategoryNamesAsync();
+            ViewBag.CategoryNames = new SelectList(categoryNames);
+
+            string categoryNameAccordingToProduct = await _icm.GetCategoryNameAccordingToProductAsync((int)TempData["category_id"]);
+            //ProductDTO pdto = new ProductDTO();
+
+            CategoryDTO cdto = new CategoryDTO(); // yazılmazsa null referance hatası verir.. 
+            // cdto.CategoryName = TempData["CategoryName"].ToString(); // 2.yol
+            cdto.CategoryName = categoryNameAccordingToProduct;
+            pDTO.Category = cdto; // yazılmazsa null referance hatası verir.. 
+
+
+
+
+
+            ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
+
+            int category_id = (int)TempData["category_id"];
+            TempData["category_id"] = category_id;
+
+            return PartialView("_CrudProductPartial", pDTO);
+        }
+
+
         [Route("DeleteProductAjax")]
         public async Task<PartialViewResult> DeleteProductAjax(int id)
         {
