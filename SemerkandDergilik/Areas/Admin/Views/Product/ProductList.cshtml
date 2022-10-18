@@ -83,7 +83,7 @@ else
 }
 
 
-    <a asp-action="CategoryList" asp-controller="Category" class="btn btn-outline-info">Geri Dön</a>
+    <a asp-action="CategoryList" asp-controller="Category" class="btn btn-outline-info">Kategori Sayfasına Geri Dön</a>
 
 
 <div class="modal fade" id="CRUDProductModal" tabindex="-1" role="dialog">
@@ -106,6 +106,30 @@ else
 
 
 <script type="text/javascript">
+
+         @Model.JavascriptToRun
+
+        function ShowErrorPopup() {
+            // alert('Sorry, we could not process your order.');
+
+            $.ajax({
+                //url: '@@Url.Action("AddProductAjax","Product")',
+                url: 'AddProductAjax',
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $("#CRUDProduct").html(data);
+                    CRUDProductModalLoaded();
+
+                },
+                error: function () {
+                    alert("Hata alındı.");
+                }
+            });
+
+        }
+
+
 
     function CRUDProductModalLoaded() {
         $("#CRUDProductModal").modal('show'); // #MaintenanceRoomModal içinde MaintenanceRoom var (<div class="modal-body" id="MaintenanceRoom">) onun içinde de data var (_MaintenanceRoomPartial veya _UnMaintenanceRoomPartial)

@@ -9,6 +9,7 @@ using Semerkand_Dergilik.ViewModels;
 using Semerkand_Dergilik.VMClasses;
 using System.Collections;
 using System.Data;
+using System.Xml.Linq;
 
 namespace Semerkand_Dergilik.Areas.Admin.Controllers
 {
@@ -36,7 +37,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
 
         [Route("ProductList")]
-        public async Task<IActionResult> ProductList(int id)
+        public async Task<IActionResult> ProductList(int id, string pvm2)
         {
             int category_id = id;
 
@@ -48,7 +49,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             ProductVM pvm = new ProductVM
             {
                 Products = productEnumerableList.Adapt<IEnumerable<ProductDTO>>().ToList(),
-
+                JavascriptToRun = pvm2
             };
 
             /*
@@ -258,7 +259,10 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             TempData["mesaj"] = "Ürün adı ve statü giriniz..";
             //ModelState.AddModelError("", "Ürün adı ve statü giriniz..");
 
-            return RedirectToAction("ProductList", new { id = (int)TempData["category_id"] });
+            ProductVM pvm = new ProductVM() ;
+            pvm.JavascriptToRun = "ShowErrorPopup()";
+
+            return RedirectToAction("ProductList", new { id = (int)TempData["category_id"], pvm2 = pvm.JavascriptToRun });
 
         }
 

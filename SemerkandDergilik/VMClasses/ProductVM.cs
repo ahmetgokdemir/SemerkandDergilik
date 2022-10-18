@@ -6,5 +6,7 @@ namespace Semerkand_Dergilik.VMClasses
     {
         public ProductDTO Product { get; set; }
         public List<ProductDTO> Products { get; set; }
+
+        public string JavascriptToRun { get; set; }
     }
 }
