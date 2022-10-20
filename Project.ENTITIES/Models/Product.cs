@@ -13,7 +13,7 @@ namespace Project.ENTITIES.Models
         public short UnitsInStock { get; set; }
         public decimal UnitPrice { get; set; } // ProductConfiguration.cs'de money'e çevrilmeli.. 
         public string? ProductPicture { get; set; }
-        public int Status { get; set; } // Aktif, Pasif
+        public int Status { get; set; } // Aktif, Pasif... EntityBase'de ki gibi DataStatus verilebilir idi int yerine... ve casting işlemlerine gerek kalmaz idi..
         public short? Discount { get; set; } 
 
 

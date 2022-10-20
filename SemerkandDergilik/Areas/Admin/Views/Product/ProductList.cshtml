@@ -14,13 +14,13 @@
 <h4 style="color:red;">@TempData["mesaj"] </h4>
 
 
-@if (Model.Products.Count == 0)
+@if (Model.ProductDTOs.Count == 0)
 {
-    <div class="jumbotron" id="tab1">
-        Ürün Eklemek için
+    <div class="jumbotron" id="tab1" style="padding:20px;  background-color:lightgrey" >
+        
         @* BURASIIII DEĞİLLLL <input type="submit" id="btnIslemYap" value="İşlem Yap" />*@
 
-        <button class="btn btn-outline-success " id="addNewProduct" value="addNewProductValue">tıklayınız</button>
+        <button class="btn btn-outline-success " id="addNewProduct" value="addNewProductValue">Ürün Eklemek için tıklayınız</button>
     </div>
 }
 
@@ -51,7 +51,7 @@ else
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (ProductDTO item in Model.Products)
+                    @foreach (ProductDTO item in Model.ProductDTOs)
                     {
                         <tr>
                             <td>@item.ProductName</td>
@@ -59,8 +59,8 @@ else
                             <td>@item.UnitsInStock</td>
                             <td>@item.Discount</td>
 
-                            <td>@item.Category.ID</td>
-                            <td>@item.Category.CategoryName</td>
+                            <td>@item.CategoryID</td>
+                            <td>@Model.CategoryDTO.CategoryName</td>
 
                             <td>@item.Status</td>
                             @*<td colspan="2" style="padding-left:150px">@item.CategoryPicture</td>*@
@@ -109,12 +109,34 @@ else
 
          @Model.JavascriptToRun
 
-        function ShowErrorPopup() {
+        function ShowErrorInsertOperationPopup() {
             // alert('Sorry, we could not process your order.');
 
             $.ajax({
                 //url: '@@Url.Action("AddProductAjax","Product")',
                 url: 'AddProductAjax',
+                //data: { pdto_reloaddata: @@Model.ProductDTO },
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $("#CRUDProduct").html(data);
+                    CRUDProductModalLoaded();
+
+                },
+                error: function () {
+                    alert("Hata alındı.");
+                }
+            });
+
+        }
+
+        function ShowErrorUpdateOperationPopup(_id) {
+            // alert('Sorry, we could not process your order.');
+
+            $.ajax({
+                //url: '@@Url.Action("AddProductAjax","Product")',
+                url: 'UpdateProductAjax',
+                data: { id: _id },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {

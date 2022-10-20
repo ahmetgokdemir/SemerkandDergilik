@@ -3,17 +3,17 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@model ProductDTO
+@model ProductVM 
 
-@if (Model.ID == 0 && ViewBag.CRUD != "delete_operation")
+@if (Model.ProductDTO.ID == 0 && ViewBag.CRUD != "delete_operation")
 {
     <h3>Ürün Oluşturma Formu</h3>
 }
-else if (Model.ID != 0 && ViewBag.CRUD != "delete_operation")
+else if (Model.ProductDTO.ID != 0 && ViewBag.CRUD != "delete_operation")
 {
     <h3>Ürün Güncelleme Formu</h3>
 }
-else if (Model.ID != 0 && ViewBag.CRUD == "delete_operation")
+else if (Model.ProductDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
 {
     <h3>Ürün Silme Formu</h3>
 }
@@ -26,50 +26,57 @@ else if (Model.ID != 0 && ViewBag.CRUD == "delete_operation")
 
             @if (ViewBag.CRUD != "delete_operation")
             {
+            TempData["Deleted"] = null;  // delete pop-up sayfasını açıp sonra kapatıp sonra da update/add pop'ı seçilirse TempData["Deleted"] sıfırlanmadığından CRUDProduct kısmında delete operation çalışır bu yüzden bunu sıfırlamak lazım
+
+
                 <div class="form-group">
-                    <label asp-for="ProductName" class="control-label"></label>
-                    <input asp-for="ProductName" class="form-control" />
-                    <span asp-validation-for="ProductName" class="text-danger"></span>
+                    <label asp-for="ProductDTO.ProductName" class="control-label"></label>
+                <input asp-for="ProductDTO.ProductName" class="form-control" placeholder="Ürün adı giriniz..." />
+                <span asp-validation-for="ProductDTO.ProductName" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="UnitPrice" class="control-label"></label>
-                    <input asp-for="UnitPrice" class="form-control" />
-                    <span asp-validation-for="UnitPrice" class="text-danger"></span>
+                    <label asp-for="ProductDTO.UnitPrice" class="control-label"></label>
+                    <input asp-for="ProductDTO.UnitPrice" class="form-control" placeholder="Ürün fiyatı giriniz..." />
+                <span asp-validation-for="ProductDTO.UnitPrice" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="UnitsInStock" class="control-label" style=" width:100%"></label>
-                    <input asp-for="UnitsInStock" class="form-control" />
-                    <span asp-validation-for="UnitsInStock" class="text-danger"></span>
+                    <label asp-for="ProductDTO.UnitsInStock" class="control-label" style=" width:100%"></label>
+                    <input asp-for="ProductDTO.UnitsInStock" class="form-control" placeholder="Stok sayısı giriniz..." />
+                    <span asp-validation-for="ProductDTO.UnitsInStock" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Discount" class="control-label"></label>
-                    <input asp-for="Discount" class="form-control" />
-                    <span asp-validation-for="Discount" class="text-danger"></span>
+                    <label asp-for="ProductDTO.Discount" class="control-label"></label>
+                    <input asp-for="ProductDTO.Discount" class="form-control" />
+                    <span asp-validation-for="ProductDTO.Discount" class="text-danger"></span>
                 </div>
 
-                <input type="hidden" asp-for="CategoryID" />
+                <input type="hidden" asp-for="ProductDTO.CategoryID" />
+
+@*                <input type="hidden" asp-for="CategoryDTO.ID" />
+                <input type="hidden" asp-for="CategoryDTO.CategoryName" />*@
+
 
                 <div class="form-group">
-                    <label asp-for="Category.CategoryName" class="control-label"></label>
-                    <select class="form-control" asp-for="Category.CategoryName" asp-items="@ViewBag.CategoryNames" disabled></select>
-                    <span asp-validation-for="Category.CategoryName" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Status" class="control-label"></label>
-                    <select class="form-control" asp-for="Status" asp-items="@ViewBag.Status"></select>
-                    <span asp-validation-for="Status" class="text-danger"></span>
+                    <label asp-for="CategoryDTO.CategoryName" class="control-label"></label>
+                    <select class="form-control" asp-for="CategoryDTO.CategoryName" asp-items="@ViewBag.CategoryNames" disabled></select>
+                    <span asp-validation-for="CategoryDTO.CategoryName" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="ProductPicture" class="control-label"></label>
-                    <input class="form-control" type="file" name="productPicture" src="ProductPicture" />
+                    <label asp-for="ProductDTO.Status" class="control-label"></label>
+                    <select class="form-control" asp-for="ProductDTO.Status" asp-items="@ViewBag.Status"></select>
+                    <span asp-validation-for="ProductDTO.Status" class="text-danger"></span>
                 </div>
 
-                @if (Model.ID == 0)
+                <div class="form-group">
+                    <label asp-for="ProductDTO.ProductPicture" class="control-label"></label>
+                    <input class="form-control" type="file" name="productPicture" />
+                </div>
+
+                @if (Model.ProductDTO.ID == 0)
                 {
                     <div class="form-group">
                         <input type="submit" value="Ürün Ekle" class="btn btn-primary mt-2" />
@@ -77,7 +84,7 @@ else if (Model.ID != 0 && ViewBag.CRUD == "delete_operation")
                 }
                 else
                 {
-                    <input type="hidden" asp-for="ID" />
+                    <input type="hidden" asp-for="ProductDTO.ID" />
 
                     <div class="form-group">
                         <input type="submit" value="Ürün Güncelle" class="btn btn-primary mt-2" />
@@ -93,10 +100,10 @@ else if (Model.ID != 0 && ViewBag.CRUD == "delete_operation")
 
             else
             {
-                <input type="hidden" asp-for="ID" />
+                <input type="hidden" asp-for="ProductDTO.ID" />
 
                 <div class="form-group">
-                <span asp-validation-for="ProductName"></span> <label style="width:100%; height:100%">@ViewBag.ProductNameDelete silmek istediğinizden emin misiniz ?</label>
+                <span asp-validation-for="ProductDTO.ProductName"></span> <label style="width:100%;                                height:100%">@ViewBag.ProductNameDelete silmek istediğinizden emin misiniz ?</label>
 
                 </div>
 

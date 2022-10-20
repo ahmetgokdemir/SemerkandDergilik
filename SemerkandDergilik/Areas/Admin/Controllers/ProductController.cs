@@ -1,12 +1,18 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Session;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json;
 using Project.BLL.ManagerServices.Abstracts;
 using Project.ENTITIES.Models;
+using Semerkand_Dergilik.CommonTools;
 using Semerkand_Dergilik.Enums;
 using Semerkand_Dergilik.ViewModels;
 using Semerkand_Dergilik.VMClasses;
+using System;
 using System.Collections;
 using System.Data;
 using System.Xml.Linq;
@@ -26,8 +32,8 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             _ipm = ipm;
             _icm = icm;
         }
-         
- 
+
+
 
         [Route("ProductIndex")]
         public IActionResult Index()
@@ -37,19 +43,26 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
 
         [Route("ProductList")]
-        public async Task<IActionResult> ProductList(int id, string pvm2)
+        public async Task<IActionResult> ProductList(int id, string? JSpopupPage)
         {
+
+            if (TempData["JavascriptToRun"] == null)
+            {
+                JSpopupPage = null; // pop-up sıfırlanır yoksa sayfayı reflesleyince geliyor
+            }
+
             int category_id = id;
 
             IEnumerable<Product> productEnumerableList = await _ipm.GetActivesProductsByCategoryIDAsync(category_id);
-            
+
             List<Product> productsList = new List<Product>();
             productsList = productEnumerableList.ToList();
 
             ProductVM pvm = new ProductVM
             {
-                Products = productEnumerableList.Adapt<IEnumerable<ProductDTO>>().ToList(),
-                JavascriptToRun = pvm2
+                ProductDTOs = productEnumerableList.Adapt<IEnumerable<ProductDTO>>().ToList(),
+                JavascriptToRun = JSpopupPage,
+                CategoryDTO = productsList.Count > 0 ? productsList[0].Category.Adapt<CategoryDTO>() : null
             };
 
             /*
@@ -61,9 +74,13 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                 TempData["CategoryPicture"] = pvm.Products[0].Category.CategoryPicture;
             }
             */
+            if (pvm.ProductDTOs.Count > 0)
+            {
+                TempData["CategoryName"] = productsList[0].Category.CategoryName;
+            }
 
             TempData["category_id"] = category_id;
-            TempData["CategoryName"] = productsList[0].Category.CategoryName;
+            JSpopupPage = null;
 
             return View(pvm);
         }
@@ -72,31 +89,115 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         [Route("AddProductAjax")]
         public async Task<PartialViewResult> AddProductAjax()
         {
-
             IEnumerable<string> categoryNames = await _icm.GetActivesCategoryNamesAsync();
             ViewBag.CategoryNames = new SelectList(categoryNames); // html kısmında select tag'ı kullanıldığı için SelectList kullanıldı
 
-            // *string categoryNameAccordingToProduct = await _icm.GetCategoryNameAccordingToProductAsync((int)TempData["category_id"]);
-
             ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
-                        
+
+
+            ProductDTO pdto = new ProductDTO();
+
+            var result = new ProductDTO();
+
+
+            // HttpContext.Session.SetObject("manipulatedData", pvm_post.ProductDTO);
+            if (TempData["HttpContext"] != null)
+            {
+                pdto = new ProductDTO();
+                result = HttpContext.Session.GetObject<ProductDTO>("manipulatedData");
+                pdto = result;
+
+
+            }
+            /*
+            if (result != null)
+            {
+                pdto = result;
+            }
+            */
+
+
+            // *string categoryNameAccordingToProduct = await _icm.GetCategoryNameAccordingToProductAsync((int)TempData["category_id"]);
 
             // ViewBag.CategoryName = categoryNameAccordingToProduct; --> asp-for, ViewBag kabul etmediği için pdto, cdto, cdto.CategoryName değerleri tanımlandı..
             // asp-for="Category.CategoryName" değer atamak için pdto, cdto, cdto.CategoryName değerleri tanımlandı..
-            ProductDTO pdto = new ProductDTO(); 
+
+
 
             CategoryDTO cdto = new CategoryDTO(); // yazılmazsa null referance hatası verir.. 
-            //cdto.CategoryName = categoryNameAccordingToProduct; // 2.yol
-            
+                                                  //cdto.CategoryName = categoryNameAccordingToProduct; // 2.yol
+
             cdto.CategoryName = TempData["CategoryName"].ToString();
+            cdto.ID = (int)TempData["category_id"];
+
             pdto.CategoryID = (int)TempData["category_id"];
-            pdto.Category = cdto; // yazılmazsa null referance hatası verir.. 
+            // pdto.Category = cdto; // yazılmazsa null referance hatası verir.. 
 
 
-            TempData["category_id"] = pdto.CategoryID;
+            TempData["category_id"] = cdto.ID;
             TempData["CategoryName"] = cdto.CategoryName; // 2.yol kullanılırsa gerekli olacak kod..
 
-            return PartialView("_CrudProductPartial", pdto); // pdto değeri döndürmemizin nedeni cdto.CategoryName nin html'de dolu olması diğer değerler boş gelecek...
+            ProductVM pvm = new ProductVM
+            {
+                CategoryDTO = cdto,
+                ProductDTO = pdto
+            };
+
+            if (TempData["HttpContext"] != null)
+            {
+                TempData["HttpContext"] = null;
+
+                if (string.IsNullOrEmpty(pvm.ProductDTO.ProductName))
+                {
+                    ModelState.AddModelError("ProductDTO.ProductName", "Ürün adı giriniz.");
+                }
+                if (pvm.ProductDTO.UnitPrice <= 0)
+                {
+                    ModelState.AddModelError("ProductDTO.UnitPrice", "Ürün fiyatı sıfırdan büyük sayısı olmalıdır.");
+                }
+                if (pvm.ProductDTO.UnitsInStock <= 0)
+                {
+                    ModelState.AddModelError("ProductDTO.UnitsInStock", "Stok sayısı sıfırdan büyük sayısı olmalıdır.");
+                }
+                if (pvm.ProductDTO.Discount < 0)
+                {
+                    ModelState.AddModelError("ProductDTO.Discount", "İskonto negatif sayı olamaz.");
+                }
+
+                HttpContext.Session.SetObject("manipulatedData", null);
+            }
+
+            return PartialView("_CrudProductPartial", pvm); // pdto değeri döndürmemizin nedeni cdto.CategoryName nin html'de dolu olması diğer değerler boş gelecek...
+
+
+            /*else
+            {
+                 
+
+                CategoryDTO cdto = new CategoryDTO(); // yazılmazsa null referance hatası verir.. 
+                                                      //cdto.CategoryName = categoryNameAccordingToProduct; // 2.yol
+
+                cdto.CategoryName = TempData["CategoryName"].ToString();
+                cdto.ID = (int)TempData["category_id"];
+
+                TempData["category_id"] = cdto.ID;
+                TempData["CategoryName"] = cdto.CategoryName; // 2.yol kullanılırsa gerekli olacak kod..
+
+                ProductVM pvm = new ProductVM
+                {
+                    CategoryDTO = cdto,
+                    ProductDTO =  pdto_reloaddata                
+
+                };
+
+
+                TempData["category_id"] = cdto.ID;
+                TempData["CategoryName"] = cdto.CategoryName; // 2.yol kullanılırsa gerekli olacak kod..
+
+                return PartialView("_CrudProductPartial", pvm); // pdto değeri döndürmemizin nedeni cdto.CategoryName nin html'de dolu olması diğer değerler boş gelecek...
+
+            }
+            */
         }
 
 
@@ -104,37 +205,90 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         [Route("UpdateProductAjax")]
         public async Task<PartialViewResult> UpdateProductAjax(int id)
         {
-            Product product_item = await _ipm.GetByIdAsync(id);
+            IEnumerable<string> categoryNames = await _icm.GetActivesCategoryNamesAsync();
+            ViewBag.CategoryNames = new SelectList(categoryNames);
+
+            ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
+
+
 
             // * Product product_item = await _ipm.GetProductByIdwithCategoryValueAsync(id);
             // yukarıdaki kod Ürünü, kategori bilgileri ile getirir buna gerek yok.. product_item.Adapt<ProductDTO>() yeterli
 
-            ProductDTO pDTO = product_item.Adapt<ProductDTO>();
+
+
+            ProductDTO pdto = new ProductDTO();
+
+            var result = new ProductDTO();
+
+            if (TempData["HttpContext"] != null)
+            {
+                result = HttpContext.Session.GetObject<ProductDTO>("manipulatedData");
+                pdto = result;
+
+                HttpContext.Session.SetObject("manipulatedData", null);
+            }
+            else
+            {
+                Product product_item = await _ipm.GetByIdAsync(id);
+
+                pdto = product_item.Adapt<ProductDTO>();
+            }
+
+
+
 
             /*
             string categoryNameAccordingToProduct = await _icm.GetCategoryNameAccordingToProductAsync((int)TempData["category_id"]);      
             */
-            
+
             CategoryDTO cdto = new CategoryDTO(); // yazılmazsa cdto.CategoryName null referance hatası verir.. 
             cdto.CategoryName = TempData["CategoryName"].ToString(); // asp-for="Category.CategoryName" değer atamak için 
             // cdto.CategoryName = categoryNameAccordingToProduct;  2.yol
-            pDTO.Category = cdto; // yazılmazsa null referance hatası verir.. 
+            // pDTO.Category = cdto; // yazılmazsa null referance hatası verir.. 
+            cdto.ID = (int)TempData["category_id"];
 
-            TempData["CategoryName"] = cdto.CategoryName;
+            //TempData["CategoryName"] = cdto.CategoryName;
+            // TempData["category_id"] = cdto.ID;
 
+            ProductVM pvm = new ProductVM
+            {
+                ProductDTO = pdto,
+                CategoryDTO = cdto
+            };
 
-            IEnumerable<string> categoryNames = await _icm.GetActivesCategoryNamesAsync();
-            ViewBag.CategoryNames = new SelectList(categoryNames);
+            if (TempData["HttpContext"] != null)
+            {
+                TempData["HttpContext"] = null;
 
+                if (string.IsNullOrEmpty(pvm.ProductDTO.ProductName))
+                {
+                    ModelState.AddModelError("ProductDTO.ProductName", "Ürün adı giriniz.");
+                }
+                if (pdto.UnitPrice <= 0)
+                {
+                    ModelState.AddModelError("ProductDTO.UnitPrice", "Ürün fiyatı sıfırdan büyük sayısı olmalıdır.");
+                }
+                if (pdto.UnitsInStock <= 0)
+                {
+                    ModelState.AddModelError("ProductDTO.UnitsInStock", "Stok sayısı sıfırdan büyük sayısı olmalıdır.");
+                }
+                if (pvm.ProductDTO.Discount < 0)
+                {
+                    ModelState.AddModelError("ProductDTO.Discount", "İskonto negatif sayı olamaz.");
+                }
 
-            ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
+                HttpContext.Session.SetObject("manipulatedData", null);
+            }
 
             /*
              int category_id = (int)TempData["category_id"];
             TempData["category_id"] = category_id;
             */
+            TempData["category_id"] = cdto.ID;
+            TempData["CategoryName"] = cdto.CategoryName; // 2.yol kullanılırsa gerekli olacak kod..
 
-            return PartialView("_CrudProductPartial", pDTO);
+            return PartialView("_CrudProductPartial", pvm);
         }
 
 
@@ -142,26 +296,34 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         public async Task<PartialViewResult> DeleteProductAjax(int id)
         {
             Product product_item = await _ipm.GetByIdAsync(id);
-            ProductDTO pDTO = product_item.Adapt<ProductDTO>();
+            // ProductDTO pDTO = product_item.Adapt<ProductDTO>();
 
+            ProductVM pvm = new ProductVM
+            {
+                ProductDTO = product_item.Adapt<ProductDTO>()
+            };
 
             ViewBag.CRUD = "delete_operation";
-            ViewBag.ProductNameDelete = pDTO.ProductName;
+            ViewBag.ProductNameDelete = pvm.ProductDTO.ProductName;
 
-            return PartialView("_CrudProductPartial", pDTO);
+            return PartialView("_CrudProductPartial", pvm);
         }
 
 
         [Route("CRUDProduct")]
         [HttpPost]
-        public async Task<IActionResult> CRUDProduct(ProductDTO pdto, IFormFile productPicture)
+        public async Task<IActionResult> CRUDProduct(ProductVM pvm_post, IFormFile productPicture)
         {
             if (TempData["Deleted"] == null)
             {
                 ModelState.Remove("ProductPicture");
-                ModelState.Remove("Category");
+                // ModelState.Remove("Category");
+                ModelState.Remove("ProductDTOs");
+                ModelState.Remove("JavascriptToRun");
+                ModelState.Remove("CategoryDTO");
 
-               
+
+
                 // CategoryDTO cdto = new CategoryDTO();// yazılmazsa null referance hatası verir.. 
                 // // cdto.ID = (int) TempData["CategoryID"];
                 // pdto.Category = cdto;
@@ -170,15 +332,16 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                 // pdto.Category.Status = (Status)TempData["CategoryStatus"];
                 // pdto.Category.CategoryPicture = TempData["CategoryPicture"].ToString();
 
-              
+
 
                 if (ModelState.IsValid)
                 {
-                    Product prd = pdto.Adapt<Product>();
+                    Product prd = pvm_post.ProductDTO.Adapt<Product>();
 
-                    prd.Status = (int)pdto.Status; // casting bu olmadan dene
+                    prd.Status = (int)pvm_post.ProductDTO.Status; // casting bu olmadan dene
                     //  <input type="hidden" asp-for="CategoryID" /> bunu kullandığımız için prd.CategoryID = (int)TempData["category_id"]; ama bu koda gerek kalmadı... zira ProductDTO'da CategoryID ile veriyi aldık.. 
                     // prd.Category = null;
+                    // prd.CategoryID = pvm_post.CategoryDTO.ID; bu koda gerek kalmadı çünkü <input type="hidden" asp-for="ProductDTO.CategoryID" /> bunu kullandığımız için
 
                     //////
                     ///
@@ -198,11 +361,11 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                         }
                     }
                     else
-                    {                    
+                    {
                         // Update işleminde çalışır
-                        if (pdto.ID != 0)
+                        if (pvm_post.ProductDTO.ID != 0)
                         {
-                            Product prdv2 = await _ipm.GetByIdAsync(pdto.ID);
+                            Product prdv2 = await _ipm.GetByIdAsync(pvm_post.ProductDTO.ID);
 
                             if (prdv2.ProductPicture != null) // önceden veritabanında resim varsa ve resim seçilmedi ise..
                             {
@@ -242,7 +405,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             }
             else
             {
-                _ipm.Delete(await _ipm.GetByIdAsync(pdto.ID));
+                _ipm.Delete(await _ipm.GetByIdAsync(pvm_post.ProductDTO.ID));
 
                 // Category ctg = cdto.Adapt<Category>();
 
@@ -256,13 +419,39 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                 return RedirectToAction("ProductList", new { id = (int)TempData["category_id"] });
             }
 
-            TempData["mesaj"] = "Ürün adı ve statü giriniz..";
-            //ModelState.AddModelError("", "Ürün adı ve statü giriniz..");
+            // TempData["mesaj"] = "Ürün adı ve statü giriniz..";
+            // ModelState.AddModelError("", "Ürünasdasd adı ve statü giriniz..");
+            //ModelState.AddModelError("", item.Description);
 
-            ProductVM pvm = new ProductVM() ;
-            pvm.JavascriptToRun = "ShowErrorPopup()";
 
-            return RedirectToAction("ProductList", new { id = (int)TempData["category_id"], pvm2 = pvm.JavascriptToRun });
+            ProductVM pvm = new ProductVM();
+
+            // TempData["manipulatedData"] = pvm_post.ProductDTO;
+            // var key = "manipulatedData";
+            //var str = JsonConvert.SerializeObject(pvm_post.ProductDTO);
+            HttpContext.Session.SetObject("manipulatedData", pvm_post.ProductDTO);
+
+            TempData["JavascriptToRun"] = "valid";
+            TempData["HttpContext"] = "valid";
+
+            if (pvm_post.ProductDTO.ID != 0) //update
+            {
+                pvm.JavascriptToRun = $"ShowErrorUpdateOperationPopup({pvm_post.ProductDTO.ID})";
+                return RedirectToAction("ProductList", new { id = (int)TempData["category_id"], JSpopupPage = pvm.JavascriptToRun });
+
+            }
+            else // add // (pvm_post.ProductDTO.ID == 0) çevir...
+            {
+                // pvm.JavascriptToRun = $"ShowErrorPopup( {pvm_post.ProductDTO} )";
+
+                // pvm.JavascriptToRun = $"ShowErrorInsertOperationPopup()";
+
+                TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
+                return RedirectToAction("ProductList", new { id = (int)TempData["category_id"], JSpopupPage = TempData["JSpopupPage"].ToString() });
+            }
+
+
+
 
         }
 

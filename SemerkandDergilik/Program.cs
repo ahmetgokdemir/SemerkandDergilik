@@ -180,6 +180,8 @@ builder.Services.AddScoped<ICategoryManager, CategoryManager>();
 builder.Services.AddScoped<IProductManager, ProductManager>();
 
 
+builder.Services.AddSession();
+
 // builder.Services.AddAutoMapper();
 
 /*
@@ -228,7 +230,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-//app.UseSession();
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

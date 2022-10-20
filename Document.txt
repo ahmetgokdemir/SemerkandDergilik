@@ -1,0 +1,20 @@
+
+
+
+
+
+Session kullanýmý:
+
+Program.cs --> 
+builder.Services.AddSession();
+app.UseSession();
+
+CommonTools --> 
+SessionExtension.cs added...
+
+ProductController.cs -->
+HttpContext.Session.SetObject("manipulatedData", pvm_post.ProductDTO);
+result = HttpContext.Session.GetObject<ProductDTO>("manipulatedData");
+
+
+

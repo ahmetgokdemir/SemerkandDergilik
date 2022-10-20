@@ -15,26 +15,29 @@ namespace Semerkand_Dergilik.ViewModels
 
         [Required(ErrorMessage = "Ürün fiyatı giriniz.")]
         [Display(Name = "Ürün Fiyat")]
+        [Range(1, 1000000000000)]
         public decimal UnitPrice { get; set; } // ProductConfiguration.cs'de money'e çevrilmeli.. 
 
         
         [Required(ErrorMessage = "Stok sayısı giriniz.")]
         [Display(Name = "Stoktaki Ürün Adedi")]
+        [Range(1, 1000000000000)]
         public short UnitsInStock { get; set; }
 
 
         [Display(Name = "İskonto")]
+        [Range(0, 1000000000000)]
         public short? Discount { get; set; }
 
 
         //public int CategoryID { get; set; }
         public int CategoryID { get; set; }
-
+         
         //[Display(Name = "Kategori Adı")]
         //public string CategoryName { get; set; } // Aktif, Pasif
         // [Display(Name = "Kategori DTO Adı")]
         // [Required(ErrorMessage = "Kategori ismi gereklidir...")]
-        public CategoryDTO Category { get; set; }
+        // public CategoryDTO Category { get; set; }
 
 
         [Display(Name = "Durum")]
