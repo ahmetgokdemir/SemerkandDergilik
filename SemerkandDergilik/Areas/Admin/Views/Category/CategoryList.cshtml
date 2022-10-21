@@ -139,6 +139,12 @@ else
                 CRUDCategoryModalLoaded();
 
             },
+            beforeSend: function () {
+                $('.loader').show(); // Assuming that you have some loader defined
+            },
+            complete: function () {
+                $('.loader').hide(); //Hide this loader
+            },
             error: function () {
                 alert("Hata alındı.");
             }
@@ -165,6 +171,12 @@ else
                     CRUDCategoryModalLoaded();
 
                 },
+                beforeSend: function () {
+                    $('.loader').show(); // Assuming that you have some loader defined
+                },
+                complete: function () {
+                    $('.loader').hide(); //Hide this loader
+                },
                 error: function () {
                     alert("Hata alındı.");
                 }
@@ -185,6 +197,12 @@ else
                     $("#CRUDCategory").html(data);
                     CRUDCategoryModalLoaded();
 
+                },
+                beforeSend: function () {
+                    $('.loader').show(); // Assuming that you have some loader defined
+                },
+                complete: function () {
+                    $('.loader').hide(); //Hide this loader
                 },
                 error: function () {
                     alert("Hata alındı.");
