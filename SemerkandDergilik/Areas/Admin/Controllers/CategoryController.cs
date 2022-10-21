@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Project.BLL.ManagerServices.Abstracts;
 using Project.ENTITIES.Identity_Models;
 using Project.ENTITIES.Models;
+using Semerkand_Dergilik.CommonTools;
 using Semerkand_Dergilik.Enums;
 using Semerkand_Dergilik.ViewModels;
 using Semerkand_Dergilik.VMClasses;
@@ -33,16 +34,23 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
 
         [Route("CategoryList")]
-        public async Task<IActionResult> CategoryList()
+        public async Task<IActionResult> CategoryList(string? JSpopupPage)
         {
+            if (TempData["JavascriptToRun"] == null)
+            {
+                JSpopupPage = null; // pop-up sıfırlanır yoksa sayfayı reflesleyince geliyor
+            }
+
             IEnumerable<Category> categoryList = await _icm.GetActivesAsync();
 
             CategoryVM cvm = new CategoryVM
             {
-                Categories = categoryList.Adapt<IEnumerable<CategoryDTO>>().ToList(),
+                CategoryDTOs = categoryList.Adapt<IEnumerable<CategoryDTO>>().ToList(),
+                JavascriptToRun = JSpopupPage
 
             };
 
+            JSpopupPage = null;
             return View(cvm);
         }
 
@@ -51,7 +59,38 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         {
             ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
 
-            return PartialView("_CrudCategoryPartial");
+            var result = new CategoryDTO();
+            CategoryDTO cDTO = new CategoryDTO();
+
+            // HttpContext.Session.SetObject("manipulatedData", pvm_post.ProductDTO);
+            if (TempData["HttpContext"] != null)
+            {
+                cDTO = new CategoryDTO();
+                result = HttpContext.Session.GetObject<CategoryDTO>("manipulatedData");
+                cDTO = result;
+
+            }
+
+            CategoryVM cVM = new CategoryVM
+            {
+                CategoryDTO = cDTO
+            };
+
+            if (TempData["HttpContext"] != null)
+            {
+                TempData["HttpContext"] = null;
+
+                if (string.IsNullOrEmpty(cVM.CategoryDTO.CategoryName))
+                {
+                    ModelState.AddModelError("CategoryDTO.CategoryName", "Kategori adı giriniz.");
+                }
+
+                HttpContext.Session.SetObject("manipulatedData", null);
+            }
+
+            Thread.Sleep(500); // pop-up sayfasını tekrar açmayı tetikleyince bazen gelmiyor o yüzden bu kod eklendi..
+
+            return PartialView("_CrudCategoryPartial", cVM);
         }
 
 
@@ -60,13 +99,55 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         [Route("UpdateCategoryAjax")]
         public async Task<PartialViewResult> UpdateCategoryAjax(int id)
         {
-            Category category_item = await _icm.GetByIdAsync(id);
-            CategoryDTO cDTO = category_item.Adapt<CategoryDTO>();
+            // Category category_item = await _icm.GetByIdAsync(id);
+            // CategoryDTO cDTO = category_item.Adapt<CategoryDTO>();
 
             ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
 
 
-            return PartialView("_CrudCategoryPartial", cDTO);
+            CategoryDTO cDTO = new CategoryDTO();
+
+            var result = new CategoryDTO();
+
+            if (TempData["HttpContext"] != null)
+            {
+                result = HttpContext.Session.GetObject<CategoryDTO>("manipulatedData");
+                cDTO = result;
+
+                // HttpContext.Session.SetObject("manipulatedData", null);
+            }
+            else
+            {
+                Category category_item = await _icm.GetByIdAsync(id);
+                cDTO = category_item.Adapt<CategoryDTO>();
+                // cdto = product_item.Adapt<CategoryDTO>();
+            }
+
+
+
+
+            CategoryVM cVM = new CategoryVM
+            {
+                CategoryDTO = cDTO
+            };
+
+
+
+            if (TempData["HttpContext"] != null)
+            {
+                TempData["HttpContext"] = null;
+
+                if (string.IsNullOrEmpty(cVM.CategoryDTO.CategoryName))
+                {
+                    ModelState.AddModelError("CategoryDTO.CategoryName", "Kategori adı giriniz.");
+                }
+
+                HttpContext.Session.SetObject("manipulatedData", null);
+            }
+
+            Thread.Sleep(500);
+
+            return PartialView("_CrudCategoryPartial", cVM);
         }
 
 
@@ -81,24 +162,32 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
             ViewBag.CRUD = "delete_operation";
 
-            return PartialView("_CrudCategoryPartial", cDTO);
+            CategoryVM cVM = new CategoryVM
+            {
+                CategoryDTO = cDTO
+            };
+
+            return PartialView("_CrudCategoryPartial", cVM);
         }
 
 
 
         [Route("CRUDCategory")]
         [HttpPost]
-        public async Task<IActionResult> CRUDCategory(CategoryDTO cdto, IFormFile categoryPicture)
+        public async Task<IActionResult> CRUDCategory(CategoryVM cvm_post, IFormFile categoryPicture)
         {
             if (TempData["Deleted"] == null)
             {
                 ModelState.Remove("CategoryPicture");
+                ModelState.Remove("CategoryDTOs");
+                ModelState.Remove("JavascriptToRun");
+
 
                 if (ModelState.IsValid)
                 {
-                    Category ctg = cdto.Adapt<Category>();
+                    Category ctg = cvm_post.CategoryDTO.Adapt<Category>();
 
-                    ctg.Status = (int)cdto.Status;
+                    ctg.Status = (int)cvm_post.CategoryDTO.Status;
 
 
 
@@ -121,7 +210,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                     }
                     else
                     {
-                        Category ctgv2 =  await _icm.GetByIdAsync(cdto.ID);
+                        Category ctgv2 = await _icm.GetByIdAsync(cvm_post.CategoryDTO.ID);
 
                         if (ctgv2 != null)
                         {
@@ -151,7 +240,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             }
             else
             {
-                _icm.Delete(await _icm.GetByIdAsync(cdto.ID));
+                _icm.Delete(await _icm.GetByIdAsync(cvm_post.CategoryDTO.ID));
 
                 // Category ctg = cdto.Adapt<Category>();
 
@@ -163,9 +252,31 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                 return RedirectToAction("CategoryList");
             }
 
-            TempData["mesaj"] = "Ürün adı ve statü giriniz..";
-            //ModelState.AddModelError("", "Ürün adı ve statü giriniz..");
-            return RedirectToAction("CategoryList");
+            // TempData["mesaj"] = "Kategori adı ve statü giriniz..";
+            // ModelState.AddModelError("", "Ürün adı ve statü giriniz..");
+
+            CategoryVM cVM = new CategoryVM();
+            HttpContext.Session.SetObject("manipulatedData", cvm_post.CategoryDTO);
+
+            TempData["JavascriptToRun"] = "valid";
+            TempData["HttpContext"] = "valid";
+
+            if (cvm_post.CategoryDTO.ID != 0) //update
+            {
+                cVM.JavascriptToRun = $"ShowErrorUpdateOperationPopup({cvm_post.CategoryDTO.ID})";
+                return RedirectToAction("CategoryList", new { JSpopupPage = cVM.JavascriptToRun });
+
+            }
+            else // add // (pvm_post.ProductDTO.ID == 0) çevir...
+            {
+                // pvm.JavascriptToRun = $"ShowErrorPopup( {pvm_post.ProductDTO} )";
+
+                // pvm.JavascriptToRun = $"ShowErrorInsertOperationPopup()";
+
+                TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
+                return RedirectToAction("CategoryList", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
+            }
+
 
         }
 

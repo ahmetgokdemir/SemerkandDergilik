@@ -9,7 +9,7 @@
 
 
 
-@if (Model.Categories.Count == 0)
+@if (Model.CategoryDTOs.Count == 0)
 {
     <div class="jumbotron" id="tab1" style="padding:20px;  background-color:lightgrey">
         @*<input type="submit" id="btnIslemYap" value="İşlem Yap" />*@
@@ -31,13 +31,13 @@ else
                     <tr>
                         <th>Kategori İsmi</th>
                         <th>Durum</th>
-                        <th colspan="2" >Resim</th>
+                        <th colspan="2">Resim</th>
                         <th></th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (CategoryDTO item in Model.Categories)
+                    @foreach (CategoryDTO item in Model.CategoryDTOs)
                     {
                         <tr>
                             <td><a class="" asp-area="Admin" asp-controller="Product" asp-action="ProductList" asp-route-id="@item.ID">@item.CategoryName</a></td>
@@ -77,10 +77,55 @@ else
     </div>
 </div>
 
- 
+
 
 
 <script type="text/javascript">
+
+
+    @Model.JavascriptToRun
+
+        function ShowErrorInsertOperationPopup() {
+            // alert('Sorry, we could not process your order.');
+
+            $.ajax({
+                //url: '@@Url.Action("AddProductAjax","Product")',
+                url: 'AddCategoryAjax',
+                //data: { pdto_reloaddata: @@Model.ProductDTO },
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $("#CRUDCategory").html(data);
+                    CRUDCategoryModalLoaded();
+
+                },
+                error: function () {
+                    alert("Hata alındı.");
+                }
+            });
+
+        }
+
+    function ShowErrorUpdateOperationPopup(_id) {
+        // alert('Sorry, we could not process your order.');
+
+        $.ajax({
+            //url: '@@Url.Action("AddProductAjax","Product")',
+            url: 'UpdateCategoryAjax',
+            data: { id: _id },
+            type: 'GET',
+            dataType: 'html',
+            success: function (data) {
+                $("#CRUDCategory").html(data);
+                CRUDCategoryModalLoaded();
+
+            },
+            error: function () {
+                alert("Hata alındı.");
+            }
+        });
+
+    }
 
 
 
@@ -151,30 +196,30 @@ else
         });
     });
 
-   /*
-    $(function () {
+    /*
+     $(function () {
 
-        $("#tab1").on("click", "[value=addNewCategory]", function () {
+         $("#tab1").on("click", "[value=addNewCategory]", function () {
 
-            $.ajax({
+             $.ajax({
 
-                //url,type,success
-                url: 'AddCategoryAjax',
-                data: {}, // data-id=@@item.ID
-                type: "Get",
-                success: function (data) {    // data, UnMaintenanceRoomAjax'ın return ettiği _UnMaintenanceRoomPartial verisidir
-                    $('#AddCategory').html(data);  // <div class="modal-body" id="MaintenanceRoom"> data buraya paste olur..
-                    AddCategoryModalLoaded();
+                 //url,type,success
+                 url: 'AddCategoryAjax',
+                 data: {}, // data-id=@@item.ID
+                 type: "Get",
+                 success: function (data) {    // data, UnMaintenanceRoomAjax'ın return ettiği _UnMaintenanceRoomPartial verisidir
+                     $('#AddCategory').html(data);  // <div class="modal-body" id="MaintenanceRoom"> data buraya paste olur..
+                     AddCategoryModalLoaded();
 
-                }
-
-
-            })
-        })
-        
+                 }
 
 
-    })*/
+             })
+         })
+
+
+
+     })*/
 
 
 </script>

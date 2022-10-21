@@ -130,7 +130,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             cdto.CategoryName = TempData["CategoryName"].ToString();
             cdto.ID = (int)TempData["category_id"];
 
-            pdto.CategoryID = (int)TempData["category_id"];
+            pdto.CategoryID = (int)TempData["category_id"]; // <input type="hidden" asp-for="ProductDTO.CategoryID" /> kısmı için bu kod gerekli..
             // pdto.Category = cdto; // yazılmazsa null referance hatası verir.. 
 
 
@@ -166,6 +166,8 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
                 HttpContext.Session.SetObject("manipulatedData", null);
             }
+
+            Thread.Sleep(500);
 
             return PartialView("_CrudProductPartial", pvm); // pdto değeri döndürmemizin nedeni cdto.CategoryName nin html'de dolu olması diğer değerler boş gelecek...
 
@@ -226,7 +228,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                 result = HttpContext.Session.GetObject<ProductDTO>("manipulatedData");
                 pdto = result;
 
-                HttpContext.Session.SetObject("manipulatedData", null);
+                // HttpContext.Session.SetObject("manipulatedData", null);
             }
             else
             {
@@ -248,8 +250,12 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             // pDTO.Category = cdto; // yazılmazsa null referance hatası verir.. 
             cdto.ID = (int)TempData["category_id"];
 
-            //TempData["CategoryName"] = cdto.CategoryName;
-            // TempData["category_id"] = cdto.ID;
+            /*
+             Product product_item = await _ipm.GetByIdAsync(id); kod sayesinde pdto.CategoryID geldiği için 
+             AddProductAjax'taki gibi pdto.CategoryID = (int)TempData["category_id"]; koda gerek kalmadı...
+            
+             */
+
 
             ProductVM pvm = new ProductVM
             {
@@ -287,6 +293,8 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             */
             TempData["category_id"] = cdto.ID;
             TempData["CategoryName"] = cdto.CategoryName; // 2.yol kullanılırsa gerekli olacak kod..
+
+            Thread.Sleep(500);
 
             return PartialView("_CrudProductPartial", pvm);
         }
@@ -341,7 +349,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                     prd.Status = (int)pvm_post.ProductDTO.Status; // casting bu olmadan dene
                     //  <input type="hidden" asp-for="CategoryID" /> bunu kullandığımız için prd.CategoryID = (int)TempData["category_id"]; ama bu koda gerek kalmadı... zira ProductDTO'da CategoryID ile veriyi aldık.. 
                     // prd.Category = null;
-                    // prd.CategoryID = pvm_post.CategoryDTO.ID; bu koda gerek kalmadı çünkü <input type="hidden" asp-for="ProductDTO.CategoryID" /> bunu kullandığımız için
+                    // prd.CategoryID = pvm_post.CategoryDTO.ID; bu koda gerek kalmadı çünkü <input type="hidden" asp-for="ProductDTO.CategoryID" /> bunu kullandığımız için.. bunu da pdto.CategoryID = (int)TempData["category_id"]; bu kodla sağladık.. 
 
                     //////
                     ///
@@ -436,8 +444,8 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
             if (pvm_post.ProductDTO.ID != 0) //update
             {
-                pvm.JavascriptToRun = $"ShowErrorUpdateOperationPopup({pvm_post.ProductDTO.ID})";
-                return RedirectToAction("ProductList", new { id = (int)TempData["category_id"], JSpopupPage = pvm.JavascriptToRun });
+                TempData["JSpopupPage"] = $"ShowErrorUpdateOperationPopup({pvm_post.ProductDTO.ID})";
+                return RedirectToAction("ProductList", new { id = (int)TempData["category_id"], JSpopupPage = TempData["JSpopupPage"].ToString() });
 
             }
             else // add // (pvm_post.ProductDTO.ID == 0) çevir...

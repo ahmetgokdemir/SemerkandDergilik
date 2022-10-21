@@ -5,7 +5,8 @@ namespace Semerkand_Dergilik.VMClasses
 {
     public class CategoryVM
     {
-        public CategoryDTO Category { get; set; }
-        public List<CategoryDTO> Categories { get; set; }
+        public CategoryDTO CategoryDTO { get; set; }
+        public List<CategoryDTO> CategoryDTOs { get; set; }
+        public string JavascriptToRun { get; set; }
     }
 }
