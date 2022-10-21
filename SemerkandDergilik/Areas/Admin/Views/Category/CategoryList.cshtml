@@ -5,9 +5,21 @@
     Layout = "~/Areas/Admin/Views/Admin/_AdminLayout.cshtml";
 }
 
+<style>
+.loader {
+  display: none;
+}
+
+
+</style>
 <h4 style="color:red;">@TempData["mesaj"] </h4>
 
+ 
 
+<div class="spinner-border loader" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+<hr class="loader"/>
 
 @if (Model.CategoryDTOs.Count == 0)
 {
@@ -68,6 +80,7 @@ else
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title"></h4>
             </div>
+
             <div class="modal-body" id="CRUDCategory">
             </div>
             <div class="modal-footer">
@@ -98,6 +111,12 @@ else
                     $("#CRUDCategory").html(data);
                     CRUDCategoryModalLoaded();
 
+                },
+                beforeSend: function () {
+                    $('.loader').show(); // Assuming that you have some loader defined
+                },
+                complete: function () {
+                    $('.loader').hide(); //Hide this loader
                 },
                 error: function () {
                     alert("Hata alındı.");
