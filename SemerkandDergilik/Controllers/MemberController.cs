@@ -243,9 +243,13 @@ namespace Semerkand_Dergilik.Controllers
 
 
                     await signInManager.SignOutAsync();
-                    await signInManager.SignInAsync(user, true); // password ile giriş yapılmayacak
-                                                                 //artık cookie yenilendi.. 30 dk sonra sistemden atılmayacak user
+                     await signInManager.SignInAsync(user, true, null); // password ile giriş yapılmayacak 1.yol
+                    //artık cookie yenilendi.. 30 dk sonra sistemden atılmayacak user
 
+                    /* 2.yol -> test edilmedi..
+                        UserViewModel userViewModel_2 = user.Adapt<UserViewModel>(); // automap
+                        await signInManager.PasswordSignInAsync(user, userViewModel_2.Password, true, false);
+                    */
 
 
 
@@ -281,8 +285,8 @@ namespace Semerkand_Dergilik.Controllers
         */
         public void LogOut()
         {
-            signInManager.SignOutAsync(); // opts.LogoutPath = new PathString("/Member/LogOut"); çalışır
-
+            signInManager.SignOutAsync(); // opts.LogoutPath = new PathString("/Member/LogOut"); çalışır..
+            // return RedirectToAction("Index","Home"); klasik yöntem ve public ActionResult LogOut() olacak..
         }
 
 

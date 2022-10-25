@@ -11,6 +11,10 @@
     Layout = "~/Areas/Admin/Views/Admin/_AdminLayout.cshtml";
 }
 
+@*@Styles.Render("~/Content/datatables")*@
+
+
+
 <h4 style="color:red;">@TempData["mesaj"] </h4>
 
 
@@ -103,6 +107,21 @@ else
 </div>
 
 
+@*
+@section scripts
+    {
+     @Scripts.Render("~/bundles/datatables") 
+
+    <script>
+
+        $('document').ready(function () {
+            $('#tab2').DataTable();
+
+        });
+
+    </script>
+}
+*@
 
 
 <script type="text/javascript">

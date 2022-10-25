@@ -147,8 +147,9 @@ cookieBuilder.SecurePolicy = CookieSecurePolicy.SameAsRequest; // always: browse
 builder.Services.ConfigureApplicationCookie(opts =>
 {
     opts.LoginPath = new PathString("/Home/Login"); // giriþ yapmadan üyelerin gezinebildiði sayfalara girerse kullanýcý buraya yönlendirilir..
-    
-    opts.LogoutPath = new PathString("/Member/LogOut"); //  asp-route-returnUrl="/Home/Index" tetiklenir..
+
+    //  signInManager.SignOutAsync(); bu kod aþaðýdaki kodu, bu kod da asp-route-returnUrl="/Ho... tetikler..
+    opts.LogoutPath = new PathString("/Member/LogOut"); //  asp-route-returnUrl="/Home/Index" tetiklenir.. MemberLayout.cs'de
 
     opts.Cookie = cookieBuilder; // *** 
     

@@ -1,4 +1,18 @@
 
+CreateAsync, UpdateAsync, ChangePasswordAsync, ResetPasswordAsync, AddLoginAsync, ConfirmEmailAsync --> dönüþ tipleri IdentityResult'dir..
+
+IsLockedOutAsync, IsEmailConfirmedAsync, CheckPasswordAsync --> dönüþ tipleri bool
+
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+Logout:
+Program.cs
+
+opts.LogoutPath = new PathString("/Member/LogOut"); //  asp-route-returnUrl="/Home/Index" tetiklenir..
+
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+Program.cs
 
 app.MapControllerRoute(
 app.MapAreaControllerRoute(
