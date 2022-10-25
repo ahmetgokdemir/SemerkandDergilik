@@ -34,6 +34,7 @@ else if (Model.CategoryDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
         {
             TempData["Deleted"] = null;  // delete pop-up sayfasını açıp sonra kapatıp sonra da update/add pop'ı seçilirse TempData["Deleted"] sıfırlanmadığından CRUDProduct kısmında delete operation çalışır bu yüzden bunu sıfırlamak lazım
 
+            // asp-for="" kullanımında içerisine Model.CategoryDTO.CategoryName tanımlanamaz (Model olmamalı) yani CategoryDTO.CategoryName şeklinde olacak.. ViewBag de tanımlanamaz.. ama TempData kullanılabilir sanırım..
 
             <div class="form-group">
                 <label asp-for="CategoryDTO.CategoryName" class="control-label"></label>
@@ -44,11 +45,20 @@ else if (Model.CategoryDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
 
 
 
-            <div class="form-group">
+@*            <div class="form-group">
                 <label asp-for="CategoryDTO.Status" class="control-label"></label>
                 <select class="form-control" asp-for="CategoryDTO.Status" asp-items="@ViewBag.Status"></select>
                 <span asp-validation-for="CategoryDTO.Status" class="text-danger"></span>
+            </div>*@
+
+            
+            <div class="form-group">
+                <label asp-for="CategoryDTO.Status" class="control-label"></label>
+                <select class="form-control" asp-for="CategoryDTO.Status" asp-items="Html.GetEnumSelectList<Semerkand_Dergilik.Enums.Status>()"></select>
+                <span asp-validation-for="CategoryDTO.Status" class="text-danger"></span>
             </div>
+
+            
 
             <div class="form-group">
                 <label asp-for="CategoryDTO.CategoryPicture" class="control-label"></label>

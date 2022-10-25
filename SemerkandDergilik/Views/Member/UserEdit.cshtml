@@ -5,15 +5,18 @@
     Layout = "~/Views/Member/_MemberLayout.cshtml";
 }
 
-<h2>Bilgi Güncelleme</h2>
+
 @if (ViewBag.success == "true")
-{
-    <div class="alert alert-info">
-        <span>Bilgileriniz güncellenmiştir.</span>
+{   <div class="col-md-4 offset-md-4">
+        <h2>Bilgi Güncelleme</h2>
+        <div class="alert alert-info">
+            <span>Bilgileriniz güncellenmiştir.</span>
+        </div>
     </div>
 }
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-4 offset-md-4">
+        <h2>Bilgi Güncelleme</h2>
         <form asp-action="UserEdit" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -85,7 +88,7 @@
 
 
             <div class="form-group mt-2">
-                <input type="submit" value="Güncelle" class="btn btn-primary" />
+                <input type="submit" value="Güncelle" class="btn" style="background-color:#3498DB; color: white;" />
             </div>
         </form>
     </div>

@@ -67,16 +67,18 @@ namespace Semerkand_Dergilik.Controllers
 
 
                 // şifre kontrolü
-                bool exist = userManager.CheckPasswordAsync(user, passwordChangeViewModel.PasswordOld).Result;
+                bool oldpasswordConfirm = userManager.CheckPasswordAsync(user, passwordChangeViewModel.PasswordOld).Result;
 
-                if (exist) // şifre kontrolü başarılı
+                if (oldpasswordConfirm) // şifre kontrolü başarılı
                 {
                     // change işlemi eski şifreyi iptal eder.. validation
                     IdentityResult result = userManager.ChangePasswordAsync(user, passwordChangeViewModel.PasswordOld, passwordChangeViewModel.PasswordNew).Result;
 
                     if (result.Succeeded)
                     {
-                        await userManager.UpdateSecurityStampAsync(user); // yeni securitystamp
+                        // 28. SecurityStamp'in işleyiş mekanizması dersine de bakılabilir..
+
+                        await userManager.UpdateSecurityStampAsync(user); // yeni securitystamp lakin hala açık var IdentityAPI 30dk. sonra securitystamp'i kontrol edecek o zamana kadar user sayfalarda gezinebilir bu bir açıtır.. o yüzden cookie (içerisinde eski securitystamp var) SignOutAsync ile sıfırlanmalı.. 
 
                         /*             
                         Identity API 30 dk da bir cookie bilgisi ile veritabanındaki securitystamp bilgisini
@@ -84,19 +86,20 @@ namespace Semerkand_Dergilik.Controllers
                         UpdateSecurityStampAsync edildi..
 
                         SecurityStamp: veritabanındaki bir alan.. yeni bir SecurityStamp oluşturulacak (user ile
-                        ilgili bir bilgi değiştirildiği zaman yapılması gerekir)
-                        nedeni: cookie içerisinde eski stamp bilgisi var ve user şifresini değiştirince artık yeni
-                        şifre ile login olmalı bu yüzden çıkış yapılmalı ki yeni cookie(stamp) oluşturulsun
+                        ilgili bir önemli bilgi değiştirildiği zaman update edilmesi gerekir)
+                        
 
                         backend tarafında kod ile user çıkış ve giriş yaptırılmaz ise veritabanında yeni
                         securitystamp olmasına rağmen cookie içerisinde hala eski securitystamp bulunacak ve 30 dk
-                        boyunca user sayfalarda dolaşabilir..
+                        sonra user logout olur ayrıca 30 dk boyunca eski cookie bilgisi ile dolaşmasıda açık yaratır..
+
+                        30 dk bir olması nedeni veritabanını bu kontrolü yapması ile yormaması için..
                         */
 
-                        await signInManager.SignOutAsync(); // çıkış yapıldı .. cookie bilgisi silinir..
+                        await signInManager.SignOutAsync(); // çıkış yapıldı .. cookie bilgisi (içerisinde eski securitystamp var) silinir.. yoksa 30 dk. kadar gezinip eski SecurityStamp ile sayfalarda genizir 30 dk sonra logout olur bu da o zamana kadar güvenlik açığı yaratır..
 
 
-                        // user otomatik olarak yeni şifre ile login oldu.. PasswordSignInAsync metodu HomeController da LogIn action da kullanıldı 
+                        // user otomatik olarak yeni şifre ile login oldu.. PasswordSignInAsync metodu HomeController da LogIn action da kullanıldı..  yeni cookie içerisinde artık güncel securitystamp var)
                         await signInManager.PasswordSignInAsync(user, passwordChangeViewModel.PasswordNew, true, false);
 
                         /*

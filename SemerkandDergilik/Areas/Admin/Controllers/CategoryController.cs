@@ -57,7 +57,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         [Route("AddCategoryAjax")]
         public PartialViewResult AddCategoryAjax()
         {
-            ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
+            // ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status))); => yerine                                                                 asp-items="Html.GetEnumSelectList<Semerkand_Dergilik.Enums.Status>()" kullanıldı..
 
             var result = new CategoryDTO();
             CategoryDTO cDTO = new CategoryDTO();
@@ -102,7 +102,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             // Category category_item = await _icm.GetByIdAsync(id);
             // CategoryDTO cDTO = category_item.Adapt<CategoryDTO>();
 
-            ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
+            // ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status))); => yerine                                                                 asp-items="Html.GetEnumSelectList<Semerkand_Dergilik.Enums.Status>()" kullanıldı..
 
 
             CategoryDTO cDTO = new CategoryDTO();

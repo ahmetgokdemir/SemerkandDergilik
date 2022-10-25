@@ -58,7 +58,7 @@ else
                             <td colspan="2" style="padding-left:200px"><img style="width:25%; height:25%" src="@item.CategoryPicture" /></td>
                             <td>
                                 @*<a asp-action="UpdateCategory" asp-controller="Category" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
-                                <button class="btn btn-warning " id="updateCategory" value="updateCategoryValue" data-id=@item.ID>Güncelle</button>
+                                <button class="btn btn-warning" id="updateCategory" value="updateCategoryValue" data-id=@item.ID>Güncelle</button>
                             </td>
                             <td>
                                 @*<a asp-action="DeleteCategory" asp-controller="Category" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
@@ -91,9 +91,32 @@ else
 </div>
 
 
+<div class="modal fade" id="LoadingCategoryModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+
+            <div class="modal-body" id="CRUDCategory">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div style="display:inline">Loading...</div>
+             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 <script type="text/javascript">
+
 
 
     @Model.JavascriptToRun
@@ -155,7 +178,7 @@ else
 
 
     function CRUDCategoryModalLoaded() {
-        $("#CRUDCategoryModal").modal('show'); // #MaintenanceRoomModal içinde MaintenanceRoom var (<div class="modal-body" id="MaintenanceRoom">) onun içinde de data var (_MaintenanceRoomPartial veya _UnMaintenanceRoomPartial)
+        $("#CRUDCategoryModal").modal('show'); // #CRUDCategoryModal içinde CRUDCategory var (<div class="modal-body" id="CRUDCategory">) onun içinde de data var (_CrudCategoryPartial)
     }
 
     $(function () {
@@ -199,10 +222,12 @@ else
 
                 },
                 beforeSend: function () {
-                    $('.loader').show(); // Assuming that you have some loader defined
+                       $("#LoadingCategoryModal").modal('show');
                 },
                 complete: function () {
-                    $('.loader').hide(); //Hide this loader
+                    $("#LoadingCategoryModal").modal('hide');
+
+                    // $('.loader').hide(); //Hide this loader
                 },
                 error: function () {
                     alert("Hata alındı.");

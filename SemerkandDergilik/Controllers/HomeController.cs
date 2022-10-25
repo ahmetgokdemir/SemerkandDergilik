@@ -50,11 +50,13 @@ namespace Semerkand_Dergilik.Controllers
 
         public IActionResult Index()
         {
+            /*
             // eğer önceden  giriş yapılmışsa o zaman tekrar Home/Index sayfasına gitmek yerine Member/Index sayfasına yönlendirsin
             if (HttpContext.User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Member");
             }
+            */
 
             return View();
         }
