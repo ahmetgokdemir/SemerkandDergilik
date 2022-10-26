@@ -37,4 +37,9 @@ result = HttpContext.Session.GetObject<ProductDTO>("manipulatedData");
 
  min="0" => type="number"  => to avoid negative number...
 
+ --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
+  colspan="2" --> DataTable.js'i çalýþtýrmýyor table kýsmýnda
+  <td colspan="2" style="padding-left:75px"><img style="width:75%; height:75%" src="@item.ProductPicture" /></td>
+
+  --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---

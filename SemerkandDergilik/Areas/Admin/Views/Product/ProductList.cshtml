@@ -11,93 +11,136 @@
     Layout = "~/Areas/Admin/Views/Admin/_AdminLayout.cshtml";
 }
 
-@*@Styles.Render("~/Content/datatables")*@
+@*@section CSSScripts{
+    <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+}*@
 
+<style>
+    .loader {
+      display: none;
+    }
+</style>
 
 
 <h4 style="color:red;">@TempData["mesaj"] </h4>
 
+<div class="spinner-border loader" role="status">
+    <span class="sr-only">Loading...</span>
+</div>
 
-@if (Model.ProductDTOs.Count == 0)
-{
-    <div class="jumbotron" id="tab1" style="padding:20px;  background-color:lightgrey" >
-        
-        @* BURASIIII DEĞİLLLL <input type="submit" id="btnIslemYap" value="İşlem Yap" />*@
+<hr class="loader"/>
 
-        <button class="btn btn-outline-success " id="addNewProduct" value="addNewProductValue">Ürün Eklemek için tıklayınız</button>
-    </div>
-}
+    @if (Model.ProductDTOs.Count == 0)
+    {
+                        <div class="jumbotron" id="tab1" style="padding:20px;  background-color:lightgrey">
 
-else
-{
-    <div id="tab1" class="mb-3">
+            @* BURASIIII DEĞİLLLL <input type="submit" id="btnIslemYap" value="İşlem Yap" />*@
 
-        <button class="btn btn-outline-success " id="addNewProduct" value="addNewProductValue"> Ürün Eklemek için tıklayınız</button>
-    </div>
+                            <button class="btn btn-outline-success " id="addNewProduct" value="addNewProductValue">Ürün Eklemek için tıklayınız</button>
+                        </div>
+    }
 
-    <div class="container">
-        <div class="row">
-            <table class="table table-bordered table-hover" id="tab2">
-                <thead>
-                    <tr>
-                        <th>Ürün İsmi</th>
-                        <th>Ürün Fiyat</th>
-                        <th>Ürün Adet</th>
-                        <th>İskonto</th>
+    else
+    {
+                        <div id="tab1" class="mb-3">
 
-                        <th>Kategori ID</th>
-                        <th>Kategori Adı</th>
+                            <button class="btn btn-outline-success " id="addNewProduct" value="addNewProductValue"> Ürün Eklemek için tıklayınız</button>
+                        </div>
 
-                        <th>Durum</th>
-                        <th colspan="2" style="padding-left:75px">Ürün Resim</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (ProductDTO item in Model.ProductDTOs)
-                    {
-                        <tr>
-                            <td>@item.ProductName</td>
-                            <td>@item.UnitPrice</td>
-                            <td>@item.UnitsInStock</td>
-                            <td>@item.Discount</td>
+                        <div class="panel panel-primary">
+                            <div class="panel panel-body">
+                                <table class="table table-striped table-hover table-bordered dt-responsive" width="100%" cellspacing="0" id="tab2">
+                                    <thead>
+                                        <tr>
+                                            <th>Ürün İsmi</th>
+                                            <th>Ürün Fiyat</th>
+                                            <th>Ürün Adet</th>
+                                            <th>İskonto</th>
 
-                            <td>@item.CategoryID</td>
-                            <td>@Model.CategoryDTO.CategoryName</td>
+                                            <th>Kategori ID</th>
+                                            <th>Kategori Adı</th>
 
-                            <td>@item.Status</td>
-                            @*<td colspan="2" style="padding-left:150px">@item.CategoryPicture</td>*@
-                            <td colspan="2" style="padding-left:75px"><img style="width:75%; height:75%" src="@item.ProductPicture" /></td>
-                            <td>
-                                <a class="btn btn-warning" value="updateProductValue" data-id=@item.ID>Güncelle</a>
-                                @* BURASIIII  <button class="btn btn-warning " id="updateCategory" value="updateCategoryValue" data-id=@item.ID>Güncelle</button>*@
-                            </td>
-                            <td>
-                                @*<a asp-action="DeleteCategory" asp-controller="Category" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
+                                            <th>Durum</th>
+                                            <th>Ürün Resim</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                        @foreach (ProductDTO item in Model.ProductDTOs)
+                        {
+                                                            <tr>
+                                                                <td>@item.ProductName</td>
+                                                                <td>@item.UnitPrice</td>
+                                                                <td>@item.UnitsInStock</td>
+                                                                <td>@item.Discount</td>
 
-                                <button class="btn btn-danger " id="deleteProduct" value="deleteProductValue" data-id=@item.ID>Sil</button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-     </div>
-}
+                                                                <td>@item.CategoryID</td>
+                                                                <td>@Model.CategoryDTO.CategoryName</td>
+
+                                                                <td>@item.Status</td>
+                                @*<td colspan="2" style="padding-left:150px">@item.CategoryPicture</td>*@
+                                                                <td><img style="width:75%; height:75%" src="@item.ProductPicture" /></td>
+                                                                <td>
+                                                                    <a class="btn btn-warning" value="updateProductValue" data-id=@item.ID>Güncelle</a>
+                                    @* BURASIIII  <button class="btn btn-warning " id="updateCategory" value="updateCategoryValue" data-id=@item.ID>Güncelle</button>*@
+                                                                </td>
+                                                                <td>
+                                    @*<a asp-action="DeleteCategory" asp-controller="Category" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
+
+                                                                    <button class="btn btn-danger " id="deleteProduct" value="deleteProductValue" data-id=@item.ID>Sil</button>
+                                                                </td>
+                                                            </tr>
+                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+    }
 
 
     <a asp-action="CategoryList" asp-controller="Category" class="btn btn-outline-info">Kategori Sayfasına Geri Dön</a>
 
 
-<div class="modal fade" id="CRUDProductModal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="CRUDProductModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body" id="CRUDProduct">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*@section Scripts{
+        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+            <script>
+            $(document).ready(function () {
+                $('#tab2').DataTable();
+            });
+        </script>
+    }*@
+
+<div class="modal fade" id="LoadingCategoryModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title"></h4>
             </div>
-            <div class="modal-body" id="CRUDProduct">
+
+            <div class="modal-body" id="CRUDCategory">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div style="display:inline">Loading...</div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
@@ -107,140 +150,160 @@ else
 </div>
 
 
-@*
-@section scripts
-    {
-     @Scripts.Render("~/bundles/datatables") 
 
-    <script>
-
-        $('document').ready(function () {
-            $('#tab2').DataTable();
-
-        });
-
-    </script>
-}
-*@
+        <script>
+            $(document).ready(function () {
+                $('#tab2').DataTable();
+            });
+        </script>
 
 
-<script type="text/javascript">
+        <script type="text/javascript">
 
-         @Model.JavascriptToRun
 
-        function ShowErrorInsertOperationPopup() {
-            // alert('Sorry, we could not process your order.');
 
-            $.ajax({
-                //url: '@@Url.Action("AddProductAjax","Product")',
-                url: 'AddProductAjax',
-                //data: { pdto_reloaddata: @@Model.ProductDTO },
-                type: 'GET',
-                dataType: 'html',
-                success: function (data) {
-                    $("#CRUDProduct").html(data);
-                    CRUDProductModalLoaded();
 
-                },
-                error: function () {
-                    alert("Hata alındı.");
+        @Model.JavascriptToRun
+
+                function ShowErrorInsertOperationPopup() {
+                    // alert('Sorry, we could not process your order.');
+
+                    $.ajax({
+                        //url: '@@Url.Action("AddProductAjax","Product")',
+                        url: 'AddProductAjax',
+                        //data: { pdto_reloaddata: @@Model.ProductDTO },
+                        type: 'GET',
+                        dataType: 'html',
+                        success: function (data) {
+                            $("#CRUDProduct").html(data);
+                            CRUDProductModalLoaded();
+
+                        }, 
+                        beforeSend: function () {
+                            $('.loader').show(); // Assuming that you have some loader defined
+                        },
+                        complete: function () {
+                            $('.loader').hide(); //Hide this loader
+                        },
+                        error: function () {
+                            alert("Hata alındı.");
+                        }
+                    });
+
                 }
+
+            function ShowErrorUpdateOperationPopup(_id) {
+                // alert('Sorry, we could not process your order.');
+
+                $.ajax({
+                    //url: '@@Url.Action("AddProductAjax","Product")',
+                    url: 'UpdateProductAjax',
+                    data: { id: _id },
+                    type: 'GET',
+                    dataType: 'html',
+                    success: function (data) {
+                        $("#CRUDProduct").html(data);
+                        CRUDProductModalLoaded();
+
+                    },
+                    beforeSend: function () {
+                        $('.loader').show(); // Assuming that you have some loader defined
+                    },
+                    complete: function () {
+                        $('.loader').hide(); //Hide this loader
+                    },
+                    error: function () {
+                        alert("Hata alındı.");
+                    }
+                });
+
+            }
+
+
+
+            function CRUDProductModalLoaded() {
+                $("#CRUDProductModal").modal('show'); // #CRUDProductModal içinde CRUDProduct var (<div class="modal-body" id="CRUDProduct">) onun içinde de data var (_CrudProductPartial)
+            }
+
+
+            $(function () {
+                //$("#addNewProduct").click(function () {
+                $("#tab1").on("click", "[value=addNewProductValue]", function () {
+                    $.ajax({
+                        //url: '@@Url.Action("AddProductAjax","Product")',
+                        url: 'AddProductAjax',
+                        type: 'GET',
+                        dataType: 'html',
+                        success: function (data) {
+                            $("#CRUDProduct").html(data);
+                            CRUDProductModalLoaded();
+
+                        },                            
+                        beforeSend: function () {
+                            $('.loader').show(); // Assuming that you have some loader defined
+                        },
+                        complete: function () {
+                            $('.loader').hide(); //Hide this loader
+                        },
+                        error: function () {
+                            alert("Hata alındı.");
+                        }
+                    });
+                });
             });
 
-        }
+            $(function () {
+                //$("#updateProduct").click(function () {
+                $("#tab2").on("click", "[value=updateProductValue]", function () {
+                    $.ajax({
+                        //url: '@@Url.Action("UpdateProductAjax","Product")',
+                        url: 'UpdateProductAjax',
+                        data: { id: $(this).attr("data-id") },
+                        type: 'GET',
+                        dataType: 'html',
+                        success: function (data) {
+                            $("#CRUDProduct").html(data);
+                            CRUDProductModalLoaded();
 
-        function ShowErrorUpdateOperationPopup(_id) {
-            // alert('Sorry, we could not process your order.');
+                        },
+                        beforeSend: function () {
+                            $("#LoadingCategoryModal").modal('show');
+                        },
+                        complete: function () {
+                            $("#LoadingCategoryModal").modal('hide');
 
-            $.ajax({
-                //url: '@@Url.Action("AddProductAjax","Product")',
-                url: 'UpdateProductAjax',
-                data: { id: _id },
-                type: 'GET',
-                dataType: 'html',
-                success: function (data) {
-                    $("#CRUDProduct").html(data);
-                    CRUDProductModalLoaded();
-
-                },
-                error: function () {
-                    alert("Hata alındı.");
-                }
+                            // $('.loader').hide(); //Hide this loader
+                        },
+                        error: function () {
+                            alert("Hata alındı.");
+                        }
+                    });
+                });
             });
 
-        }
+            $(function () {
+                //$("#deleteProduct").click(function () {
+                $("#tab2").on("click", "[value=deleteProductValue]", function () {
+                    $.ajax({
+                        //url: '@@Url.Action("DeleteProductAjax","Product")',
+                        url: 'DeleteProductAjax',
+                        data: { id: $(this).attr("data-id") },
+                        type: 'GET',
+                        dataType: 'html',
+                        success: function (data) {
+                            $("#CRUDProduct").html(data);
+                            CRUDProductModalLoaded();
 
-
-
-    function CRUDProductModalLoaded() {
-        $("#CRUDProductModal").modal('show'); // #CRUDProductModal içinde CRUDProduct var (<div class="modal-body" id="CRUDProduct">) onun içinde de data var (_CrudProductPartial)
-    }
-
-
-    $(function () {
-        //$("#addNewProduct").click(function () {
-        $("#tab1").on("click", "[value=addNewProductValue]", function () {
-            $.ajax({
-                //url: '@@Url.Action("AddProductAjax","Product")',
-                url: 'AddProductAjax',
-                type: 'GET',
-                dataType: 'html',
-                success: function (data) {
-                    $("#CRUDProduct").html(data);
-                    CRUDProductModalLoaded();
-
-                },
-                error: function () {
-                    alert("Hata alındı.");
-                }
+                        },
+                        error: function () {
+                            alert("Hata alındı.");
+                        }
+                    });
+                });
             });
-        });
-    });
-
-    $(function () {
-        //$("#updateProduct").click(function () {
-        $("#tab2").on("click", "[value=updateProductValue]", function () {
-            $.ajax({
-                //url: '@@Url.Action("UpdateProductAjax","Product")',
-                url: 'UpdateProductAjax',
-                data: { id: $(this).attr("data-id") },
-                type: 'GET',
-                dataType: 'html',
-                success: function (data) {
-                    $("#CRUDProduct").html(data);
-                    CRUDProductModalLoaded();
-
-                },
-                error: function () {
-                    alert("Hata alındı.");
-                }
-            });
-        });
-    });
-
-    $(function () {
-        //$("#deleteProduct").click(function () {
-        $("#tab2").on("click", "[value=deleteProductValue]", function () {
-            $.ajax({
-                //url: '@@Url.Action("DeleteProductAjax","Product")',
-                url: 'DeleteProductAjax',
-                data: { id: $(this).attr("data-id") },
-                type: 'GET',
-                dataType: 'html',
-                success: function (data) {
-                    $("#CRUDProduct").html(data);
-                    CRUDProductModalLoaded();
-
-                },
-                error: function () {
-                    alert("Hata alındı.");
-                }
-            });
-        });
-    });
 
 
-</script>
+        </script>
 
 
 

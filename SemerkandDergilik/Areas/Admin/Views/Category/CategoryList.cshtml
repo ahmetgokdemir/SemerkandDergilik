@@ -43,7 +43,7 @@ else
                     <tr>
                         <th>Kategori İsmi</th>
                         <th>Durum</th>
-                        <th colspan="2">Resim</th>
+                        <th>Resim</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -55,7 +55,7 @@ else
                             <td><a class="" asp-area="Admin" asp-controller="Product" asp-action="ProductList" asp-route-id="@item.ID">@item.CategoryName</a></td>
                             <td>@item.Status</td>
                             @*<td colspan="2" style="padding-left:150px">@item.CategoryPicture</td>*@
-                            <td colspan="2" style="padding-left:200px"><img style="width:25%; height:25%" src="@item.CategoryPicture" /></td>
+                            <td style="padding-left:200px"><img style="width:25%; height:25%" src="@item.CategoryPicture" /></td>
                             <td>
                                 @*<a asp-action="UpdateCategory" asp-controller="Category" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
                                 <button class="btn btn-warning" id="updateCategory" value="updateCategoryValue" data-id=@item.ID>Güncelle</button>
@@ -113,7 +113,11 @@ else
 </div>
 
 
-
+<script>
+    $(document).ready(function () {
+        $('#tab2').DataTable();
+    });
+</script>
 
 <script type="text/javascript">
 
