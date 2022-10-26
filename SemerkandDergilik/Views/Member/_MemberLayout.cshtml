@@ -12,7 +12,7 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
         <div class="container">
             <a class="navbar-brand" asp-action="Index" asp-controller="Home">Semerkand Dergilik</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,13 +26,13 @@
                         <a class="nav-link me-2" asp-action="Index" asp-controller="Member">Üye Ana Sayfa</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-primary me-2" asp-action="Index" asp-controller="Admin">Admin ana sayfa</a>
+                        <a class="btn btn-dark me-2" asp-action="Index" asp-controller="Admin">Admin ana sayfa</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-primary me-2" asp-action="Manager" asp-controller="Member">Manager ana sayfa</a>
+                        <a class="btn btn-dark me-2" asp-action="Manager" asp-controller="Member">Manager ana sayfa</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-primary" asp-action="Editor" asp-controller="Member">Editor ana sayfa</a>
+                        <a class="btn btn-dark" asp-action="Editor" asp-controller="Member">Editor ana sayfa</a>
                     </li>
 
 
@@ -46,8 +46,10 @@
             <div class="col-md-10">
                 @RenderBody()
             </div>
-            <div class="col-md-2" style="background-color:#E5E7E9">
-                <h3 class="text-md-center">Menü</h3>
+            <div class="col-md-2 bg-success">
+                <h3 class="text-md-center text-light">
+                    Menü
+                </h3>
 
                 @*
                <a class="btn btn-danger btn-block" style="width:%100" asp-action="IstanbulPage" asp-controller="Member">Istanbul sayfa</a>
@@ -60,12 +62,12 @@
                 <br />
                 <br />
                 *@
-                <a class="btn w-100  mb-2" style="background-color:#AED6F1" asp-action="PasswordChange" asp-controller="Member">Şifre değiştirme</a>
+                <a class="btn w-100  mb-2" style="background-color:#e6e2d3" asp-action="PasswordChange" asp-controller="Member">Şifre değiştirme</a>
            
-                <a class="btn w-100  mb-2" style="background-color:#AED6F1" asp-action="UserEdit" asp-controller="Member">Bilgi güncelleme</a>
+                <a class="btn w-100  mb-2" style="background-color:#e6e2d3" asp-action="UserEdit" asp-controller="Member">Bilgi güncelleme</a>
            
 
-                <a class="btn w-100  mb-2" style="background-color:#AED6F1" asp-action="Logout" asp-controller="Member" asp-route-returnUrl="/Home/Index">Çıkış yap</a>
+                <a class="btn w-100  mb-2" style="background-color:#e6e2d3" asp-action="Logout" asp-controller="Member" asp-route-returnUrl="/Home/Index">Çıkış yap</a>
             </div>
         </div>
     </div>
