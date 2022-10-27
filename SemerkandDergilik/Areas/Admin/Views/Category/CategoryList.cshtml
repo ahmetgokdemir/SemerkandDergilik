@@ -12,7 +12,7 @@
 
 
 </style>
-<h4 style="color:red;">@TempData["mesaj"] </h4>
+@*<h4 style="color:red;">@TempData["mesaj"] </h4>*@
 
  
 
@@ -38,9 +38,10 @@ else
 
     <div class="panel panel-primary">
         <div class="panel panel-body">
-            <table class="table table-hover table-bordered" id="tab2">
-                <thead>
+            <table class="table table-hover table-bordered table-responsive-lg" id="tab2">
+                <thead class="thead-light">
                     <tr>
+                        <th>Index</th>
                         <th>Kategori İsmi</th>
                         <th>Durum</th>
                         <th>Resim</th>
@@ -52,6 +53,7 @@ else
                     @foreach (CategoryDTO item in Model.CategoryDTOs)
                     {
                         <tr>
+                            <td></td>
                             <td><a class="" asp-area="Admin" asp-controller="Product" asp-action="ProductList" asp-route-id="@item.ID">@item.CategoryName</a></td>
                             <td>@item.Status</td>
                             @*<td colspan="2" style="padding-left:150px">@item.CategoryPicture</td>*@
@@ -113,9 +115,65 @@ else
 </div>
 
 
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/alertify.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/alertify.min.css" />
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/themes/default.min.css" />
+
+@if (TempData["mesaj"] != null)
+{
+    @if (TempData["mesaj"].ToString() == "Kategori güncellendi")
+    {
+        <script>
+            alertify.warning("Kategori güncellendi");
+        </script>
+    }    
+    else if (TempData["mesaj"].ToString() == "Kategori silindi")
+    {
+        <script>
+            alertify.error("Kategori silindi");
+        </script>
+    }
+    else if (TempData["mesaj"].ToString() == "Kategori eklendi")
+    {
+        <script>
+            alertify.success("Kategori eklendi");
+        </script>
+    }
+ 
+}
+
+
+
 <script>
     $(document).ready(function () {
-        $('#tab2').DataTable();
+        var t = $('#tab2').DataTable({
+
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+            },
+            columnDefs: [
+                {
+                    searchable: false,
+                    orderable: false,
+                    targets: 0,
+                },
+            ],
+            order: [[1, 'asc']],
+            pagingType: 'full_numbers'
+
+        });
+
+
+        t.on('order.dt search.dt', function () {
+            let i = 1;
+
+            t.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
+                this.data(i++);
+            });
+        }).draw();
+
+
+
     });
 </script>
 

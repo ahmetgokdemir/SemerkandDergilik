@@ -245,7 +245,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                 // Category ctg = cdto.Adapt<Category>();
 
                 // _icm.Delete(ctg);
-                TempData["mesaj"] = "Kategori silindi..";
+                TempData["mesaj"] = "Kategori silindi";
 
                 TempData["Deleted"] = null;
 

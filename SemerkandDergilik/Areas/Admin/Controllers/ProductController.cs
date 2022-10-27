@@ -419,7 +419,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
                 // _icm.Delete(ctg);
 
-                TempData["mesaj"] = "Ürün silindi..";
+                TempData["mesaj"] = "Ürün silindi";
 
                 TempData["Deleted"] = null;
 

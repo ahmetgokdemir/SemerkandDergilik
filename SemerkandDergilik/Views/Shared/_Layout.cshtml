@@ -24,7 +24,20 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
 
-@*                    <ul class="navbar-nav ">
+                @*                    <ul class="navbar-nav ">
+                <li class="navbar-nav">
+                <a class="nav-link" asp-action="SignUp">Üye Ol</a>
+                </li>
+                <li class="navbar-nav">
+
+                <a class="nav-link" asp-action="LogIn">Giriş yap</a>
+                </li>
+                </ul>*@
+
+                @if (!(User.Identity.IsAuthenticated))
+                {
+                    <ul class="navbar-nav ms-auto">
+
                         <li class="navbar-nav">
                             <a class="nav-link" asp-action="SignUp">Üye Ol</a>
                         </li>
@@ -32,34 +45,21 @@
 
                             <a class="nav-link" asp-action="LogIn">Giriş yap</a>
                         </li>
-                    </ul>*@
-
-                    @if (!(User.Identity.IsAuthenticated))
-                    {
-                    <ul class="navbar-nav ms-auto">
-
-                            <li class="navbar-nav">
-                                <a class="nav-link" asp-action="SignUp">Üye Ol</a>
-                            </li>
-                        <li class="navbar-nav">
-
-                                <a class="nav-link" asp-action="LogIn">Giriş yap</a>
-                            </li>
-                        </ul>
-                    }
-                    @if (User.Identity.IsAuthenticated)
+                    </ul>
+                }
+                @if (User.Identity.IsAuthenticated)
                 {
-                        <ul class="navbar-nav">
-                            <li class="navbar-nav">
-                                <a class="nav-link" asp-action="Index" asp-controller="Member">Üye Sayfası</a>
-                            </li>
-                        </ul>
+                    <ul class="navbar-nav">
+                        <li class="navbar-nav">
+                            <a class="nav-link" asp-action="Index" asp-controller="Member">Üye Sayfası</a>
+                        </li>
+                    </ul>
                     <ul class="navbar-nav ms-auto">
-                            <li class="navbar-nav">
+                        <li class="navbar-nav">
                             <a class="nav-link" asp-action="Logout" asp-controller="Member" asp-route-returnUrl="/Home/Index">Çıkış yap</a>
-                            </li>
-                        </ul>
-                    }
+                        </li>
+                    </ul>
+                }
 
                 </>
             </div>
