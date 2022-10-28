@@ -19,6 +19,23 @@
     .loader {
         display: none;
     }
+
+    .position {
+        width: 10%;
+        position: relative;
+    }
+
+        .position p {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+    .btnposition {
+        vertical-align: middle;
+        text-align: center;
+    }
 </style>
 
 
@@ -50,19 +67,19 @@ else
     <div class="panel panel-primary  ml-5">
         <div class="panel panel-body">
             <table class="table table-hover table-bordered table-responsive-xl" id="tab2">
-                <thead>
+                <thead class="thead-light">
                     <tr>
                         <th>Index</th>
-                        <th>Ürün İsmi</th>
-                        <th>Ürün Fiyat</th>
-                        <th>Ürün Adet</th>
-                        <th>İskonto</th>
+                        <th class="position"><p>Ürün İsmi</p></th>
+                        <th class="position"><p>Ürün Fiyat</p></th>
+                        <th class="position"><p>Ürün Adet</p></th>
+                        <th class="position"><p>İskonto</p></th>
 
                         @*<th>Kategori ID</th>*@
-                        <th>Kategori Adı</th>
+                        <th class="position"><p>Kategori Adı</p></th>
 
-                        <th>Durum</th>
-                        <th>Ürün Resim</th>
+                        <th class="position"><p>Durum<p></th>
+                        <th class="position"><p>Ürün Resim<p></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -72,22 +89,27 @@ else
                     {
                         <tr>
                             <td></td> <!-- indexleme gelecek -->
-                            <td>@item.ProductName</td>
-                            <td>@item.UnitPrice</td>
-                            <td>@item.UnitsInStock</td>
-                            <td>@item.Discount</td>
+                            <td class="position"><p>@item.ProductName</p></td>
+                            <td class="position"><p>@item.UnitPrice</p></td>
+                            <td class="position"><p>@item.UnitsInStock</p></td>
+                            <td class="position"><p>@item.Discount</p></td>
 
                             @*<td>@item.CategoryID</td>*@
-                            <td>@Model.CategoryDTO.CategoryName</td>
+                            <td class="position"><p>@Model.CategoryDTO.CategoryName</p></td>
 
-                            <td>@item.Status</td>
+                            <td class="position"><p>@item.Status</p></td>
                             @*<td colspan="2" style="padding-left:150px">@item.CategoryPicture</td>*@
-                            <td><img style="width:75%; height:75%" src="@item.ProductPicture" /></td>
-                            <td>
+                            <td style="text-align: center;">
+                                @if (item.ProductPicture != null)
+                                {
+                                    <img style="width:85px; height:50px" src="@item.ProductPicture" />
+                                }                                
+                            </td>
+                            <td class="btnposition">
                                 <a class="btn btn-warning" value="updateProductValue" data-id=@item.ID>Güncelle</a>
                                 @* BURASIIII  <button class="btn btn-warning " id="updateCategory" value="updateCategoryValue" data-id=@item.ID>Güncelle</button>*@
                             </td>
-                            <td>
+                            <td class="btnposition">
                                 @*<a asp-action="DeleteCategory" asp-controller="Category" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
 
                                 <button class="btn btn-danger " id="deleteProduct" value="deleteProductValue" data-id=@item.ID>Sil</button>
@@ -101,7 +123,7 @@ else
 }
 
 
-<a asp-action="CategoryList" asp-controller="Category" class="btn btn-outline-info">Kategori Sayfasına Geri Dön</a>
+<a asp-action="CategoryList" asp-controller="Category" class="btn btn-outline-info mb-3">Kategori Sayfasına Geri Dön</a>
 
 
 <div class="modal fade" id="CRUDProductModal" tabindex="-1" role="dialog">
@@ -157,21 +179,21 @@ else
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/alertify.min.css" />
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/themes/default.min.css" />
 
-@if (TempData["mesaj"] != null)
+@if (TempData["messageProduct"] != null)
 {
-    @if (TempData["mesaj"].ToString() == "Ürün güncellendi")
+    @if (TempData["messageProduct"].ToString() == "Ürün güncellendi")
     {
         <script>
             alertify.warning("Ürün güncellendi");
         </script>
     }
-    else if (TempData["mesaj"].ToString() == "Ürün silindi")
+    else if (TempData["messageProduct"].ToString() == "Ürün silindi")
     {
         <script>
             alertify.error("Ürün silindi");
         </script>
     }
-    else if (TempData["mesaj"].ToString() == "Ürün eklendi")
+    else if (TempData["messageProduct"].ToString() == "Ürün eklendi")
     {
         <script>
             alertify.success("Ürün eklendi");

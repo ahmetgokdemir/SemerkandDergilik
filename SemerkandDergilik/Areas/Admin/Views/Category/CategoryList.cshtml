@@ -7,9 +7,27 @@
 
 <style>
 .loader {
-  display: none;
+    display: none;
 }
 
+ .position {
+        width: 25%;
+    position: relative;
+  }
+
+.position a, p{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.btnposition{
+    vertical-align: middle;
+    text-align: center;
+}
+
+    <!-- -ms-transform: translate(-50%, -50%); -->
 
 </style>
 @*<h4 style="color:red;">@TempData["mesaj"] </h4>*@
@@ -38,13 +56,13 @@ else
 
     <div class="panel panel-primary">
         <div class="panel panel-body">
-            <table class="table table-hover table-bordered table-responsive-lg" id="tab2">
+            <table class="table table-hover table-bordered table-responsive-lg" id="tab2" width="100%" border="0" cellspacing="0" cellpadding="100%">
                 <thead class="thead-light">
                     <tr>
                         <th>Index</th>
-                        <th>Kategori İsmi</th>
-                        <th>Durum</th>
-                        <th>Resim</th>
+                        <th class="position"><p>Kategori İsmi</p></th>
+                        <th class="position"><p>Durum</p></th>
+                        <th class="position"><p>Resim</p></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -54,18 +72,30 @@ else
                     {
                         <tr>
                             <td></td>
-                            <td><a class="" asp-area="Admin" asp-controller="Product" asp-action="ProductList" asp-route-id="@item.ID">@item.CategoryName</a></td>
-                            <td>@item.Status</td>
-                            @*<td colspan="2" style="padding-left:150px">@item.CategoryPicture</td>*@
-                            <td style="padding-left:200px"><img style="width:25%; height:25%" src="@item.CategoryPicture" /></td>
-                            <td>
-                                @*<a asp-action="UpdateCategory" asp-controller="Category" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
-                                <button class="btn btn-warning" id="updateCategory" value="updateCategoryValue" data-id=@item.ID>Güncelle</button>
+                            <td class="position">
+                                <a class="" asp-area="Admin" asp-controller="Product" asp-action="ProductList" asp-route-id="@item.ID">@item.CategoryName</a>
                             </td>
-                            <td>
+                            <td class="position">
+                                <p>@item.Status</p>
+                            </td>
+                            @*<td colspan="2" style="padding-left:150px">@item.CategoryPicture</td>*@
+                            <td style="text-align: center;">
+                                @if (item.CategoryPicture != null)
+                                {
+                                    <img style="width:85px; height:40px" src="@item.CategoryPicture" />
+                                }                                
+                            </td>
+                            <td class="btnposition">
+                                @*<a asp-action="UpdateCategory" asp-controller="Category" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
+                                <button class="btn btn-warning" id="updateCategory" value="updateCategoryValue" data-id=@item.ID>
+                                    Güncelle
+                                </button>
+                          
+                            </td>
+                            <td class="btnposition">
                                 @*<a asp-action="DeleteCategory" asp-controller="Category" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
 
-                                <button class="btn btn-danger " id="deleteCategory" value="deleteCategoryValue" data-id=@item.ID>Sil</button>
+                                <button class="btn btn-danger" id="deleteCategory" value="deleteCategoryValue" data-id=@item.ID>Sil</button>
                             </td>
                         </tr>
                     }
@@ -119,27 +149,32 @@ else
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/alertify.min.css" />
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/themes/default.min.css" />
 
-@if (TempData["mesaj"] != null)
+@if (TempData["messageCategory"] != null)
 {
-    @if (TempData["mesaj"].ToString() == "Kategori güncellendi")
+    @if (TempData["messageCategory"].ToString() == "Kategori güncellendi")
     {
+         
         <script>
             alertify.warning("Kategori güncellendi");
         </script>
     }    
-    else if (TempData["mesaj"].ToString() == "Kategori silindi")
+    else if (TempData["messageCategory"].ToString() == "Kategori silindi")
     {
+         
         <script>
             alertify.error("Kategori silindi");
         </script>
     }
-    else if (TempData["mesaj"].ToString() == "Kategori eklendi")
+    else if (TempData["messageCategory"].ToString() == "Kategori eklendi")
     {
+         
         <script>
             alertify.success("Kategori eklendi");
         </script>
     }
- 
+
+    TempData["messageCategory"] = null;
+
 }
 
 
@@ -151,7 +186,7 @@ else
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
             },
-            columnDefs: [
+            columnDefs: [  // indexleme
                 {
                     searchable: false,
                     orderable: false,
@@ -159,11 +194,11 @@ else
                 },
             ],
             order: [[1, 'asc']],
-            pagingType: 'full_numbers'
+            pagingType: 'full_numbers' // ilk ve son butonları eklendi..
 
         });
 
-
+        // indexleme
         t.on('order.dt search.dt', function () {
             let i = 1;
 
@@ -181,7 +216,7 @@ else
 
 
 
-    @Model.JavascriptToRun
+    @Model.JavascriptToRun // yaptığı iş, içinde barındırdığı ShowErrorInsertOperationPopup veya ShowErrorUpdateOperationPopup fonksiyonu sayesinde, bu fonksiyonları çağırmak
 
         function ShowErrorInsertOperationPopup() {
             // alert('Sorry, we could not process your order.');
@@ -319,31 +354,6 @@ else
             });
         });
     });
-
-    /*
-     $(function () {
-
-         $("#tab1").on("click", "[value=addNewCategory]", function () {
-
-             $.ajax({
-
-                 //url,type,success
-                 url: 'AddCategoryAjax',
-                 data: {}, // data-id=@@item.ID
-                 type: "Get",
-                 success: function (data) {    // data, UnMaintenanceRoomAjax'ın return ettiği _UnMaintenanceRoomPartial verisidir
-                     $('#AddCategory').html(data);  // <div class="modal-body" id="MaintenanceRoom"> data buraya paste olur..
-                     AddCategoryModalLoaded();
-
-                 }
-
-
-             })
-         })
-
-
-
-     })*/
 
 
 </script>

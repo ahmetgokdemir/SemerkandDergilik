@@ -80,7 +80,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             }
 
             TempData["category_id"] = category_id;
-            JSpopupPage = null;
+
 
             return View(pvm);
         }
@@ -386,12 +386,12 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                     if (prd.ID == 0)
                     {
                         await _ipm.AddAsync(prd);
-                        TempData["mesaj"] = "Ürün eklendi";
+                        TempData["messageProduct"] = "Ürün eklendi";
                     }
                     else
                     {
                         _ipm.Update(prd);
-                        TempData["mesaj"] = "Ürün güncellendi";
+                        TempData["messageProduct"] = "Ürün güncellendi";
 
 
                     }
@@ -419,7 +419,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
                 // _icm.Delete(ctg);
 
-                TempData["mesaj"] = "Ürün silindi";
+                TempData["messageProduct"] = "Ürün silindi";
 
                 TempData["Deleted"] = null;
 

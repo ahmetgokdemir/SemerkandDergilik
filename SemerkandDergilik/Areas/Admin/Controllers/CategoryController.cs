@@ -36,6 +36,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         [Route("CategoryList")]
         public async Task<IActionResult> CategoryList(string? JSpopupPage)
         {
+
             if (TempData["JavascriptToRun"] == null)
             {
                 JSpopupPage = null; // pop-up sıfırlanır yoksa sayfayı reflesleyince geliyor
@@ -50,7 +51,6 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
             };
 
-            JSpopupPage = null;
             return View(cvm);
         }
 
@@ -225,12 +225,12 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                     if (ctg.ID == 0)
                     {
                         await _icm.AddAsync(ctg);
-                        TempData["mesaj"] = "Kategori eklendi";
+                        TempData["messageCategory"] = "Kategori eklendi";
                     }
                     else
                     {
                         _icm.Update(ctg);
-                        TempData["mesaj"] = "Kategori güncellendi";
+                        TempData["messageCategory"] = "Kategori güncellendi";
 
                     }
 
@@ -245,7 +245,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                 // Category ctg = cdto.Adapt<Category>();
 
                 // _icm.Delete(ctg);
-                TempData["mesaj"] = "Kategori silindi";
+                TempData["messageCategory"] = "Kategori silindi";
 
                 TempData["Deleted"] = null;
 
