@@ -192,7 +192,16 @@ builder.Services.AddSession(options =>
     options.Cookie.Name = "MainSession";
 });
 */
+
 var app = builder.Build();
+/*
+using (var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope())
+    {
+        var context = serviceScope.ServiceProvider.GetRequiredService<SemerkandDergilikContext>();
+        context.Database.EnsureCreated();
+    }
+ */
+
 
 
 using (var scope = app.Services.CreateScope())

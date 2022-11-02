@@ -55,6 +55,8 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
             IEnumerable<Product> productEnumerableList = await _ipm.GetActivesProductsByCategoryIDAsync(category_id);
 
+            Category c = await _icm.FirstOrDefault(x=>x.Primary_ID == category_id);
+
             List<Product> productsList = new List<Product>();
             productsList = productEnumerableList.ToList();
 
@@ -74,10 +76,11 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                 TempData["CategoryPicture"] = pvm.Products[0].Category.CategoryPicture;
             }
             */
-            if (pvm.ProductDTOs.Count > 0)
-            {
-                TempData["CategoryName"] = productsList[0].Category.CategoryName;
-            }
+            //if (pvm.ProductDTOs.Count > 0)
+            //{
+            //    TempData["CategoryName"] = productsList[0].Category.CategoryName;
+            //}
+            TempData["CategoryName"] = c.CategoryName;
 
             TempData["category_id"] = category_id;
 

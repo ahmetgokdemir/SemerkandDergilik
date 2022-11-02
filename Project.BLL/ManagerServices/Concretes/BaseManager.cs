@@ -64,9 +64,9 @@ namespace Project.BLL.ManagerServices.Concretes
             throw new NotImplementedException();
         }
 
-        public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> exp)
+        public async Task<TEntity> FirstOrDefault(Expression<Func<TEntity, bool>> exp)
         {
-            throw new NotImplementedException();
+            return await _iRep.FirstOrDefault(exp);
         }
 
         public async Task<IEnumerable<TEntity>> GetActivesAsync()

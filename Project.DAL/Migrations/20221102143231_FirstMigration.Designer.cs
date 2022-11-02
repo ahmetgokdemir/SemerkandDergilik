@@ -12,7 +12,7 @@ using Project.DAL.Context;
 namespace Project.DAL.Migrations
 {
     [DbContext(typeof(SemerkandDergilikContext))]
-    [Migration("20221101070017_FirstMigration")]
+    [Migration("20221102143231_FirstMigration")]
     partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
