@@ -14,6 +14,7 @@ namespace Project.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Primary_ID = table.Column<int>(type: "int", nullable: false),
                     OluşturulmaTarihi = table.Column<DateTime>(name: "Oluşturulma Tarihi", type: "datetime2", nullable: false),
                     SilinmeTarihi = table.Column<DateTime>(name: "Silinme Tarihi", type: "datetime2", nullable: true),
                     GüncellemeTarihi = table.Column<DateTime>(name: "Güncelleme Tarihi", type: "datetime2", nullable: true),
@@ -32,6 +33,7 @@ namespace Project.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Primary_ID = table.Column<int>(type: "int", nullable: false),
                     OluşturulmaTarihi = table.Column<DateTime>(name: "Oluşturulma Tarihi", type: "datetime2", nullable: false),
                     SilinmeTarihi = table.Column<DateTime>(name: "Silinme Tarihi", type: "datetime2", nullable: true),
                     GüncellemeTarihi = table.Column<DateTime>(name: "Güncelleme Tarihi", type: "datetime2", nullable: true),
@@ -64,7 +66,7 @@ namespace Project.DAL.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Primary_ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Kategoriİsmi = table.Column<string>(name: "Kategori İsmi", type: "nvarchar(max)", nullable: false),
                     CategoryPicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -76,14 +78,14 @@ namespace Project.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.ID);
+                    table.PrimaryKey("PK_Categories", x => x.Primary_ID);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Coupons",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Primary_ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CouponName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -95,7 +97,7 @@ namespace Project.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Coupons", x => x.ID);
+                    table.PrimaryKey("PK_Coupons", x => x.Primary_ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -104,6 +106,7 @@ namespace Project.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Primary_ID = table.Column<int>(type: "int", nullable: false),
                     OluşturulmaTarihi = table.Column<DateTime>(name: "Oluşturulma Tarihi", type: "datetime2", nullable: false),
                     SilinmeTarihi = table.Column<DateTime>(name: "Silinme Tarihi", type: "datetime2", nullable: true),
                     GüncellemeTarihi = table.Column<DateTime>(name: "Güncelleme Tarihi", type: "datetime2", nullable: true),
@@ -129,6 +132,7 @@ namespace Project.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Primary_ID = table.Column<int>(type: "int", nullable: false),
                     OluşturulmaTarihi = table.Column<DateTime>(name: "Oluşturulma Tarihi", type: "datetime2", nullable: false),
                     SilinmeTarihi = table.Column<DateTime>(name: "Silinme Tarihi", type: "datetime2", nullable: true),
                     GüncellemeTarihi = table.Column<DateTime>(name: "Güncelleme Tarihi", type: "datetime2", nullable: true),
@@ -154,6 +158,7 @@ namespace Project.DAL.Migrations
                 {
                     LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Primary_ID = table.Column<int>(type: "int", nullable: false),
                     OluşturulmaTarihi = table.Column<DateTime>(name: "Oluşturulma Tarihi", type: "datetime2", nullable: false),
                     SilinmeTarihi = table.Column<DateTime>(name: "Silinme Tarihi", type: "datetime2", nullable: true),
                     GüncellemeTarihi = table.Column<DateTime>(name: "Güncelleme Tarihi", type: "datetime2", nullable: true),
@@ -178,6 +183,7 @@ namespace Project.DAL.Migrations
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Primary_ID = table.Column<int>(type: "int", nullable: false),
                     OluşturulmaTarihi = table.Column<DateTime>(name: "Oluşturulma Tarihi", type: "datetime2", nullable: false),
                     SilinmeTarihi = table.Column<DateTime>(name: "Silinme Tarihi", type: "datetime2", nullable: true),
                     GüncellemeTarihi = table.Column<DateTime>(name: "Güncelleme Tarihi", type: "datetime2", nullable: true),
@@ -207,6 +213,7 @@ namespace Project.DAL.Migrations
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Primary_ID = table.Column<int>(type: "int", nullable: false),
                     OluşturulmaTarihi = table.Column<DateTime>(name: "Oluşturulma Tarihi", type: "datetime2", nullable: false),
                     SilinmeTarihi = table.Column<DateTime>(name: "Silinme Tarihi", type: "datetime2", nullable: true),
                     GüncellemeTarihi = table.Column<DateTime>(name: "Güncelleme Tarihi", type: "datetime2", nullable: true),
@@ -228,7 +235,7 @@ namespace Project.DAL.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Primary_ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ÜrünAdı = table.Column<string>(name: "Ürün Adı", type: "nvarchar(max)", nullable: false),
                     UnitsInStock = table.Column<short>(type: "smallint", nullable: false),
@@ -244,12 +251,12 @@ namespace Project.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.ID);
+                    table.PrimaryKey("PK_Products", x => x.Primary_ID);
                     table.ForeignKey(
                         name: "FK_Products_Categories_CategoryID",
                         column: x => x.CategoryID,
                         principalTable: "Categories",
-                        principalColumn: "ID",
+                        principalColumn: "Primary_ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 

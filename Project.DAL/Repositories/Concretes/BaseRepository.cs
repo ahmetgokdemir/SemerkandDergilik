@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Project.DAL.Repositories.Concretes
 {
-    public class BaseRepository<T> : IRepository<T> where T : EntityBase, IEntity
+    public class BaseRepository<T> : IRepository<T> where T : class, IEntity
     {
         protected readonly DbContext _context;
         //private readonly DbSet<IEntity> _dbSet;
@@ -35,18 +35,19 @@ namespace Project.DAL.Repositories.Concretes
 
         public async Task AddAsync(T entity)
         {
-            _context.Set<T>().AddAsync(entity);
+            await _context.Set<T>().AddAsync(entity);
             Save();
         }
 
-        public Task AddRangeAsync(List<T> list)
+        public async Task AddRangeAsync(List<T> list)
         {
-            throw new NotImplementedException();
+            await _context.Set<T>().AddRangeAsync(list);
+            Save();
         }
 
         public bool Any(Expression<Func<T, bool>> exp)
         {
-            throw new NotImplementedException();
+            return _context.Set<T>().Any(exp);
         }
 
         public void Destroy(T entity)
@@ -58,17 +59,18 @@ namespace Project.DAL.Repositories.Concretes
 
         public void DestroyRange(List<T> list)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().RemoveRange(list);
+            Save();
         }
 
-        public T FirstOrDefault(Expression<Func<T, bool>> exp)
+        public async Task<T> FirstOrDefault(Expression<Func<T, bool>> exp)
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().FirstOrDefaultAsync(exp);
         }
 
         public IQueryable<T> GetActivesAsync()
         {
-            return _context.Set<T>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).AsQueryable(); ;
+            return _context.Set<T>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).AsQueryable();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -81,6 +83,7 @@ namespace Project.DAL.Repositories.Concretes
 
         public async Task<T> GetByIdAsync(int id)
         {
+            // _context.Set<T>().Find(id);
             var entity = await _context.Set<T>().FindAsync(id);
 
             if (entity != null)
@@ -91,24 +94,24 @@ namespace Project.DAL.Repositories.Concretes
             return entity;
         }
 
-        public Task<T> GetFirstDataAsync()
+        public async Task<T> GetFirstDataAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().OrderBy(x => x.CreatedDate).FirstOrDefaultAsync();
         }
 
-        public Task<T> GetLastDataAsync()
+        public async Task<T> GetLastDataAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().OrderByDescending(x => x.CreatedDate).FirstOrDefaultAsync();
         }
 
-        public Task<IQueryable<T>> GetModifiedsAsync()
+        public IQueryable<T> GetModifiedsAsync()
         {
-            throw new NotImplementedException();
+            return Where(x => x.DataStatus == ENTITIES.Enums.DataStatus.Updated).AsQueryable();
         }
 
-        public Task<IQueryable<T>> GetPassivesAsync()
+        public IQueryable<T> GetPassivesAsync()
         {
-            throw new NotImplementedException();
+            return Where(x => x.DataStatus == ENTITIES.Enums.DataStatus.Deleted).AsQueryable();
         }
 
         public void Delete(T entity)
@@ -116,7 +119,39 @@ namespace Project.DAL.Repositories.Concretes
             entity.DeletedDate = DateTime.Now;
             entity.DataStatus = ENTITIES.Enums.DataStatus.Deleted;
 
-            var toBeUpdated = _context.Set<T>().Find(entity.ID);
+            /*
+                   
+            entity.DeletedDate = DateTime.Now;
+            entity.DataStatus = ENTITIES.Enums.DataStatus.Deleted;
+
+            //T toBeUpdated = null;
+
+            //if (entity is Category || entity is Product || entity is Coupon)
+            //{
+            //    toBeUpdated = _context.Set<T>().Find(entity.Primary_ID);
+            //}
+            //else if (entity is AppRole || entity is AppRoleClaim)
+            //{
+            //    AppRole entity_2 = null;
+
+            //    if (entity is AppRole)
+            //    {
+            //        entity_2 = entity as AppRole;
+            //    }
+
+            //    toBeUpdated = _context.Set<T>().Find(entity_2.Id);
+            //}
+
+
+            var toBeUpdated = _context.Set<T>().FindAsync(entity.Primary_ID) as T;
+            _context.Entry(toBeUpdated).CurrentValues.SetValues(entity);
+            Save();
+
+       
+             
+             */
+
+            var toBeUpdated = _context.Set<T>().Find(entity.Primary_ID);
             // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
             _context.Entry(toBeUpdated).CurrentValues.SetValues(entity);
             Save();
@@ -125,25 +160,45 @@ namespace Project.DAL.Repositories.Concretes
 
         public void DeleteRange(List<T> list)
         {
-            throw new NotImplementedException();
+            foreach (T item in list)
+            {
+                Delete(item);
+            }
         }
+
+
+        //public IQueryable<object> Select(Expression<Func<T, object>> exp)
+        //{
+        //    return _context.Set<T>().Select(exp).AsQueryable();
+        //}
+
+        //public async Task<object> Select(Expression<Func<T, object>> exp)
+        //{
+        //    return await _context.Set<T>().Select(exp).ToListAsync();
+        //}
 
         public object Select(Expression<Func<T, object>> exp)
         {
-            throw new NotImplementedException();
+            return _context.Set<T>().Select(exp).ToList();
         }
+
+        //public async Task<object> SelectViaClass(Expression<Func<T, object>> exp)
+        //{
+        //    return await _context.Set<T>().Select(exp).FirstOrDefaultAsync();
+        //}
 
         public object SelectViaClass<X>(Expression<Func<T, X>> exp)
         {
-            throw new NotImplementedException();
+            return _context.Set<T>().Select(exp).FirstOrDefault();
         }
+
 
         public void Update(T entity)
         {
             entity.DataStatus = ENTITIES.Enums.DataStatus.Updated;
             entity.ModifiedDate = DateTime.Now;
             // T toBeUpdated = Find(entity.ID);
-            var toBeUpdated = _context.Set<T>().Find(entity.ID);
+            var toBeUpdated = _context.Set<T>().Find(entity.Primary_ID);
             // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
 
             //if (toBeUpdated is Category /* || entity is Product*/ )
@@ -159,7 +214,10 @@ namespace Project.DAL.Repositories.Concretes
 
         public void UpdateRange(List<T> list)
         {
-            throw new NotImplementedException();
+            foreach (T item in list)
+            {
+                Update(item);
+            }
         }
 
         public IQueryable<T> Where(Expression<Func<T, bool>> predicate)

@@ -273,6 +273,7 @@ namespace Semerkand_Dergilik.Controllers
             }
 
             return View(userViewModel); // aynı sayfaya bilgiler dolu gider.. ViewBag.success = "true"; ise o kısım gelmez
+            // return RedirectToAction("UserEdit", "Member");
         }
 
         /*

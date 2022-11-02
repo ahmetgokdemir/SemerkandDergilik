@@ -6,7 +6,7 @@ namespace Semerkand_Dergilik.ViewModels
 {
     public class CategoryDTO
     {
-        public int ID { get; set; }
+        public int Primary_ID { get; set; }
 
         [Required(ErrorMessage = "Kategori ismi gereklidir.")]
         [Display(Name = "Kategori Adı")]

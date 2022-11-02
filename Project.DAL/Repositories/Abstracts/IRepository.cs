@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Project.DAL.Repositories.Abstracts
 {
 
-    public interface IRepository<T> where T : EntityBase, IEntity
+    public interface IRepository<T> where T : class, IEntity
     {
         // Task AddAsync(T item) gibi yorum satırına alınan crud işlemler Token dersinden
 
@@ -20,10 +20,10 @@ namespace Project.DAL.Repositories.Abstracts
         //List<T> GetActives();
         IQueryable<T> GetActivesAsync();
         // List<T> GetPassives();
-        Task<IQueryable<T>> GetPassivesAsync();
+        IQueryable<T> GetPassivesAsync();
 
         // List<T> GetModifieds();
-        Task<IQueryable<T>> GetModifiedsAsync();
+        IQueryable<T> GetModifiedsAsync();
 
 
         //Modify Commands
@@ -47,7 +47,7 @@ namespace Project.DAL.Repositories.Abstracts
         IQueryable<T> Where(Expression<Func<T, bool>> predicate);
 
         bool Any(Expression<Func<T, bool>> exp);
-        T FirstOrDefault(Expression<Func<T, bool>> exp);
+        Task<T> FirstOrDefault(Expression<Func<T, bool>> exp);
         object Select(Expression<Func<T, object>> exp);
         object SelectViaClass<X>(Expression<Func<T, X>> exp);
 

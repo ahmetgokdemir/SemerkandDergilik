@@ -23,6 +23,8 @@ namespace Semerkand_Dergilik.Controllers
 
         public BaseController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager = null)
         {
+            // roleManager = null set edilmesinin nedeni Member ve Base controller'ın constructorında roleManager olmayacak ve olmadığı için oralar patlar bunu engellemek için roleManager null'a set edildi.. Diğer bir yöntem de Member ve Base'in constructorında null parametresi göndermek olabilir ama 1.yöntem daha kısa..
+            // Ama Admin controller'ın constructor'ında signManager (Admin'de kullanılmayacak) null set edildi..
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;

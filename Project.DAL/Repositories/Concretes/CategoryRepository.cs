@@ -24,7 +24,7 @@ namespace Project.DAL.Repositories.Concretes
 
         public IQueryable<string> GetCategoryNameAccordingToProductAsync(int category_id)
         {
-            IQueryable<string> categoryNameAccordingToProduct = _context.Set<Category>().Where(x => x.ID == category_id).Select(x => x.CategoryName);
+            IQueryable<string> categoryNameAccordingToProduct = _context.Set<Category>().Where(x => x.Primary_ID == category_id).Select(x => x.CategoryName);
 
             return categoryNameAccordingToProduct;
         }

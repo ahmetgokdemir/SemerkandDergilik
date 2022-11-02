@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Project.BLL.ManagerServices.Concretes
 {
-    public class BaseManager<TEntity> : IManager<TEntity> where TEntity : EntityBase, IEntity
+    public class BaseManager<TEntity> : IManager<TEntity> where TEntity : class, IEntity
     {
         protected readonly IRepository<TEntity> _iRep;
 

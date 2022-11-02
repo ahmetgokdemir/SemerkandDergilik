@@ -128,13 +128,13 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                                                   //cdto.CategoryName = categoryNameAccordingToProduct; // 2.yol
 
             cdto.CategoryName = TempData["CategoryName"].ToString();
-            cdto.ID = (int)TempData["category_id"];
+            cdto.Primary_ID = (int)TempData["category_id"];
 
             pdto.CategoryID = (int)TempData["category_id"]; // <input type="hidden" asp-for="ProductDTO.CategoryID" /> kısmı için bu kod gerekli..
             // pdto.Category = cdto; // yazılmazsa null referance hatası verir.. 
 
 
-            TempData["category_id"] = cdto.ID;
+            TempData["category_id"] = cdto.Primary_ID;
             TempData["CategoryName"] = cdto.CategoryName; // 2.yol kullanılırsa gerekli olacak kod..
 
             ProductVM pvm = new ProductVM
@@ -248,7 +248,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             cdto.CategoryName = TempData["CategoryName"].ToString(); // asp-for="Category.CategoryName" değer atamak için 
             // cdto.CategoryName = categoryNameAccordingToProduct;  2.yol
             // pDTO.Category = cdto; // yazılmazsa null referance hatası verir.. 
-            cdto.ID = (int)TempData["category_id"];
+            cdto.Primary_ID = (int)TempData["category_id"];
 
             /*
              Product product_item = await _ipm.GetByIdAsync(id); kod sayesinde pdto.CategoryID geldiği için 
@@ -291,7 +291,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
              int category_id = (int)TempData["category_id"];
             TempData["category_id"] = category_id;
             */
-            TempData["category_id"] = cdto.ID;
+            TempData["category_id"] = cdto.Primary_ID;
             TempData["CategoryName"] = cdto.CategoryName; // 2.yol kullanılırsa gerekli olacak kod..
 
             Thread.Sleep(500);
@@ -371,9 +371,9 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                     else
                     {
                         // Update işleminde çalışır
-                        if (pvm_post.ProductDTO.ID != 0)
+                        if (pvm_post.ProductDTO.Primary_ID != 0)
                         {
-                            Product prdv2 = await _ipm.GetByIdAsync(pvm_post.ProductDTO.ID);
+                            Product prdv2 = await _ipm.GetByIdAsync(pvm_post.ProductDTO.Primary_ID);
 
                             if (prdv2.ProductPicture != null) // önceden veritabanında resim varsa ve resim seçilmedi ise..
                             {
@@ -383,7 +383,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
                     }
 
-                    if (prd.ID == 0)
+                    if (prd.Primary_ID == 0)
                     {
                         await _ipm.AddAsync(prd);
                         TempData["messageProduct"] = "Ürün eklendi";
@@ -413,7 +413,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             }
             else
             {
-                _ipm.Delete(await _ipm.GetByIdAsync(pvm_post.ProductDTO.ID));
+                _ipm.Delete(await _ipm.GetByIdAsync(pvm_post.ProductDTO.Primary_ID));
 
                 // Category ctg = cdto.Adapt<Category>();
 
@@ -442,9 +442,9 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             TempData["JavascriptToRun"] = "valid";
             TempData["HttpContext"] = "valid";
 
-            if (pvm_post.ProductDTO.ID != 0) //update
+            if (pvm_post.ProductDTO.Primary_ID != 0) //update
             {
-                TempData["JSpopupPage"] = $"ShowErrorUpdateOperationPopup({pvm_post.ProductDTO.ID})";
+                TempData["JSpopupPage"] = $"ShowErrorUpdateOperationPopup({pvm_post.ProductDTO.Primary_ID})";
                 return RedirectToAction("ProductList", new { id = (int)TempData["category_id"], JSpopupPage = TempData["JSpopupPage"].ToString() });
 
             }

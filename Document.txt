@@ -1,3 +1,46 @@
+principalColumn: "Primary_ID",
+
+
+Entitites:
+
+Project References: yok.
+NuGet Packages: Microsoft.AspNetCore.Identity, Microsoft.EntityFrameworkCore, Microsoft.Extensions.Identity.Stores
+
+
+IdentityAPI kendisi, Identity sýnýflarý arasýnda navigationlarý kuruyor.. Ayrýyeten bir iliþki belirtmene gerekmiyor..
+        //public virtual ICollection<AppUserRole> AppUserRoles { get; set; }
+        //public virtual ICollection<AppRoleClaim> AppRoleClaims { get; set; } gibi...
+
+Identity sýnýflarý sadece IEnitityden miras aldýðý için property'leri implement edilmeli ve constructor tanýmlanlamlý.. ama diðer sýnýflar
+(Category,Product vs.) ayrýca Entity'den miras aldýðý için ve Entity class da bu propertyleri implement ettiðinden bu sýnýflarda ayrýyeten 
+implementasyona gerek yok..
+
+---
+dipnot: 
+        public IdentityRole(string roleName) : this()
+        {
+            Name = roleName;
+        }
+this IdentityRole sýnýfýnýn empty olan constructor'ýný çaðrýr..
+---
+
+Model klasöründeki class'lar EntityBase dýþýnda ayrýca IEntity'den miras alýr zira MAP'da Base sýnýfý IEntity'yi referans alýr (EntityBase'den alýrsa Identity'ler patlar) ve böylece tüm sýnýflar (IEntity'den miras almasýyla) MAP edilebilir.. 
+
+ 
+
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+MAP:
+
+Project References: Entities.
+NuGet Packages: Microsoft.AspNetCore.Identity.EntityFrameworkCore.., Microsoft.EntityFrameworkCore, Microsoft.EntityFrameworkCore.Proxies, 
+Microsoft.EntityFrameworkCore.SqlServer, Microsoft.EntityFrameworkCore.Tools
+
+virtual -- override iliþki..
+
+
+
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 CreateAsync, UpdateAsync, ChangePasswordAsync, ResetPasswordAsync, AddLoginAsync, ConfirmEmailAsync --> dönüþ tipleri IdentityResult'dir..
 
@@ -20,6 +63,9 @@ app.MapAreaControllerRoute(
 
 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
+Adminde (Member, Home kýsmýndan farklý olarak) RoleManager kullanýldý..
+
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 Session kullanýmý:
 
 Program.cs --> 

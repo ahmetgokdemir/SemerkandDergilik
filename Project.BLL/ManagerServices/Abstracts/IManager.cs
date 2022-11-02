@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Project.BLL.ManagerServices.Abstracts
 {
-    public interface IManager<TEntity> where TEntity : EntityBase, IEntity 
+    public interface IManager<TEntity> where TEntity : class, IEntity 
     {        // Task AddAsync(T item) gibi yorum satırına alınan crud işlemler Token dersinden
 
         // List Commands

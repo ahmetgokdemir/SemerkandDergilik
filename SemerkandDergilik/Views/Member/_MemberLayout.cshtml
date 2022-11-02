@@ -26,7 +26,7 @@
                         <a class="nav-link me-2" asp-action="Index" asp-controller="Member">Üye Ana Sayfa</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-dark me-2" asp-area="Admin" asp-action="Index" asp-controller="Admin">Admin ana sayfa</a>
+                        <a class="btn btn-dark me-2" asp-area="Admin" asp-controller="Admin" asp-action="Index">Admin ana sayfa</a>
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-dark me-2" asp-action="Manager" asp-controller="Member">Manager ana sayfa</a>
@@ -46,7 +46,8 @@
             <div class="col-md-10">
                 @RenderBody()
             </div>
-            <div class="col-md-2 bg-success">
+            <div class="col-md-2">
+                <div class="container p-2 bg-success ">
                 <h3 class="text-md-center text-light">
                     Menü
                 </h3>
@@ -62,12 +63,13 @@
                 <br />
                 <br />
                 *@
-                <a class="btn w-100  mb-2" style="background-color:#e6e2d3" asp-action="PasswordChange" asp-controller="Member">Şifre değiştirme</a>
-           
-                <a class="btn w-100  mb-2" style="background-color:#e6e2d3" asp-action="UserEdit" asp-controller="Member">Bilgi güncelleme</a>
+                    <a class="btn w-100  mb-2" style="background-color:#e6e2d3;margin:0 auto; display:block;" asp-action="PasswordChange" asp-controller="Member">Şifre değiştirme</a>
+
+                    <a class="btn w-100  mb-2" style="background-color:#e6e2d3;margin:0 auto; display:block;" asp-action="UserEdit" asp-controller="Member">Bilgi güncelleme</a>
            
 
                 <a class="btn w-100  mb-2" style="background-color:#e6e2d3" asp-action="Logout" asp-controller="Member" asp-route-returnUrl="/Home/Index">Çıkış yap</a>
+            </div>
             </div>
         </div>
     </div>

@@ -11,6 +11,7 @@ namespace Project.ENTITIES.Identity_Models
 {
     public class AppRole:IdentityRole<Guid>,IEntity
     {
+        public int Primary_ID { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }

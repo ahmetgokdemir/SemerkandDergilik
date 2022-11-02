@@ -510,6 +510,75 @@ namespace Semerkand_Dergilik.Controllers
 
                                  */
 
+
+                                // generate random password
+                                string lowers = "abcdefghijklmnopqrstuvwxyz";
+                                string nonAlphanumeric = "!*?&";
+                                string number = "0123456789";
+
+                                Random random = new Random();
+
+                                string generated = "";
+                                int index;
+                                for (int i = 1; i <= 1; i++)
+                                {
+                                    index = random.Next(generated.Length);
+
+                                    generated = generated.Insert(
+                                     index,
+                                     lowers[random.Next(lowers.Length - 1)].ToString());
+                                }
+                                 
+
+                                for (int i = 1; i <= 1; i++)
+                                {
+                                    index = random.Next(generated.Length);
+
+                                    generated = generated.Insert(
+                                        index,
+                                        nonAlphanumeric[random.Next(nonAlphanumeric.Length - 1)].ToString());
+                                }
+
+                                for (int i = 1; i <= 6; i++)
+                                {
+                                    index = random.Next(generated.Length);
+
+                                    generated = generated.Insert(
+                                        index,
+                                        number[random.Next(number.Length - 1)].ToString());
+
+                                }
+                                string control = generated;
+                                string token = await userManager.GeneratePasswordResetTokenAsync(user);
+
+                                IdentityResult result_psw = await userManager.ResetPasswordAsync(user, token, generated);
+
+                                if (result_psw.Succeeded)
+                                {
+                                    await userManager.UpdateSecurityStampAsync(user);
+                                    
+                                }
+                                else
+                                {
+                                    AddModelError(result_psw);
+                                }
+
+                                string confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                                IdentityResult result_cemail = await userManager.ConfirmEmailAsync(user, confirmationToken);//**
+
+                                if (result_cemail.Succeeded)
+                                {
+                                    ViewBag.status = "Email adresiniz onaylanmıştır. Login ekranından giriş yapabilirsiniz.";
+                                }
+                                else
+                                {
+                                    ViewBag.status = "Bir hata meydana geldi. lütfen daha sonra tekrar deneyiniz.";
+                                }
+
+                                TempData["passwordFor3rdPartyAuthentication"] = "Şifreniz " + generated + " olarak belirlenmiştir. Şifre Değiştir bölümünden yeni şifre belirleyebilirsiniz.";  
+                               
+
                                 return Redirect(ReturnUrl);
                             }
                             else

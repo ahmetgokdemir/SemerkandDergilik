@@ -106,13 +106,13 @@ else
                                 }                                
                             </td>
                             <td class="btnposition">
-                                <a class="btn btn-warning" value="updateProductValue" data-id=@item.ID>Güncelle</a>
+                                <a class="btn btn-warning" value="updateProductValue" data-id=@item.Primary_ID>Güncelle</a>
                                 @* BURASIIII  <button class="btn btn-warning " id="updateCategory" value="updateCategoryValue" data-id=@item.ID>Güncelle</button>*@
                             </td>
                             <td class="btnposition">
                                 @*<a asp-action="DeleteCategory" asp-controller="Category" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
 
-                                <button class="btn btn-danger " id="deleteProduct" value="deleteProductValue" data-id=@item.ID>Sil</button>
+                                <button class="btn btn-danger " id="deleteProduct" value="deleteProductValue" data-id=@item.Primary_ID>Sil</button>
                             </td>
                         </tr>
                     }

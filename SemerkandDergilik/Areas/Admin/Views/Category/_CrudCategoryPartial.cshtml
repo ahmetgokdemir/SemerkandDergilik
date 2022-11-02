@@ -11,15 +11,15 @@
 {
     <h3>Kategori Oluşturma Formu</h3>
 }*@
-@if (Model.CategoryDTO.ID == 0 && ViewBag.CRUD != "delete_operation")
+@if (Model.CategoryDTO.Primary_ID == 0 && ViewBag.CRUD != "delete_operation")
 {
     <h3>Kategori Oluşturma Formu</h3>
 }
-else if (Model.CategoryDTO.ID != 0 && ViewBag.CRUD != "delete_operation")
+else if (Model.CategoryDTO.Primary_ID != 0 && ViewBag.CRUD != "delete_operation")
 {
     <h3>Kategori Güncelleme Formu</h3>
 }
-else if (Model.CategoryDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
+else if (Model.CategoryDTO.Primary_ID != 0 && ViewBag.CRUD == "delete_operation")
 {
     <h3>Kategori Silme Formu</h3>
 }
@@ -65,7 +65,7 @@ else if (Model.CategoryDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
                 <input class="form-control" type="file" name="categoryPicture" src="CategoryDTO.CategoryPicture" />
             </div>
 
-            @if (Model.CategoryDTO.ID == 0)
+            @if (Model.CategoryDTO.Primary_ID == 0)
             {
                 <div class="form-group">
                     <input type="submit" value="Kategori Ekle" class="btn btn-primary mt-2" />
@@ -78,16 +78,16 @@ else if (Model.CategoryDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
                 </div>
             }
 
-            @if (Model.CategoryDTO.ID != 0)
+            @if (Model.CategoryDTO.Primary_ID != 0)
             {
-                <input type="hidden" asp-for="CategoryDTO.ID" />
+                <input type="hidden" asp-for="CategoryDTO.Primary_ID" />
             }
 
         }
 
         else
         {
-            <input type="hidden" asp-for="CategoryDTO.ID" />
+            <input type="hidden" asp-for="CategoryDTO.Primary_ID" />
 
             <div class="form-group">
                 <span asp-validation-for="CategoryDTO.CategoryName"></span> <label style="width:100%; height:100%">@ViewBag.CategoryNameDelete silmek istediğinizden emin misiniz ?</label>
