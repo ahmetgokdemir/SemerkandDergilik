@@ -45,7 +45,7 @@ namespace Project.DAL.Repositories.Concretes
             Save();
         }
 
-        public bool Any(Expression<Func<T, bool>> exp)
+        public async Task<bool> Any(Expression<Func<T, bool>> exp)
         {
             return _context.Set<T>().Any(exp);
         }

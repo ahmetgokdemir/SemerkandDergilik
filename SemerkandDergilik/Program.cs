@@ -194,13 +194,13 @@ builder.Services.AddSession(options =>
 */
 
 var app = builder.Build();
-/*
+
 using (var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope())
     {
         var context = serviceScope.ServiceProvider.GetRequiredService<SemerkandDergilikContext>();
         context.Database.EnsureCreated();
     }
- */
+ 
 
 
 

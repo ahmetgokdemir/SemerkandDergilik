@@ -46,7 +46,7 @@ namespace Project.DAL.Repositories.Abstracts
         // List<T> Where(Expression<Func<T, bool>> exp);  
         IQueryable<T> Where(Expression<Func<T, bool>> predicate);
 
-        bool Any(Expression<Func<T, bool>> exp);
+        Task<bool> Any(Expression<Func<T, bool>> exp);
         Task<T> FirstOrDefault(Expression<Func<T, bool>> exp);
         object Select(Expression<Func<T, object>> exp);
         object SelectViaClass<X>(Expression<Func<T, X>> exp);

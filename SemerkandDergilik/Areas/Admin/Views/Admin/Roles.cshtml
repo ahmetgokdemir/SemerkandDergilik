@@ -1,4 +1,4 @@
-﻿@model List<AppRole>
+﻿@model List<RoleViewModel> // List<AppRole>
 
 @{
     ViewData["Title"] = "Roles";
@@ -22,13 +22,21 @@
 
             <td>@item.Id</td>
             <td>@item.Name</td>
+                <td><a class="btn btn-warning" asp-action="RoleUpdate" asp-route-id="@item.Id">Güncelle</a></td>
             <td>
-                <form asp-action="RoleDelete" asp-route-id="@item.Id" method="post">
+                    <form asp-action="RoleDelete" asp-route-id="@item.Id" method="post">
+                    @*Delete işleminde direkt post metodu çalışacağından form(submit) içine alındı, update de ise önce get metod çalışacak o yüzden update klasik şekilde yazıldı.... a tag helper bu işlemi yapamazdı o yüzden form/button kullanıldı. Çünkü a taghelper get metodunu çalıştırabilir.. post metodu değil.... burada da olduğu gibi mvc ve mvc core'da birden fazla form tanımlanabilir..
 
-                    <button class="btn btn-danger" type="submit">sil</button>
+                    form action içerisinde asp-route-id="@item.Id" YERİNE input hidden denedim olmadı!!!
+
+                    <input type="hidden" asp-for="@item.Id" /> OLMADI!!!
+
+                    *@
+ 
+                    <button class="btn btn-danger" type="submit">Sil</button>
                 </form>
             </td>
-            <td><a class="btn btn-warning" asp-action="RoleUpdate" asp-route-id="@item.Id">Güncelle</a></td>
+            
         </tr>
 
     }

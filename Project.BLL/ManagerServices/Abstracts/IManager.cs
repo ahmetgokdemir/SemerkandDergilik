@@ -44,7 +44,7 @@ namespace Project.BLL.ManagerServices.Abstracts
         // List<T> Where(Expression<Func<T, bool>> exp);  
         Task<IEnumerable<TEntity>> Where(Expression<Func<TEntity, bool>> predicate);
 
-        bool Any(Expression<Func<TEntity, bool>> exp);
+        Task<bool> Any(Expression<Func<TEntity, bool>> exp);
         Task<TEntity> FirstOrDefault(Expression<Func<TEntity, bool>> exp);
         object Select(Expression<Func<TEntity, object>> exp);
         object SelectViaClass<X>(Expression<Func<TEntity, X>> exp);

@@ -21,19 +21,19 @@ namespace Project.BLL.ManagerServices.Concretes
             _iRep = irep;
         }
 
-        public virtual async Task AddAsync(TEntity entity)
+        public async Task AddAsync(TEntity entity)
         {
             await _iRep.AddAsync(entity);
         }
 
-        public Task AddRangeAsync(List<TEntity> list)
+        public async Task AddRangeAsync(List<TEntity> list)
         {
-            throw new NotImplementedException();
+            await _iRep.AddRangeAsync(list);
         }
 
-        public bool Any(Expression<Func<TEntity, bool>> exp)
+        public Task<bool> Any(Expression<Func<TEntity, bool>> exp)
         {
-            throw new NotImplementedException();
+            return _iRep.Any(exp);
         }
 
         public void Delete(TEntity entity)
@@ -51,7 +51,7 @@ namespace Project.BLL.ManagerServices.Concretes
 
         public void DeleteRange(List<TEntity> list)
         {
-            throw new NotImplementedException();
+            _iRep.DeleteRange(list);
         }
 
         public void Destroy(TEntity entity)
@@ -61,7 +61,7 @@ namespace Project.BLL.ManagerServices.Concretes
 
         public void DestroyRange(List<TEntity> list)
         {
-            throw new NotImplementedException();
+            _iRep.DestroyRange(list);
         }
 
         public async Task<TEntity> FirstOrDefault(Expression<Func<TEntity, bool>> exp)
@@ -71,16 +71,14 @@ namespace Project.BLL.ManagerServices.Concretes
 
         public async Task<IEnumerable<TEntity>> GetActivesAsync()
         {
-            var products = await _iRep.GetActivesAsync().ToListAsync(); // convert ıqueryable to IEnumerable
-
-            return products;
+            return await _iRep.GetActivesAsync().ToListAsync(); // convert ıqueryable to IEnumerable
+                         
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            var products = await _iRep.GetAllAsync();
+            return await _iRep.GetAllAsync();
 
-            return products;
         }
 
         public async Task<TEntity> GetByIdAsync(int id)
@@ -95,34 +93,36 @@ namespace Project.BLL.ManagerServices.Concretes
             return product;
         }
 
-        public Task<TEntity> GetFirstDataAsync()
+        public async Task<TEntity> GetFirstDataAsync()
         {
-            throw new NotImplementedException();
+            return await _iRep.GetFirstDataAsync();
         }
 
-        public Task<TEntity> GetLastDataAsync()
+        public async Task<TEntity> GetLastDataAsync()
         {
-            throw new NotImplementedException();
+            return await _iRep.GetLastDataAsync();
         }
 
-        public Task<IEnumerable<TEntity>> GetModifiedsAsync()
+        public async Task<IEnumerable<TEntity>> GetModifiedsAsync()
         {
-            throw new NotImplementedException();
+            return await _iRep.GetModifiedsAsync().ToListAsync(); // convert ıqueryable to IEnumerable
+
+            // return products;
         }
 
-        public Task<IEnumerable<TEntity>> GetPassivesAsync()
+        public async Task<IEnumerable<TEntity>> GetPassivesAsync()
         {
-            throw new NotImplementedException();
+            return await _iRep.GetPassivesAsync().ToListAsync(); // convert ıqueryable to IEnumerable
         }
 
         public object Select(Expression<Func<TEntity, object>> exp)
         {
-            throw new NotImplementedException();
+            return _iRep.Select(exp);
         }
 
         public object SelectViaClass<X>(Expression<Func<TEntity, X>> exp)
         {
-            throw new NotImplementedException();
+            return _iRep.SelectViaClass<X>(exp);
         }
 
         public void Update(TEntity entity)
@@ -132,12 +132,12 @@ namespace Project.BLL.ManagerServices.Concretes
 
         public void UpdateRange(List<TEntity> list)
         {
-            throw new NotImplementedException();
+            _iRep.UpdateRange(list);
         }
 
-        public Task<IEnumerable<TEntity>> Where(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>> Where(Expression<Func<TEntity, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _iRep.Where(predicate).ToListAsync();
         }
     }
 }

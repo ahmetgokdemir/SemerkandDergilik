@@ -44,7 +44,12 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         [Route("Roles")]
         public IActionResult Roles()
         {
-            return View(roleManager.Roles.ToList()); // Roles => IQueryable<TRole> => IQueryable<AppRole>
+            // return View(roleManager.Roles.ToList()); // Roles => IQueryable<TRole> => IQueryable<AppRole> => convert to list
+
+            List<AppRole> roleName = roleManager.Roles.ToList();
+
+            return View(roleName.Adapt<List<RoleViewModel>>()); // automap
+
         }
 
         [Route("RoleCreate")]
@@ -77,9 +82,18 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("RoleDelete")]
-        public IActionResult RoleDelete(string id)
+        public IActionResult RoleDelete(string id) // string id <---> asp-route-id="@item.Id"
         {
             AppRole role = roleManager.FindByIdAsync(id).Result;
+
+            /*
+              <input type="hidden" asp-for="@item.Id" /> html'de işe yaramadı dolayısıyla aşağıdaki kod da geçersiz...
+              
+            public IActionResult RoleDelete(RoleViewModel roleViewModel)
+            {              
+                AppRole role = roleManager.FindByIdAsync(roleViewModel.Id).Result;
+            
+            */
 
             if (role != null)
             {
