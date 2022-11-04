@@ -38,10 +38,15 @@
                     <li class="nav-item">
                         <a class="nav-link" style="color: white;" asp-action="Editor" asp-controller="Member">Editor ana sayfa</a>
                     </li>
+                </ul>
 
-
+                <ul class="navbar-nav ms-auto">
+                    <li class="navbar-nav">
+                        <a class="nav-link">@User.Identity.Name</a>
+                    </li>
 
                 </ul>
+
             </div>
         </div>
     </nav>

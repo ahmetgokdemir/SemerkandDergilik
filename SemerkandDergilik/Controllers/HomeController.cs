@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using NuGet.Common;
 using NuGet.Protocol.Plugins;
 using Project.ENTITIES.Identity_Models;
+using Semerkand_Dergilik.CommonTools;
 using Semerkand_Dergilik.Enums;
 using Semerkand_Dergilik.Helper;
 using Semerkand_Dergilik.Models;
@@ -56,7 +57,7 @@ namespace Semerkand_Dergilik.Controllers
             {
                 return RedirectToAction("Index", "Member");
             }
-            */
+            */ 
 
             return View();
         }
@@ -210,10 +211,10 @@ namespace Semerkand_Dergilik.Controllers
 
                         // LogIn get metodundan gelir.. önce giriş yapmadan üye sayfasına (ReturnUrl) girmeye çalışırsa login sayfasına düşer ve mekanizma string ReturnUrl üretir ama sonra login olursa o zaman önceden girmeye çalıştığı üye sayfasına (TempData["ReturnUrl"]) direkt gider.. "Index", "Member" sayfasına değil.. 
                         if (TempData["ReturnUrl"] != null)
-                        {
+                        {                            
                             return Redirect(TempData["ReturnUrl"].ToString());
                         }
-
+                        
                         return RedirectToAction("Index", "Member"); // başarılı ise Member sayfasına yönlendirilir.. (sadece üyeler görebilir)
 
                     }

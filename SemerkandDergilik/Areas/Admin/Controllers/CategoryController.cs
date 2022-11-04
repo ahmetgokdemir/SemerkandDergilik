@@ -62,7 +62,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             var result = new CategoryDTO();
             CategoryDTO cDTO = new CategoryDTO();
 
-            // HttpContext.Session.SetObject("manipulatedData", pvm_post.ProductDTO);
+            // HttpContext.Session.SetObject("manipulatedData", pvm_post.CategoryDTO);
             if (TempData["HttpContext"] != null)
             {
                 cDTO = new CategoryDTO();

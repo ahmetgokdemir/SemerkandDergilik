@@ -82,7 +82,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("RoleDelete")]
-        public IActionResult RoleDelete(string id) // string id <---> asp-route-id="@item.Id"
+        public IActionResult RoleDelete(string id) // string id <---> asp-route-id="@item.Id", id isminin verilmesinin nedeni Program.cs kısmındaki'MapControllerRoute' ....er=Home}/{action=Index}/{id?}");
         {
             AppRole role = roleManager.FindByIdAsync(id).Result;
 
@@ -121,9 +121,9 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         [Route("RoleUpdate")]
         public IActionResult RoleUpdate(RoleViewModel roleViewModel)
         {
-            AppRole role = roleManager.FindByIdAsync(roleViewModel.Id).Result;
+            AppRole role = roleManager.FindByIdAsync(roleViewModel.Id).Result; // roleViewModel içerindeki Id'i Update işleminde fayda sağlıyor..
 
-            if (role != null)
+            if (role != null) // bu kontrole gerek yok gibi... gerekli olabilir user bu sayfada iken veritabanından veri silinirse o zaman hata oluşur..
             {
                 role.Name = roleViewModel.Name;
                 IdentityResult result = roleManager.UpdateAsync(role).Result;
@@ -145,19 +145,24 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             return View(roleViewModel);
         }
 
-        // Rol Atama
+        // Rol Atama (AspNetUserRoles ve AspNetRoles tabloları)
         [Route("RoleAssign")]
         public IActionResult RoleAssign(string id)
         {
             TempData["userId"] = id; // RoleAssign post metodunda kullanıldı..
 
-            AppUser user = userManager.FindByIdAsync(id).Result;
+            AppUser user = userManager.FindByIdAsync(id).Result; // currentuser kullanmayacağız.. AppUser user cookieden gelen değer değil (currentuser, login olan kullanıcıyı temsil eder) yani aşağıdaki kod değil..
+
+            /*             
+                AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
+                //AppUser user = CurrentUser;              
+             */
 
             ViewBag.userName = user.UserName;// used in RoleAssign.cshtml
 
             IQueryable<AppRole> roles = roleManager.Roles; // get all roles from database ([AspNetRoles]) tablosu.
 
-            List<string> userroles = userManager.GetRolesAsync(user).Result as List<string>; // get roles that belongs to user.. .Result => IList döner.. cast to List<>
+            List<string> userroles = userManager.GetRolesAsync(user).Result as List<string>; // get roles that belongs to user from AspNetUserRoles tablosundan.. .Result => IList döner.. cast to List<>
 
             // RoleAssignViewModel.cs
             List<RoleAssignViewModel> roleAssignViewModels = new List<RoleAssignViewModel>();
@@ -193,11 +198,11 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                 if (item.Exist)
 
                 {
-                    await userManager.AddToRoleAsync(user, item.RoleName); // assign to
+                    await userManager.AddToRoleAsync(user, item.RoleName); // assign to AspNetUserRoles tablosuna
                 }
                 else
                 {
-                    await userManager.RemoveFromRoleAsync(user, item.RoleName);
+                    await userManager.RemoveFromRoleAsync(user, item.RoleName); // remove from AspNetUserRoles tablosundan
                 }
             }
 

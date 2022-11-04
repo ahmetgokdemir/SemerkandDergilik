@@ -59,6 +59,9 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav ms-auto">
+                        <li class="navbar-nav">  
+                            <a class="nav-link">@User.Identity.Name</a>
+                        </li>
                         <li class="navbar-nav">
                             <a class="nav-link" asp-action="Logout" asp-controller="Member" asp-route-returnUrl="/Home/Index">Çıkış yap</a>
                         </li>
