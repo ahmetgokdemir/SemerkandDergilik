@@ -15,10 +15,14 @@ namespace Semerkand_Dergilik.ClaimProvider
             this.userManager = userManager;
         }
 
-        // Identity API, cookie den gelen değerlerden claim oluştururken biz de claim ekleyeceğiz dinamik olarak
+        // Identity API, cookie den gelen değerlerden claim oluştururken biz de claim ekleyeceğiz dinamik olarak...
         public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
         {
-            // üye mi kontrolü
+            //ClaimsPrincipal principal --> User
+            //ClaimsIdentity identity --> principal.Identity(HttpContext.User.Identity)
+
+            // üye mi kontrolü..  
+            // TransformAsync methodu üye olsun olmasın her user için her zaman çalışacak o yüzden user bir member mı kontrol edilmeli
             if (principal != null && principal.Identity.IsAuthenticated)
             {
                 ClaimsIdentity identity = principal.Identity as ClaimsIdentity; // HttpContext.User.Identity

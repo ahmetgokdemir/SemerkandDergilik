@@ -34,10 +34,17 @@
                 <td>@user.Id</td>
                 <td>@user.UserName</td>
                 <td>@user.Email</td>
-                <td user-roles="@user.Id"></td> <!-- CustomTagHelper.UserRolesName.cs-->
+                <td user-roles="@user.Id"></td> <!-- CustomTagHelper.UserRolesName.cs
+
+                 UserRolesName isimli TagHelper (CustomTagHelper klasöründe), [HtmlTargetElement("td", Attributes = "user-roles")], sayesinde tag'i yakalar ve dolaysıyla @@user.Id property'sine erişebilecek ve bu bilgi ile kullanıcının rolleri çekip td'nin içeine basıcağız'..
+
+                 _ViewImports.cshtml kısmına namespace eklenmeli : @* @addTagHelper Semerkand_Dergilik.CustomTagHelpers.*,SemerkandDergilik
+        eklenmeli ki user-roles yeşile dönüp UserRolesName isimli TagHelper tarafından yakalansın
+                 *@
+                -->
 
                 @* a tag helper'lar kullanıldığında akış get metodlarına olur*@
-                <td> <a class="btn btn-success" asp-action="RoleAssign" asp-route-id="@user.Id">Role ata</a></td> 
+                <td> <a class="btn btn-success" asp-action="RoleAssign" asp-route-id="@user.Id">Rol ata</a></td> 
                 <td><a class="btn btn-success" asp-action="ResetUserPassword" asp-route-id="@user.Id">Şifre Yenileme</a></td>
             </tr>
         }

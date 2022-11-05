@@ -290,7 +290,9 @@ namespace Semerkand_Dergilik.Controllers
             // return RedirectToAction("Index","Home"); klasik yöntem ve public ActionResult LogOut() olacak..
         }
 
-
+        /*       
+            Eğer kullanıcın yetkisi yoksa --> opts.AccessDeniedPath = new PathString("/Member/AccessDenied"); devreye girer ve yetki hatası verir         
+         */
         // // // erişim yetkisi olmayan kullanıcıyı sayfadan Access Denied etme 
         public IActionResult AccessDenied(string ReturnUrl)
         {
@@ -340,7 +342,7 @@ namespace Semerkand_Dergilik.Controllers
             return View();
         }
 
-        // 2. claim senoryosu
+        // 2. claim senoryosu  AspNetUserClaims tablosu kullanılmayacak
         [Authorize(Policy = "ViolencePolicy")]
         [Route("ViolencePage")]
         public IActionResult ViolencePage()
@@ -348,6 +350,7 @@ namespace Semerkand_Dergilik.Controllers
             return View();
         }
 
+        // <a class="btn btn-danger btn-block" asp-action="ExchangeRedirect" asp-controller="Member">Borsa bilgileri</a>
         // user ilk kez girdiği anda giriş tarihi AspNetUserClaims tablosunda tutacak..
         [Route("ExchangeRedirect")]
         public async Task<IActionResult> ExchangeRedirect()
@@ -355,7 +358,7 @@ namespace Semerkand_Dergilik.Controllers
             // ClaimsPrincipal principal = new ClaimsPrincipal();
             // bool result = principal.HasClaim(x => x.Type == "ExpireDateExchange");
 
-            // Claim'in ekleneceği yer
+            // Claim'in var mı yok mu yoksa aşağıda eklenir..
             bool result = User.HasClaim(x => x.Type == "ExpireDateExchange");
 
             // first enter..
@@ -363,22 +366,24 @@ namespace Semerkand_Dergilik.Controllers
             {
                 // use view until DateTime.Now.AddDays(30)
                 // value must be string due to database
-                Claim ExpireDateExchange = new Claim("ExpireDateExchange", DateTime.Now.AddDays(30).Date.ToShortDateString(), ClaimValueTypes.String, "Internal");
+                
+                Claim ExpireDateExchange = new Claim("ExpireDateExchange", DateTime.Now.AddDays(30).Date.ToShortDateString(), ClaimValueTypes.String, "Internal"); 
 
                 // CurrentUser olmadı from BaseController
                 AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
 
-                await userManager.AddClaimAsync(/*CurrentUser*/ user, ExpireDateExchange);
+                await userManager.AddClaimAsync(/*CurrentUser*/ user, ExpireDateExchange); // AspNetUserClaims tablosuna eklendi..
 
+                // cookie güncellendi..
                 await signInManager.SignOutAsync();
                 await signInManager.SignInAsync(/*CurrentUser*/ user, true);
             }
 
-            return RedirectToAction("Exchange");
+            return RedirectToAction("Exchange"); //**
         }
 
-        // 3. claim senoryosu (30 günlük ücretsiz kullanım hakkı) yetkili ise girebilir
-        [Authorize(Policy = "ExchangePolicy")]
+        // 3. claim senoryosu (30 günlük ücretsiz kullanım hakkı) yetkili ise girebilir.. AspNetUserClaims tablosu kullanılacak
+        [Authorize(Policy = "ExchangePolicy")] // program.cs
         [Route("Exchange")]
         public IActionResult Exchange()
         {

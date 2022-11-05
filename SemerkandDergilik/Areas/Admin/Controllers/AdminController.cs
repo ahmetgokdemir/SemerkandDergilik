@@ -199,10 +199,12 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
                 {
                     await userManager.AddToRoleAsync(user, item.RoleName); // assign to AspNetUserRoles tablosuna
+                    // userManager.AddToRoleAsync(user, item.RoleName).Result; RESULT HATA VERİYOR.. async Task<> & await KULLANILMALI
                 }
                 else
                 {
                     await userManager.RemoveFromRoleAsync(user, item.RoleName); // remove from AspNetUserRoles tablosundan
+                    // userManager.RemoveFromRoleAsync(user, item.RoleName).Result; RESULT HATA VERİYOR..
                 }
             }
 

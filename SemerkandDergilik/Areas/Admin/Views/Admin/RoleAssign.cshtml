@@ -10,14 +10,20 @@
 
 <form asp-controller="Admin" asp-action="RoleAssign" method="post">
 
+    <input type="checkbox" class="form-check-input" name="select-all" id="select-all" onClick="toggle(this)" />
+    <label class="form-check-label">Tümünü Seç</label>
+
     @for (int i = 0; i < Model.Count(); i++)
     {
         <div class="form-check">
-            <input asp-for="@Model[i].Exist" type="checkbox" class="form-check-input" />
-            <label asp-for="@Model[i].RoleId" class="form-check-label">@Model[i].RoleName</label>
+            <input asp-for="@Model[i].Exist" type="checkbox" class="form-check-input" id="checkbox" /> <!-- Model[i].Exist checkbox işaretler -->
+            <label @*asp-for="@Model[i].RoleId"*@ class="form-check-label">@Model[i].RoleName</label>
 
-            <input asp-for="@Model[i].RoleName" type="hidden" />
-            <input asp-for="@Model[i].RoleId" type="hidden" />
+           <input asp-for="@Model[i].RoleName" type="hidden" />
+            @*  <input asp-for="@Model[i].RoleId" type="hidden" />
+                Post metod'da RoleName kullanıldığı için hidden içerisinde belirtilmeli ama RoleId'ye gerek yok..
+
+            *@
         </div>
 
     }
@@ -26,10 +32,26 @@
     {
         <input asp-for="@Model[i].Exist" type="checkbox" class="form-check-input" />
         <label asp-for="@Model[i].RoleId" class="form-check-label">@Model[i].RoleName</label>
-    <!-- foreach ile Model[i] kullanılamaz for ile kullanılınır ve bu Model[i]'ler List<RoleAssignViewModel> döner ve post metoda parametre         olur..
+    <!-- foreach ile Model[i] kullanılamaz for ile kullanılınır ve bu Model[i]'ler List<RoleAssignViewModel> döner ve post metoda parametre olur.. post edilecek olan List<> olursa o zaman  Listeyi döngü üzerinde dönerken Listenin elemanlarını Model[i] şeklinde belirteceğimiz için foreach kullanılamaz..
      -->
     }*@
 
 
     <input class="btn btn-success mt-2" type="submit" value="Rol ata" />
 </form>
+
+
+<script type="text/javascript">
+    $('#select-all').click(function (event) {
+        if (this.checked) {
+            // Iterate each checkbox
+            $(':checkbox').each(function () {
+                this.checked = true;
+            });
+        } else {
+            $(':checkbox').each(function () {
+                this.checked = false;
+            });
+        }
+    });
+</script>

@@ -456,7 +456,7 @@ namespace Semerkand_Dergilik.Controllers
             }
             else
             {
-                Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true); // true: ExpireTimeSpan 30 days.. AspNetUserLogins tablosu kullanılacak..
+                Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true); // true: ExpireTimeSpan 30 days.. AspNetUserLogins tablosunda böyle bir user var mı bakılacak..
 
                 if (result.Succeeded) // user önceden kayıt olmuş demektir (AspNetUserLogins tablosuna)
                 {
@@ -490,7 +490,7 @@ namespace Semerkand_Dergilik.Controllers
 
                     AppUser user2 = await userManager.FindByEmailAsync(user.Email);
 
-                    if (user2 == null) // böyle bir kullanıcı yoksa AspNetUsers tablosuna kayıt işlemi yapılmalı..
+                    if (user2 == null) // böyle bir kullanıcı yoksa hem AspNetUsers tablosuna kayıt işlemi yapılmalı hem de AspNetUserLogins tablosuna..
                     {
                         IdentityResult createResult = await userManager.CreateAsync(user); // AspNetUsers tablosuna kayıt işlemi..
 
