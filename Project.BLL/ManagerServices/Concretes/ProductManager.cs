@@ -15,13 +15,13 @@ namespace Project.BLL.ManagerServices.Concretes
     {
         IProductRepository _prep;
 
+        // IRepository (_iRep) ve IProductRepository (_prep) aynı constructor içeriside depency injection'a tabii tutuldular..
         public ProductManager(IRepository<Product> irep, IProductRepository prep) : base(irep)
         {
             _prep = prep;
         }
 
-
-
+        // _iRep ve _prep ayrı constructor içerisinde dependency injection'a tabii tutulamadı..
         //public ProductManager(IProductRepository prep):base(prep)
         //{
         //    _prep = prep;

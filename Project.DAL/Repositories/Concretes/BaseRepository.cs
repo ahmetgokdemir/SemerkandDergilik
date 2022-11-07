@@ -70,7 +70,11 @@ namespace Project.DAL.Repositories.Concretes
 
         public IQueryable<T> GetActivesAsync()
         {
-            return _context.Set<T>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).AsQueryable();
+            // will call Where(Expression<Func<T, bool>> predicate) function
+            return Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).AsQueryable();
+
+            // 2.yol
+            // return _context.Set<T>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).AsQueryable();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -106,11 +110,13 @@ namespace Project.DAL.Repositories.Concretes
 
         public IQueryable<T> GetModifiedsAsync()
         {
+            // will call Where(Expression<Func<T, bool>> predicate) function
             return Where(x => x.DataStatus == ENTITIES.Enums.DataStatus.Updated).AsQueryable();
         }
 
         public IQueryable<T> GetPassivesAsync()
         {
+            // will call Where(Expression<Func<T, bool>> predicate) function
             return Where(x => x.DataStatus == ENTITIES.Enums.DataStatus.Deleted).AsQueryable();
         }
 

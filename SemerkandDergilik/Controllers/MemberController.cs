@@ -26,14 +26,14 @@ namespace Semerkand_Dergilik.Controllers
             //this.signInManager = signInManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
 
             // HttpContext.User.Identity.Name, veritabanındaki UserName karşılığıdır.. ama Identity.Name cookie den geliyor..
-            AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
+            // AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
             // kod tekrarı önlenemedi..
-            //AppUser user = base.CurrentUser;
-            //AppUser user = CurrentUser;
+            // AppUser user_control_2 = base.CurrentUser;
+            AppUser user = CurrentUser;
 
             if (user == null)
             {
@@ -59,9 +59,9 @@ namespace Semerkand_Dergilik.Controllers
         {
             if (ModelState.IsValid)
             {
-                // kod tekrarı önlenemedi..
-                //AppUser user = CurrentUser;
-                AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
+                // kod tekrarı önlenemedi..                
+                // AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
+                AppUser user = CurrentUser;
 
                 // UserViewModel userViewModel = user.Adapt<UserViewModel>(); // password null geliyor userviewmodelde o yüzden remove ediyoruz model state'te
 
@@ -134,8 +134,9 @@ namespace Semerkand_Dergilik.Controllers
         public IActionResult UserEdit()
         {
             // kod tekrarı önlendi..
-            AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
-            //AppUser user = CurrentUser;
+            // AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
+            
+            AppUser user = CurrentUser;
 
             if (user == null)
             {
@@ -180,8 +181,8 @@ namespace Semerkand_Dergilik.Controllers
             if (ModelState.IsValid)
             {
                 // kod tekrarı önlendi..
-                AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
-                //AppUser user = CurrentUser;
+                // AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
+                AppUser user = CurrentUser;
 
                 
                 string phone = userManager.GetPhoneNumberAsync(user).Result;
@@ -367,10 +368,12 @@ namespace Semerkand_Dergilik.Controllers
                 // use view until DateTime.Now.AddDays(30)
                 // value must be string due to database
                 
-                Claim ExpireDateExchange = new Claim("ExpireDateExchange", DateTime.Now.AddDays(30).Date.ToShortDateString(), ClaimValueTypes.String, "Internal"); 
+                Claim ExpireDateExchange = new Claim("ExpireDateExchange", DateTime.Now.AddDays(30).Date.ToShortDateString(), ClaimValueTypes.String, "Internal");
 
                 // CurrentUser olmadı from BaseController
-                AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
+                // AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
+                AppUser user = CurrentUser;
+
 
                 await userManager.AddClaimAsync(/*CurrentUser*/ user, ExpireDateExchange); // AspNetUserClaims tablosuna eklendi..
 

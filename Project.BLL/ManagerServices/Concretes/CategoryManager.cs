@@ -14,11 +14,12 @@ namespace Project.BLL.ManagerServices.Concretes
     {
         ICategoryRepository _crep;
 
+        // IRepository (_iRep) ve ICategoryRepository (_crep) aynı constructor içeriside dependency injection'a tabii tutuldular..
+        // IRepository irep'nin metodlarını kullanabilmek için dependency injection'a tabii tutuldu (Inheritance/ : base(irep))
         public CategoryManager(IRepository<Category> irep, ICategoryRepository crep) : base(irep)
         {
             _crep = crep;
         }
-
 
         public async Task<IEnumerable<string>> GetActivesCategoryNamesAsync()
         {
@@ -37,16 +38,15 @@ namespace Project.BLL.ManagerServices.Concretes
         }
 
         /*
-                public override async Task AddAsync(Category item)
-                {
+           public override async Task AddAsync(Category item)
+           {
+              if (item.CategoryName != null)
+              {
+                  _iRep.AddAsync(item);
+                  //return "Kategori eklendi";
+              }
 
-
-                    if (item.CategoryName != null)
-                    {
-                        _iRep.AddAsync(item);
-                        //return "Kategori eklendi";
-                    }
-                    //return "Kategori ismi girilmemiş";
-                }*/
+              //return "Kategori ismi girilmemiş";
+           }*/
     }
 }

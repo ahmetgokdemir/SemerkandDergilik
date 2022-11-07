@@ -89,3 +89,8 @@ result = HttpContext.Session.GetObject<ProductDTO>("manipulatedData");
   <td colspan="2" style="padding-left:75px"><img style="width:75%; height:75%" src="@item.ProductPicture" /></td>
 
   --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+  AppUser user = CurrentUser; çalýþmasý için connectionString'e eklendi.. --> MultipleActiveResultSets=true;
+
+
+

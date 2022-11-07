@@ -10,8 +10,7 @@ namespace Project.DAL.Repositories.Abstracts
 {
 
     public interface IRepository<T> where T : class, IEntity
-    {
-        // Task AddAsync(T item) gibi yorum satırına alınan crud işlemler Token dersinden
+    {     
 
         // List Commands
         // List<T> GetAll(); // IQueryable<T> GetAllAsync();

@@ -193,6 +193,7 @@ builder.Services.AddSession(options =>
 });
 */
 
+// create database if not exist
 var app = builder.Build();
 
 using (var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope())
@@ -200,10 +201,10 @@ using (var serviceScope = app.Services.GetService<IServiceScopeFactory>().Create
         var context = serviceScope.ServiceProvider.GetRequiredService<SemerkandDergilikContext>();
         context.Database.EnsureCreated();
     }
- 
 
 
 
+// create some default data if not exist in database
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;

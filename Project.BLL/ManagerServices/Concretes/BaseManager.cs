@@ -71,6 +71,8 @@ namespace Project.BLL.ManagerServices.Concretes
 
         public async Task<IEnumerable<TEntity>> GetActivesAsync()
         {
+            // IQueryable olması bize üzerinde linq kullanmamıza izin verir zira hala veri database üzerinde..
+            // IEnumerable olunca veri db 'den çekilip memory'e set edilmiştir..
             return await _iRep.GetActivesAsync().ToListAsync(); // convert ıqueryable to IEnumerable
                          
         }
