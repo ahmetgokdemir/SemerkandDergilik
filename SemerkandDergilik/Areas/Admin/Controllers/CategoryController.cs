@@ -15,7 +15,7 @@ using System.Data;
 namespace Semerkand_Dergilik.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("Admin")]
+    [Route("Admin/Category")]
     [Authorize(Roles = "Admin")] // case sensitive  
     public class CategoryController : Controller
     {

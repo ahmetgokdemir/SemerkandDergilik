@@ -20,7 +20,7 @@ using System.Xml.Linq;
 namespace Semerkand_Dergilik.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("Admin")]
+    [Route("Admin/Product")]
     [Authorize(Roles = "Admin")] // case sensitive  
     public class ProductController : Controller
     {
