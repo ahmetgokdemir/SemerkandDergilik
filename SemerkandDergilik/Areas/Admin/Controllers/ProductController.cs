@@ -217,7 +217,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
 
 
-            // * Product product_item = await _ipm.GetProductByIdwithCategoryValueAsync(id);
+            Product product_item_control = await _ipm.GetProductByIdwithCategoryValueAsync(id);
             // yukarıdaki kod Ürünü, kategori bilgileri ile getirir buna gerek yok.. product_item.Adapt<ProductDTO>() yeterli
 
 
