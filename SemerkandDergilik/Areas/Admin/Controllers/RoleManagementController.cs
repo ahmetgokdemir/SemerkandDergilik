@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Project.ENTITIES.Identity_Models;
+using Project.ENTITIES.Models;
 using Semerkand_Dergilik.Controllers;
 using Semerkand_Dergilik.ViewModels;
+using Semerkand_Dergilik.VMClasses;
 using System.Data;
 
 namespace Semerkand_Dergilik.Areas.Admin.Controllers
@@ -78,6 +80,20 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             }
 
             return View(roleViewModel);
+        }
+
+        // DeleteRoleAjax
+        [Route("DeleteRoleAjax")]
+        public async Task<PartialViewResult> DeleteRoleAjax(string id) // id'i int değil!!
+        {
+            AppRole role = roleManager.FindByIdAsync(id).Result;
+
+            role.Adapt<List<RoleViewModel>>();
+
+            ViewBag.RoleNameDelete = role.Name;
+
+            return PartialView("_DeleteRolePartial", role.Adapt<RoleViewModel>());
+ 
         }
 
         [HttpPost]
