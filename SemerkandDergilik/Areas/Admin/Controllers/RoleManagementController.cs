@@ -98,9 +98,10 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("RoleDelete")]
-        public IActionResult RoleDelete(string id) // string id <---> asp-route-id="@item.Id", id isminin verilmesinin nedeni Program.cs kısmındaki'MapControllerRoute' ....er=Home}/{action=Index}/{id?}");
+        public IActionResult RoleDelete(string id, RoleViewModel role_control) // string id <---> asp-route-id="@item.Id", id isminin verilmesinin nedeni Program.cs kısmındaki'MapControllerRoute' ....er=Home}/{action=Index}/{id?}");
         {
             AppRole role = roleManager.FindByIdAsync(id).Result;
+            // AppRole role_yedek = role_control.Adapt<AppRole>(); --> bu yöntem çalışmadı!!
 
             /*
               <input type="hidden" asp-for="@item.Id" /> html'de işe yaramadı dolayısıyla aşağıdaki kod da geçersiz...
@@ -111,9 +112,19 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             
             */
 
-            if (role != null)
+            if (/*role_yedek != null &&*/ role != null)
             {
+                //IdentityResult result_2 = roleManager.DeleteAsync(role).Result;
                 IdentityResult result = roleManager.DeleteAsync(role).Result;
+                
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Roles");
+                }
+                else
+                {
+                    AddModelError(result);
+                }
             }
 
             return RedirectToAction("Roles");
@@ -241,11 +252,13 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         {
             AppUser user = await userManager.FindByIdAsync(id);
 
-            PasswordResetByAdminViewModel passwordResetByAdminViewModel = new PasswordResetByAdminViewModel();
-            passwordResetByAdminViewModel.UserId = user.Id.ToString();
-            passwordResetByAdminViewModel.UserName = user.UserName;
-            passwordResetByAdminViewModel.Email = user.Email;
- 
+            // PasswordResetByAdminViewModel passwordResetByAdminViewModel = new PasswordResetByAdminViewModel();
+            // passwordResetByAdminViewModel.Id = user.Id.ToString();
+            // passwordResetByAdminViewModel.UserName = user.UserName;
+            // passwordResetByAdminViewModel.Email = user.Email;
+
+            PasswordResetByAdminViewModel passwordResetByAdminViewModel = user.Adapt<PasswordResetByAdminViewModel>(); // automap
+
 
             return View(passwordResetByAdminViewModel);
         }
@@ -255,7 +268,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
         [Route("ResetUserPassword")]
         public async Task<IActionResult> ResetUserPassword(PasswordResetByAdminViewModel passwordResetByAdminViewModel)
         {
-            AppUser user = await userManager.FindByIdAsync(passwordResetByAdminViewModel.UserId);
+            AppUser user = await userManager.FindByIdAsync(passwordResetByAdminViewModel.Id);
 
             string token = await userManager.GeneratePasswordResetTokenAsync(user);
 

@@ -5,7 +5,7 @@ namespace Semerkand_Dergilik.ViewModels
 {
     public class PasswordResetByAdminViewModel
     {
-        public string UserId { get; set; }
+        public string Id { get; set; }
 
         [Display(Name = "Kullanıcı Adı")]
         public string UserName { get; set; }

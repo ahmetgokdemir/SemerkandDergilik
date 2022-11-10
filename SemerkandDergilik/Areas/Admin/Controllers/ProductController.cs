@@ -416,6 +416,10 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             }
             else
             {
+                // Product prd = pvm_post.ProductDTO.Adapt<Product>();
+
+                // _ipm.Delete(prd);
+
                 _ipm.Delete(await _ipm.GetByIdAsync(pvm_post.ProductDTO.Primary_ID));
 
                 // Category ctg = cdto.Adapt<Category>();
