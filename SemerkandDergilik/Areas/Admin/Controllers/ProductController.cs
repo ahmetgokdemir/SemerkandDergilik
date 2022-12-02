@@ -43,6 +43,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
 
         [Route("ProductList")]
+        // [HttpGet("{id}")] --> id parametresini, querystring'den almak yerine url'den almak ...
         public async Task<IActionResult> ProductList(int id, string? JSpopupPage)
         {
 
