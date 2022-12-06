@@ -56,7 +56,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
             IEnumerable<Product> productEnumerableList = await _ipm.GetActivesProductsByCategoryIDAsync(category_id);
 
-            Category c = await _icm.FirstOrDefault(x=>x.Primary_ID == category_id);
+            // Category c = await _icm.FirstOrDefault(x=>x.Primary_ID == category_id);
 
             List<Product> productsList = new List<Product>();
             productsList = productEnumerableList.ToList();
@@ -81,7 +81,10 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             //{
             //    TempData["CategoryName"] = productsList[0].Category.CategoryName;
             //}
-            TempData["CategoryName"] = c.CategoryName;
+            
+            // TempData["CategoryName"] = c.CategoryName;
+            TempData["CategoryName"] = productsList[0].Category.CategoryName;
+
 
             TempData["category_id"] = category_id;
 
@@ -218,7 +221,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
 
 
-            Product product_item_control = await _ipm.GetProductByIdwithCategoryValueAsync(id);
+            // Product product_item_control = await _ipm.GetProductByIdwithCategoryValueAsync(id);
             // yukarıdaki kod Ürünü, kategori bilgileri ile getirir buna gerek yok.. product_item.Adapt<ProductDTO>() yeterli
 
 
@@ -350,7 +353,8 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                 {
                     Product prd = pvm_post.ProductDTO.Adapt<Product>();
 
-                    prd.Status = (int)pvm_post.ProductDTO.Status; // casting bu olmadan dene
+                    //prd.Status = (int)pvm_post.ProductDTO.Status; // casting bu olmadan dene
+                    
                     //  <input type="hidden" asp-for="CategoryID" /> bunu kullandığımız için prd.CategoryID = (int)TempData["category_id"]; ama bu koda gerek kalmadı... zira ProductDTO'da CategoryID ile veriyi aldık.. 
                     // prd.Category = null;
                     // prd.CategoryID = pvm_post.CategoryDTO.ID; bu koda gerek kalmadı çünkü <input type="hidden" asp-for="ProductDTO.CategoryID" /> bunu kullandığımız için.. bunu da pdto.CategoryID = (int)TempData["category_id"]; bu kodla sağladık.. 

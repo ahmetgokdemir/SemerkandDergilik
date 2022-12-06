@@ -32,7 +32,7 @@ else if (Model.CategoryDTO.Primary_ID != 0 && ViewBag.CRUD == "delete_operation"
 
         @if (ViewBag.CRUD != "delete_operation")
         {
-            TempData["Deleted"] = null;  // delete pop-up sayfasını açıp sonra kapatıp sonra da update/add pop'ı seçilirse TempData["Deleted"] sıfırlanmadığından CRUDProduct kısmında delete operation çalışır bu yüzden bunu sıfırlamak lazım
+            TempData["Deleted"] = null;  // delete pop-up sayfasını açıp sonra kapatıp sonra da update/add pop'ı seçilirse TempData["Deleted"] sıfırlanmadığından CRUDProduct action kısmında delete operation çalışır bu yüzden bunu sıfırlamak lazım
 
             // asp-for="" kullanımında içerisine Model.CategoryDTO.CategoryName tanımlanamaz (Model olmamalı) yani CategoryDTO.CategoryName şeklinde olacak.. ViewBag de tanımlanamaz.. ama TempData kullanılabilir sanırım..
 
