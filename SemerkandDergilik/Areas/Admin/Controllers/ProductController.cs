@@ -56,7 +56,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
             IEnumerable<Product> productEnumerableList = await _ipm.GetActivesProductsByCategoryIDAsync(category_id);
 
-            // Category c = await _icm.FirstOrDefault(x=>x.Primary_ID == category_id);
+            Category c = await _icm.FirstOrDefault(x=>x.Primary_ID == category_id);
 
             List<Product> productsList = new List<Product>();
             productsList = productEnumerableList.ToList();
@@ -82,8 +82,8 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             //    TempData["CategoryName"] = productsList[0].Category.CategoryName;
             //}
             
-            // TempData["CategoryName"] = c.CategoryName;
-            TempData["CategoryName"] = productsList[0].Category.CategoryName;
+            TempData["CategoryName"] = c.CategoryName;
+            // TempData["CategoryName"] = productsList[0].Category.CategoryName; --> ArgumentOutOfRangeException hatası
 
 
             TempData["category_id"] = category_id;
