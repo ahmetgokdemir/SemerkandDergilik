@@ -1,3 +1,8 @@
+Existing/mevcut bir database'e yeni bir tablo veya tablo için property eklersek 
+yapýlmasý gereken önceki migration'lar yorum satýrýna alýnmalý 
+örneðin --> firstmigration ve add_blog_table.cs 'ler yorum satýrýna alýnmalý...
+
+
 principalColumn: "Primary_ID",
 
 

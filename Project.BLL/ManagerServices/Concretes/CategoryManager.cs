@@ -3,6 +3,7 @@ using Project.BLL.ManagerServices.Abstracts;
 using Project.DAL.Repositories.Abstracts;
 using Project.ENTITIES.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,9 +14,21 @@ namespace Project.BLL.ManagerServices.Concretes
     public class CategoryManager : BaseManager<Category>, ICategoryManager
     {
         ICategoryRepository _crep;
+        // ICollection _icol;
+        // Collection önce kave seç...
 
         // IRepository (_iRep) ve ICategoryRepository (_crep) aynı constructor içeriside dependency injection'a tabii tutuldular..
         // IRepository irep'nin metodlarını kullanabilmek için dependency injection'a tabii tutuldu (Inheritance/ : base(irep))
+
+        /*         
+        protected readonly IRepository<TEntity> _iRep;
+
+        public BaseManager(IRepository<TEntity> irep) <--  base(irep)
+        {
+            _iRep = irep;
+        }         
+        */
+
         public CategoryManager(IRepository<Category> irep, ICategoryRepository crep) : base(irep)
         {
             _crep = crep;

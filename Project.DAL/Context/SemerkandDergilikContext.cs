@@ -111,6 +111,8 @@ namespace Project.DAL.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+
 
 
 
