@@ -179,6 +179,8 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped(typeof(IManager<>), typeof(BaseManager<>));
 builder.Services.AddScoped<ICategoryManager, CategoryManager>();
 builder.Services.AddScoped<IProductManager, ProductManager>();
+builder.Services.AddScoped<IBlogManager, BlogManager>();
+
 
 
 builder.Services.AddSession();

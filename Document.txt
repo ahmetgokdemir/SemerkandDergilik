@@ -1,6 +1,8 @@
 Existing/mevcut bir database'e yeni bir tablo veya tablo için property eklersek 
 yapýlmasý gereken önceki migration'lar yorum satýrýna alýnmalý 
-örneðin --> firstmigration ve add_blog_table.cs 'ler yorum satýrýna alýnmalý...
+örneðin migration klasöründeki þu class'lar --> firstmigration ve add_blog_table.cs 'ler yorum satýrýna alýnmalý...
+BU ARADA add_blog_table.cs YORUMA ALINMADI!!!!
+
 
 
 principalColumn: "Primary_ID",
@@ -98,4 +100,11 @@ result = HttpContext.Session.GetObject<ProductDTO>("manipulatedData");
   AppUser user = CurrentUser; çalýþmasý için connectionString'e eklendi.. --> MultipleActiveResultSets=true;
 
 
+
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+CategoryController
+
+HttpContext.Session.SetObject("manipulatedData", cvm_post.CategoryDTO); // object to json
+HttpContext.Session.SetObject("manipulatedData", null); // resetlemek
 

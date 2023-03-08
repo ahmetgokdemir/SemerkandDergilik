@@ -1,34 +1,87 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model BlogVM 
+@*  kullanabilmek için ViewImports.cshtml kısmına @using Semerkand_Dergilik.VMClasses eklendi *@
+
+<!-- modelimiz -->
 @{
+    ViewData["Title"] = "Blog";
+    Layout = "~/Views/Member/_MemberLayout.cshtml";
 }
 
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <h2>Blog Sayfası</h2>
+        <form asp-action="Blog" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+@*                    <label asp-for="BlogDTO.Title" class="control-label">Title</label>
+*@                    <label asp-for="BlogDTO.Title" class="control-label"></label>
 
-<div class="form-group">
-    <label  class="control-label">Title</label>
-    <input class="form-control" />
-    <span   class="text-danger"></span>
+                    <input asp-for="BlogDTO.Title" class="form-control" />
+                    <span asp-validation-for="BlogDTO.Title" class="text-danger"></span>
+                </div>
+                
+                <div class="form-group">
+                    @*<label asp-for="BlogDTO.SubTitle" class="control-label">SubTitle</label>*@
+                    <label asp-for="BlogDTO.SubTitle" class="control-label"></label>
+                    <input asp-for="BlogDTO.SubTitle" class="form-control" />
+                    <span asp-validation-for="BlogDTO.SubTitle" class="text-danger"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="BlogDTO.Description" class="control-label"></label>
+                    <input asp-for="BlogDTO.Description" class="form-control" />
+                    <span asp-validation-for="BlogDTO.Description" class="text-danger"></span>
+                </div>
+                
+                
+@*                <div class="form-group">
+                    <label class="control-label"></label>
+                    <select class="form-control" asp-items="@ViewBag.Gender">
+                        <option>a</option>
+                        <option>b</option>
+                        <option>c</option>
+                    </select>
+                </div>*@
+
+            <div class="form-group">
+                <label asp-for="BlogDTO.Status" class="control-label"></label>
+                <select class="form-control" asp-for="BlogDTO.Status" asp-items="@ViewBag.BlogStatus">
+                    <option>Durum seçiniz.</option>
+                </select>
+                <span asp-validation-for="BlogDTO.Status" class="text-danger"></span>
+            </div>
+                
+                <div class="form-group mt-2">
+                    <input type="submit" value="Kaydet" class="btn" style="background-color:#3498DB; color: white;" />
+                </div>
+        </form>
+    </div>
 </div>
 
-<div class="form-group">
-    <label class="control-label">SubTitle</label>
-    <input class="form-control" />
-    <span class="text-danger"></span>
-</div>
 
-<div class="form-group">
-    <label class="control-label">Açıklama</label>
-    <input class="form-control" />
-    <span class="text-danger"></span>
-</div>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/alertify.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/alertify.min.css" />
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/themes/default.min.css" />
 
+@if (TempData["messageBlog"] != null)
+{
+    @if (TempData["messageBlog"].ToString() == "Blog güncellendi")
+    {
+                <script>
+            alertify.warning("Blog güncellendi");
+                </script>
+    }
+    else if (TempData["messageBlog"].ToString() == "Blog silindi")
+    {
+                <script>
+            alertify.error("Blog silindi");
+                </script>
+    }
+    else if (TempData["messageBlog"].ToString() == "Blog eklendi")
+    {
+                <script>
+            alertify.success("Blog eklendi");
+                </script>
+    }
 
-<div class="form-group">
-    <label   class="control-label"></label>
-    <select class="form-control" asp-items="@ViewBag.Gender">
-        <option>a</option>
-        <option>b</option>
-        <option>c</option>
-    </select>
-</div>
+}

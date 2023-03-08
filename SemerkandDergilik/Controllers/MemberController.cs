@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security;
 using Semerkand_Dergilik.Enums;
 using System.Security.Claims;
+using Semerkand_Dergilik.VMClasses;
+using Project.ENTITIES.Models;
+using Project.BLL.ManagerServices.Abstracts;
 
 namespace Semerkand_Dergilik.Controllers
 {
@@ -17,13 +20,14 @@ namespace Semerkand_Dergilik.Controllers
         // kod tekrarı önlendi..
         //public UserManager<AppUser> userManager { get; }
         //public SignInManager<AppUser> signInManager { get; }
+        readonly IBlogManager _ibm;
 
-
-        public MemberController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : base(userManager, signInManager)
+        public MemberController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IBlogManager ibm) : base(userManager, signInManager)
         {
             // kod tekrarı önlendi..
             //this.userManager = userManager;
             //this.signInManager = signInManager;
+            _ibm = ibm;
         }
 
         public async Task<IActionResult> Index()
@@ -395,7 +399,46 @@ namespace Semerkand_Dergilik.Controllers
 
         public IActionResult Blog()
         {
+            ViewBag.BlogStatus = new SelectList(Enum.GetNames(typeof(BlogStatus)));
+
+            //if (ViewBag.ErrorMessageBlog == true)
+            //{
+            //    if (string.IsNullOrEmpty(pvm.ProductDTO.ProductName))
+            //    {
+            //        ModelState.AddModelError("ProductDTO.ProductName", "Ürün adı giriniz.");
+            //    }
+            //}
+
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Blog(BlogVM bvm_post)
+        {
+            ModelState.Remove("BlogDTOs");
+            ModelState.Remove("JavascriptToRun");
+
+            if (ModelState.IsValid)
+            {
+                Blog blg = bvm_post.BlogDTO.Adapt<Blog>(); // Mapster
+
+                await _ibm.AddAsync(blg);
+                TempData["messageBlog"] = "Blog eklendi";
+
+                return RedirectToAction("Blog");
+
+            }
+
+            //ModelState.AddModelError("", "Başlık ve Durum boş geçilemez!");
+
+            ViewBag.ErrorMesssege = true;
+
+            ViewBag.BlogStatus = new SelectList(Enum.GetNames(typeof(BlogStatus)));
+
+            // return RedirectToAction("Blog");
+            return View(bvm_post);
+
+
         }
 
     }

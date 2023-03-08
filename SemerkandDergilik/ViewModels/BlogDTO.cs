@@ -12,13 +12,14 @@ namespace Semerkand_Dergilik.ViewModels
         public string Title { get; set; }
 
         [Display(Name = "Alt Başlık")]
-        public string SubTitle { get; set; }
+        public string? SubTitle { get; set; }
 
         [Display(Name = "Açıklama")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Display(Name = "Durum")]
         [Required(ErrorMessage = "Durum giriniz.")]
-        public Status Status { get; set; } // Aktif, Pasif
+        // [Required(ErrorMessage = "Ürün durumunu giriniz.")]
+        public BlogStatus Status { get; set; } // a,b,c
     }
 }
