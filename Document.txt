@@ -140,3 +140,36 @@ CategoryController
 HttpContext.Session.SetObject("manipulatedData", cvm_post.CategoryDTO); // object to json
 HttpContext.Session.SetObject("manipulatedData", null); // resetlemek
 
+
+
+
+----------------------------------------- 0*********-----------------------------------------------
+
+claimprovider --> claim'ler --> AddPolicy (Program.cs)
+
+SessionExtension
+CustomValidation
+
+BaseController --> den türedi diðerleri
+Areas --> admin kýsmý
+TagHelper --> property yakalamak..
+ViewModel --> göstermek istediðim property'ler
+
+VMClasses
+
+---------------------------------------------------------
+Program.cs'de 
+custimize edilmiþ validator
+
+CookieBuilder -> api olmayacaðý için jw token yerine
+ 
+// create database if not exist
+var app = builder.Build();
+
+Mapster --> Adapt metodu...
+
+DataTable
+---------------------------------------------------------
+
+
+
