@@ -1,3 +1,35 @@
+cntrl + k + u comment   /////  cntrl + k + c comment 
+
+-----------------------------------------------------------------------------------
+
+Data Source=NB-230301\\MSSQLSERVER22 ---> sql kýsmýndan farklý 1 tane yerine 2 tane \  
+
+migration yaptým ifnotexistdb yapmamýþým
+------------------------------------------
+
+mamage user secrets'i eklemeyi unutma (secret.json dosyasýna) ----> FacebookOptions Facebook Google Microsoft
+{
+  "Authentication:Facebook:AppId": "588387496267633",
+  "Authentication:Facebook:AppSecret": "73c40dd7d1e6b50927a369da27d83cf4",
+
+  "Authentication:Google:ClientID": "882283884932-4rcl90b3m4lgqb6a9766dh1qp649sfkj.apps.googleusercontent.com",
+  "Authentication:Google:ClientSecret": "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",
+
+  "Authentication:Microsoft:ClientID": "588387496267633",
+  "Authentication:Microsoft:ClientSecret": "73c40dd7d1e6b50927a369da27d83cf4"
+
+}
+
+-----------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
 Existing/mevcut bir database'e yeni bir tablo veya tablo için property eklersek 
 yapýlmasý gereken önceki migration'lar yorum satýrýna alýnmalý 
 örneðin migration klasöründeki þu class'lar --> firstmigration ve add_blog_table.cs 'ler yorum satýrýna alýnmalý...
@@ -109,4 +141,37 @@ CategoryController
 
 HttpContext.Session.SetObject("manipulatedData", cvm_post.CategoryDTO); // object to json
 HttpContext.Session.SetObject("manipulatedData", null); // resetlemek
+
+
+
+
+----------------------------------------- 0*********-----------------------------------------------
+
+claimprovider --> claim'ler --> AddPolicy (Program.cs)
+
+SessionExtension
+CustomValidation
+
+BaseController --> den türedi diðerleri
+Areas --> admin kýsmý
+TagHelper --> property yakalamak..
+ViewModel --> göstermek istediðim property'ler
+
+VMClasses
+
+---------------------------------------------------------
+Program.cs'de 
+custimize edilmiþ validator
+
+CookieBuilder -> api olmayacaðý için jw token yerine
+ 
+// create database if not exist
+var app = builder.Build();
+
+Mapster --> Adapt metodu...
+
+DataTable
+---------------------------------------------------------
+
+
 
