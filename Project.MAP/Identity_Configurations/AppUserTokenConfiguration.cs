@@ -15,10 +15,12 @@ namespace Project.MAP.Identity_Configurations
         {
             base.Configure(builder);
 
-           // builder.HasOne(userToken => userToken.AppUser).WithMany(user => user.AppUserTokens).HasForeignKey(userToken => userToken.UserId);//.OnDelete(DeleteBehavior.Restrict);
+            builder.Ignore(x => x.ID); // *** identity api den gelen id ile ientity deki çatmaması için
 
-           // builder.Ignore(userToken => userToken.AppUserID);
 
+            // builder.HasOne(userToken => userToken.AppUser).WithMany(user => user.AppUserTokens).HasForeignKey(userToken => userToken.UserId);//.OnDelete(DeleteBehavior.Restrict);
+
+            // builder.Ignore(userToken => userToken.AppUserID);
             //builder.HasKey(userToken => userToken.Id);
 
             builder.ToTable("UserToken"); 

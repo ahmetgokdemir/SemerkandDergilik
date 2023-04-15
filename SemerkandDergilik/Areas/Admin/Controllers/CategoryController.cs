@@ -210,7 +210,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
                     }
                     else
                     {
-                        Category ctgv2 = await _icm.GetByIdAsync(cvm_post.CategoryDTO.Primary_ID);
+                        Category ctgv2 = await _icm.GetByIdAsync(cvm_post.CategoryDTO.ID);
 
                         if (ctgv2 != null)
                         {
@@ -222,7 +222,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
 
                     }
 
-                    if (ctg.Primary_ID == 0)
+                    if (ctg.ID == 0)
                     {
                         await _icm.AddAsync(ctg);
                         TempData["messageCategory"] = "Kategori eklendi";
@@ -240,7 +240,7 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             }
             else
             {
-                _icm.Delete(await _icm.GetByIdAsync(cvm_post.CategoryDTO.Primary_ID));
+                _icm.Delete(await _icm.GetByIdAsync(cvm_post.CategoryDTO.ID));
 
                 // Category ctg = cdto.Adapt<Category>();
 
@@ -261,9 +261,9 @@ namespace Semerkand_Dergilik.Areas.Admin.Controllers
             TempData["JavascriptToRun"] = "valid";
             TempData["HttpContext"] = "valid";
 
-            if (cvm_post.CategoryDTO.Primary_ID != 0) //update
+            if (cvm_post.CategoryDTO.ID != 0) //update
             {
-                cVM.JavascriptToRun = $"ShowErrorUpdateOperationPopup({cvm_post.CategoryDTO.Primary_ID})";
+                cVM.JavascriptToRun = $"ShowErrorUpdateOperationPopup({cvm_post.CategoryDTO.ID})";
                 return RedirectToAction("CategoryList", new { JSpopupPage = cVM.JavascriptToRun });
 
             }

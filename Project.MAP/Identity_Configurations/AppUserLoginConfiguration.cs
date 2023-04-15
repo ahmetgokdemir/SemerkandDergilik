@@ -15,6 +15,9 @@ namespace Project.MAP.Identity_Configurations
         {
             base.Configure(builder);
 
+            builder.Ignore(x => x.ID); // *** identity api den gelen id ile ientity deki çatmaması için
+
+
             //  builder.HasOne(userLogin => userLogin.AppUser).WithMany(user => user.AppUserLogins).HasForeignKey(userLogin => userLogin.UserId);//.OnDelete(DeleteBehavior.Restrict);
 
             // builder.Ignore(userLogin => userLogin.AppUserID);

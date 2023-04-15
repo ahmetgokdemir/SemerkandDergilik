@@ -12,8 +12,8 @@ using Project.DAL.Context;
 namespace Project.DAL.Migrations
 {
     [DbContext(typeof(SemerkandDergilikContext))]
-    [Migration("20230307113201_Add_Blog_Table")]
-    partial class AddBlogTable
+    [Migration("20230414191358_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,9 +59,6 @@ namespace Project.DAL.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("Primary_ID")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
@@ -100,9 +97,6 @@ namespace Project.DAL.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Güncelleme Tarihi");
-
-                    b.Property<int>("Primary_ID")
-                        .HasColumnType("int");
 
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
@@ -186,9 +180,6 @@ namespace Project.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Primary_ID")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -242,9 +233,6 @@ namespace Project.DAL.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Güncelleme Tarihi");
 
-                    b.Property<int>("Primary_ID")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -279,9 +267,6 @@ namespace Project.DAL.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Güncelleme Tarihi");
-
-                    b.Property<int>("Primary_ID")
-                        .HasColumnType("int");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -319,9 +304,6 @@ namespace Project.DAL.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Güncelleme Tarihi");
 
-                    b.Property<int>("Primary_ID")
-                        .HasColumnType("int");
-
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
@@ -355,9 +337,6 @@ namespace Project.DAL.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Güncelleme Tarihi");
 
-                    b.Property<int>("Primary_ID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
@@ -368,11 +347,11 @@ namespace Project.DAL.Migrations
 
             modelBuilder.Entity("Project.ENTITIES.Models.Blog", b =>
                 {
-                    b.Property<int>("Primary_ID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Primary_ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -402,18 +381,18 @@ namespace Project.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Primary_ID");
+                    b.HasKey("ID");
 
                     b.ToTable("Blogs");
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.Category", b =>
                 {
-                    b.Property<int>("Primary_ID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Primary_ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
@@ -441,18 +420,18 @@ namespace Project.DAL.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.HasKey("Primary_ID");
+                    b.HasKey("ID");
 
                     b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.Coupon", b =>
                 {
-                    b.Property<int>("Primary_ID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Primary_ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -480,18 +459,18 @@ namespace Project.DAL.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Güncelleme Tarihi");
 
-                    b.HasKey("Primary_ID");
+                    b.HasKey("ID");
 
                     b.ToTable("Coupons");
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.Product", b =>
                 {
-                    b.Property<int>("Primary_ID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Primary_ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<int>("CategoryID")
                         .HasColumnType("int");
@@ -531,7 +510,7 @@ namespace Project.DAL.Migrations
                     b.Property<short>("UnitsInStock")
                         .HasColumnType("smallint");
 
-                    b.HasKey("Primary_ID");
+                    b.HasKey("ID");
 
                     b.HasIndex("CategoryID");
 

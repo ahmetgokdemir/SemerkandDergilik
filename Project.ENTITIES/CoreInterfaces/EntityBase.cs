@@ -5,8 +5,9 @@ namespace Project.ENTITIES.CoreInterfaces
 {
     public abstract class EntityBase : IEntity
     {
-        [Key]
-        public int Primary_ID { get; set; }
+        //[Key]
+        //public int Primary_ID { get; set; }
+        public int ID { get; set; }
 
         public virtual DateTime CreatedDate { get; set; } = DateTime.Now;
         public virtual DateTime? DeletedDate { get; set; }

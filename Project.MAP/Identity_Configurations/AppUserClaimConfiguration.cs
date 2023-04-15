@@ -15,12 +15,14 @@ namespace Project.MAP.Identity_Configurations
         {
             base.Configure(builder);
 
-           // builder.HasOne(userClaim => userClaim.AppUser).WithMany(user => user.AppUserClaims).HasForeignKey(userClaim => userClaim.UserId);//.OnDelete(DeleteBehavior.Restrict);
+            builder.Ignore(x => x.ID); // *** identity api den gelen id ile ientity deki çatmaması için
+
+            // builder.HasOne(userClaim => userClaim.AppUser).WithMany(user => user.AppUserClaims).HasForeignKey(userClaim => userClaim.UserId);//.OnDelete(DeleteBehavior.Restrict);
 
             //builder.HasIndex(userClaim => userClaim.Id).IsUnique();
             //builder.Property(userClaim => userClaim.Id).HasConversion<Guid>();
 
-           // builder.Ignore(userClaim => userClaim.AppUserID);
+            // builder.Ignore(userClaim => userClaim.AppUserID);
 
             // builder.HasKey(userClaim => userClaim.Id);
 

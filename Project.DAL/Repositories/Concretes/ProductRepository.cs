@@ -27,7 +27,7 @@ namespace Project.DAL.Repositories.Concretes
         // Ürünü, kategori bilgileri ile getirmek...
         public IQueryable<Product> GetProductByIdwithCategoryValueAsync(int product_id)
         {
-            return _context.Set<Product>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.Primary_ID == product_id).Include(x => x.Category).AsQueryable(); ;
+            return _context.Set<Product>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.ID == product_id).Include(x => x.Category).AsQueryable(); ;
         }
 
     }

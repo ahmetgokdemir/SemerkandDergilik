@@ -11,7 +11,9 @@ namespace Project.ENTITIES.CoreInterfaces
     {
         // public int ID { get; set; } gerek yok Identity Sınıflarının Inheratancelarından zaten Guid tipinde ID geliyor.. (AppRole:IdentityRole<Guid> gibi) 
 
-        public int Primary_ID { get; set; }
+        //public int Primary_ID { get; set; }
+        public int ID { get; set; }
+
         public DateTime CreatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }

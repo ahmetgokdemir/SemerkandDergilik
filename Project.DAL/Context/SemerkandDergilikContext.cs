@@ -22,6 +22,9 @@ namespace Project.DAL.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            // builder.ApplyConfigurationsFromAssembly(GetType().Assembly); TEK SEFERDE  ****
+
+
             builder.ApplyConfiguration(new AppUserConfiguration());
             builder.ApplyConfiguration(new AppRoleConfiguration());
             builder.ApplyConfiguration(new AppRoleClaimConfiguration());
@@ -31,7 +34,7 @@ namespace Project.DAL.Context
             builder.ApplyConfiguration(new AppUserTokenConfiguration());
             builder.ApplyConfiguration(new CategoryConfiguration());
             builder.ApplyConfiguration(new CouponConfiguration());
-            builder.ApplyConfiguration(new ProductConfiguration());
+            builder.ApplyConfiguration(new ProductConfiguration());  
 
 
 

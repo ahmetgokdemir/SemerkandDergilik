@@ -15,12 +15,15 @@ namespace Project.MAP.Identity_Configurations
         {
             base.Configure(builder);
 
+            builder.Ignore(x => x.ID); // *** identity api den gelen id ile ientity deki çatmaması için
+
+
             //builder.HasOne(userRole => userRole.AppRole).WithMany(role => role.AppUserRoles).HasForeignKey(userRole => userRole.RoleId);//.OnDelete(DeleteBehavior.Restrict);
 
             //builder.HasOne(userRole => userRole.AppUser).WithMany(user => user.AppUserRoles).HasForeignKey(userRole => userRole.UserId);//.OnDelete(DeleteBehavior.Restrict);
 
-           // builder.Ignore(userRole => userRole.AppUserID);
-           // builder.Ignore(userRole => userRole.AppRoleID);
+            // builder.Ignore(userRole => userRole.AppUserID);
+            // builder.Ignore(userRole => userRole.AppRoleID);
 
 
             builder.ToTable("UserRole");

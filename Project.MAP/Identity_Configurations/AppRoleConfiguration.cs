@@ -14,7 +14,9 @@ namespace Project.MAP.Identity_Configurations
         public override void Configure(EntityTypeBuilder<AppRole> builder)
         {
             base.Configure(builder);
-           
+
+            builder.Ignore(x => x.ID); // *** identity api den gelen id ile ientity deki çatmaması için
+
             builder.ToTable("Roles");
 
             //builder.HasKey(r => r.Id);
@@ -22,8 +24,8 @@ namespace Project.MAP.Identity_Configurations
             builder.HasIndex(r => r.NormalizedName).IsUnique();
             builder.Property(r => r.ConcurrencyStamp).IsConcurrencyToken();
 
-            builder.HasMany<AppUserRole>().WithOne().HasForeignKey(ur => ur.RoleId).IsRequired();
-            builder.HasMany<AppRoleClaim>().WithOne().HasForeignKey(rc => rc.RoleId).IsRequired();
+            //builder.HasMany<AppUserRole>().WithOne().HasForeignKey(ur => ur.RoleId).IsRequired();
+            //builder.HasMany<AppRoleClaim>().WithOne().HasForeignKey(rc => rc.RoleId).IsRequired();
 
             builder.Property(role => role.Name).HasColumnName("Rol Adı");
         }

@@ -6,7 +6,7 @@ namespace Semerkand_Dergilik.ViewModels
 {
     public class ProductDTO
     {
-        public int Primary_ID { get; set; }
+        public int ID { get; set; }
 
         [Required(ErrorMessage = "Ürün ismi gereklidir.")]
         [Display(Name = "Ürün Adı")]

@@ -5,7 +5,7 @@ namespace Semerkand_Dergilik.ViewModels
 {
     public class BlogDTO
     {
-        public int Primary_ID { get; set; }
+        public int ID { get; set; }
 
         [Required(ErrorMessage = "Başlık gereklidir.")]
         [Display(Name = "Başlık")]

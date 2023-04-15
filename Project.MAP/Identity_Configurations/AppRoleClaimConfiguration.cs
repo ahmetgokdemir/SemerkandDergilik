@@ -16,11 +16,14 @@ namespace Project.MAP.Identity_Configurations
         {
             base.Configure(builder);
 
-           // builder.HasOne(roleClaim => roleClaim.AppRole).WithMany(role => role.AppRoleClaims).HasForeignKey(roleClaim => roleClaim.RoleId);//OnDelete(DeleteBehavior.Restrict);
+            builder.Ignore(x => x.ID); // *** identity api den gelen id ile ientity deki çatmaması için
+
+
+            // builder.HasOne(roleClaim => roleClaim.AppRole).WithMany(role => role.AppRoleClaims).HasForeignKey(roleClaim => roleClaim.RoleId);//OnDelete(DeleteBehavior.Restrict);
 
             //builder.Property(roleClaim => roleClaim.Id).HasConversion<Guid>();
             //builder.HasIndex(roleClaim => roleClaim.Id).IsUnique();
-            builder.HasKey(roleClaim => roleClaim.Id);
+            //builder.HasKey(roleClaim => roleClaim.Id);
 
             //builder.Ignore(roleClaim => roleClaim.AppRoleID);
 

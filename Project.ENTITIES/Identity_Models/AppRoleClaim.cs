@@ -15,7 +15,9 @@ namespace Project.ENTITIES.Identity_Models
 
         //public override int Id { get; set; }
 
-        public int Primary_ID { get; set; }
+        //public int Primary_ID { get; set; }
+        public int ID { get; set; }  // identiyden gelen id olduğu için ignore edilecek configuration'da 
+
         public DateTime CreatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }

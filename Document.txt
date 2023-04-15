@@ -4,6 +4,8 @@ yapýlmasý gereken önceki migration'lar yorum satýrýna alýnmalý
 BU ARADA add_blog_table.cs YORUMA ALINMADI!!!!
 
 
+migration:	add-migration FirstMigration
+			update-database
 
 principalColumn: "Primary_ID",
 

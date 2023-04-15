@@ -4,15 +4,15 @@
 
 @model ProductVM
 
-@if (Model.ProductDTO.Primary_ID == 0 && ViewBag.CRUD != "delete_operation")
+@if (Model.ProductDTO.ID == 0 && ViewBag.CRUD != "delete_operation")
 {
     <h3>Ürün Oluşturma Formu</h3>
 }
-else if (Model.ProductDTO.Primary_ID != 0 && ViewBag.CRUD != "delete_operation")
+else if (Model.ProductDTO.ID != 0 && ViewBag.CRUD != "delete_operation")
 {
     <h3>Ürün Güncelleme Formu</h3>
 }
-else if (Model.ProductDTO.Primary_ID != 0 && ViewBag.CRUD == "delete_operation")
+else if (Model.ProductDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
 {
     <h3>Ürün Silme Formu</h3>
 }
@@ -81,7 +81,7 @@ else if (Model.ProductDTO.Primary_ID != 0 && ViewBag.CRUD == "delete_operation")
                 <input class="form-control" type="file" name="productPicture" />
             </div>
 
-            @if (Model.ProductDTO.Primary_ID == 0)
+            @if (Model.ProductDTO.ID == 0)
             {
                 <div class="form-group">
                     <input type="submit" value="Ürün Ekle" class="btn btn-primary mt-2" />
@@ -89,7 +89,7 @@ else if (Model.ProductDTO.Primary_ID != 0 && ViewBag.CRUD == "delete_operation")
             }
             else
             {
-                <input type="hidden" asp-for="ProductDTO.Primary_ID" />
+                <input type="hidden" asp-for="ProductDTO.ID" />
 
                 <div class="form-group">
                     <input type="submit" value="Ürün Güncelle" class="btn btn-primary mt-2" />
@@ -105,7 +105,7 @@ else if (Model.ProductDTO.Primary_ID != 0 && ViewBag.CRUD == "delete_operation")
 
         else
         {
-            <input type="hidden" asp-for="ProductDTO.Primary_ID" />
+            <input type="hidden" asp-for="ProductDTO.ID" />
 
             <div class="form-group">
                 <span asp-validation-for="ProductDTO.ProductName"></span> <label style="width:100%;                                height:100%">@ViewBag.ProductNameDelete silmek istediğinizden emin misiniz ?</label>

@@ -157,7 +157,7 @@ namespace Project.DAL.Repositories.Concretes
              
              */
 
-            var toBeUpdated = _context.Set<T>().Find(entity.Primary_ID);
+            var toBeUpdated = _context.Set<T>().Find(entity.ID);
             // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
             _context.Entry(toBeUpdated).CurrentValues.SetValues(entity);
             Save();
@@ -204,7 +204,7 @@ namespace Project.DAL.Repositories.Concretes
             entity.DataStatus = ENTITIES.Enums.DataStatus.Updated;
             entity.ModifiedDate = DateTime.Now;
             // T toBeUpdated = Find(entity.ID);
-            var toBeUpdated = _context.Set<T>().Find(entity.Primary_ID);
+            var toBeUpdated = _context.Set<T>().Find(entity.ID);
             // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
 
             //if (toBeUpdated is Category /* || entity is Product*/ )
