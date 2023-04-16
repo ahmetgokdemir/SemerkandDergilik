@@ -18,7 +18,7 @@ mamage user secrets'i eklemeyi unutma (secret.json dosyasýna) ----> FacebookOpti
   "Authentication:Microsoft:ClientID": "588387496267633",
   "Authentication:Microsoft:ClientSecret": "73c40dd7d1e6b50927a369da27d83cf4"
 
-}
+}d
 
 -----------------------------------------------------------------------------------
 
