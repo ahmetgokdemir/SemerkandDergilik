@@ -12,7 +12,7 @@ namespace Project.DAL.Repositories.Concretes
 {
     public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
-        public CategoryRepository(SemerkandDergilikContext context) : base(context)
+        public CategoryRepository(TechnosoftProjectContext context) : base(context)
         {
 
         }

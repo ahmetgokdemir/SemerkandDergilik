@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-// using Semerkand_Dergilik; referans verilmeli ki using'i kullanılabilsin
+// using Technosoft_Project; referans verilmeli ki using'i kullanılabilsin
 
 namespace Project.DAL.Strategy
 {

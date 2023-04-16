@@ -13,7 +13,7 @@ namespace Project.DAL.Repositories.Concretes
     public class ProductRepository : BaseRepository<Product>, IProductRepository
     {
 
-        public ProductRepository(SemerkandDergilikContext context) : base(context)
+        public ProductRepository(TechnosoftProjectContext context) : base(context)
         {
 
         }

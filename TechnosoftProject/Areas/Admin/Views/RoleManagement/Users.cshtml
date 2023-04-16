@@ -1,0 +1,53 @@
+﻿@model List<AppUser>
+
+@{
+    ViewData["Title"] = "Users";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<h3>Üyeler</h3>
+<hr />
+<table class="table table-hover table-bordered table-striped table-responsive">
+
+    <tr>
+        <td>User Id</td>
+        <td>User Name</td>
+        <td>Email</td>
+        <td>Roller</td>
+        <td>Rol Atama</td>
+        <td>Şifre değiştirme</td>
+    </tr>
+
+    @if (Model.Count() == 0)
+    {
+        <tr>
+            <td colspan="3">Hiç bir üye yoktur.</td>
+        </tr>
+    }
+    else
+    {
+
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td user-roles="@user.Id"></td> <!-- CustomTagHelper.UserRolesName.cs
+
+                 UserRolesName isimli TagHelper (CustomTagHelper klasöründe), [HtmlTargetElement("td", Attributes = "user-roles")], sayesinde tag'i yakalar ve dolaysıyla @@user.Id property'sine erişebilecek ve bu bilgi ile kullanıcının rolleri çekip td'nin içeine basıcağız'..
+
+                 _ViewImports.cshtml kısmına namespace eklenmeli : @* @addTagHelper Technosoft_Project.CustomTagHelpers.*,TechnosoftProject
+        eklenmeli ki user-roles yeşile dönüp UserRolesName isimli TagHelper tarafından yakalansın
+                 *@
+                -->
+
+                @* a tag helper'lar kullanıldığında akış get metodlarına olur*@
+                <td> <a class="btn btn-success" asp-action="RoleAssign" asp-route-id="@user.Id">Rol ata</a></td> 
+                <td><a class="btn btn-success" asp-action="ResetUserPassword" asp-route-id="@user.Id">Şifre Yenileme</a></td>
+            </tr>
+        }
+
+    }
+</table>

@@ -1,0 +1,93 @@
+﻿@model Technosoft_Project.ViewModels.LoginViewModel
+<!-- LoginViewModel bizim modelimiz-->
+
+@{
+    ViewData["Title"] = "LogIn";
+}
+
+<!-- link password'u hide/show için gerekli-->
+<link rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+      integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
+      crossorigin="anonymous">
+@*<link rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous">*@
+
+<div class="row">
+
+    <div class="col-md-4 offset-md-4">
+        <h4>Üye Giriş Formu</h4>
+        <hr />
+
+        @if (TempData["EmailConfirmMessage"] != null)
+        {
+             <div class="alert alert-danger">
+                @TempData["EmailConfirmMessage"]
+            </div>
+        }
+       
+
+        <form asp-action="LogIn" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <div class="input-group" id="show_hide_password">
+                <input asp-for="Password" class="form-control" id="password" />
+                    <div class="input-group-append">
+                        <a class="input-group-text">
+                            <i class="fa fa-eye-slash"></i>
+                        </a>
+                    </div>
+                </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+
+                <input type="checkbox" asp-for="RememberMe" /> Beni Hatırla
+            </div>
+            <div class="form-group mt-2 mb-2">
+                <input type="submit" value="Giriş yap" class="btn btn-primary" />
+            </div>
+        </form>
+
+        <a class="btn btn-outline-dark w-100 mb-2" asp-action="FacebookLogin">Facebook ile giriş yap</a>
+       
+        <a class="btn btn-outline-info w-100 mb-2" asp-action="GoogleLogin">Google ile giriş yap</a>
+
+        <a class="btn btn-outline-primary w-100 mb-2" asp-action="MicrosoftLogin">Microsoft ile giriş yap</a>
+
+        <a class="btn btn-link" asp-action="ResetPassword">Şifremi unuttum</a> 
+        <!-- asp-action="ResetPassword" backend kısmı-->
+    </div>
+</div>
+
+<!-- script password'u hide/show için gerekli-->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous">
+</script>
+@*<script src="/path/to/bootstrap-show-password.js"></script>*@
+
+<script>
+    $(document).ready(function () {
+        $("#show_hide_password a").on('click', function (event) {
+            event.preventDefault();
+            if ($('#show_hide_password input').attr("type") == "text") {
+                $('#show_hide_password input').attr('type', 'password');
+                $('#show_hide_password i').addClass("fa-eye-slash");
+                $('#show_hide_password i').removeClass("fa-eye");
+            } else if ($('#show_hide_password input').attr("type") == "password") {
+                $('#show_hide_password input').attr('type', 'text');
+                $('#show_hide_password i').removeClass("fa-eye-slash");
+                $('#show_hide_password i').addClass("fa-eye");
+            }
+        });
+    });
+</script>

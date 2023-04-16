@@ -17,7 +17,7 @@ namespace Project.DAL.Repositories.Concretes
         protected readonly DbContext _context;
         //private readonly DbSet<IEntity> _dbSet;
 
-        public BaseRepository(SemerkandDergilikContext context)
+        public BaseRepository(TechnosoftProjectContext context)
         {
             _context = context;
             //_dbSet = context.Set<IEntity>();

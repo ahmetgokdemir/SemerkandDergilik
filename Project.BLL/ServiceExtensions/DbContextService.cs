@@ -20,7 +20,7 @@ namespace Project.BLL.ServiceExtensions
 
             IConfiguration? configuration = provider.GetService<IConfiguration>();
 
-             services.AddDbContextPool<SemerkandDergilikContext>(options => options.UseSqlServer(configuration.GetConnectionString("MyConnection")).UseLazyLoadingProxies());
+             services.AddDbContextPool<TechnosoftProjectContext>(options => options.UseSqlServer(configuration.GetConnectionString("MyConnection")).UseLazyLoadingProxies());
 
             return services;
         }
