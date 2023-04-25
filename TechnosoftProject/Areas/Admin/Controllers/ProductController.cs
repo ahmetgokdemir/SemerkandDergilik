@@ -41,10 +41,16 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             return View();
         }
 
+        /*
+            AppUser userv2 = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
+            userViewModel.Gender = (Gender)userv2.Gender;
+            user.Adapt<UserViewModel>();// bu kod cast işlemini yapıyor dolayısıyla ilk iki koda gerek kalmıyor..
+         */
+
 
         [Route("ProductList")]
         // [HttpGet("{id}")] --> id parametresini, querystring'den almak yerine url'den almak ...
-        public async Task<IActionResult> ProductList(int id, string? JSpopupPage)
+        public async Task<IActionResult> ProductList(int id,int status, string? JSpopupPage)
         {
 
             if (TempData["JavascriptToRun"] == null)
@@ -53,6 +59,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             }
 
             int category_id = id;
+            int category_status = status;
 
             IEnumerable<Product> productEnumerableList = await _ipm.GetActivesProductsByCategoryIDAsync(category_id);
 
@@ -87,7 +94,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
 
             TempData["category_id"] = category_id;
-
+            TempData["category_status"] = category_status;
 
             return View(pvm);
         }
@@ -137,12 +144,18 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             cdto.CategoryName = TempData["CategoryName"].ToString();
             cdto.ID = (int)TempData["category_id"];
 
+            string kontrol = TempData["category_status"].ToString();
+            cdto.Status = (Status)TempData["category_status"];
+
+
+            // product'ın category_id'si 
             pdto.CategoryID = (int)TempData["category_id"]; // <input type="hidden" asp-for="ProductDTO.CategoryID" /> kısmı için bu kod gerekli..
             // pdto.Category = cdto; // yazılmazsa null referance hatası verir.. 
 
 
             TempData["category_id"] = cdto.ID;
             TempData["CategoryName"] = cdto.CategoryName; // 2.yol kullanılırsa gerekli olacak kod..
+            TempData["category_status"] = cdto.Status;
 
             ProductVM pvm = new ProductVM
             {
@@ -257,7 +270,9 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             // pDTO.Category = cdto; // yazılmazsa null referance hatası verir.. 
             cdto.ID = (int)TempData["category_id"];
 
-            /*
+            string kontrol = TempData["category_status"].ToString();
+            cdto.Status = (Status)TempData["category_status"];
+             /*
              Product product_item = await _ipm.GetByIdAsync(id); kod sayesinde pdto.CategoryID geldiği için 
              AddProductAjax'taki gibi pdto.CategoryID = (int)TempData["category_id"]; koda gerek kalmadı...
             
@@ -300,6 +315,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             */
             TempData["category_id"] = cdto.ID;
             TempData["CategoryName"] = cdto.CategoryName; // 2.yol kullanılırsa gerekli olacak kod..
+            TempData["category_status"] = cdto.Status;
 
             Thread.Sleep(500);
 
@@ -337,7 +353,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 ModelState.Remove("JavascriptToRun");
                 ModelState.Remove("CategoryDTO");
 
-
+            
 
                 // CategoryDTO cdto = new CategoryDTO();// yazılmazsa null referance hatası verir.. 
                 // // cdto.ID = (int) TempData["CategoryID"];
@@ -415,7 +431,14 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                     // TempData["Status"] = (Status) cdto.Status; 
                     // TempData["CategoryPicture"] = cdto.CategoryPicture;
 
-                    return RedirectToAction("ProductList", new { id = (int)TempData["category_id"] }); // comment'te alınırsa TempData["mesaj"] = "Ürün adı ve statü giriniz.."; da çalışır..
+                    return RedirectToAction("ProductList", new { id = (int)TempData["category_id"], status = (int)TempData["category_status"] }); // comment'te alınırsa TempData["mesaj"] = "Ürün adı ve statü giriniz.."; da çalışır..
+
+                    /*
+                        return RedirectToAction("ProductList", new { id = (int)TempData["category_id"], status = (int)TempData["category_status"], JSpopupPage = TempData["JSpopupPage"].ToString() });
+                     
+                     */
+
+
                 }
 
             }
@@ -436,7 +459,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 TempData["Deleted"] = null;
 
                 //  return RedirectToAction("ProductList");
-                return RedirectToAction("ProductList", new { id = (int)TempData["category_id"] });
+                return RedirectToAction("ProductList", new { id = (int)TempData["category_id"], status = (int)TempData["category_status"] });
             }
 
             // TempData["mesaj"] = "Ürün adı ve statü giriniz..";
@@ -457,7 +480,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             if (pvm_post.ProductDTO.ID != 0) //update
             {
                 TempData["JSpopupPage"] = $"ShowErrorUpdateOperationPopup({pvm_post.ProductDTO.ID})";
-                return RedirectToAction("ProductList", new { id = (int)TempData["category_id"], JSpopupPage = TempData["JSpopupPage"].ToString() });
+                return RedirectToAction("ProductList", new { id = (int)TempData["category_id"], status = (int)TempData["category_status"], JSpopupPage = TempData["JSpopupPage"].ToString() });
 
             }
             else // add // (pvm_post.ProductDTO.ID == 0) çevir...
@@ -467,7 +490,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 // pvm.JavascriptToRun = $"ShowErrorInsertOperationPopup()";
 
                 TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
-                return RedirectToAction("ProductList", new { id = (int)TempData["category_id"], JSpopupPage = TempData["JSpopupPage"].ToString() });
+                return RedirectToAction("ProductList", new { id = (int)TempData["category_id"], status = (int)TempData["category_status"], JSpopupPage = TempData["JSpopupPage"].ToString() });
             }
 
 

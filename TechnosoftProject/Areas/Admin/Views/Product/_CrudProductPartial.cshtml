@@ -1,4 +1,5 @@
-﻿@*
+﻿@using Technosoft_Project.Enums;
+@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
@@ -72,7 +73,17 @@ else if (Model.ProductDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
 
             <div class="form-group">
                 <label asp-for="ProductDTO.Status" class="control-label"></label>
-                <select class="form-control" asp-for="ProductDTO.Status" asp-items="@ViewBag.Status"></select>
+                @if ((int)TempData["category_status"] == 0)
+                {
+@*                    <select disabled class="form-control" asp-for="@Enum.GetNames(typeof(Status))[1].ToString()" asp-items="@ViewBag.Status"></select>*@
+                    <select disabled class="form-control" asp-for="ProductDTO.Status" asp-items="@ViewBag.Status"></select>
+                    TempData["category_status"] = Model.CategoryDTO.Status; // bu kod olmaz ise kullanıcı butona basmadan çıkarsa sayfadan TempData boş kalır null hatası döner ... tedbiren kalsın bu kod
+                }
+                else
+                {
+                    <select class="form-control" asp-for="ProductDTO.Status" asp-items="@ViewBag.Status"></select>
+                    TempData["category_status"] = Model.CategoryDTO.Status; // bu kod olmaz ise kullanıcı butona basmadan çıkarsa sayfadan TempData boş kalır null hatası döner ... tedbiren kalsın bu kod
+                }
                 <span asp-validation-for="ProductDTO.Status" class="text-danger"></span>
             </div>
 
