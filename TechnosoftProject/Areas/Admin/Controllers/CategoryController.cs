@@ -230,6 +230,28 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                     else
                     {
                         _icm.Update(ctg);
+                        // yapılacak ödev:  category pasife çekilirse productları da pasife çekilsin!!! Update metodu içerisinde yapılabilir... ekstra metoda gerek yok
+
+                        /*
+                         * 
+                         Fonksiyon, belirli bir görevi gerçekleştirmek için bir dizi talimat veya prosedürdür. 
+                        
+                        Metot ise bir NSENEYLE ilişkili bir dizi talimattır. 
+                        
+                        Bir fonksiyon herhangi bir nesneye ihtiyaç duymaz ve bağımsızdır, 
+                        metot ise herhangi bir nesneyle bağlantılı bir işlevdir. 
+                        
+                        Metotlar, OOP (Nesne Yönelimli Programlama) ile ilgili bir kavram  --> _icm nesnesi İLE Update Metodu gibi
+                         
+                         Bu yuzden methodlar classlar icinde define edilir ve obje varyasyonlari ile kullanilir. Functionlarda class icinde define edilir ama o classa ait seyler icermez, objeye dependent olmaz. 
+
+                        Yani soyle bir sey dusunulebilir, bir dog classi, havlamak diye bir METHOD icerir, cunku sadece kopekler havlar, bu yuzden kopek objesine ihtiyac vardir.
+
+Fakat ayni zamanda bir human classi olsun, diyelim ki beslenmek diye bir FONKSIYON yazilacak. Cunku sart su, beslenmeyi kopek de insan da yapabilir, e bu yuzden particular bir class ihtiyaci dogurmaz. 
+
+
+                         */
+
                         TempData["messageCategory"] = "Kategori güncellendi";
 
                     }
