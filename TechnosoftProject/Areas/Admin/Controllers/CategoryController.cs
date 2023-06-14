@@ -11,6 +11,9 @@ using Technosoft_Project.Enums;
 using Technosoft_Project.ViewModels;
 using Technosoft_Project.VMClasses;
 using System.Data;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Castle.Core.Smtp;
+using Technosoft_Project.Helper;
 
 namespace Technosoft_Project.Areas.Admin.Controllers
 {
@@ -176,83 +179,97 @@ namespace Technosoft_Project.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CRUDCategory(CategoryVM cvm_post, IFormFile categoryPicture)
         {
+            var urlHelper = new UrlHelper(ControllerContext);
+            var url = urlHelper.Action("About", "Home");
+            var linkText = "Panelden yapılan değiliklik web e yansımıyor";
+
+            var hyperlink = string.Format("<a href=\"{0}\">{1}</a>", url, linkText);
+
+            var url2 = $"{Request.Scheme}://{Request.Host}/Home/About";
+
+
+
+
+            /* PasswordReset.cs'de SendGridClient --> Task Execute(string link, string emailAdress) kısmında yapılmış...*/
+
+
             if (TempData["Deleted"] == null)
-            {
-                ModelState.Remove("CategoryPicture");
-                ModelState.Remove("CategoryDTOs");
-                ModelState.Remove("JavascriptToRun");
+             {
+                 ModelState.Remove("CategoryPicture");
+                 ModelState.Remove("CategoryDTOs");
+                 ModelState.Remove("JavascriptToRun");
 
 
-                if (ModelState.IsValid)
-                {
-                    Category ctg = cvm_post.CategoryDTO.Adapt<Category>();
+                 if (ModelState.IsValid)
+                 {
+                     Category ctg = cvm_post.CategoryDTO.Adapt<Category>();
 
-                    ctg.Status = (int)cvm_post.CategoryDTO.Status;
-
-
-
-                    //////
-                    ///
-                    if (categoryPicture != null && categoryPicture.Length > 0)
-                    {
-                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(categoryPicture.FileName); // path oluşturma
-
-                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/CategoryPicture", fileName); // server'a kayıt edilecek path => wwwroot/UserPicture/fileName
-
-                        // kayıt işlemi
-                        using (var stream = new FileStream(path, FileMode.Create))
-                        {
-                            await categoryPicture.CopyToAsync(stream); // userPicture'ı, stream'e kayıt
-
-                            ctg.CategoryPicture = "/CategoryPicture/" + fileName;   // veritabanına kayıt (wwwroot belirtmeye gerek yok)
-
-                        }
-                    }
-                    else
-                    {
-                        Category ctgv2 = await _icm.GetByIdAsync(cvm_post.CategoryDTO.ID);
-
-                        if (ctgv2 != null)
-                        {
-                            if (ctgv2.CategoryPicture != null)
-                            {
-                                ctg.CategoryPicture = ctgv2.CategoryPicture;
-                            }
-                        }
-
-                    }
-
-                    if (ctg.ID == 0)
-                    {
-                        await _icm.AddAsync(ctg);
-                        TempData["messageCategory"] = "Kategori eklendi";
-                    }
-                    else
-                    {
-                        _icm.Update(ctg);
-                        // yapılacak ödev:  category pasife çekilirse productları da pasife çekilsin!!! Update metodu içerisinde yapılabilir... ekstra metoda gerek yok
-
-                        /*
-                         * 
-                         Fonksiyon, belirli bir görevi gerçekleştirmek için bir dizi talimat veya prosedürdür. 
-                        
-                        Metot ise bir NSENEYLE ilişkili bir dizi talimattır. 
-                        
-                        Bir fonksiyon herhangi bir nesneye ihtiyaç duymaz ve bağımsızdır, 
-                        metot ise herhangi bir nesneyle bağlantılı bir işlevdir. 
-                        
-                        Metotlar, OOP (Nesne Yönelimli Programlama) ile ilgili bir kavram  --> _icm nesnesi İLE Update Metodu gibi
-                         
-                         Bu yuzden methodlar classlar icinde define edilir ve obje varyasyonlari ile kullanilir. Functionlarda class icinde define edilir ama o classa ait seyler icermez, objeye dependent olmaz. 
-
-                        Yani soyle bir sey dusunulebilir, bir dog classi, havlamak diye bir METHOD icerir, cunku sadece kopekler havlar, bu yuzden kopek objesine ihtiyac vardir.
-
-Fakat ayni zamanda bir human classi olsun, diyelim ki beslenmek diye bir FONKSIYON yazilacak. Cunku sart su, beslenmeyi kopek de insan da yapabilir, e bu yuzden particular bir class ihtiyaci dogurmaz. 
+                     ctg.Status = (int)cvm_post.CategoryDTO.Status;
 
 
-                         */
 
-                        TempData["messageCategory"] = "Kategori güncellendi";
+                     //////
+                     ///
+                     if (categoryPicture != null && categoryPicture.Length > 0)
+                     {
+                         var fileName = Guid.NewGuid().ToString() + Path.GetExtension(categoryPicture.FileName); // path oluşturma
+
+                         var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/CategoryPicture", fileName); // server'a kayıt edilecek path => wwwroot/UserPicture/fileName
+
+                         // kayıt işlemi
+                         using (var stream = new FileStream(path, FileMode.Create))
+                         {
+                             await categoryPicture.CopyToAsync(stream); // userPicture'ı, stream'e kayıt
+
+                             ctg.CategoryPicture = "/CategoryPicture/" + fileName;   // veritabanına kayıt (wwwroot belirtmeye gerek yok)
+
+                         }
+                     }
+                     else
+                     {
+                         Category ctgv2 = await _icm.GetByIdAsync(cvm_post.CategoryDTO.ID);
+
+                         if (ctgv2 != null)
+                         {
+                             if (ctgv2.CategoryPicture != null)
+                             {
+                                 ctg.CategoryPicture = ctgv2.CategoryPicture;
+                             }
+                         }
+
+                     }
+
+                     if (ctg.ID == 0)
+                     {
+                         await _icm.AddAsync(ctg);
+                         TempData["messageCategory"] = "Kategori eklendi";
+                     }
+                     else
+                     {
+                         _icm.Update(ctg);
+                         // yapılacak ödev:  category pasife çekilirse productları da pasife çekilsin!!! Update metodu içerisinde yapılabilir... ekstra metoda gerek yok
+
+                         /*
+                          * 
+                          Fonksiyon, belirli bir görevi gerçekleştirmek için bir dizi talimat veya prosedürdür. 
+
+                         Metot ise bir NSENEYLE ilişkili bir dizi talimattır. 
+
+                         Bir fonksiyon herhangi bir nesneye ihtiyaç duymaz ve bağımsızdır, 
+                         metot ise herhangi bir nesneyle bağlantılı bir işlevdir. 
+
+                         Metotlar, OOP (Nesne Yönelimli Programlama) ile ilgili bir kavram  --> _icm nesnesi İLE Update Metodu gibi
+
+                          Bu yuzden methodlar classlar icinde define edilir ve obje varyasyonlari ile kullanilir. Functionlarda class icinde define edilir ama o classa ait seyler icermez, objeye dependent olmaz. 
+
+                         Yani soyle bir sey dusunulebilir, bir dog classi, havlamak diye bir METHOD icerir, cunku sadece kopekler havlar, bu yuzden kopek objesine ihtiyac vardir.
+
+ Fakat ayni zamanda bir human classi olsun, diyelim ki beslenmek diye bir FONKSIYON yazilacak. Cunku sart su, beslenmeyi kopek de insan da yapabilir, e bu yuzden particular bir class ihtiyaci dogurmaz. 
+
+
+                          */
+
+            TempData["messageCategory"] = "Kategori güncellendi";
 
                     }
 

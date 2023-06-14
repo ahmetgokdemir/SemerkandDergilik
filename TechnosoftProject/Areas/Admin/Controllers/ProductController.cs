@@ -175,10 +175,10 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 {
                     ModelState.AddModelError("ProductDTO.UnitPrice", "Ürün fiyatı sıfırdan büyük sayısı olmalıdır.");
                 }
-                if (pvm.ProductDTO.UnitsInStock <= 0)
-                {
-                    ModelState.AddModelError("ProductDTO.UnitsInStock", "Stok sayısı sıfırdan büyük sayısı olmalıdır.");
-                }
+                //if (pvm.ProductDTO.UnitsInStock <= 0)
+                //{
+                //    ModelState.AddModelError("ProductDTO.UnitsInStock", "Stok sayısı sıfırdan büyük sayısı olmalıdır.");
+                //}
                 if (pvm.ProductDTO.Discount < 0)
                 {
                     ModelState.AddModelError("ProductDTO.Discount", "İskonto negatif sayı olamaz.");
@@ -297,10 +297,10 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 {
                     ModelState.AddModelError("ProductDTO.UnitPrice", "Ürün fiyatı sıfırdan büyük sayısı olmalıdır.");
                 }
-                if (pdto.UnitsInStock <= 0)
-                {
-                    ModelState.AddModelError("ProductDTO.UnitsInStock", "Stok sayısı sıfırdan büyük sayısı olmalıdır.");
-                }
+                //if (pdto.UnitsInStock <= 0)
+                //{
+                //    ModelState.AddModelError("ProductDTO.UnitsInStock", "Stok sayısı sıfırdan büyük sayısı olmalıdır.");
+                //}
                 if (pvm.ProductDTO.Discount < 0)
                 {
                     ModelState.AddModelError("ProductDTO.Discount", "İskonto negatif sayı olamaz.");
@@ -416,8 +416,6 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                     {
                         _ipm.Update(prd);
                         TempData["messageProduct"] = "Ürün güncellendi";
-
-
                     }
 
                     /*

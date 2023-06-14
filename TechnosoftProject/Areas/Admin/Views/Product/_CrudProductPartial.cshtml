@@ -43,13 +43,13 @@ else if (Model.ProductDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
                         <span asp-validation-for="ProductDTO.UnitPrice" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-6">
+@*                <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="ProductDTO.UnitsInStock" class="control-label" style=" width:100%"></label>
                         <input asp-for="ProductDTO.UnitsInStock" class="form-control" placeholder="Stok sayısı giriniz..." min="0" />
                         <span asp-validation-for="ProductDTO.UnitsInStock" class="text-danger"></span>
                     </div>
-                </div>
+                </div>*@
             </div>
             <div class="form-group">
                 <label asp-for="ProductDTO.Discount" class="control-label"></label>

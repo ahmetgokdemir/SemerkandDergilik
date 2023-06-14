@@ -19,10 +19,10 @@ namespace Technosoft_Project.ViewModels
         public decimal UnitPrice { get; set; } // ProductConfiguration.cs'de money'e çevrilmeli.. 
 
         
-        [Required(ErrorMessage = "Stok sayısı giriniz.")]
-        [Display(Name = "Stoktaki Ürün Adedi")]
-        [Range(1, 1000000000000)]
-        public short UnitsInStock { get; set; }
+        //[Required(ErrorMessage = "Stok sayısı giriniz.")]
+        //[Display(Name = "Stoktaki Ürün Adedi")]
+        //[Range(1, 1000000000000)]
+        // public short UnitsInStock { get; set; }
 
 
         [Display(Name = "İskonto")]
