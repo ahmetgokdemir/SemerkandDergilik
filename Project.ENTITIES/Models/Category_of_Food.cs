@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Project.ENTITIES.Models
 {
-    public class Category : EntityBase, IEntity
+    public class Category_of_Food : EntityBase, IEntity
     {
-        public string CategoryName { get; set; }
+        public string Category_of_FoodName { get; set; }
         //public string Description { get; set; }
-        public string? CategoryPicture { get; set; }
+        public string? Category_of_FoodPicture { get; set; }
         public int Status { get; set; } // Aktif, Pasif
 
         public virtual List<Product> Products { get; set; }

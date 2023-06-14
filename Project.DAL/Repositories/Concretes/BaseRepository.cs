@@ -132,7 +132,7 @@ namespace Project.DAL.Repositories.Concretes
 
             //T toBeUpdated = null;
 
-            //if (entity is Category || entity is Product || entity is Coupon)
+            //if (entity is Category_of_Food || entity is Product || entity is Coupon)
             //{
             //    toBeUpdated = _context.Set<T>().Find(entity.Primary_ID);
             //}
@@ -207,9 +207,9 @@ namespace Project.DAL.Repositories.Concretes
             var toBeUpdated = _context.Set<T>().Find(entity.ID);
             // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
 
-            //if (toBeUpdated is Category /* || entity is Product*/ )
+            //if (toBeUpdated is Category_of_Food /* || entity is Product*/ )
             //{
-            //    Category c = toBeUpdated as Category;
+            //    Category_of_Food c = toBeUpdated as Category_of_Food;
 
 
             //}

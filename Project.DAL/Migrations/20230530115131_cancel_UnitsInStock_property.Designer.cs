@@ -386,7 +386,7 @@ namespace Project.DAL.Migrations
                     b.ToTable("Blogs");
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.Category", b =>
+            modelBuilder.Entity("Project.ENTITIES.Models.Category_of_Food", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -394,12 +394,12 @@ namespace Project.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("CategoryName")
+                    b.Property<string>("Category_of_FoodName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Kategori İsmi");
 
-                    b.Property<string>("CategoryPicture")
+                    b.Property<string>("Category_of_FoodPicture")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -472,7 +472,7 @@ namespace Project.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("CategoryID")
+                    b.Property<int>("Category_of_FoodID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
@@ -509,7 +509,7 @@ namespace Project.DAL.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CategoryID");
+                    b.HasIndex("Category_of_FoodID");
 
                     b.ToTable("Products");
                 });
@@ -567,16 +567,16 @@ namespace Project.DAL.Migrations
 
             modelBuilder.Entity("Project.ENTITIES.Models.Product", b =>
                 {
-                    b.HasOne("Project.ENTITIES.Models.Category", "Category")
+                    b.HasOne("Project.ENTITIES.Models.Category_of_Food", "Category_of_Food")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryID")
+                        .HasForeignKey("Category_of_FoodID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.Navigation("Category_of_Food");
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.Category", b =>
+            modelBuilder.Entity("Project.ENTITIES.Models.Category_of_Food", b =>
                 {
                     b.Navigation("Products");
                 });

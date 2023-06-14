@@ -27,16 +27,16 @@ namespace Project.BLL.ManagerServices.Concretes
         //    _prep = prep;
         //} 
 
-        public async Task<IEnumerable<Product>> GetActivesProductsByCategoryIDAsync(int category_id)
+        public async Task<IEnumerable<Product>> GetActivesProductsByCategory_of_FoodIDAsync(int Category_of_Food_id)
         {
-            var products = await _prep.GetActivesProductsByCategoryIDAsync(category_id).ToListAsync(); // convert ıqueryable to IEnumerable
+            var products = await _prep.GetActivesProductsByCategory_of_FoodIDAsync(Category_of_Food_id).ToListAsync(); // convert ıqueryable to IEnumerable
 
             return products;
         }
 
-        public async Task<Product> GetProductByIdwithCategoryValueAsync(int product_id)
+        public async Task<Product> GetProductByIdwithCategory_of_FoodValueAsync(int product_id)
         {
-            var product = await _prep.GetProductByIdwithCategoryValueAsync(product_id).ToListAsync(); // convert ıqueryable to IEnumerable
+            var product = await _prep.GetProductByIdwithCategory_of_FoodValueAsync(product_id).ToListAsync(); // convert ıqueryable to IEnumerable
 
             return product[0];
         }

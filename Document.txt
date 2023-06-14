@@ -53,7 +53,7 @@ IdentityAPI kendisi, Identity sýnýflarý arasýnda navigationlarý kuruyor.. Ayrýye
         //public virtual ICollection<AppRoleClaim> AppRoleClaims { get; set; } gibi...
 
 Identity sýnýflarý sadece IEnitityden miras aldýðý için property'leri implement edilmeli ve constructor tanýmlanlamlý.. ama diðer sýnýflar
-(Category,Product vs.) ayrýca Entity'den miras aldýðý için ve Entity class da bu propertyleri implement ettiðinden bu sýnýflarda ayrýyeten 
+(Category_of_Food,Product vs.) ayrýca Entity'den miras aldýðý için ve Entity class da bu propertyleri implement ettiðinden bu sýnýflarda ayrýyeten 
 implementasyona gerek yok..
 
 ---
@@ -137,9 +137,9 @@ result = HttpContext.Session.GetObject<ProductDTO>("manipulatedData");
 
 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-CategoryController
+Category_of_FoodController
 
-HttpContext.Session.SetObject("manipulatedData", cvm_post.CategoryDTO); // object to json
+HttpContext.Session.SetObject("manipulatedData", cvm_post.Category_of_FoodDTO); // object to json
 HttpContext.Session.SetObject("manipulatedData", null); // resetlemek
 
 

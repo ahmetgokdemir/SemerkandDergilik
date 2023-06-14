@@ -30,14 +30,14 @@ namespace Technosoft_Project.ViewModels
         public short? Discount { get; set; }
 
 
-        //public int CategoryID { get; set; }
-        public int CategoryID { get; set; }
+        //public int Category_of_FoodID { get; set; }
+        public int Category_of_FoodID { get; set; }
          
         //[Display(Name = "Kategori Adı")]
-        //public string CategoryName { get; set; } // Aktif, Pasif
+        //public string Category_of_FoodName { get; set; } // Aktif, Pasif
         // [Display(Name = "Kategori DTO Adı")]
         // [Required(ErrorMessage = "Kategori ismi gereklidir...")]
-        // public CategoryDTO Category { get; set; }
+        // public Category_of_FoodDTO Category_of_Food { get; set; }
 
 
         [Display(Name = "Durum")]

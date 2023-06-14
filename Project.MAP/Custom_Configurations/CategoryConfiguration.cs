@@ -6,14 +6,14 @@ using Project.ENTITIES.Identity_Models;
 
 namespace Project.MAP.Custom_Configurations
 {
-    public class CategoryConfiguration : BaseConfiguration<Category>
+    public class Category_of_FoodConfiguration : BaseConfiguration<Category_of_Food>
     {
-        public override void Configure(EntityTypeBuilder<Category> builder)
+        public override void Configure(EntityTypeBuilder<Category_of_Food> builder)
         {
             base.Configure(builder);
-            builder.Property(x => x.CategoryName).HasColumnName("Kategori İsmi").IsRequired();
+            builder.Property(x => x.Category_of_FoodName).HasColumnName("Kategori İsmi").IsRequired();
 
-            //builder.HasMany<Product>().WithOne().HasForeignKey(p => p.CategoryID).IsRequired();
+            //builder.HasMany<Product>().WithOne().HasForeignKey(p => p.Category_of_FoodID).IsRequired();
             // builder.ToTable("Kategoriler");
         }
     }

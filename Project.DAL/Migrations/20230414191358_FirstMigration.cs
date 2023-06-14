@@ -89,7 +89,7 @@ namespace Project.DAL.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Kategoriİsmi = table.Column<string>(name: "Kategori İsmi", type: "nvarchar(max)", nullable: false),
-                    CategoryPicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Category_of_FoodPicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     OluşturulmaTarihi = table.Column<DateTime>(name: "Oluşturulma Tarihi", type: "datetime2", nullable: false),
                     SilinmeTarihi = table.Column<DateTime>(name: "Silinme Tarihi", type: "datetime2", nullable: true),
@@ -258,7 +258,7 @@ namespace Project.DAL.Migrations
                     ProductPicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Discount = table.Column<short>(type: "smallint", nullable: true),
-                    CategoryID = table.Column<int>(type: "int", nullable: false),
+                    Category_of_FoodID = table.Column<int>(type: "int", nullable: false),
                     OluşturulmaTarihi = table.Column<DateTime>(name: "Oluşturulma Tarihi", type: "datetime2", nullable: false),
                     SilinmeTarihi = table.Column<DateTime>(name: "Silinme Tarihi", type: "datetime2", nullable: true),
                     GüncellemeTarihi = table.Column<DateTime>(name: "Güncelleme Tarihi", type: "datetime2", nullable: true),
@@ -268,8 +268,8 @@ namespace Project.DAL.Migrations
                 {
                     table.PrimaryKey("PK_Products", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Products_Categories_CategoryID",
-                        column: x => x.CategoryID,
+                        name: "FK_Products_Categories_Category_of_FoodID",
+                        column: x => x.Category_of_FoodID,
                         principalTable: "Categories",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
@@ -315,9 +315,9 @@ namespace Project.DAL.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_CategoryID",
+                name: "IX_Products_Category_of_FoodID",
                 table: "Products",
-                column: "CategoryID");
+                column: "Category_of_FoodID");
         }
 
         /// <inheritdoc />

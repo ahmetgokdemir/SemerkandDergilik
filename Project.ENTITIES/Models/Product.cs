@@ -18,8 +18,8 @@ namespace Project.ENTITIES.Models
         public short? Discount { get; set; } 
 
 
-        public int CategoryID { get; set; }
+        public int Category_of_FoodID { get; set; }
         //Relational Properties
-        public virtual Category Category { get; set; }
+        public virtual Category_of_Food Category_of_Food { get; set; }
     }
 }

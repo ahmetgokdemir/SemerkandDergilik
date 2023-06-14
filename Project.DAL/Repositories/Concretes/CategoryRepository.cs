@@ -10,23 +10,23 @@ using System.Threading.Tasks;
 
 namespace Project.DAL.Repositories.Concretes
 {
-    public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
+    public class Category_of_FoodRepository : BaseRepository<Category_of_Food>, ICategory_of_FoodRepository
     {
-        public CategoryRepository(TechnosoftProjectContext context) : base(context)
+        public Category_of_FoodRepository(TechnosoftProjectContext context) : base(context)
         {
 
         }
 
-        public IQueryable<string> GetActivesCategoryNamesAsync()
+        public IQueryable<string> GetActivesCategory_of_FoodNamesAsync()
         {
-            return _context.Set<Category>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).Select(x=> x.CategoryName);
+            return _context.Set<Category_of_Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).Select(x=> x.Category_of_FoodName);
         }
 
-        public IQueryable<string> GetCategoryNameAccordingToProductAsync(int category_id)
+        public IQueryable<string> GetCategory_of_FoodNameAccordingToProductAsync(int Category_of_Food_id)
         {
-            IQueryable<string> categoryNameAccordingToProduct = _context.Set<Category>().Where(x => x.ID == category_id).Select(x => x.CategoryName);
+            IQueryable<string> Category_of_FoodNameAccordingToProduct = _context.Set<Category_of_Food>().Where(x => x.ID == Category_of_Food_id).Select(x => x.Category_of_FoodName);
 
-            return categoryNameAccordingToProduct;
+            return Category_of_FoodNameAccordingToProduct;
         }
 
     }

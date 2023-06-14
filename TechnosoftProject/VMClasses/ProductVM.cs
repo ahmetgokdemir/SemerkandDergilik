@@ -6,7 +6,7 @@ namespace Technosoft_Project.VMClasses
     {
         public ProductDTO ProductDTO { get; set; }
         public List<ProductDTO> ProductDTOs { get; set; }
-        public CategoryDTO CategoryDTO { get; set; }
+        public Category_of_FoodDTO Category_of_FoodDTO { get; set; }
         public string JavascriptToRun { get; set; }
     }
 }
