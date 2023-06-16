@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Project.ENTITIES.Models
 {
-    public class Product : EntityBase, IEntity
+    public class Food : EntityBase, IEntity
     {
-        public string ProductName { get; set; }
+        public string FoodName { get; set; }
         
         // public short UnitsInStock { get; set; }
-        public decimal UnitPrice { get; set; } // ProductConfiguration.cs'de money'e çevrilmeli.. 
-        public string? ProductPicture { get; set; }
+        public decimal UnitPrice { get; set; } // FoodConfiguration.cs'de money'e çevrilmeli.. 
+        public string? FoodPicture { get; set; }
         public int Status { get; set; } // Aktif, Pasif... EntityBase'de ki gibi DataStatus verilebilir idi int yerine... ve casting işlemlerine gerek kalmaz idi..
         public short? Discount { get; set; } 
 

@@ -34,7 +34,7 @@ namespace Project.DAL.Context
             builder.ApplyConfiguration(new AppUserTokenConfiguration());
             builder.ApplyConfiguration(new Category_of_FoodConfiguration());
             builder.ApplyConfiguration(new CouponConfiguration());
-            builder.ApplyConfiguration(new ProductConfiguration());  
+            builder.ApplyConfiguration(new FoodConfiguration());  
 
 
 
@@ -111,9 +111,9 @@ namespace Project.DAL.Context
         public DbSet<AppUserLogin> AppUserLogins { get; set; }
         public DbSet<AppUserRole> AppUserRoles { get; set; }
         public DbSet<AppUserToken> AppUserTokens { get; set; }
-        public DbSet<Category_of_Food> Categories { get; set; }
+        public DbSet<Category_of_Food> Category_of_Foods { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
-        public DbSet<Product> Products { get; set; }
+        public DbSet<Food> Foods { get; set; }
         public DbSet<Blog> Blogs { get; set; }
 
 

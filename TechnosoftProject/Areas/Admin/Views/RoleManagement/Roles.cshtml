@@ -97,10 +97,10 @@
         }
 
         $(function () {
-            //$("#deleteProduct").click(function () {
+            //$("#deleteFood").click(function () {
             $("#tab2").on("click", "[value=deleteRoleValue]", function () {
                 $.ajax({
-                    //url: '@@Url.Action("DeleteProductAjax","Product")',
+                    //url: '@@Url.Action("DeleteFoodAjax","Food")',
                     url: 'DeleteRoleAjax',
                     data: { id: $(this).attr("data-id") },
                     type: 'GET',

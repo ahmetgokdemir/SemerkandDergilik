@@ -11,7 +11,7 @@ namespace Project.BLL.ManagerServices.Abstracts
     {
 
         Task<IEnumerable<string>> GetActivesCategory_of_FoodNamesAsync();
-        Task<string> GetCategory_of_FoodNameAccordingToProductAsync(int Category_of_Food_id);
+        Task<string> GetCategory_of_FoodNameAccordingToFoodAsync(int Category_of_Food_id);
 
     }
 }

@@ -2,10 +2,10 @@
 
 namespace Technosoft_Project.VMClasses
 {
-    public class ProductVM
+    public class FoodVM
     {
-        public ProductDTO ProductDTO { get; set; }
-        public List<ProductDTO> ProductDTOs { get; set; }
+        public FoodDTO FoodDTO { get; set; }
+        public List<FoodDTO> FoodDTOs { get; set; }
         public Category_of_FoodDTO Category_of_FoodDTO { get; set; }
         public string JavascriptToRun { get; set; }
     }

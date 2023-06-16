@@ -4,19 +4,19 @@ using System.Xml.Linq;
 
 namespace Technosoft_Project.ViewModels
 {
-    public class ProductDTO
+    public class FoodDTO
     {
         public int ID { get; set; }
 
         [Required(ErrorMessage = "Ürün ismi gereklidir.")]
         [Display(Name = "Ürün Adı")]
-        public string ProductName { get; set; }
+        public string FoodName { get; set; }
 
 
         [Required(ErrorMessage = "Ürün fiyatı giriniz.")]
         [Display(Name = "Ürün Fiyat")]
         [Range(1, 1000000000000)]
-        public decimal UnitPrice { get; set; } // ProductConfiguration.cs'de money'e çevrilmeli.. 
+        public decimal UnitPrice { get; set; } // FoodConfiguration.cs'de money'e çevrilmeli.. 
 
         
         //[Required(ErrorMessage = "Stok sayısı giriniz.")]
@@ -46,7 +46,7 @@ namespace Technosoft_Project.ViewModels
 
 
         [Display(Name = "Ürün Resmi")]
-        public string? ProductPicture { get; set; }
+        public string? FoodPicture { get; set; }
 
 
     }

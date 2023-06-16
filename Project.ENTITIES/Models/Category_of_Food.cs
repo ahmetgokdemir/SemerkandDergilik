@@ -14,6 +14,6 @@ namespace Project.ENTITIES.Models
         public string? Category_of_FoodPicture { get; set; }
         public int Status { get; set; } // Aktif, Pasif
 
-        public virtual List<Product> Products { get; set; }
+        public virtual List<Food> Foods { get; set; }
     }
 }

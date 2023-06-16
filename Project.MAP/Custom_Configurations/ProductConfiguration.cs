@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace Project.MAP.Custom_Configurations
 {
-    public class ProductConfiguration : BaseConfiguration<Product>
+    public class FoodConfiguration : BaseConfiguration<Food>
     {
-        public override void Configure(EntityTypeBuilder<Product> builder)
+        public override void Configure(EntityTypeBuilder<Food> builder)
         {
             base.Configure(builder);
             builder.Property(x => x.UnitPrice).HasColumnType("money");
 
-            builder.Property(x => x.ProductName).HasColumnName("Ürün Adı").IsRequired();
+            builder.Property(x => x.FoodName).HasColumnName("Ürün Adı").IsRequired();
         }
     }
 }

@@ -7,7 +7,7 @@
 @model Category_of_FoodVM
 
 
-@*@@if ((Model == null) && ViewBag.CRUD != "delete_operation") // _CruProduction'da Model null değil çünkü AddProductAjax()'da geriye değer dönüyor ama AddCategory_of_FoodAjax()'da dönmüyor Model null o yüzden..
+@*@@if ((Model == null) && ViewBag.CRUD != "delete_operation") // _CruFoodion'da Model null değil çünkü AddFoodAjax()'da geriye değer dönüyor ama AddCategory_of_FoodAjax()'da dönmüyor Model null o yüzden..
 {
     <h3>Kategori Oluşturma Formu</h3>
 }*@
@@ -32,7 +32,7 @@ else if (Model.Category_of_FoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation"
 
         @if (ViewBag.CRUD != "delete_operation")
         {
-            TempData["Deleted"] = null;  // delete pop-up sayfasını açıp sonra kapatıp sonra da update/add pop'ı seçilirse TempData["Deleted"] sıfırlanmadığından CRUDProduct action kısmında delete operation çalışır bu yüzden bunu sıfırlamak lazım
+            TempData["Deleted"] = null;  // delete pop-up sayfasını açıp sonra kapatıp sonra da update/add pop'ı seçilirse TempData["Deleted"] sıfırlanmadığından CRUDFood action kısmında delete operation çalışır bu yüzden bunu sıfırlamak lazım
 
             // asp-for="" kullanımında içerisine Model.Category_of_FoodDTO.Category_of_FoodName tanımlanamaz (Model olmamalı) yani Category_of_FoodDTO.Category_of_FoodName şeklinde olacak.. ViewBag de tanımlanamaz.. ama TempData kullanılabilir sanırım..
 

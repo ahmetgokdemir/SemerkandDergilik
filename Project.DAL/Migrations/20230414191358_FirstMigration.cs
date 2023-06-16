@@ -83,7 +83,7 @@ namespace Project.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
+                name: "Category_of_Foods",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -98,7 +98,7 @@ namespace Project.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.ID);
+                    table.PrimaryKey("PK_Category_of_Foods", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -247,7 +247,7 @@ namespace Project.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "Foods",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -255,7 +255,7 @@ namespace Project.DAL.Migrations
                     ÜrünAdı = table.Column<string>(name: "Ürün Adı", type: "nvarchar(max)", nullable: false),
                     UnitsInStock = table.Column<short>(type: "smallint", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "money", nullable: false),
-                    ProductPicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FoodPicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Discount = table.Column<short>(type: "smallint", nullable: true),
                     Category_of_FoodID = table.Column<int>(type: "int", nullable: false),
@@ -266,11 +266,11 @@ namespace Project.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.ID);
+                    table.PrimaryKey("PK_Foods", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Products_Categories_Category_of_FoodID",
+                        name: "FK_Foods_Category_of_Foods_Category_of_FoodID",
                         column: x => x.Category_of_FoodID,
-                        principalTable: "Categories",
+                        principalTable: "Category_of_Foods",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -315,8 +315,8 @@ namespace Project.DAL.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_Category_of_FoodID",
-                table: "Products",
+                name: "IX_Foods_Category_of_FoodID",
+                table: "Foods",
                 column: "Category_of_FoodID");
         }
 
@@ -345,7 +345,7 @@ namespace Project.DAL.Migrations
                 name: "Coupons");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Foods");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -354,7 +354,7 @@ namespace Project.DAL.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Category_of_Foods");
         }
     }
 }

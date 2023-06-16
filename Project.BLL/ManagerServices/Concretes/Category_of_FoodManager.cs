@@ -41,11 +41,11 @@ namespace Project.BLL.ManagerServices.Concretes
             return Category_of_FoodNames;
         }
 
-        public async Task<string> GetCategory_of_FoodNameAccordingToProductAsync(int Category_of_Food_id)
+        public async Task<string> GetCategory_of_FoodNameAccordingToFoodAsync(int Category_of_Food_id)
         {
-            var Category_of_FoodNameAccordingToProduct = await _crep.GetCategory_of_FoodNameAccordingToProductAsync(Category_of_Food_id).ToListAsync(); // convert ıqueryable to IEnumerable
+            var Category_of_FoodNameAccordingToFood = await _crep.GetCategory_of_FoodNameAccordingToFoodAsync(Category_of_Food_id).ToListAsync(); // convert ıqueryable to IEnumerable
  
-            return Category_of_FoodNameAccordingToProduct[0];
+            return Category_of_FoodNameAccordingToFood[0];
          
 
         }

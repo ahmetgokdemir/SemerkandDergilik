@@ -4,10 +4,10 @@
 @{
 }
 
-@model ProductVM
+@model FoodVM
 
 @{
-    ViewData["Title"] = "ProductList";
+    ViewData["Title"] = "FoodList";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -47,13 +47,13 @@
 
 <hr class="loader" />
 
-@if (Model.ProductDTOs.Count == 0)
+@if (Model.FoodDTOs.Count == 0)
 {
     <div class="jumbotron" id="tab1" style="padding:20px;  background-color:lightgrey">
 
         @* BURASIIII DEĞİLLLL <input type="submit" id="btnIslemYap" value="İşlem Yap" />*@
 
-        <button class="btn btn-outline-success " id="addNewProduct" value="addNewProductValue">Ürün Eklemek için tıklayınız</button>
+        <button class="btn btn-outline-success " id="addNewFood" value="addNewFoodValue">Ürün Eklemek için tıklayınız</button>
     </div>
 }
 
@@ -61,7 +61,7 @@ else
 {
     <div id="tab1" class="mb-3">
 
-        <button class="btn btn-outline-success " id="addNewProduct" value="addNewProductValue"> Ürün Eklemek için tıklayınız</button>
+        <button class="btn btn-outline-success " id="addNewFood" value="addNewFoodValue"> Ürün Eklemek için tıklayınız</button>
     </div>
 
     <div class="panel panel-primary  ml-5">
@@ -85,11 +85,11 @@ else
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (ProductDTO item in Model.ProductDTOs)
+                    @foreach (FoodDTO item in Model.FoodDTOs)
                     {
                         <tr>
                             <td></td> <!-- indexleme gelecek -->
-                            <td class="position"><p>@item.ProductName</p></td>
+                            <td class="position"><p>@item.FoodName</p></td>
                             <td class="position"><p>@item.UnitPrice</p></td>
                             @*<td class="position"><p>@item.UnitsInStock</p></td>*@
                             <td class="position"><p>@item.Discount</p></td>
@@ -100,19 +100,19 @@ else
                             <td class="position"><p>@item.Status</p></td>
                             @*<td colspan="2" style="padding-left:150px">@item.Category_of_FoodPicture</td>*@
                             <td style="text-align: center;">
-                                @if (item.ProductPicture != null)
+                                @if (item.FoodPicture != null)
                                 {
-                                    <img style="width:85px; height:50px" src="@item.ProductPicture" />
+                                    <img style="width:85px; height:50px" src="@item.FoodPicture" />
                                 }                                
                             </td>
                             <td class="btnposition">
-                                <a class="btn btn-warning" value="updateProductValue" data-id=@item.ID>Güncelle</a>
+                                <a class="btn btn-warning" value="updateFoodValue" data-id=@item.ID>Güncelle</a>
                                 @* BURASIIII  <button class="btn btn-warning " id="updateCategory_of_Food" value="updateCategory_of_FoodValue" data-id=@item.ID>Güncelle</button>*@
                             </td>
                             <td class="btnposition">
                                 @*<a asp-action="DeleteCategory_of_Food" asp-controller="Category_of_Food" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
 
-                                <button class="btn btn-danger " id="deleteProduct" value="deleteProductValue" data-id=@item.ID>Sil</button>
+                                <button class="btn btn-danger " id="deleteFood" value="deleteFoodValue" data-id=@item.ID>Sil</button>
                             </td>
                         </tr>
                     }
@@ -126,14 +126,14 @@ else
 <a asp-action="Category_of_FoodList" asp-controller="Category_of_Food" class="btn btn-outline-info mb-3">Kategori Sayfasına Geri Dön</a>
 
 
-<div class="modal fade" id="CRUDProductModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="CRUDFoodModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title"></h4>
             </div>
-            <div class="modal-body" id="CRUDProduct">
+            <div class="modal-body" id="CRUDFood">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
@@ -179,21 +179,21 @@ else
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/alertify.min.css" />
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/themes/default.min.css" />
 
-@if (TempData["messageProduct"] != null)
+@if (TempData["messageFood"] != null)
 {
-    @if (TempData["messageProduct"].ToString() == "Ürün güncellendi")
+    @if (TempData["messageFood"].ToString() == "Ürün güncellendi")
     {
         <script>
             alertify.warning("Ürün güncellendi");
         </script>
     }
-    else if (TempData["messageProduct"].ToString() == "Ürün silindi")
+    else if (TempData["messageFood"].ToString() == "Ürün silindi")
     {
         <script>
             alertify.error("Ürün silindi");
         </script>
     }
-    else if (TempData["messageProduct"].ToString() == "Ürün eklendi")
+    else if (TempData["messageFood"].ToString() == "Ürün eklendi")
     {
         <script>
             alertify.success("Ürün eklendi");
@@ -249,14 +249,14 @@ else
             // alert('Sorry, we could not process your order.');
 
             $.ajax({
-                //url: '@@Url.Action("AddProductAjax","Product")',
-                url: 'AddProductAjax',
-                //data: { pdto_reloaddata: @@Model.ProductDTO },
+                //url: '@@Url.Action("AddFoodAjax","Food")',
+                url: 'AddFoodAjax',
+                //data: { pdto_reloaddata: @@Model.FoodDTO },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#CRUDProduct").html(data);
-                    CRUDProductModalLoaded();
+                    $("#CRUDFood").html(data);
+                    CRUDFoodModalLoaded();
 
                 },
                 beforeSend: function () {
@@ -276,14 +276,14 @@ else
         // alert('Sorry, we could not process your order.');
 
         $.ajax({
-            //url: '@@Url.Action("AddProductAjax","Product")',
-            url: 'UpdateProductAjax',
+            //url: '@@Url.Action("AddFoodAjax","Food")',
+            url: 'UpdateFoodAjax',
             data: { id: _id },
             type: 'GET',
             dataType: 'html',
             success: function (data) {
-                $("#CRUDProduct").html(data);
-                CRUDProductModalLoaded();
+                $("#CRUDFood").html(data);
+                CRUDFoodModalLoaded();
 
             },
             beforeSend: function () {
@@ -301,22 +301,22 @@ else
 
 
 
-    function CRUDProductModalLoaded() {
-        $("#CRUDProductModal").modal('show'); // #CRUDProductModal içinde CRUDProduct var (<div class="modal-body" id="CRUDProduct">) onun içinde de data var (_CrudProductPartial)
+    function CRUDFoodModalLoaded() {
+        $("#CRUDFoodModal").modal('show'); // #CRUDFoodModal içinde CRUDFood var (<div class="modal-body" id="CRUDFood">) onun içinde de data var (_CrudFoodPartial)
     }
 
 
     $(function () {
-        //$("#addNewProduct").click(function () {
-        $("#tab1").on("click", "[value=addNewProductValue]", function () {
+        //$("#addNewFood").click(function () {
+        $("#tab1").on("click", "[value=addNewFoodValue]", function () {
             $.ajax({
-                //url: '@@Url.Action("AddProductAjax","Product")',
-                url: 'AddProductAjax',
+                //url: '@@Url.Action("AddFoodAjax","Food")',
+                url: 'AddFoodAjax',
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#CRUDProduct").html(data);
-                    CRUDProductModalLoaded();
+                    $("#CRUDFood").html(data);
+                    CRUDFoodModalLoaded();
 
                 },
                 beforeSend: function () {
@@ -333,17 +333,17 @@ else
     });
 
     $(function () {
-        //$("#updateProduct").click(function () {
-        $("#tab2").on("click", "[value=updateProductValue]", function () {
+        //$("#updateFood").click(function () {
+        $("#tab2").on("click", "[value=updateFoodValue]", function () {
             $.ajax({
-                //url: '@@Url.Action("UpdateProductAjax","Product")',
-                url: 'UpdateProductAjax',
+                //url: '@@Url.Action("UpdateFoodAjax","Food")',
+                url: 'UpdateFoodAjax',
                 data: { id: $(this).attr("data-id") },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#CRUDProduct").html(data);
-                    CRUDProductModalLoaded();
+                    $("#CRUDFood").html(data);
+                    CRUDFoodModalLoaded();
 
                 },
                 beforeSend: function () {
@@ -362,17 +362,17 @@ else
     });
 
     $(function () {
-        //$("#deleteProduct").click(function () {
-        $("#tab2").on("click", "[value=deleteProductValue]", function () {
+        //$("#deleteFood").click(function () {
+        $("#tab2").on("click", "[value=deleteFoodValue]", function () {
             $.ajax({
-                //url: '@@Url.Action("DeleteProductAjax","Product")',
-                url: 'DeleteProductAjax',
+                //url: '@@Url.Action("DeleteFoodAjax","Food")',
+                url: 'DeleteFoodAjax',
                 data: { id: $(this).attr("data-id") },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#CRUDProduct").html(data);
-                    CRUDProductModalLoaded();
+                    $("#CRUDFood").html(data);
+                    CRUDFoodModalLoaded();
 
                 },
                 error: function () {

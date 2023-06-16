@@ -85,14 +85,14 @@ namespace Project.BLL.ManagerServices.Concretes
 
         public async Task<TEntity> GetByIdAsync(int id)
         {
-            var product = await _iRep.GetByIdAsync(id);
+            var Food = await _iRep.GetByIdAsync(id);
 
-            if (product == null)
+            if (Food == null)
             {
                 return null;
             }
 
-            return product;
+            return Food;
         }
 
         public async Task<TEntity> GetFirstDataAsync()
@@ -109,7 +109,7 @@ namespace Project.BLL.ManagerServices.Concretes
         {
             return await _iRep.GetModifiedsAsync().ToListAsync(); // convert ıqueryable to IEnumerable
 
-            // return products;
+            // return Foods;
         }
 
         public async Task<IEnumerable<TEntity>> GetPassivesAsync()

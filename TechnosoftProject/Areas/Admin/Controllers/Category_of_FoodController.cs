@@ -123,7 +123,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             {
                 Category_of_Food Category_of_Food_item = await _icm.GetByIdAsync(id);
                 cDTO = Category_of_Food_item.Adapt<Category_of_FoodDTO>();
-                // cdto = product_item.Adapt<Category_of_FoodDTO>();
+                // cdto = Food_item.Adapt<Category_of_FoodDTO>();
             }
 
 
@@ -179,14 +179,16 @@ namespace Technosoft_Project.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CRUDCategory_of_Food(Category_of_FoodVM cvm_post, IFormFile Category_of_FoodPicture)
         {
-            var urlHelper = new UrlHelper(ControllerContext);
-            var url = urlHelper.Action("About", "Home");
-            var linkText = "Panelden yapılan değiliklik web e yansımıyor";
-
-            var hyperlink = string.Format("<a href=\"{0}\">{1}</a>", url, linkText);
-
-            var url2 = $"{Request.Scheme}://{Request.Host}/Home/About";
-
+            
+            /*
+              var urlHelper = new UrlHelper(ControllerContext);
+              var url = urlHelper.Action("About", "Home");
+              var linkText = "Panelden yapılan değiliklik web e yansımıyor";
+              
+              var hyperlink = string.Format("<a href=\"{0}\">{1}</a>", url, linkText);
+              
+              var url2 = $"{Request.Scheme}://{Request.Host}/Home/About";
+            */
 
 
 
@@ -247,7 +249,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                      else
                      {
                          _icm.Update(ctg);
-                         // yapılacak ödev:  Category_of_Food pasife çekilirse productları da pasife çekilsin!!! Update metodu içerisinde yapılabilir... ekstra metoda gerek yok
+                         // yapılacak ödev:  Category_of_Food pasife çekilirse Foodları da pasife çekilsin!!! Update metodu içerisinde yapılabilir... ekstra metoda gerek yok
 
                          /*
                           * 
@@ -306,9 +308,9 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 return RedirectToAction("Category_of_FoodList", new { JSpopupPage = cVM.JavascriptToRun });
 
             }
-            else // add // (pvm_post.ProductDTO.ID == 0) çevir...
+            else // add // (pvm_post.FoodDTO.ID == 0) çevir...
             {
-                // pvm.JavascriptToRun = $"ShowErrorPopup( {pvm_post.ProductDTO} )";
+                // pvm.JavascriptToRun = $"ShowErrorPopup( {pvm_post.FoodDTO} )";
 
                 // pvm.JavascriptToRun = $"ShowErrorInsertOperationPopup()";
 

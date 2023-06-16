@@ -20,7 +20,7 @@ namespace Project.DAL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("FoodVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -422,7 +422,7 @@ namespace Project.DAL.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Category_of_Foods");
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.Coupon", b =>
@@ -464,7 +464,7 @@ namespace Project.DAL.Migrations
                     b.ToTable("Coupons");
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.Product", b =>
+            modelBuilder.Entity("Project.ENTITIES.Models.Food", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -493,12 +493,12 @@ namespace Project.DAL.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Güncelleme Tarihi");
 
-                    b.Property<string>("ProductName")
+                    b.Property<string>("FoodName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Ürün Adı");
 
-                    b.Property<string>("ProductPicture")
+                    b.Property<string>("FoodPicture")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
@@ -511,7 +511,7 @@ namespace Project.DAL.Migrations
 
                     b.HasIndex("Category_of_FoodID");
 
-                    b.ToTable("Products");
+                    b.ToTable("Foods");
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppRoleClaim", b =>
@@ -565,10 +565,10 @@ namespace Project.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Project.ENTITIES.Models.Product", b =>
+            modelBuilder.Entity("Project.ENTITIES.Models.Food", b =>
                 {
                     b.HasOne("Project.ENTITIES.Models.Category_of_Food", "Category_of_Food")
-                        .WithMany("Products")
+                        .WithMany("Foods")
                         .HasForeignKey("Category_of_FoodID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -578,7 +578,7 @@ namespace Project.DAL.Migrations
 
             modelBuilder.Entity("Project.ENTITIES.Models.Category_of_Food", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Foods");
                 });
 #pragma warning restore 612, 618
         }

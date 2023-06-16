@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Project.BLL.ManagerServices.Abstracts
 {
-    public interface IProductManager : IManager<Product>
+    public interface IFoodManager : IManager<Food>
     {
-        Task<IEnumerable<Product>> GetActivesProductsByCategory_of_FoodIDAsync(int Category_of_Food_id);
-        Task<Product> GetProductByIdwithCategory_of_FoodValueAsync(int product_id);
+        Task<IEnumerable<Food>> GetActivesFoodsByCategory_of_FoodIDAsync(int Category_of_Food_id);
+        Task<Food> GetFoodByIdwithCategory_of_FoodValueAsync(int Food_id);
     }
 
 }

@@ -22,11 +22,11 @@ namespace Project.DAL.Repositories.Concretes
             return _context.Set<Category_of_Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).Select(x=> x.Category_of_FoodName);
         }
 
-        public IQueryable<string> GetCategory_of_FoodNameAccordingToProductAsync(int Category_of_Food_id)
+        public IQueryable<string> GetCategory_of_FoodNameAccordingToFoodAsync(int Category_of_Food_id)
         {
-            IQueryable<string> Category_of_FoodNameAccordingToProduct = _context.Set<Category_of_Food>().Where(x => x.ID == Category_of_Food_id).Select(x => x.Category_of_FoodName);
+            IQueryable<string> Category_of_FoodNameAccordingToFood = _context.Set<Category_of_Food>().Where(x => x.ID == Category_of_Food_id).Select(x => x.Category_of_FoodName);
 
-            return Category_of_FoodNameAccordingToProduct;
+            return Category_of_FoodNameAccordingToFood;
         }
 
     }

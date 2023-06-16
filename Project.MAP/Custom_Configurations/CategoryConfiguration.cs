@@ -13,7 +13,7 @@ namespace Project.MAP.Custom_Configurations
             base.Configure(builder);
             builder.Property(x => x.Category_of_FoodName).HasColumnName("Kategori İsmi").IsRequired();
 
-            //builder.HasMany<Product>().WithOne().HasForeignKey(p => p.Category_of_FoodID).IsRequired();
+            //builder.HasMany<Food>().WithOne().HasForeignKey(p => p.Category_of_FoodID).IsRequired();
             // builder.ToTable("Kategoriler");
         }
     }

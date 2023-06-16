@@ -12,7 +12,7 @@ namespace Project.DAL.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "UnitsInStock",
-                table: "Products");
+                table: "Foods");
         }
 
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Project.DAL.Migrations
         {
             migrationBuilder.AddColumn<short>(
                 name: "UnitsInStock",
-                table: "Products",
+                table: "Foods",
                 type: "smallint",
                 nullable: false,
                 defaultValue: (short)0);

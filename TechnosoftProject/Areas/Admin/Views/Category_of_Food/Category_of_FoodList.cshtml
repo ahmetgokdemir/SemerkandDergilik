@@ -76,7 +76,7 @@ else
                         <tr>
                             <td></td>
                             <td class="position">
-                                <a class="" asp-area="Admin" asp-controller="Product" asp-action="ProductList" asp-route-id="@item.ID" asp-route-status="@Category_of_Food_status">@item.Category_of_FoodName</a>
+                                <a class="" asp-area="Admin" asp-controller="Food" asp-action="FoodList" asp-route-id="@item.ID" asp-route-status="@Category_of_Food_status">@item.Category_of_FoodName</a>
                             </td>
                             <td class="position">
                                 <p>@item.Status</p>
@@ -225,9 +225,9 @@ else
             // alert('Sorry, we could not process your order.');
 
             $.ajax({
-                //url: '@@Url.Action("AddProductAjax","Product")',
+                //url: '@@Url.Action("AddFoodAjax","Food")',
                 url: 'AddCategory_of_FoodAjax',
-                //data: { pdto_reloaddata: @@Model.ProductDTO },
+                //data: { pdto_reloaddata: @@Model.FoodDTO },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
@@ -252,7 +252,7 @@ else
         // alert('Sorry, we could not process your order.');
 
         $.ajax({
-            //url: '@@Url.Action("AddProductAjax","Product")',
+            //url: '@@Url.Action("AddFoodAjax","Food")',
             url: 'UpdateCategory_of_FoodAjax',
             data: { id: _id },
             type: 'GET',

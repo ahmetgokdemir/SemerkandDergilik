@@ -403,9 +403,9 @@ namespace Technosoft_Project.Controllers
 
             //if (ViewBag.ErrorMessageBlog == true)
             //{
-            //    if (string.IsNullOrEmpty(pvm.ProductDTO.ProductName))
+            //    if (string.IsNullOrEmpty(pvm.FoodDTO.FoodName))
             //    {
-            //        ModelState.AddModelError("ProductDTO.ProductName", "Ürün adı giriniz.");
+            //        ModelState.AddModelError("FoodDTO.FoodName", "Ürün adı giriniz.");
             //    }
             //}
 

@@ -53,7 +53,7 @@ IdentityAPI kendisi, Identity sýnýflarý arasýnda navigationlarý kuruyor.. Ayrýye
         //public virtual ICollection<AppRoleClaim> AppRoleClaims { get; set; } gibi...
 
 Identity sýnýflarý sadece IEnitityden miras aldýðý için property'leri implement edilmeli ve constructor tanýmlanlamlý.. ama diðer sýnýflar
-(Category_of_Food,Product vs.) ayrýca Entity'den miras aldýðý için ve Entity class da bu propertyleri implement ettiðinden bu sýnýflarda ayrýyeten 
+(Category_of_Food,Food vs.) ayrýca Entity'den miras aldýðý için ve Entity class da bu propertyleri implement ettiðinden bu sýnýflarda ayrýyeten 
 implementasyona gerek yok..
 
 ---
@@ -116,9 +116,9 @@ app.UseSession();
 CommonTools --> 
 SessionExtension.cs added...
 
-ProductController.cs -->
-HttpContext.Session.SetObject("manipulatedData", pvm_post.ProductDTO);
-result = HttpContext.Session.GetObject<ProductDTO>("manipulatedData");
+FoodController.cs -->
+HttpContext.Session.SetObject("manipulatedData", pvm_post.FoodDTO);
+result = HttpContext.Session.GetObject<FoodDTO>("manipulatedData");
 
 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -127,7 +127,7 @@ result = HttpContext.Session.GetObject<ProductDTO>("manipulatedData");
  --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
   colspan="2" --> DataTable.js'i çalýþtýrmýyor table kýsmýnda
-  <td colspan="2" style="padding-left:75px"><img style="width:75%; height:75%" src="@item.ProductPicture" /></td>
+  <td colspan="2" style="padding-left:75px"><img style="width:75%; height:75%" src="@item.FoodPicture" /></td>
 
   --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 

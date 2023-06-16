@@ -3,17 +3,17 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@model ProductVM
+@model FoodVM
 
-@if (Model.ProductDTO.ID == 0 && ViewBag.CRUD != "delete_operation")
+@if (Model.FoodDTO.ID == 0 && ViewBag.CRUD != "delete_operation")
 {
     <h3>Ürün Oluşturma Formu</h3>
 }
-else if (Model.ProductDTO.ID != 0 && ViewBag.CRUD != "delete_operation")
+else if (Model.FoodDTO.ID != 0 && ViewBag.CRUD != "delete_operation")
 {
     <h3>Ürün Güncelleme Formu</h3>
 }
-else if (Model.ProductDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
+else if (Model.FoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
 {
     <h3>Ürün Silme Formu</h3>
 }
@@ -21,43 +21,43 @@ else if (Model.ProductDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
 <hr />
 <div class="row">
 
-    <form asp-action="CRUDProduct" method="post" enctype="multipart/form-data">
+    <form asp-action="CRUDFood" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         @if (ViewBag.CRUD != "delete_operation")
         {
-            TempData["Deleted"] = null;  // delete pop-up sayfasını açıp sonra kapatıp sonra da update/add pop'ı seçilirse TempData["Deleted"] sıfırlanmadığından CRUDProduct kısmında delete operation çalışır bu yüzden bunu sıfırlamak lazım
+            TempData["Deleted"] = null;  // delete pop-up sayfasını açıp sonra kapatıp sonra da update/add pop'ı seçilirse TempData["Deleted"] sıfırlanmadığından CRUDFood kısmında delete operation çalışır bu yüzden bunu sıfırlamak lazım
 
 
             <div class="form-group">
-                <label asp-for="ProductDTO.ProductName" class="control-label"></label>
-                <input asp-for="ProductDTO.ProductName" class="form-control" placeholder="Ürün adı giriniz..." />
-                <span asp-validation-for="ProductDTO.ProductName" class="text-danger"></span>
+                <label asp-for="FoodDTO.FoodName" class="control-label"></label>
+                <input asp-for="FoodDTO.FoodName" class="form-control" placeholder="Ürün adı giriniz..." />
+                <span asp-validation-for="FoodDTO.FoodName" class="text-danger"></span>
             </div>
 
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label asp-for="ProductDTO.UnitPrice" class="control-label"></label>
-                        <input asp-for="ProductDTO.UnitPrice" class="form-control" placeholder="Ürün fiyatı giriniz..." />
-                        <span asp-validation-for="ProductDTO.UnitPrice" class="text-danger"></span>
+                        <label asp-for="FoodDTO.UnitPrice" class="control-label"></label>
+                        <input asp-for="FoodDTO.UnitPrice" class="form-control" placeholder="Ürün fiyatı giriniz..." />
+                        <span asp-validation-for="FoodDTO.UnitPrice" class="text-danger"></span>
                     </div>
                 </div>
 @*                <div class="col-md-6">
                     <div class="form-group">
-                        <label asp-for="ProductDTO.UnitsInStock" class="control-label" style=" width:100%"></label>
-                        <input asp-for="ProductDTO.UnitsInStock" class="form-control" placeholder="Stok sayısı giriniz..." min="0" />
-                        <span asp-validation-for="ProductDTO.UnitsInStock" class="text-danger"></span>
+                        <label asp-for="FoodDTO.UnitsInStock" class="control-label" style=" width:100%"></label>
+                        <input asp-for="FoodDTO.UnitsInStock" class="form-control" placeholder="Stok sayısı giriniz..." min="0" />
+                        <span asp-validation-for="FoodDTO.UnitsInStock" class="text-danger"></span>
                     </div>
                 </div>*@
             </div>
             <div class="form-group">
-                <label asp-for="ProductDTO.Discount" class="control-label"></label>
-                <input asp-for="ProductDTO.Discount" class="form-control" min="0" />
-                <span asp-validation-for="ProductDTO.Discount" class="text-danger"></span>
+                <label asp-for="FoodDTO.Discount" class="control-label"></label>
+                <input asp-for="FoodDTO.Discount" class="form-control" min="0" />
+                <span asp-validation-for="FoodDTO.Discount" class="text-danger"></span>
             </div>
 
-            <input type="hidden" asp-for="ProductDTO.Category_of_FoodID" />
+            <input type="hidden" asp-for="FoodDTO.Category_of_FoodID" />
 
             @*  
                 <input type="hidden" asp-for="Category_of_FoodDTO.ID" />
@@ -72,27 +72,27 @@ else if (Model.ProductDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
             </div>
 
             <div class="form-group">
-                <label asp-for="ProductDTO.Status" class="control-label"></label>
+                <label asp-for="FoodDTO.Status" class="control-label"></label>
                 @if ((int)TempData["Category_of_Food_status"] == 0)
                 {
 @*                    <select disabled class="form-control" asp-for="@Enum.GetNames(typeof(Status))[1].ToString()" asp-items="@ViewBag.Status"></select>*@
-                    <select disabled class="form-control" asp-for="ProductDTO.Status" asp-items="@ViewBag.Status"></select>
+                    <select disabled class="form-control" asp-for="FoodDTO.Status" asp-items="@ViewBag.Status"></select>
                     TempData["Category_of_Food_status"] = Model.Category_of_FoodDTO.Status; // bu kod olmaz ise kullanıcı butona basmadan çıkarsa sayfadan TempData boş kalır null hatası döner ... tedbiren kalsın bu kod
                 }
                 else
                 {
-                    <select class="form-control" asp-for="ProductDTO.Status" asp-items="@ViewBag.Status"></select>
+                    <select class="form-control" asp-for="FoodDTO.Status" asp-items="@ViewBag.Status"></select>
                     TempData["Category_of_Food_status"] = Model.Category_of_FoodDTO.Status; // bu kod olmaz ise kullanıcı butona basmadan çıkarsa sayfadan TempData boş kalır null hatası döner ... tedbiren kalsın bu kod
                 }
-                <span asp-validation-for="ProductDTO.Status" class="text-danger"></span>
+                <span asp-validation-for="FoodDTO.Status" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="ProductDTO.ProductPicture" class="control-label"></label>
-                <input class="form-control" type="file" name="productPicture" />
+                <label asp-for="FoodDTO.FoodPicture" class="control-label"></label>
+                <input class="form-control" type="file" name="FoodPicture" />
             </div>
 
-            @if (Model.ProductDTO.ID == 0)
+            @if (Model.FoodDTO.ID == 0)
             {
                 <div class="form-group">
                     <input type="submit" value="Ürün Ekle" class="btn btn-primary mt-2" />
@@ -100,7 +100,7 @@ else if (Model.ProductDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
             }
             else
             {
-                <input type="hidden" asp-for="ProductDTO.ID" />
+                <input type="hidden" asp-for="FoodDTO.ID" />
 
                 <div class="form-group">
                     <input type="submit" value="Ürün Güncelle" class="btn btn-primary mt-2" />
@@ -116,10 +116,10 @@ else if (Model.ProductDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
 
         else
         {
-            <input type="hidden" asp-for="ProductDTO.ID" />
+            <input type="hidden" asp-for="FoodDTO.ID" />
 
             <div class="form-group">
-                <span asp-validation-for="ProductDTO.ProductName"></span> <label style="width:100%;                                height:100%">@ViewBag.ProductNameDelete silmek istediğinizden emin misiniz ?</label>
+                <span asp-validation-for="FoodDTO.FoodName"></span> <label style="width:100%;                                height:100%">@ViewBag.FoodNameDelete silmek istediğinizden emin misiniz ?</label>
 
             </div>
 
