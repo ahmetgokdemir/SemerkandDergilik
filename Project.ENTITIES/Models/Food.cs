@@ -21,5 +21,7 @@ namespace Project.ENTITIES.Models
         public int Category_of_FoodID { get; set; }
         //Relational Properties
         public virtual Category_of_Food Category_of_Food { get; set; }
+        public virtual List<MenuDetail> MenuDetails { get; set; }
+
     }
 }

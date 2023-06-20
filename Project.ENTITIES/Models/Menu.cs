@@ -10,19 +10,20 @@ namespace Project.ENTITIES.Models
     public class Menu : EntityBase, IEntity
     {
         public string Menu_Name { get; set; }
+        public virtual List<MenuDetail> MenuDetails { get; set; }
 
         // int kategory_id olabilir
-        public Dictionary<int, Food> _foodItems { get; set; }
-        public decimal? Menu_Price
-        {
-            get
-            {
-                return _foodItems.Sum(x => x.Value.UnitPrice); 
+        //public Dictionary<int, Food> _foodItems { get; set; }
+        //public decimal? Menu_Price
+        //{
+        //    get
+        //    {
+        //        return _foodItems.Sum(x => x.Value.UnitPrice); 
 
-            }
+        //    }
 
-            // list = dsfd for 
-        }
+        //    // list = dsfd for 
+        //}
 
     }
 }
