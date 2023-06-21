@@ -9,7 +9,7 @@ namespace Project.ENTITIES.Models
 {
     public class MenuDetail : EntityBase, IEntity
     {
-        public string CategoryName_of_Food { get; set; } // join ile uğraşmamak için
+        public string CategoryName_of_Food { get; set; } // join ile uğraşmamak için Category_of_Food.cs'deki ismi Category_of_FoodName
 
         public decimal FoodPrice { get; set; } // Food.cs --> UnitPrice; Configuration.cs'de money'e çevrilmeli.. 
 

@@ -1,5 +1,4 @@
-﻿using Project.ENTITIES.Models;
-using Technosoft_Project.ViewModels;
+﻿using Technosoft_Project.ViewModels;
 
 namespace Technosoft_Project.VMClasses
 {

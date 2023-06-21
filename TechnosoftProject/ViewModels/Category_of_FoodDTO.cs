@@ -10,7 +10,7 @@ namespace Technosoft_Project.ViewModels
 
         [Required(ErrorMessage = "Kategori ismi gereklidir.")]
         [Display(Name = "Kategori Adı")]
-        public string Category_of_FoodName { get; set; }
+        public string Category_of_FoodName { get; set; } // CategoryName_of_Food olacak
 
         [Display(Name = "Kategori Resmi")]
         public string? Category_of_FoodPicture { get; set; }

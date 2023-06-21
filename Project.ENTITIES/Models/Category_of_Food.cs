@@ -9,7 +9,7 @@ namespace Project.ENTITIES.Models
 {
     public class Category_of_Food : EntityBase, IEntity
     {
-        public string Category_of_FoodName { get; set; }
+        public string Category_of_FoodName { get; set; } // CategoryName_of_Food
         //public string Description { get; set; }
         public string? Category_of_FoodPicture { get; set; }
         public int Status { get; set; } // Aktif, Pasif
