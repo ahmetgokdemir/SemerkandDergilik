@@ -16,7 +16,7 @@ namespace Project.ENTITIES.Models
 
         public string Description { get; set; }
 
-        public string Status { get; set; }
+        // public int Status { get; set; }
 
 
     }

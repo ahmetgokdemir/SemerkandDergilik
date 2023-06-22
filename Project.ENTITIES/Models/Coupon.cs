@@ -13,5 +13,8 @@ namespace Project.ENTITIES.Models
         public string Code { get; set; }
         public DateTime CouponExpireDay { get; set; }
 
+        // public int Status { get; set; } // Aktif, Pasif
+
+
     }
 }

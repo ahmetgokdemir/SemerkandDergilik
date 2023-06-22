@@ -13,7 +13,7 @@ namespace Project.ENTITIES.CoreInterfaces
         public virtual DateTime? DeletedDate { get; set; }
         public virtual DateTime? ModifiedDate { get; set; }
         public virtual DataStatus? DataStatus { get; set; }
-
+        // public int Status { get; set; }
         public EntityBase()
         {
             CreatedDate = DateTime.Now;

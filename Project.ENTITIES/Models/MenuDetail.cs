@@ -13,6 +13,9 @@ namespace Project.ENTITIES.Models
 
         public decimal FoodPrice { get; set; } // Food.cs --> UnitPrice; Configuration.cs'de money'e çevrilmeli.. 
 
+        //public int Status { get; set; } // Aktif, Pasif
+
+
         public int MenuID { get; set; }
         public int FoodID { get; set; }
         public virtual Menu Menu { get; set; }

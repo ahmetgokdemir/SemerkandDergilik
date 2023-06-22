@@ -1,3 +1,10 @@
+
+ientity.cs ve identity_models tablaloarýnda status (aktif pasif) olacak mý?
+
+
+
+
+
 cntrl + k + u comment   /////  cntrl + k + c comment 
 
 -----------------------------------------------------------------------------------

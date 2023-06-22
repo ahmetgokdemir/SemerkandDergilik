@@ -124,7 +124,7 @@ namespace Project.DAL.Repositories.Concretes
         {
             entity.DeletedDate = DateTime.Now;
             entity.DataStatus = ENTITIES.Enums.DataStatus.Deleted;
-
+            // entity.Status = Technosoft_Project.Enums.Status.Pasif;
             /*
                    
             entity.DeletedDate = DateTime.Now;

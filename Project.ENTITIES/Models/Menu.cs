@@ -11,6 +11,7 @@ namespace Project.ENTITIES.Models
     {
         public string Menu_Name { get; set; }
         public virtual List<MenuDetail> MenuDetails { get; set; }
+        public int Status { get; set; }
 
         // int kategory_id olabilir
         //public Dictionary<int, Food> _foodItems { get; set; }

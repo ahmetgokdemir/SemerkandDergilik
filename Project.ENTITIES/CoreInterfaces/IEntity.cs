@@ -18,5 +18,6 @@ namespace Project.ENTITIES.CoreInterfaces
         public DateTime? DeletedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public DataStatus? DataStatus { get; set; }
+        // public int Status { get; set; }
     }
 }
