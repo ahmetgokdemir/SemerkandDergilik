@@ -11,9 +11,9 @@ namespace Project.BLL.ManagerServices.Concretes
 {
     public class MenuManager : BaseManager<Menu>, IMenuManager
     {
-        public MenuManager(IRepository<Menu> irep) : base(irep)
-        {
-        }
+        //public MenuManager(IRepository<Menu> irep) : base(irep)
+        //{
+        //}
 
         IMenuRepository _mrep;
 

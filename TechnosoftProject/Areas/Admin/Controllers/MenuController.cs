@@ -5,6 +5,7 @@ using Project.BLL.ManagerServices.Abstracts;
 using Project.ENTITIES.Models;
 using System.Data;
 using Technosoft_Project.CommonTools;
+using Technosoft_Project.Enums;
 using Technosoft_Project.ViewModels;
 using Technosoft_Project.VMClasses;
 
@@ -22,12 +23,36 @@ namespace Technosoft_Project.Areas.Admin.Controllers
         }
 
         readonly IMenuManager _imm;
+        readonly IMenuDetailManager _imdm;
 
-        public MenuController(IMenuManager imm) // services.AddRepManServices(); 
+        public MenuController(IMenuManager imm, IMenuDetailManager imdm) // services.AddRepManServices(); 
         {
             _imm = imm;
+            _imdm = imdm;
         }
 
+        [Route("MenuDetailList")]
+        public async Task<IActionResult> MenuDetailList(int id, string? JSpopupPage)
+        {
+
+            if (TempData["JavascriptToRun"] == null)
+            {
+                JSpopupPage = null; // pop-up sıfırlanır yoksa sayfayı reflesleyince geliyor
+            }
+
+            int Menu_ID = id;
+
+            IEnumerable<object> FoodsofMenuList = await _imdm.Get_FoodsofMenu_Async(Menu_ID);
+
+            MenuVM mvm = new MenuVM
+            {
+                MenuDTOs = FoodsofMenuList.Adapt<IEnumerable<MenuDTO>>().ToList()
+                //JavascriptToRun = JSpopupPage
+
+            };
+
+            return View(mvm);
+        }
 
 
         [Route("MenuList")]

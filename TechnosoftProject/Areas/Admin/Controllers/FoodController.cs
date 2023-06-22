@@ -61,9 +61,11 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             int Category_of_Food_id = id;
             int Category_of_Food_status = status;
 
+            Category_of_Food c = await _icm.FirstOrDefault(x => x.ID == Category_of_Food_id);
+
             IEnumerable<Food> FoodEnumerableList = await _ipm.GetActivesFoodsByCategory_of_FoodIDAsync(Category_of_Food_id);
 
-            Category_of_Food c = await _icm.FirstOrDefault(x=>x.ID == Category_of_Food_id);
+
 
             List<Food> FoodsList = new List<Food>();
             FoodsList = FoodEnumerableList.ToList();
