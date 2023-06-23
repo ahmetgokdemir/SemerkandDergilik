@@ -42,14 +42,18 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
             int Menu_ID = id;
 
-            IEnumerable<object> FoodsofMenuList = await _imdm.Get_FoodsofMenu_Async(Menu_ID);
+            IEnumerable<object> FoodsofMenu = await _imdm.Get_FoodsofMenu_Async(Menu_ID);
 
-            MenuVM mvm = new MenuVM
+            IEnumerable<object> CategoriessofMenu = await _imdm.Get_CategoriesofMenu_Async(Menu_ID);
+
+            MenuDetailVM mvm = new MenuDetailVM
             {
-                MenuDTOs = FoodsofMenuList.Adapt<IEnumerable<MenuDTO>>().ToList()
+                MenuDetailDTOs = FoodsofMenu.Adapt<IEnumerable<MenuDetailDTO>>().ToList(),
                 //JavascriptToRun = JSpopupPage
-
+                Category_of_FoodDTOs = CategoriessofMenu.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList() //  List<Category_of_FoodDTO> 
             };
+ 
+
 
             return View(mvm);
         }
@@ -209,7 +213,8 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             {
                 ModelState.Remove("MenuDTOs");
                 ModelState.Remove("JavascriptToRun");
-
+                ModelState.Remove("MenuDTO.FoodName");
+                
 
                 if (ModelState.IsValid)
                 {

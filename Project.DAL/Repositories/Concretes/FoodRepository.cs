@@ -26,6 +26,7 @@ namespace Project.DAL.Repositories.Concretes
             //.Include(x=> x.Category_of_Food).AsQueryable();
         }
 
+        // Kullanılmadı
         // Ürünü, kategori bilgileri ile getirmek...
         public IQueryable<Food> GetFoodByIdwithCategory_of_FoodValueAsync(int Food_id)
         {

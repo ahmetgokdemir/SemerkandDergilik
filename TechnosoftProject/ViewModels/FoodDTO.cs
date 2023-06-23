@@ -8,12 +8,12 @@ namespace Technosoft_Project.ViewModels
     {
         public int ID { get; set; }
 
-        [Required(ErrorMessage = "Ürün ismi gereklidir.")]
+        [Required(ErrorMessage = "Yemek ismi gereklidir.")]
         [Display(Name = "Ürün Adı")]
         public string FoodName { get; set; }
 
 
-        [Required(ErrorMessage = "Ürün fiyatı giriniz.")]
+        [Required(ErrorMessage = "Yemek fiyatı giriniz.")]
         [Display(Name = "Ürün Fiyat")]
         [Range(1, 1000000000000)]
         public decimal UnitPrice { get; set; } // FoodConfiguration.cs'de money'e çevrilmeli.. 
@@ -41,11 +41,11 @@ namespace Technosoft_Project.ViewModels
 
 
         [Display(Name = "Durum")]
-        [Required(ErrorMessage = "Ürün durumunu giriniz.")]
+        [Required(ErrorMessage = "Yemek durumunu giriniz.")]
         public Status Status { get; set; } // Aktif, Pasif
 
 
-        [Display(Name = "Ürün Resmi")]
+        [Display(Name = "Yemek Resmi")]
         public string? FoodPicture { get; set; }
 
 

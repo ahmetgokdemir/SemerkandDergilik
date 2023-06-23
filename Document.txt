@@ -9,6 +9,9 @@ cntrl + k + u comment   /////  cntrl + k + c comment
 
 -----------------------------------------------------------------------------------
 
+NB-230301\\MSSQLSERVER22 iş 
+LAPTOP-PEF0Q19Q ev
+
 Data Source=NB-230301\\MSSQLSERVER22 ---> sql kısmından farklı 1 tane yerine 2 tane \  
 
 migration yaptım ifnotexistdb yapmamışım

@@ -13,7 +13,7 @@ namespace Project.ENTITIES.Models
 
         public decimal FoodPrice { get; set; } // Food.cs --> UnitPrice; Configuration.cs'de money'e çevrilmeli.. 
 
-        //public int Status { get; set; } // Aktif, Pasif
+        //public int Status { get; set; } // Aktif, Pasif --> Food.cs deki Status kullaılabilir bunun yerine
 
 
         public int MenuID { get; set; }

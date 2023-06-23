@@ -3,6 +3,7 @@ using Project.DAL.Context;
 using Project.DAL.Repositories.Abstracts;
 using Project.ENTITIES.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,34 +13,66 @@ namespace Project.DAL.Repositories.Concretes
 {
     public class MenuDetailRepository : BaseRepository<MenuDetail>, IMenuDetailRepository
     {
-        public class Deneme
+        public class MenuDetail_Repo
         {
-            public string FoodName { get; set; }
             public string CategoryName_of_Food { get; set; }
-            public decimal UnitPrice { get; set; }
-
+            public string FoodName { get; set; }
+            public decimal FoodPrice { get; set; }
+            public string? FoodPicture { get; set; }
+            public int Status { get; set; } // Aktif, Pasif
 
         }
+
+        public class CategoriesOfMenu_Repo
+        {
+            public string CategoryName_of_Food { get; set; }
+             public int Status { get; set; } // Aktif, Pasif
+        }
+
         public MenuDetailRepository(TechnosoftProjectContext context) : base(context)
         {
         }
 
-        public IQueryable<object> Get_FoodsofMenu_Async(int Menu_ID)
+        public IQueryable<MenuDetail_Repo> Get_FoodsofMenu_Async(int Menu_ID)
         {
-            object asd = new Deneme();
+            //object asd = new Deneme();
 
-            return _context.Set<Food>().Join(_context.Set<MenuDetail>(),
-                (dc => dc.ID),
-                (mr => mr.FoodID),
-                (dc, mr) => new Deneme()
+            return _context.Set<MenuDetail>().Where(x => x.MenuID == Menu_ID).Join(_context.Set<Food>(),
+                (md => md.FoodID),
+                (fd => fd.ID),
+                (md, fd) => new MenuDetail_Repo()
                 {
-                    FoodName = dc.FoodName,
-                    CategoryName_of_Food = mr.CategoryName_of_Food,
-                    UnitPrice = dc.UnitPrice
+                    CategoryName_of_Food = md.CategoryName_of_Food,
+                    FoodName = fd.FoodName,
+                    FoodPrice = fd.UnitPrice,
+                    FoodPicture = fd.FoodPicture,
+                    Status = fd.Status,
                 }
                 ).AsQueryable();
 
           
         }
+
+ 
+        public IQueryable<CategoriesOfMenu_Repo> Get_CategoriesofMenu_Async(int Menu_ID)
+        {
+            IQueryable<CategoriesOfMenu_Repo> com_list;
+
+            com_list = _context.Set<MenuDetail>().Where(x => x.MenuID == Menu_ID).Join(_context.Set<Category_of_Food>(),
+                (md => md.CategoryName_of_Food),
+                (cof => cof.Category_of_FoodName),
+                (md, cof) => new CategoriesOfMenu_Repo()
+                {
+                    CategoryName_of_Food = cof.Category_of_FoodName,
+                    Status = cof.Status
+                }
+                ).AsQueryable();
+
+            IQueryable<CategoriesOfMenu_Repo> distinctAges = com_list.Distinct();
+
+            return distinctAges;
+        }
+
+
     }
 }

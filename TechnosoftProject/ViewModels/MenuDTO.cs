@@ -16,8 +16,5 @@ namespace Technosoft_Project.ViewModels
         public Status Status { get; set; } // Aktif, Pasif
 
 
-        [Required(ErrorMessage = "Menü ismi girmelisiniz.")]
-        [Display(Name = "Menü Adı")]
-        public string FoodName { get; set; }
     }
 }

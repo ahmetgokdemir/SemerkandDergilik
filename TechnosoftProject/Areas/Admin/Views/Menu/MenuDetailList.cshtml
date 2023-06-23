@@ -1,0 +1,364 @@
+﻿@model MenuDetailVM
+
+@{
+    ViewData["Title"] = "MenuDetailList";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .loader {
+        display: none;
+    }
+
+    .position {
+        width: 25%;
+        position: relative;
+    }
+
+        .position a, p {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+    .btnposition {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    <!-- -ms-transform: translate(-50%, -50%); -->
+
+</style>
+@*<h4 style="color:red;">@TempData["mesaj"] </h4>*@
+
+
+<!-- loader class'ın; display'i none olarak set edildi! -->
+<div class="spinner-border loader" role="status">
+    <span class="sr-only">Loading...</span>
+</div>
+<hr class="loader" />
+
+
+@if (Model.MenuDetailDTOs.Count == 0)
+{
+    <div class="jumbotron" id="tab1" style="padding:20px;  background-color:lightgrey">
+        @*<input type="submit" id="btnIslemYap" value="İşlem Yap" />*@
+
+        <button class="btn btn-outline-success " id="addNewCategory_of_Food" value="addNewCategory_of_FoodValue">Kategori Eklemek için tıklayınız</button>
+    </div>
+}
+else
+{
+    <div id="tab1" class="mb-3">
+        <button class="btn btn-outline-success " id="addNewCategory_of_Food" value="addNewCategory_of_FoodValue">Kategori Eklemek için tıklayınız</button>
+    </div>
+
+
+    <div class="panel panel-primary">
+        <div class="panel panel-body">
+            <table class="table table-hover table-bordered table-responsive-lg" id="tab2" width="100%" border="0" cellspacing="0" cellpadding="100%">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Index</th>
+                        <th class="position"><p>Kategori İsmi</p></th>
+                        <th class="position"><p>Durum</p></th>
+                        <th class="position"><p>Resim</p></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (MenuDetailDTO item in Model.MenuDetailDTOs)
+                    {
+/*                        int Category_of_Food_status = (int)item.Status;  // asp-route-status="@(int)item.Status" olmuyor...*/
+
+                        <tr>
+                            <td></td>
+                            <td class="position">
+                                <a class="" asp-area="Admin" asp-controller="Food" asp-action="FoodList" asp-route-id="@item.ID" asp-route-status="">@item.CategoryName_of_Food</a>
+                            </td>
+                            <td class="position">
+                                <p>@item.Status</p>
+                            </td>
+                            @*<td colspan="2" style="padding-left:150px">@item.Category_of_FoodPicture</td>*@
+                            <td style="text-align: center;">
+                                @if (item.FoodPicture != null)
+                                {
+                                    <img style="width:85px; height:40px" src="@item.FoodPicture" />
+                                }
+                            </td>
+                            <td class="btnposition">
+                                @*<a asp-action="UpdateCategory_of_Food" asp-controller="Category_of_Food" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
+                                <button class="btn btn-warning" id="updateCategory_of_Food" value="updateCategory_of_FoodValue" data-id=@item.ID>
+                                    Güncelle
+                                </button>
+
+                            </td>
+                            <td class="btnposition">
+                                @*<a asp-action="DeleteCategory_of_Food" asp-controller="Category_of_Food" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
+
+                                <button class="btn btn-danger" id="deleteCategory_of_Food" value="deleteCategory_of_FoodValue" data-id=@item.ID>Sil</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<div class="modal fade" id="CRUDCategory_of_FoodModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+
+            <div class="modal-body" id="CRUDCategory_of_Food">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="LoadingCategory_of_FoodModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+
+            <div class="modal-body" id="CRUDCategory_of_Food">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div style="display:inline">Loading...</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/alertify.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/alertify.min.css" />
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/themes/default.min.css" />
+
+@if (TempData["messageCategory_of_Food"] != null) // konrol yapılmazsa messageCategory_of_Food null olduğu zaman .ToString() 'de hata verir..
+{
+    @if (TempData["messageCategory_of_Food"].ToString() == "Kategori güncellendi")
+    {
+
+        <script>
+            alertify.warning("Kategori güncellendi");
+        </script>
+    }
+    else if (TempData["messageCategory_of_Food"].ToString() == "Kategori silindi")
+    {
+
+        <script>
+            alertify.error("Kategori silindi");
+        </script>
+    }
+    else if (TempData["messageCategory_of_Food"].ToString() == "Kategori eklendi")
+    {
+
+        <script>
+            alertify.success("Kategori eklendi");
+        </script>
+    }
+
+    TempData["messageCategory_of_Food"] = null;
+
+}
+
+
+
+<script>
+    $(document).ready(function () {
+        var t = $('#tab2').DataTable({
+
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+            },
+            columnDefs: [  // indexleme
+                {
+                    searchable: false,
+                    orderable: false,
+                    targets: 0,
+                },
+            ],
+            order: [[1, 'asc']],
+            pagingType: 'full_numbers' // ilk ve son butonları eklendi..
+
+        });
+
+        // indexleme
+        t.on('order.dt search.dt', function () {
+            let i = 1;
+
+            t.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
+                this.data(i++);
+            });
+        }).draw();
+
+
+
+    });
+</script>
+
+<script type="text/javascript">
+
+
+
+    @Model.JavascriptToRun // yaptığı iş, içinde barındırdığı ShowErrorInsertOperationPopup veya ShowErrorUpdateOperationPopup fonksiyonu sayesinde, bu fonksiyonları çağırmak
+
+        function ShowErrorInsertOperationPopup() {
+            // alert('Sorry, we could not process your order.');
+
+            $.ajax({
+                //url: '@@Url.Action("AddFoodAjax","Food")',
+                url: 'AddCategory_of_FoodAjax',
+                //data: { pdto_reloaddata: @@Model.FoodDTO },
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $("#CRUDCategory_of_Food").html(data);
+                    CRUDCategory_of_FoodModalLoaded();
+
+                },
+                beforeSend: function () {
+                    $('.loader').show(); // Assuming that you have some loader defined
+                },
+                complete: function () {
+                    $('.loader').hide(); //Hide this loader
+                },
+                error: function () {
+                    alert("Hata alındı.");
+                }
+            });
+
+        }
+
+    function ShowErrorUpdateOperationPopup(_id) {
+        // alert('Sorry, we could not process your order.');
+
+        $.ajax({
+            //url: '@@Url.Action("AddFoodAjax","Food")',
+            url: 'UpdateCategory_of_FoodAjax',
+            data: { id: _id },
+            type: 'GET',
+            dataType: 'html',
+            success: function (data) {
+                $("#CRUDCategory_of_Food").html(data);
+                CRUDCategory_of_FoodModalLoaded();
+
+            },
+            beforeSend: function () {
+                $('.loader').show(); // Assuming that you have some loader defined
+            },
+            complete: function () {
+                $('.loader').hide(); //Hide this loader
+            },
+            error: function () {
+                alert("Hata alındı.");
+            }
+        });
+
+    }
+
+
+
+    function CRUDCategory_of_FoodModalLoaded() {
+        $("#CRUDCategory_of_FoodModal").modal('show'); // #CRUDCategory_of_FoodModal içinde CRUDCategory_of_Food var (<div class="modal-body" id="CRUDCategory_of_Food">) onun içinde de data var (_CrudCategory_of_FoodPartial)
+    }
+
+    $(function () {
+        //$("#addNewCategory_of_Food").click(function () {
+        $("#tab1").on("click", "[value=addNewCategory_of_FoodValue]", function () {
+            $.ajax({
+                //url: '@@Url.Action("AddCategory_of_FoodAjax","Category_of_Food")',
+                url: 'AddCategory_of_FoodAjax',
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $("#CRUDCategory_of_Food").html(data);
+                    CRUDCategory_of_FoodModalLoaded();
+
+                },
+                beforeSend: function () {
+                    $('.loader').show(); // Assuming that you have some loader defined
+                },
+                complete: function () {
+                    $('.loader').hide(); //Hide this loader
+                },
+                error: function () {
+                    alert("Hata alındı.");
+                }
+            });
+        });
+    });
+
+    $(function () {
+        //$("#updateCategory_of_Food").click(function () {
+        $("#tab2").on("click", "[value=updateCategory_of_FoodValue]", function () {
+            $.ajax({
+                //url: '@@Url.Action("AddCategory_of_FoodAjax","Category_of_Food")',
+                url: 'UpdateCategory_of_FoodAjax',
+                data: { id: $(this).attr("data-id") },
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $("#CRUDCategory_of_Food").html(data);
+                    CRUDCategory_of_FoodModalLoaded();
+
+                },
+                beforeSend: function () {
+                    $("#LoadingCategory_of_FoodModal").modal('show');
+                },
+                complete: function () {
+                    $("#LoadingCategory_of_FoodModal").modal('hide');
+
+                    // $('.loader').hide(); //Hide this loader
+                },
+                error: function () {
+                    alert("Hata alındı.");
+                }
+            });
+        });
+    });
+
+
+    $(function () {
+        //$("#addNewCategory_of_Food").click(function () {
+        $("#tab2").on("click", "[value=deleteCategory_of_FoodValue]", function () {
+            $.ajax({
+                //url: '@@Url.Action("AddCategory_of_FoodAjax","Category_of_Food")',
+                url: 'DeleteCategory_of_FoodAjax',
+                data: { id: $(this).attr("data-id") },
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $("#CRUDCategory_of_Food").html(data);
+                    CRUDCategory_of_FoodModalLoaded();
+
+                },
+                error: function () {
+                    alert("Hata alındı.");
+                }
+            });
+        });
+    });
+
+
+</script>
+
+
