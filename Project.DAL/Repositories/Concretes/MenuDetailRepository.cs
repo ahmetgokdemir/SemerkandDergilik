@@ -25,7 +25,7 @@ namespace Project.DAL.Repositories.Concretes
 
         public class CategoriesOfMenu_Repo
         {
-            public string CategoryName_of_Food { get; set; }
+            public string Category_of_FoodName { get; set; }
              public int Status { get; set; } // Aktif, Pasif
         }
 
@@ -63,14 +63,13 @@ namespace Project.DAL.Repositories.Concretes
                 (cof => cof.Category_of_FoodName),
                 (md, cof) => new CategoriesOfMenu_Repo()
                 {
-                    CategoryName_of_Food = cof.Category_of_FoodName,
+                    Category_of_FoodName = cof.Category_of_FoodName,
                     Status = cof.Status
                 }
-                ).AsQueryable();
-
-            IQueryable<CategoriesOfMenu_Repo> distinctAges = com_list.Distinct();
-
-            return distinctAges;
+                ).Distinct().AsQueryable();
+            
+ 
+            return com_list;
         }
 
 

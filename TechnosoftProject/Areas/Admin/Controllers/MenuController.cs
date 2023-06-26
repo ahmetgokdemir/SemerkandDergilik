@@ -44,7 +44,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
             IEnumerable<object> FoodsofMenu = await _imdm.Get_FoodsofMenu_Async(Menu_ID);
 
-            IEnumerable<object> CategoriessofMenu = await _imdm.Get_CategoriesofMenu_Async(Menu_ID);
+            IEnumerable<object> CategoriessofMenu = await _imdm.Get_CategoriesofMenu_Async(Menu_ID); // Distinct edilmiş...
 
             MenuDetailVM mvm = new MenuDetailVM
             {
@@ -52,8 +52,6 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 //JavascriptToRun = JSpopupPage
                 Category_of_FoodDTOs = CategoriessofMenu.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList() //  List<Category_of_FoodDTO> 
             };
- 
-
 
             return View(mvm);
         }
