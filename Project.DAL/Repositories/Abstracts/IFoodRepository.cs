@@ -11,6 +11,8 @@ namespace Project.DAL.Repositories.Abstracts
     {
         IQueryable<Food> GetActivesFoodsByCategory_of_FoodIDAsync(int Category_of_Food_id);
         IQueryable<Food> GetFoodByIdwithCategory_of_FoodValueAsync(int Food_id);
+        IQueryable<string> GetActivesFoodNamesByCategory_of_FoodIDAsync(int Category_of_Food_id);
+
     }
 
 }

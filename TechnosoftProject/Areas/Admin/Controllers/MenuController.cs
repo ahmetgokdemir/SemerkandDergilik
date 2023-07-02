@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Project.BLL.ManagerServices.Abstracts;
 using Project.ENTITIES.Models;
 using System.Data;
@@ -24,38 +25,213 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
         readonly IMenuManager _imm;
         readonly IMenuDetailManager _imdm;
+        readonly ICategory_of_FoodManager _icm;
+        readonly IFoodManager _ifm;
 
-        public MenuController(IMenuManager imm, IMenuDetailManager imdm) // services.AddRepManServices(); 
+
+        public MenuController(IMenuManager imm, IMenuDetailManager imdm, ICategory_of_FoodManager icm, IFoodManager ifm) // services.AddRepManServices(); 
         {
             _imm = imm;
             _imdm = imdm;
+            _icm = icm;
+            _ifm = ifm;
+
         }
 
         [Route("MenuDetailList")]
-        public async Task<IActionResult> MenuDetailList(int id, string? JSpopupPage)
+        public async Task<IActionResult> MenuDetailList(int id, int? categoryid)
         {
+            
+            TempData["Menu_ID"] = id;
 
-            if (TempData["JavascriptToRun"] == null)
+            IEnumerable<object> FoodsofMenu = await _imdm.Get_FoodsofMenu_Async(id);
+            IEnumerable<object> CategoriessofMenu = await _imdm.Get_CategoriesofMenu_Async(id); // Distinct edilmiş...
+
+            IEnumerable<Category_of_Food> CategoriessofAllFoods = await _icm.GetActivesAsync(); // All...
+                                                                                                // ViewBag.Category_of_FoodNames = new SelectList(CategoriessofAllFoods); // html kısmında select tag'ı kullanıldığı için SelectList kullanıldı
+
+            int cid = 0;
+            List<string> bos = new List<string>();
+
+
+            List<string> pdto = new List<string>();
+
+            var result = new List<string>();
+
+            if (categoryid != null)
             {
-                JSpopupPage = null; // pop-up sıfırlanır yoksa sayfayı reflesleyince geliyor
+                cid = (int)categoryid;
+                result = HttpContext.Session.GetObject<List<string>>("manipulatedData");
+                pdto = result;
+            }
+            else
+            {
+                bos = null;
             }
 
-            int Menu_ID = id;
 
-            IEnumerable<object> FoodsofMenu = await _imdm.Get_FoodsofMenu_Async(Menu_ID);
+            Category_of_FoodDTO cdto = new Category_of_FoodDTO();
+            //List<string> FoodList = new List<string>();
+          
+            //int cid = 0; // categoryid nullable olduğu için cid kullanıldı... -->   FoodNames = categoryid == null ? bos : FoodList, burada patlıyor
+            //if (categoryid != null)
+            //{
+            //    IEnumerable<string> Category_of_FoodNames = await _ifm.GetActivesFoodNamesByCategory_of_FoodIDAsync((int)categoryid);
+            //    FoodList = Category_of_FoodNames.Adapt<IEnumerable<string>>().ToList();
 
-            IEnumerable<object> CategoriessofMenu = await _imdm.Get_CategoriesofMenu_Async(Menu_ID); // Distinct edilmiş...
+            //    cid = (int)categoryid;
+
+            //}
+            //else
+            //{
+            //    bos = new List<string>() { "asdasd", "asdasdasd" };
+            //    //           bos = new List<string>();    
+            //    cid = 0;
+            //}
+
+        
+
+
+            // .Adapt<IEnumerable<Category_of_FoodDTO>>();
+            //Category_of_FoodVM cvm = new Category_of_FoodVM
+            //{
+            //    Category_of_FoodDTOs = CategoriessofAll.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(),
+
+            //};
+            IEnumerable<Food> AllFoods = await _ifm.GetActivesAsync();
+          
+            //IEnumerable<Food> FoodEnumerableList = null;
+            List<FoodDTO> fdtos;
+
+
+
+            //List<FoodDTO> AllFoods2 = new List<FoodDTO>();
+            //AllFoods2 = fdtos.Adapt<IEnumerable<FoodDTO>>().ToList();
+            //int denemesil = 0;
+
+            //IEnumerable<Food> AllFoods2 = null;
+            //if (categoryid != null)
+            //{
+            //     AllFoods2 = await _ifm.GetActivesFoodsByCategory_of_FoodIDAsync(1);
+
+            //    cid = (int)categoryid;
+
+            //}
+            //else
+            //{
+            //    AllFoods2 = await _ifm.GetActivesFoodsByCategory_of_FoodIDAsync(2);
+            //    cid = 0;
+            //}
+
+
+
+
 
             MenuDetailVM mvm = new MenuDetailVM
             {
                 MenuDetailDTOs = FoodsofMenu.Adapt<IEnumerable<MenuDetailDTO>>().ToList(),
-                //JavascriptToRun = JSpopupPage
-                Category_of_FoodDTOs = CategoriessofMenu.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList() //  List<Category_of_FoodDTO> 
-            };
+                Categories_of_Menu_DTOs = CategoriessofMenu.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(), //  List<Category_of_FoodDTO> 
 
+                Categories_of_AllFoods_DTOs = CategoriessofAllFoods.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(),
+
+                // 654654544545   SDASDAS SelectedCategory =  cdto,
+                 FoodNames = cid == 0 ? bos : pdto,
+                // Foods_of_Categeriesvvv = AllFoods2.Adapt<IEnumerable<FoodDTO>>().ToList(), // .Adapt<List<FoodDTO>>().ToList()
+                //AllFoods_ = AllFoods.Adapt<IEnumerable<FoodDTO>>().ToList()
+
+            };
+           // HttpContext.Session.SetObject("manipulatedData", null);
             return View(mvm);
         }
 
+
+        [Route("Get_FoodsbyCategoryID_Ajax")]
+        public async Task<List<string>> Get_FoodsbyCategoryID_Ajax(int id)
+        {
+            //IEnumerable<Food> FoodEnumerableList = await _ifm.GetActivesFoodsByCategory_of_FoodIDAsync(id);
+
+            //FoodVM fvm_post = new FoodVM
+            //{
+            //    FoodDTOs = FoodEnumerableList.Adapt<IEnumerable<FoodDTO>>().ToList()            
+            //};
+
+            //TempData["HttpContext"] = "valid";
+           // HttpContext.Session.SetObject("manipulatedData", fvm_post.FoodDTOs);
+
+            // Category_of_Food selectedCategory = await _icm.FirstOrDefault(x => x.ID == id);
+            //HttpContext.Session.SetObject("md2", selectedCategory);
+
+            List<string> FoodList = new List<string>();
+            List<string> bos = null;
+
+
+           // int cid = 0; // categoryid nullable olduğu için cid kullanıldı... -->   FoodNames = categoryid == null ? bos : FoodList, burada patlıyor
+ 
+                IEnumerable<string> Category_of_FoodNames = await _ifm.GetActivesFoodNamesByCategory_of_FoodIDAsync((int)id);
+                FoodList = Category_of_FoodNames.Adapt<IEnumerable<string>>().ToList();
+
+             int cid = (int)id;
+
+            return FoodList;
+            
+            // HttpContext.Session.SetObject("manipulatedData", FoodList);
+
+            //  TempData["JavascriptToRun"] = "valid";
+            // TempData["HttpContext"] = "valid";
+
+
+
+            //////////////////////////////////
+            ///
+            /*
+
+            int mid = (int)TempData["Menu_ID"];
+
+            IEnumerable<object> FoodsofMenu = await _imdm.Get_FoodsofMenu_Async(mid);
+            IEnumerable<object> CategoriessofMenu = await _imdm.Get_CategoriesofMenu_Async(mid); // Distinct edilmiş...
+
+            IEnumerable<Category_of_Food> CategoriessofAllFoods = await _icm.GetActivesAsync(); // All...
+                                                                                                // ViewBag.Category_of_FoodNames = new SelectList(CategoriessofAllFoods); // html kısmında select tag'ı kullanıldığı için SelectList kullanıldı
+
+            //int cid = 0;
+            //List<string> bos = new List<string>();
+
+
+            List<string> pdto = new List<string>();
+
+            var result = new List<string>();
+
+            if (id != null)
+            {
+                cid = (int)id;
+                result = HttpContext.Session.GetObject<List<string>>("manipulatedData");
+                pdto = result;
+            }
+            else
+            {
+                bos = null;
+            }
+
+
+
+            MenuDetailVM mvm = new MenuDetailVM
+            {
+                MenuDetailDTOs = FoodsofMenu.Adapt<IEnumerable<MenuDetailDTO>>().ToList(),
+                Categories_of_Menu_DTOs = CategoriessofMenu.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(), //  List<Category_of_FoodDTO> 
+
+                Categories_of_AllFoods_DTOs = CategoriessofAllFoods.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(),
+
+                // 654654544545   SDASDAS SelectedCategory =  cdto,
+                FoodNames = cid == 0 ? bos : pdto,
+                // Foods_of_Categeriesvvv = AllFoods2.Adapt<IEnumerable<FoodDTO>>().ToList(), // .Adapt<List<FoodDTO>>().ToList()
+                //AllFoods_ = AllFoods.Adapt<IEnumerable<FoodDTO>>().ToList()
+
+            };*/
+            ///////////////////////////////////////////////
+
+            //return View("MenuDetailList", mvm);
+            // return RedirectToAction("MenuDetailList", new { id = (int)TempData["Menu_ID"], categoryid = cid });
+        }
 
         [Route("MenuList")]
         public async Task<IActionResult> MenuList(string? JSpopupPage)

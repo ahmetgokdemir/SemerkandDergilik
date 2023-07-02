@@ -6,10 +6,10 @@
       "library": "bootstrap@5.2.0",
       "destination": "Areas/bootstrap/"
     },
-    {
-      "library": "jquery@3.6.0",
-      "destination": "Areas/jquery/"
-    },
+    //{
+    //  "library": "jquery@3.6.0",
+    //  "destination": "Areas/jquery/"
+    //},
     {
       "library": "twitter-bootstrap@5.2.0",
       "destination": "wwwroot/lib/twitter-bootstrap/"
@@ -17,6 +17,27 @@
     {
       "library": "datatables@1.10.21",
       "destination": "wwwroot/lib/datatables/"
+    },
+    {
+      "library": "jquery@3.7.0",
+      "destination": "wwwroot/jquery/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery@3.7.0",
+      "destination": "wwwroot/jquery/"
     }
-  ]
+  ,
+{
+  "provider": "cdnjs",
+  "library": "jquery@3.7.0",
+  "destination": "wwwroot/lib/jquery/"
+}
+,
+{
+  "provider": "cdnjs",
+  "library": "jquery@3.7.0",
+  "destination": "wwwroot/lib/jquery/"
+}
+]
 }

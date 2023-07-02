@@ -26,6 +26,14 @@ namespace Project.DAL.Repositories.Concretes
             //.Include(x=> x.Category_of_Food).AsQueryable();
         }
 
+        // Kategoriye göre Ürünlerin isimleri..  
+        public IQueryable<string> GetActivesFoodNamesByCategory_of_FoodIDAsync(int Category_of_Food_id)
+        {
+            return _context.Set<Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.Category_of_FoodID == Category_of_Food_id).Select(x => x.FoodName).AsQueryable();
+
+            //.Include(x=> x.Category_of_Food).AsQueryable();
+        }
+
         // Kullanılmadı
         // Ürünü, kategori bilgileri ile getirmek...
         public IQueryable<Food> GetFoodByIdwithCategory_of_FoodValueAsync(int Food_id)
