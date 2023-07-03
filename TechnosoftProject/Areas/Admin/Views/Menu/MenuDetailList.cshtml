@@ -50,7 +50,7 @@
     /*    <label asp-for="Model.Category_of_FoodName" class="control-label"></label>*/
     <div class="form-group">
 
-        <select class="form-control" id="selectforcategory" onchange="ChangeCarList()">
+        <select class="form-control" id="selectforcategory">
 
             <option>Lütfen bir kategori seçiniz.</option>
             @foreach (Category_of_FoodDTO item in Model.Categories_of_AllFoods_DTOs)
@@ -72,33 +72,26 @@ else
 
  
         <div class="form-group">
-        <!--asp-for="SelectedCategory"-->  <!--id="selectforcategory"-->
-        <select class="form-control" id="selectforcategory" onchange="ChangeCatList()" >
+        <!--asp-for="SelectedCategory"-->  
+        <!-- onchange="SelectCategoryItem()" -->
+        <select class="form-control" id="selectforcategory"  >
             
-            <option>Kategory Lütfen bir kategori seçiniz.</option>
-            @foreach (Category_of_FoodDTO item in Model.Categories_of_AllFoods_DTOs)
+            <option>Lütfen bir kategori seçiniz.</option>
+            @foreach (Category_of_FoodDTO category in Model.Categories_of_AllFoods_DTOs)
             {
-                TempData["messageCategory_of_Food2"] = 2;
-
-               
-                <option   data-id=@item.ID>@item.Category_of_FoodName</option> 
+                <option>@category.Category_of_FoodName</option>
             }                
-            </select>
-            <span asp-validation-for="Categories_of_AllFoods_DTOs" class="text-danger"></span>
-
-
-
-
-
+        </select>
+        <span asp-validation-for="Categories_of_AllFoods_DTOs" class="text-danger"></span>
 
 
         <select class="form-control" id="foodsofcategory">
 
             @if (Model.FoodNames!= null)
             {
-                @foreach (string itemv in Model.FoodNames)
+                @foreach (string foodNames in Model.FoodNames)
                 {
-                     <option>@itemv</option>
+                    <option>@foodNames</option>
 
                 }
             }
@@ -106,39 +99,21 @@ else
         <span asp-validation-for="FoodNames" class="text-danger"></span>
 
 
-        @if (Model.FoodNames!= null)
-        {
-        @foreach (string item in Model.FoodNames)
-        {
-
-            <div>@item</div>
-        }
-
-        }
-
- 
-
-
         <div id="tab1" class="mb-3">
             <button class="btn btn-outline-success " id="addNewCategory_of_Food" value="addNewCategory_of_FoodValue">Yemek seçimini Menüye Eklemek için tıklayınız</button>
         </div>
 
         </div>
-    TempData["messageCategory_of_Food"] = 4; 
-    <a class="" asp-area="Admin" asp-controller="Menu" asp-action="Get_FoodsbyCategoryID_Ajax" asp-route-id="@TempData["messageCategory_of_Food"]">4rasdasdasdasdadasdasdasdasdasdasdasdsadasdasty</a>
 
-/*        TempData["messageCategory_of_Food"] = 1;
-        TempData["messageCategory_of_Food2"] = 2;
-        TempData["messageCategory_of_Food3"] = 3;
-        ViewBag.Data = 4;
-*/
 
-/*        <a class="" asp-area="Admin" asp-controller="Menu" asp-action="Get_FoodsbyCategoryID_Ajax" asp-route-id="@TempData["messageCategory_of_Food"]">1rasdasdasdasdadasdasdasdasdasdasdasdsadasdasty</a>
+/*    TempData["messageCategory_of_Food"] = 4; 
+    <a class="" asp-area="Admin" asp-controller="Menu" asp-action="Get_FoodsbyCategoryID_Ajax" asp-route-id="@TempData["messageCategory_of_Food"]">İptal</a>*/
 
-          <a class="" asp-area="Admin" asp-controller="Menu" asp-action="Get_FoodsbyCategoryID_Ajax" asp-route-id="@TempData["messageCategory_of_Food2"]">2rasdasdasdasdadasdasdasdasdasdasdasdsadasdasty</a>
-    <a class="" asp-area="Admin" asp-controller="Menu" asp-action="Get_FoodsbyCategoryID_Ajax" asp-route-id="@TempData["messageCategory_of_Food3"]">3rasdasdasdasdadasdasdasdasdasdasdasdsadasdasty</a>
-    <a class="" asp-area="Admin" asp-controller="Menu" asp-action="Get_FoodsbyCategoryID_Ajax" asp-route-id="@ViewBag.Data">4rasdasdasdasdadasdasdasdasdasdasdasdsadasdasty</a>
+
+/*    
  </form>*/
+
+
 }
 
 <div>
@@ -161,37 +136,20 @@ else
 
         @foreach (var foods in Model.MenuDetailDTOs)
         {
-
-
-
-
             @if (foods.CategoryName_of_Food == category.Category_of_FoodName)
             {
-
                 <dd class="position">
                     @foods.FoodName
-
-
                     @foods.FoodPrice
 
                     @if (foods.FoodPicture != null)
                     {
-
-
                         <img style="width:85px; height:50px" src="@foods.FoodPicture" />
-
                     }
                 </dd>
             }
 
-
-
-
-
-
         }
-
-
 
     }
 </div>
@@ -201,11 +159,11 @@ else
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/alertify.min.css" />
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/themes/default.min.css" />
 
+
 @if (TempData["messageCategory_of_Food"] != null) // konrol yapılmazsa messageCategory_of_Food null olduğu zaman .ToString() 'de hata verir..
 {
     @if (TempData["messageCategory_of_Food"].ToString() == "Kategori güncellendi")
     {
-
         <script>
             alertify.warning("Kategori güncellendi");
         </script>
@@ -234,8 +192,6 @@ else
 
 
 <script type="text/javascript">
-
-
 
     @Model.JavascriptToRun // yaptığı iş, içinde barındırdığı ShowErrorInsertOperationPopup veya ShowErrorUpdateOperationPopup fonksiyonu sayesinde, bu fonksiyonları çağırmak
 
@@ -298,13 +254,14 @@ else
     function CRUDCategory_of_FoodModalLoaded() {
         $("#CRUDCategory_of_FoodModal").modal('show'); // #CRUDCategory_of_FoodModal içinde CRUDCategory_of_Food var (<div class="modal-body" id="CRUDCategory_of_Food">) onun içinde de data var (_CrudCategory_of_FoodPartial)
     }
- 
-  /*  function ChangeCatList() {
 
-        
-            var selcat = $("#selectforcategory").prop('selectedIndex');
+    /*  
+    
+    function SelectCategoryItem() {
+
+    var selcat = $("#selectforcategory").prop('selectedIndex');
  
-        $.ajax({
+    $.ajax({
 
             url: 'Url.Action("Get_FoodsbyCategoryID_Ajax")',
             data: { id: selcat },
@@ -340,9 +297,11 @@ else
            
             */
             var selectedCategoryid = $("#selectforcategory").prop('selectedIndex');
-            var ddlCountry = $('#foodsofcategory');
-            ddlCountry.empty();
-            ddlCountry.append($("<option></option>").val('').html('Please Select CATEGORY'));
+
+            var ddlCategories = $('#foodsofcategory');
+            ddlCategories.empty();
+            ddlCategories.append($("<option></option>").val('').html('Lütfen yemek seçiniz.'));
+
             $.ajax({
 
                 type: 'GET',
@@ -354,11 +313,11 @@ else
                 
                 success: function (data) {
 
-                   /*$("#foodsofcategory").append(data);*/
-                    $.each(data, function (i, country) {
-                        ddlCountry.append($("<option></option>").html(country));
-                    });
                     /*APENDDDDDDDDD*/
+                    $.each(data, function (i, categories) {
+                        ddlCategories.append($("<option></option>").html(categories));
+                    });
+
                 }
             });
         });

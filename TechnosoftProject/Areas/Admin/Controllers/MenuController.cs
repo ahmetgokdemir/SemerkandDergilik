@@ -144,7 +144,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             return View(mvm);
         }
 
-
+        // Get
         [Route("Get_FoodsbyCategoryID_Ajax")]
         public async Task<List<string>> Get_FoodsbyCategoryID_Ajax(int id)
         {
