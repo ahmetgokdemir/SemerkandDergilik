@@ -75,7 +75,7 @@ else
                         <tr>
                             <td></td>
                             <td class="position">
-                                <a class="" asp-area="Admin" asp-controller="Menu" asp-action="MenuDetailList" asp-route-id="@item.ID">@item.Menu_Name</a>
+                                <a class="" asp-area="Admin" asp-controller="Menu" asp-action="MenuDetailList" asp-route-id="@item.ID" asp-route-menuName="@item.Menu_Name">@item.Menu_Name</a>
                             </td>
                             <td class="position">
                                 <p>@item.Status</p>

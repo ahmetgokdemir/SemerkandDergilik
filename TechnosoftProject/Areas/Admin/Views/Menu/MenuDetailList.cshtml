@@ -37,7 +37,6 @@
 <!--<form asp-action="Get_FoodsbyCategoryID_Ajax" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 -->
-
 <!-- loader class'ın; display'i none olarak set edildi! -->
 <div class="spinner-border loader" role="status">
     <span class="sr-only">Loading...</span>
@@ -69,49 +68,58 @@
 
 else
 {
-
- 
-        <div class="form-group">
-        <!--asp-for="SelectedCategory"-->  
-        <!-- onchange="SelectCategoryItem()" -->
-        <select class="form-control" id="selectforcategory"  >
-            
-            <option>Lütfen bir kategori seçiniz.</option>
-            @foreach (Category_of_FoodDTO category in Model.Categories_of_AllFoods_DTOs)
-            {
-                <option>@category.Category_of_FoodName</option>
-            }                
-        </select>
-        <span asp-validation-for="Categories_of_AllFoods_DTOs" class="text-danger"></span>
+    <h2>
+        @TempData["Menu_Name"]
+    </h2>
+    <hr />
+    <br />
 
 
-        <select class="form-control" id="foodsofcategory">
+    <div class="row">
 
-            @if (Model.FoodNames!= null)
-            {
-                @foreach (string foodNames in Model.FoodNames)
+        <div class="col-md-3">
+            <!--asp-for="SelectedCategory"-->
+            <!-- onchange="SelectCategoryItem()" -->
+            <select class="form-control" id="selectforcategory">
+
+                <option>Lütfen bir kategori seçiniz.</option>
+                @foreach (Category_of_FoodDTO category in Model.Categories_of_AllFoods_DTOs)
                 {
-                    <option>@foodNames</option>
-
+                    <option>@category.Category_of_FoodName</option>
                 }
-            }
-        </select>
-        <span asp-validation-for="FoodNames" class="text-danger"></span>
-
-
-        <div id="tab1" class="mb-3">
-            <button class="btn btn-outline-success " id="addNewCategory_of_Food" value="addNewCategory_of_FoodValue">Yemek seçimini Menüye Eklemek için tıklayınız</button>
+            </select>
+            <span asp-validation-for="Categories_of_AllFoods_DTOs" class="text-danger"></span>
         </div>
 
+        <div class="col-md-3">
+            <select class="form-control" id="foodsofcategory">
+
+                @if (Model.FoodNames != null)
+                {
+                    @foreach (string foodNames in Model.FoodNames)
+                    {
+                        <option>@foodNames</option>
+
+                    }
+                }
+            </select>
+            <span asp-validation-for="FoodNames" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <div id="tab1" class="mb-3">
+                <button class="btn btn-outline-success " id="addNewCategory_of_Food" value="addNewCategory_of_FoodValue">Yemek seçimini Menüye Eklemek için tıklayınız</button>
+            </div>
         </div>
 
 
-/*    TempData["messageCategory_of_Food"] = 4; 
-    <a class="" asp-area="Admin" asp-controller="Menu" asp-action="Get_FoodsbyCategoryID_Ajax" asp-route-id="@TempData["messageCategory_of_Food"]">İptal</a>*/
+    </div>
+    /*    TempData["messageCategory_of_Food"] = 4;
+        <a class="" asp-area="Admin" asp-controller="Menu" asp-action="Get_FoodsbyCategoryID_Ajax" asp-route-id="@TempData["messageCategory_of_Food"]">İptal</a>*/
 
 
-/*    
- </form>*/
+    /*
+     </form>*/
 
 
 }
@@ -121,35 +129,61 @@ else
     {
         /*                        int Category_of_Food_status = (int)item.Status;  // asp-route-status="@(int)item.Status" olmuyor...*/
 
-
-        <dt></dt>
-        <dt class="position">
+        <h5>
             @category.Category_of_FoodName
-        </dt>
-        <dd class="position">
+        </h5>
 
-            Yemek İsmi
-            Ücret
-            Resim
+        <div class="panel panel-primary">
+            <div class="panel panel-body">
+                <table class="table table-hover table-bordered table-responsive-lg" id="tab2" width="100%" border="0" cellspacing="0" cellpadding="100%">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Index</th>
+                            <th class="position"><p>Yemek İsmi</p></th>
+                            <th class="position"><p>Ücret</p></th>
+                            <th class="position"><p>Resim</p></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <!--<dd class="position">
 
-        </dd>
+                        Yemek İsmi
+                        Ücret
+                        Resim
 
-        @foreach (var foods in Model.MenuDetailDTOs)
-        {
-            @if (foods.CategoryName_of_Food == category.Category_of_FoodName)
-            {
-                <dd class="position">
-                    @foods.FoodName
-                    @foods.FoodPrice
-
-                    @if (foods.FoodPicture != null)
+                    </dd> -->
+                    @foreach (var foods in Model.MenuDetailDTOs)
                     {
-                        <img style="width:85px; height:50px" src="@foods.FoodPicture" />
-                    }
-                </dd>
-            }
+                        @if (foods.CategoryName_of_Food == category.Category_of_FoodName)
+                        {
+                            <tr>
+                                <td></td>
+                                <td class="position">
+                                    <p> @foods.FoodName</p>
+                                </td>
+                                <td class="position">
+                                    <p> @foods.FoodPrice</p>
+                                </td>
+                                <td class="position">
+                                    <p>
+                                        @if (foods.FoodPicture != null)
+                                        {
+                                            <img style="width:85px; height:50px" src="@foods.FoodPicture" />
+                                        }
+                                    </p>
+                                </td>
+                                <td class="btnposition">
+                                    @*<a asp-action="DeleteMenu" asp-controller="Menu" asp-route-id="@foods.ID" class="btn btn-danger">Sil</a>*@
 
-        }
+                                    <button class="btn btn-danger" id="deleteMenu" value="deleteMenuValue" data-id=@foods.ID>Sil</button>
+                                </td>
+                            </tr>
+                        }
+
+                    }
+                </table>
+            </div>
+        </div>
 
     }
 </div>
@@ -255,12 +289,12 @@ else
         $("#CRUDCategory_of_FoodModal").modal('show'); // #CRUDCategory_of_FoodModal içinde CRUDCategory_of_Food var (<div class="modal-body" id="CRUDCategory_of_Food">) onun içinde de data var (_CrudCategory_of_FoodPartial)
     }
 
-    /*  
-    
+    /*
+
     function SelectCategoryItem() {
 
     var selcat = $("#selectforcategory").prop('selectedIndex');
- 
+
     $.ajax({
 
             url: 'Url.Action("Get_FoodsbyCategoryID_Ajax")',
@@ -271,30 +305,30 @@ else
                 $("#foodsofcategory").html(data);
 
 
-            } 
+            }
         });
-    } 
+    }
     */
-    
+
     $(function () {
-         
+
         $("#selectforcategory").on("change", function () {
 
             /*
             alert($('#selectforcategory :selected').text());
             alert($('#selectforcategory :selected').val());
             */
-            
+
             /*
             alert($("#selectforcategory")[0].selectedIndex);
             alert($("#selectforcategory").prop('selectedIndex'));
             */
-        
+
             /*
             var carList = document.getElementById("selectforcategory");
             var selCar = carList.options[carList.selectedIndex];
-            alert(selCar) 
-           
+            alert(selCar)
+
             */
             var selectedCategoryid = $("#selectforcategory").prop('selectedIndex');
 
@@ -310,7 +344,7 @@ else
                 /* url: 'Url.Action("MenuDetailList")',*/ /*, id: TempData["Menu_ID"] */
                 url: 'Get_FoodsbyCategoryID_Ajax',
                 data: { id: selectedCategoryid },
-                
+
                 success: function (data) {
 
                     /*APENDDDDDDDDD*/

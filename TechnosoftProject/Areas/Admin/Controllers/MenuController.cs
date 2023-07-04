@@ -38,10 +38,11 @@ namespace Technosoft_Project.Areas.Admin.Controllers
         }
 
         [Route("MenuDetailList")]
-        public async Task<IActionResult> MenuDetailList(int id/*, int? categoryid*/)
+        public async Task<IActionResult> MenuDetailList(int id, string menuName/*, int? categoryid*/)
         {
             
             TempData["Menu_ID"] = id;
+            TempData["Menu_Name"] = menuName;
 
             IEnumerable<object> FoodsofMenu = await _imdm.Get_FoodsofMenu_Async(id);
             IEnumerable<object> CategoriessofMenu = await _imdm.Get_CategoriesofMenu_Async(id); // Distinct edilmiş...
@@ -116,9 +117,6 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             //    AllFoods2 = await _ifm.GetActivesFoodsByCategory_of_FoodIDAsync(2);
             //    cid = 0;
             //}
-
-
-
 
 
             MenuDetailVM mvm = new MenuDetailVM
