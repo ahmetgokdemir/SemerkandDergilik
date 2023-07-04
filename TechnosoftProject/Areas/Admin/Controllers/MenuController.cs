@@ -9,6 +9,7 @@ using Technosoft_Project.CommonTools;
 using Technosoft_Project.Enums;
 using Technosoft_Project.ViewModels;
 using Technosoft_Project.VMClasses;
+using static Project.DAL.Repositories.Concretes.FoodRepository;
 
 namespace Technosoft_Project.Areas.Admin.Controllers
 {
@@ -140,7 +141,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
         // Get
         [Route("Get_FoodsbyCategoryID_Ajax")]
-        public async Task<List<string>> Get_FoodsbyCategoryID_Ajax(int id)
+        public async Task<List<FoodDTO>> Get_FoodsbyCategoryID_Ajax(int id, string name)
         {
             //IEnumerable<Food> FoodEnumerableList = await _ifm.GetActivesFoodsByCategory_of_FoodIDAsync(id);
 
@@ -155,13 +156,16 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             // Category_of_Food selectedCategory = await _icm.FirstOrDefault(x => x.ID == id);
             //HttpContext.Session.SetObject("md2", selectedCategory);
 
-            List<string> FoodList = new List<string>();
+            List<FoodDTO> FoodList = new List<FoodDTO>();
 
  
-            IEnumerable<string> Category_of_FoodNames = await _ifm.GetActivesFoodNamesByCategory_of_FoodIDAsync((int)id);
-                
-            FoodList = Category_of_FoodNames.Adapt<IEnumerable<string>>().ToList();
+           // Category_of_Food category =  await _icm.GetByIdAsync(id);
+           TempData["Selected_Category_Name"] = name;
 
+            IEnumerable<object> Category_of_FoodNames = await _ifm.GetActivesFoodNamesByCategory_of_FoodIDAsync((int)id);
+                
+            FoodList = Category_of_FoodNames.Adapt<IEnumerable<FoodDTO>>().ToList();
+ 
 
             return FoodList;
 
@@ -170,6 +174,126 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             //return View("MenuDetailList", mvm);
             // return RedirectToAction("MenuDetailList", new { id = (int)TempData["Menu_ID"], categoryid = cid });
         }
+
+        // Add Food to Menu
+        [Route("AddFoodtoMenu")]
+        public async Task<IActionResult> AddFoodtoMenu(MenuVM mvm_post)
+        {
+
+            /*
+              var urlHelper = new UrlHelper(ControllerContext);
+              var url = urlHelper.Action("About", "Home");
+              var linkText = "Panelden yapılan değiliklik web e yansımıyor";
+              
+              var hyperlink = string.Format("<a href=\"{0}\">{1}</a>", url, linkText);
+              
+              var url2 = $"{Request.Scheme}://{Request.Host}/Home/About";
+            */
+
+
+
+            /* PasswordReset.cs'de SendGridClient --> Task Execute(string link, string emailAdress) kısmında yapılmış...*/
+
+
+            if (TempData["Deleted"] == null)
+            {
+                ModelState.Remove("MenuDTOs");
+                ModelState.Remove("JavascriptToRun");
+                ModelState.Remove("MenuDTO.FoodName");
+
+
+                if (ModelState.IsValid)
+                {
+                    Menu ctg = mvm_post.MenuDTO.Adapt<Menu>();
+
+                    ctg.Status = (int)mvm_post.MenuDTO.Status;
+
+
+
+                    //////
+                    ///
+
+
+                    if (ctg.ID == 0)
+                    {
+                        await _imm.AddAsync(ctg);
+                        TempData["messageMenu"] = "Kategori eklendi";
+                    }
+                    else
+                    {
+                        _imm.Update(ctg);
+                        // yapılacak ödev:  Menu pasife çekilirse Foodları da pasife çekilsin!!! Update metodu içerisinde yapılabilir... ekstra metoda gerek yok
+
+                        /*
+                         * 
+                         Fonksiyon, belirli bir görevi gerçekleştirmek için bir dizi talimat veya prosedürdür. 
+
+                        Metot ise bir NSENEYLE ilişkili bir dizi talimattır. 
+
+                        Bir fonksiyon herhangi bir nesneye ihtiyaç duymaz ve bağımsızdır, 
+                        metot ise herhangi bir nesneyle bağlantılı bir işlevdir. 
+
+                        Metotlar, OOP (Nesne Yönelimli Programlama) ile ilgili bir kavram  --> _icm nesnesi İLE Update Metodu gibi
+
+                         Bu yuzden methodlar classlar icinde define edilir ve obje varyasyonlari ile kullanilir. Functionlarda class icinde define edilir ama o classa ait seyler icermez, objeye dependent olmaz. 
+
+                        Yani soyle bir sey dusunulebilir, bir dog classi, havlamak diye bir METHOD icerir, cunku sadece kopekler havlar, bu yuzden kopek objesine ihtiyac vardir.
+
+Fakat ayni zamanda bir human classi olsun, diyelim ki beslenmek diye bir FONKSIYON yazilacak. Cunku sart su, beslenmeyi kopek de insan da yapabilir, e bu yuzden particular bir class ihtiyaci dogurmaz. 
+
+
+                         */
+
+                        TempData["messageMenu"] = "Kategori güncellendi";
+
+                    }
+
+                    return RedirectToAction("MenuList");
+                }
+
+            }
+            else
+            {
+                _imm.Delete(await _imm.GetByIdAsync(mvm_post.MenuDTO.ID));
+
+                // Menu ctg = cdto.Adapt<Menu>();
+
+                // _icm.Delete(ctg);
+                TempData["messageMenu"] = "Kategori silindi";
+
+                TempData["Deleted"] = null;
+
+                return RedirectToAction("MenuList");
+            }
+
+            // TempData["mesaj"] = "Kategori adı ve statü giriniz..";
+            // ModelState.AddModelError("", "Ürün adı ve statü giriniz..");
+
+            MenuVM cVM = new MenuVM();
+            HttpContext.Session.SetObject("manipulatedData", mvm_post.MenuDTO);
+
+            TempData["JavascriptToRun"] = "valid";
+            TempData["HttpContext"] = "valid";
+
+            if (mvm_post.MenuDTO.ID != 0) //update
+            {
+                cVM.JavascriptToRun = $"ShowErrorUpdateOperationPopup({mvm_post.MenuDTO.ID})";
+                return RedirectToAction("MenuList", new { JSpopupPage = cVM.JavascriptToRun });
+
+            }
+            else // add // (pvm_post.FoodDTO.ID == 0) çevir...
+            {
+                // pvm.JavascriptToRun = $"ShowErrorPopup( {pvm_post.FoodDTO} )";
+
+                // pvm.JavascriptToRun = $"ShowErrorInsertOperationPopup()";
+
+                TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
+                return RedirectToAction("MenuList", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
+            }
+
+
+        }
+
 
         [Route("MenuList")]
         public async Task<IActionResult> MenuList(string? JSpopupPage)

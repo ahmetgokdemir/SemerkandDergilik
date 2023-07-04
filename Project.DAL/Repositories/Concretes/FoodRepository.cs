@@ -7,11 +7,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Project.DAL.Repositories.Concretes.MenuDetailRepository;
 
 namespace Project.DAL.Repositories.Concretes
 {
     public class FoodRepository : BaseRepository<Food>, IFoodRepository
     {
+        public class FoodDto_Repo
+        {
+            public string FoodName { get; set; }
+            public int ID { get; set; } // Aktif, Pasif
+        }
+
 
         public FoodRepository(TechnosoftProjectContext context) : base(context)
         {
@@ -27,9 +34,16 @@ namespace Project.DAL.Repositories.Concretes
         }
 
         // Kategoriye göre Ürünlerin isimleri..  
-        public IQueryable<string> GetActivesFoodNamesByCategory_of_FoodIDAsync(int Category_of_Food_id)
+        public async Task<IQueryable<FoodDto_Repo>> GetActivesFoodNamesByCategory_of_FoodIDAsync(int Category_of_Food_id)
         {
-            return _context.Set<Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.Category_of_FoodID == Category_of_Food_id).Select(x => x.FoodName).AsQueryable();
+           
+
+            return await _context.Set<Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.Category_of_FoodID == Category_of_Food_id).Select(x => new FoodDto_Repo()
+            {
+                FoodName = x.FoodName,
+                ID = x.ID
+            }).AsQueryable();   // ToList
+
 
             //.Include(x=> x.Category_of_Food).AsQueryable();
         }

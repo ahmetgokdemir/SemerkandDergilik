@@ -2,6 +2,8 @@
 ientity.cs ve identity_models tablaloarýnda status (aktif pasif) olacak mý?
 
 
+anlamlý isimler ver 
+repository kontrol et
 
 
 

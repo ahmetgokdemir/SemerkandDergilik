@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Project.DAL.Repositories.Concretes.FoodRepository;
 
 namespace Project.BLL.ManagerServices.Concretes
 {
@@ -34,9 +35,9 @@ namespace Project.BLL.ManagerServices.Concretes
             return Foods;
         }
 
-        public async Task<IEnumerable<string>> GetActivesFoodNamesByCategory_of_FoodIDAsync(int Category_of_Food_id)
+        public async Task<IEnumerable<FoodDto_Repo>> GetActivesFoodNamesByCategory_of_FoodIDAsync(int Category_of_Food_id)
         {
-            var FoodNames = await _prep.GetActivesFoodNamesByCategory_of_FoodIDAsync(Category_of_Food_id).ToListAsync(); // convert ıqueryable to IEnumerable
+            var FoodNames = _prep.GetActivesFoodNamesByCategory_of_FoodIDAsync(Category_of_Food_id).ToListAsync();
 
             return FoodNames;
         }

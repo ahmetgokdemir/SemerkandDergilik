@@ -68,8 +68,12 @@
 
 else
 {
+    <form asp-action="AddFoodtoMenu" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    
     <h2>
         @TempData["Menu_Name"]
+        <input type="hidden" asp-for="MenuDetailDTO.MenuID" />
     </h2>
     <hr />
     <br />
@@ -86,6 +90,12 @@ else
                 @foreach (Category_of_FoodDTO category in Model.Categories_of_AllFoods_DTOs)
                 {
                     <option>@category.Category_of_FoodName</option>
+                    if (TempData["Selected_Category_Name"] != null)
+                    {
+                        Model.MenuDetailDTO.CategoryName_of_Food = TempData["Selected_Category_Name"].ToString();
+
+                        <input type="hidden" asp-for="MenuDetailDTO.CategoryName_of_Food" />
+                    }
                 }
             </select>
             <span asp-validation-for="Categories_of_AllFoods_DTOs" class="text-danger"></span>
@@ -100,6 +110,10 @@ else
                     {
                         <option>@foodNames</option>
 
+                         Model.MenuDetailDTO.FoodID = (int)TempData["Selected_Category_Name"];
+
+                        <input type="hidden" asp-for="MenuDetailDTO.FoodID" />
+
                     }
                 }
             </select>
@@ -113,7 +127,9 @@ else
         </div>
 
 
-    </div>
+        </div>
+    </form>
+
     /*    TempData["messageCategory_of_Food"] = 4;
         <a class="" asp-area="Admin" asp-controller="Menu" asp-action="Get_FoodsbyCategoryID_Ajax" asp-route-id="@TempData["messageCategory_of_Food"]">İptal</a>*/
 
@@ -331,6 +347,7 @@ else
 
             */
             var selectedCategoryid = $("#selectforcategory").prop('selectedIndex');
+            var selectedCategoryName = $("#selectforcategory");
 
             var ddlCategories = $('#foodsofcategory');
             ddlCategories.empty();
@@ -343,7 +360,7 @@ else
                 /* url: 'Get_FoodsbyCategoryID_Ajax/? id =' + id,*/
                 /* url: 'Url.Action("MenuDetailList")',*/ /*, id: TempData["Menu_ID"] */
                 url: 'Get_FoodsbyCategoryID_Ajax',
-                data: { id: selectedCategoryid },
+                data: { id: selectedCategoryid, name: selectedCategoryName },
 
                 success: function (data) {
 
