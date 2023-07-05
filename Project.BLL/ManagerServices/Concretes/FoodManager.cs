@@ -37,7 +37,7 @@ namespace Project.BLL.ManagerServices.Concretes
 
         public async Task<IEnumerable<FoodDto_Repo>> GetActivesFoodNamesByCategory_of_FoodIDAsync(int Category_of_Food_id)
         {
-            var FoodNames = _prep.GetActivesFoodNamesByCategory_of_FoodIDAsync(Category_of_Food_id).ToListAsync();
+            var FoodNames = await _prep.GetActivesFoodNamesByCategory_of_FoodIDAsync(Category_of_Food_id).ToListAsync();
 
             return FoodNames;
         }

@@ -39,11 +39,12 @@ namespace Technosoft_Project.Areas.Admin.Controllers
         }
 
         [Route("MenuDetailList")]
-        public async Task<IActionResult> MenuDetailList(int id, string menuName/*, int? categoryid*/)
+        public async Task<IActionResult> MenuDetailList(int id, string menuName, int? categoryid)
         {
             
-            TempData["Menu_ID"] = id;
+            TempData["Menu_ID"] = id; // menuid
             TempData["Menu_Name"] = menuName;
+            int menu_id = id;
 
             IEnumerable<object> FoodsofMenu = await _imdm.Get_FoodsofMenu_Async(id);
             IEnumerable<object> CategoriessofMenu = await _imdm.Get_CategoriesofMenu_Async(id); // Distinct edilmiş...
@@ -53,7 +54,8 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
             //int cid = 0;
 
-            List<string> bos = new List<string>();
+            Dictionary<int, string> bos = new Dictionary<int, string>();
+
             List<string> pdto = new List<string>();
             var result = new List<string>();
 
@@ -126,10 +128,11 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 Categories_of_Menu_DTOs = CategoriessofMenu.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(), //  List<Category_of_FoodDTO> 
 
                 Categories_of_AllFoods_DTOs = CategoriessofAllFoods.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(),
+                menu_id = id,
 
                 // 654654544545   SDASDAS SelectedCategory =  cdto,
                 // FoodNames = cid == 0 ? bos : pdto,
-                FoodNames = bos,
+                //FoodNames = bos,
                 // Foods_of_Categeriesvvv = AllFoods2.Adapt<IEnumerable<FoodDTO>>().ToList(), // .Adapt<List<FoodDTO>>().ToList()
                 //AllFoods_ = AllFoods.Adapt<IEnumerable<FoodDTO>>().ToList()
 
@@ -141,8 +144,12 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
         // Get
         [Route("Get_FoodsbyCategoryID_Ajax")]
-        public async Task<List<FoodDTO>> Get_FoodsbyCategoryID_Ajax(int id, string name)
+        public async Task<Dictionary<int,string>> Get_FoodsbyCategoryID_Ajax(int id, string name)
         {
+            // async Task<IActionResult>
+
+
+
             //IEnumerable<Food> FoodEnumerableList = await _ifm.GetActivesFoodsByCategory_of_FoodIDAsync(id);
 
             //FoodVM fvm_post = new FoodVM
@@ -151,7 +158,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             //};
 
             //TempData["HttpContext"] = "valid";
-           // HttpContext.Session.SetObject("manipulatedData", fvm_post.FoodDTOs);
+            // HttpContext.Session.SetObject("manipulatedData", fvm_post.FoodDTOs);
 
             // Category_of_Food selectedCategory = await _icm.FirstOrDefault(x => x.ID == id);
             //HttpContext.Session.SetObject("md2", selectedCategory);
@@ -165,132 +172,55 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             IEnumerable<object> Category_of_FoodNames = await _ifm.GetActivesFoodNamesByCategory_of_FoodIDAsync((int)id);
                 
             FoodList = Category_of_FoodNames.Adapt<IEnumerable<FoodDTO>>().ToList();
- 
 
-            return FoodList;
+
+
+
+            Dictionary<int, string> food_items = new Dictionary<int, string>();
+            //List<string> food_items = new List<string>();
+
+
+            for (int i = 0; i < FoodList.Count; i++)
+            {
+                food_items.Add(FoodList[i].ID,FoodList[i].FoodName);
+            }
 
             ///////////////////////////////////////////////
-
+            //string menunamed = (string)TempData["Menu_Name"];
+            // int a = 1;
             //return View("MenuDetailList", mvm);
-            // return RedirectToAction("MenuDetailList", new { id = (int)TempData["Menu_ID"], categoryid = cid });
+            // return RedirectToAction("MenuDetailList", new { id = (int)TempData["Menu_ID"], menuName = menunamed, categoryid = id });
+
+            ViewBag.food_items = new SelectList(food_items.Keys);
+
+            return food_items;
+
+
         }
 
         // Add Food to Menu
         [Route("AddFoodtoMenu")]
-        public async Task<IActionResult> AddFoodtoMenu(MenuVM mvm_post)
+        public async Task<IActionResult> AddFoodtoMenu(MenuDetailVM mvm_post)
         {
+            ModelState.Remove("MenuDetailDTOs");
+            ModelState.Remove("MenuDetailDTO");
+            // ModelState.Remove("FoodDTOs");
+            ModelState.Remove("JavascriptToRun");
+            ModelState.Remove("Categories_of_Menu_DTOs");
+            ModelState.Remove("Categories_of_AllFoods_DTOs");
+ ;
 
-            /*
-              var urlHelper = new UrlHelper(ControllerContext);
-              var url = urlHelper.Action("About", "Home");
-              var linkText = "Panelden yapılan değiliklik web e yansımıyor";
-              
-              var hyperlink = string.Format("<a href=\"{0}\">{1}</a>", url, linkText);
-              
-              var url2 = $"{Request.Scheme}://{Request.Host}/Home/About";
-            */
+            // ModelState.Remove("Categories_of_Menu_DTOs");
 
-
-
-            /* PasswordReset.cs'de SendGridClient --> Task Execute(string link, string emailAdress) kısmında yapılmış...*/
-
-
-            if (TempData["Deleted"] == null)
+            //mvm_post.MenuDetailDTO.CategoryName_of_Food = TempData["Selected_Category_Name"].ToString();
+            //mvm_post.MenuDetailDTO.MenuID = (int) TempData["Menu_ID"];
+            //mvm_post.MenuDetailDTO.FoodName = "";
+            if (ModelState.IsValid)
             {
-                ModelState.Remove("MenuDTOs");
-                ModelState.Remove("JavascriptToRun");
-                ModelState.Remove("MenuDTO.FoodName");
-
-
-                if (ModelState.IsValid)
-                {
-                    Menu ctg = mvm_post.MenuDTO.Adapt<Menu>();
-
-                    ctg.Status = (int)mvm_post.MenuDTO.Status;
-
-
-
-                    //////
-                    ///
-
-
-                    if (ctg.ID == 0)
-                    {
-                        await _imm.AddAsync(ctg);
-                        TempData["messageMenu"] = "Kategori eklendi";
-                    }
-                    else
-                    {
-                        _imm.Update(ctg);
-                        // yapılacak ödev:  Menu pasife çekilirse Foodları da pasife çekilsin!!! Update metodu içerisinde yapılabilir... ekstra metoda gerek yok
-
-                        /*
-                         * 
-                         Fonksiyon, belirli bir görevi gerçekleştirmek için bir dizi talimat veya prosedürdür. 
-
-                        Metot ise bir NSENEYLE ilişkili bir dizi talimattır. 
-
-                        Bir fonksiyon herhangi bir nesneye ihtiyaç duymaz ve bağımsızdır, 
-                        metot ise herhangi bir nesneyle bağlantılı bir işlevdir. 
-
-                        Metotlar, OOP (Nesne Yönelimli Programlama) ile ilgili bir kavram  --> _icm nesnesi İLE Update Metodu gibi
-
-                         Bu yuzden methodlar classlar icinde define edilir ve obje varyasyonlari ile kullanilir. Functionlarda class icinde define edilir ama o classa ait seyler icermez, objeye dependent olmaz. 
-
-                        Yani soyle bir sey dusunulebilir, bir dog classi, havlamak diye bir METHOD icerir, cunku sadece kopekler havlar, bu yuzden kopek objesine ihtiyac vardir.
-
-Fakat ayni zamanda bir human classi olsun, diyelim ki beslenmek diye bir FONKSIYON yazilacak. Cunku sart su, beslenmeyi kopek de insan da yapabilir, e bu yuzden particular bir class ihtiyaci dogurmaz. 
-
-
-                         */
-
-                        TempData["messageMenu"] = "Kategori güncellendi";
-
-                    }
-
-                    return RedirectToAction("MenuList");
-                }
-
+                int id = 0;
+                // mvm_post.foodstringlist
             }
-            else
-            {
-                _imm.Delete(await _imm.GetByIdAsync(mvm_post.MenuDTO.ID));
-
-                // Menu ctg = cdto.Adapt<Menu>();
-
-                // _icm.Delete(ctg);
-                TempData["messageMenu"] = "Kategori silindi";
-
-                TempData["Deleted"] = null;
-
-                return RedirectToAction("MenuList");
-            }
-
-            // TempData["mesaj"] = "Kategori adı ve statü giriniz..";
-            // ModelState.AddModelError("", "Ürün adı ve statü giriniz..");
-
-            MenuVM cVM = new MenuVM();
-            HttpContext.Session.SetObject("manipulatedData", mvm_post.MenuDTO);
-
-            TempData["JavascriptToRun"] = "valid";
-            TempData["HttpContext"] = "valid";
-
-            if (mvm_post.MenuDTO.ID != 0) //update
-            {
-                cVM.JavascriptToRun = $"ShowErrorUpdateOperationPopup({mvm_post.MenuDTO.ID})";
-                return RedirectToAction("MenuList", new { JSpopupPage = cVM.JavascriptToRun });
-
-            }
-            else // add // (pvm_post.FoodDTO.ID == 0) çevir...
-            {
-                // pvm.JavascriptToRun = $"ShowErrorPopup( {pvm_post.FoodDTO} )";
-
-                // pvm.JavascriptToRun = $"ShowErrorInsertOperationPopup()";
-
-                TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
-                return RedirectToAction("MenuList", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
-            }
-
+            return null;
 
         }
 

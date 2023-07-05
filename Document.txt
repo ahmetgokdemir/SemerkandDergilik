@@ -2,8 +2,11 @@
 ientity.cs ve identity_models tablaloarýnda status (aktif pasif) olacak mý?
 
 
+KOD TESTLERÝ VE DÜZENLEMESÝ
 anlamlý isimler ver 
 repository kontrol et
+dbo.Menu Detayi da yemek fiyatýna gerek yok
+menudetailvm de gereksizleri sil
 
 
 

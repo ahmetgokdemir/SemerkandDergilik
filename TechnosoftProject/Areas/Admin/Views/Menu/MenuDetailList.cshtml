@@ -68,12 +68,14 @@
 
 else
 {
+    string menuName = TempData["Menu_Name"].ToString();
+    TempData["Menu_Name"] = menuName;
+
     <form asp-action="AddFoodtoMenu" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     
     <h2>
-        @TempData["Menu_Name"]
-        <input type="hidden" asp-for="MenuDetailDTO.MenuID" />
+        @menuName
     </h2>
     <hr />
     <br />
@@ -84,40 +86,44 @@ else
         <div class="col-md-3">
             <!--asp-for="SelectedCategory"-->
             <!-- onchange="SelectCategoryItem()" -->
-            <select class="form-control" id="selectforcategory">
+                <select class="form-control" id="selectforcategory" asp-for="categorystringlist">
 
                 <option>Lütfen bir kategori seçiniz.</option>
                 @foreach (Category_of_FoodDTO category in Model.Categories_of_AllFoods_DTOs)
                 {
-                    <option>@category.Category_of_FoodName</option>
-                    if (TempData["Selected_Category_Name"] != null)
-                    {
-                        Model.MenuDetailDTO.CategoryName_of_Food = TempData["Selected_Category_Name"].ToString();
+                        var a = TempData["Selected_Category_Name"];
+                        TempData["Selected_Category_Name"] = a;
 
-                        <input type="hidden" asp-for="MenuDetailDTO.CategoryName_of_Food" />
-                    }
+                        <option>@category.Category_of_FoodName</option> 
+ 
+/*                        <input type="hidden" asp-for="MenuDetailDTO.CategoryName_of_Food" />
+*/                    
                 }
             </select>
-            <span asp-validation-for="Categories_of_AllFoods_DTOs" class="text-danger"></span>
+                <span asp-validation-for="categorystringlist" class="text-danger"></span>
         </div>
 
+            <!-- asp-for="Category_of_FoodDTO.Category_of_FoodName" asp-items="ViewBag.Category_of_FoodNames" 
+              
+            asp-for="foodid"  asp-items="Html" Html.GetEnumSelectList<Technosoft_Project.Enums.Status>() -->
+
+            <!-- asp-items="ViewBag.food_items" gerek klamadı-->
+
         <div class="col-md-3">
-            <select class="form-control" id="foodsofcategory">
+                <select class="form-control" id="foodsofcategory" asp-for="foodstringlist" >
 
-                @if (Model.FoodNames != null)
+                    @if (Model.foodstringlist != null)
                 {
-                    @foreach (string foodNames in Model.FoodNames)
-                    {
-                        <option>@foodNames</option>
+                        @foreach (var foodNames in Model.foodstringlist)
+                        {
+                            
 
-                         Model.MenuDetailDTO.FoodID = (int)TempData["Selected_Category_Name"];
-
-                        <input type="hidden" asp-for="MenuDetailDTO.FoodID" />
-
-                    }
+                            <option></option>
+          
+                       }
                 }
             </select>
-            <span asp-validation-for="FoodNames" class="text-danger"></span>
+                <span asp-validation-for="foodstringlist" class="text-danger"></span>
         </div>
 
         <div class="col-md-6">
@@ -128,6 +134,10 @@ else
 
 
         </div>
+
+        <input class="form-control" type="hidden" asp-for="menu_id" />
+
+
     </form>
 
     /*    TempData["messageCategory_of_Food"] = 4;
@@ -347,7 +357,7 @@ else
 
             */
             var selectedCategoryid = $("#selectforcategory").prop('selectedIndex');
-            var selectedCategoryName = $("#selectforcategory");
+            var selectedCategoryName = $('#selectforcategory :selected').text();
 
             var ddlCategories = $('#foodsofcategory');
             ddlCategories.empty();

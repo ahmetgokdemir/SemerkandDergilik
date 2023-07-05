@@ -15,8 +15,8 @@ namespace Project.DAL.Repositories.Concretes
     {
         public class FoodDto_Repo
         {
+            public int ID { get; set; } // Aktif, Pasif            
             public string FoodName { get; set; }
-            public int ID { get; set; } // Aktif, Pasif
         }
 
 
@@ -34,21 +34,21 @@ namespace Project.DAL.Repositories.Concretes
         }
 
         // Kategoriye göre Ürünlerin isimleri..  
-        public async Task<IQueryable<FoodDto_Repo>> GetActivesFoodNamesByCategory_of_FoodIDAsync(int Category_of_Food_id)
+        public IQueryable<FoodDto_Repo> GetActivesFoodNamesByCategory_of_FoodIDAsync(int Category_of_Food_id)
         {
-           
 
-            return await _context.Set<Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.Category_of_FoodID == Category_of_Food_id).Select(x => new FoodDto_Repo()
+            return _context.Set<Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.Category_of_FoodID == Category_of_Food_id).Select(x => new FoodDto_Repo
             {
-                FoodName = x.FoodName,
-                ID = x.ID
+                ID = x.ID,
+                FoodName =  x.FoodName
+                
             }).AsQueryable();   // ToList
 
 
             //.Include(x=> x.Category_of_Food).AsQueryable();
         }
 
-        // Kullanılmadı
+        // Kullanılmadı !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Ürünü, kategori bilgileri ile getirmek...
         public IQueryable<Food> GetFoodByIdwithCategory_of_FoodValueAsync(int Food_id)
         {

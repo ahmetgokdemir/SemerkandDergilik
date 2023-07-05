@@ -17,7 +17,15 @@ namespace Technosoft_Project.VMClasses
         // public List<FoodDTO> AllFoods_ { get; set; }
 
         // public Category_of_FoodDTO SelectedCategory { get; set; }        
-        public List<string> FoodNames { get; set; }
+        // public Dictionary<int, string> FoodNames { get; set; }
+        // public List<int> FoodsID { get; set; }
+        // public int foodid { get; set; }
+
+        // public FoodDTO foodDTO { get; set; }
+
+        public List<string> foodstringlist { get; set; }
+        public List<string> categorystringlist { get; set; } 
+        public int menu_id { get; set; }
 
     }
 }
