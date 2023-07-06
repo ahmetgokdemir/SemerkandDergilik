@@ -33,14 +33,14 @@ namespace Project.DAL.Repositories.Concretes
         {
         }
 
-        public IQueryable<MenuDetail_Repo> Get_FoodsofMenu_Async(int Menu_ID)
+        public IQueryable<object> Get_FoodsofMenu_Async(int Menu_ID)
         {
             //object asd = new Deneme();
 
             return _context.Set<MenuDetail>().Where(x => x.MenuID == Menu_ID).Join(_context.Set<Food>(),
                 (md => md.FoodID),
                 (fd => fd.ID),
-                (md, fd) => new MenuDetail_Repo()
+                (md, fd) => new 
                 {
                     CategoryName_of_Food = md.CategoryName_of_Food,
                     FoodName = fd.FoodName,
@@ -49,10 +49,8 @@ namespace Project.DAL.Repositories.Concretes
                     Status = fd.Status,
                 }
                 ).AsQueryable();
-
           
         }
-
  
         public IQueryable<CategoriesOfMenu_Repo> Get_CategoriesofMenu_Async(int Menu_ID)
         {

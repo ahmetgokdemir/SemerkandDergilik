@@ -20,11 +20,10 @@ namespace Project.BLL.ManagerServices.Concretes
             _mdrep = mdrep;
         }
 
-        public async Task<IEnumerable<MenuDetail_Repo>> Get_FoodsofMenu_Async(int Menu_ID)
-        {
-            
-            var Foods = await _mdrep.Get_FoodsofMenu_Async(Menu_ID).ToListAsync(); // convert ıqueryable to IEnumerable (USİNG NAMESPACE EntityFrameworkCore)
-
+        public async Task<IEnumerable<object>> Get_FoodsofMenu_Async(int Menu_ID)
+        {            
+            var Foods = await _mdrep.Get_FoodsofMenu_Async(Menu_ID).ToListAsync(); 
+            // convert ıqueryable to IEnumerable (using namespace EntityFrameworkCore)
 
             return Foods;
         }
@@ -32,7 +31,8 @@ namespace Project.BLL.ManagerServices.Concretes
          public async Task<IEnumerable<CategoriesOfMenu_Repo>> Get_CategoriesofMenu_Async(int Menu_ID)
         {
 
-            var Categories = await _mdrep.Get_CategoriesofMenu_Async(Menu_ID).ToListAsync(); // convert ıqueryable to IEnumerable (USİNG NAMESPACE EntityFrameworkCore)
+            var Categories = await _mdrep.Get_CategoriesofMenu_Async(Menu_ID).ToListAsync();
+            // convert ıqueryable to IEnumerable (using namespace EntityFrameworkCore)
 
 
             return Categories;

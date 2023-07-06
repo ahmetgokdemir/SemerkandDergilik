@@ -28,19 +28,21 @@ namespace Project.BLL.ManagerServices.Concretes
         //    _prep = prep;
         //} 
 
-        public async Task<IEnumerable<Food>> GetActivesFoodsByCategory_of_FoodIDAsync(int Category_of_Food_id)
+        public async Task<IEnumerable<Food>> GetFoodsByCategoryID_Async(int categoryid)
         {
-            var Foods = await _prep.GetActivesFoodsByCategory_of_FoodIDAsync(Category_of_Food_id).ToListAsync(); // convert ıqueryable to IEnumerable
+            var Foods = await _prep.GetFoodsByCategoryID_Async(categoryid).ToListAsync(); // convert ıqueryable to IEnumerable
 
             return Foods;
         }
 
+        /*
         public async Task<IEnumerable<FoodDto_Repo>> GetActivesFoodNamesByCategory_of_FoodIDAsync(int Category_of_Food_id)
         {
             var FoodNames = await _prep.GetActivesFoodNamesByCategory_of_FoodIDAsync(Category_of_Food_id).ToListAsync();
 
             return FoodNames;
         }
+        */
 
         public async Task<Food> GetFoodByIdwithCategory_of_FoodValueAsync(int Food_id)
         {

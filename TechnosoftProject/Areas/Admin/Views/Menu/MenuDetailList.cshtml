@@ -43,87 +43,60 @@
 </div>
 <hr class="loader" />
 
-
-@if (Model.MenuDetailDTOs.Count == 0)
-{
-    /*    <label asp-for="Model.Category_of_FoodName" class="control-label"></label>*/
-    <div class="form-group">
-
-        <select class="form-control" id="selectforcategory">
-
-            <option>Lütfen bir kategori seçiniz.</option>
-            @foreach (Category_of_FoodDTO item in Model.Categories_of_AllFoods_DTOs)
-            {
-                <option data-id=@item.ID>@item.Category_of_FoodName</option>
-
-            }
-        </select>
-        <span asp-validation-for="Categories_of_AllFoods_DTOs" class="text-danger"></span>
-    </div>
+@{
+var menuName = TempData["Menu_Name"].ToString();
+TempData["Menu_Name"] = menuName;
 }
 
+<h2>
+    @menuName
+</h2>
+<hr />
+<br />
 
-
-
-
-else
-{
-    string menuName = TempData["Menu_Name"].ToString();
-    TempData["Menu_Name"] = menuName;
 
     <form asp-action="AddFoodtoMenu" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    
-    <h2>
-        @menuName
-    </h2>
-    <hr />
-    <br />
-
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="row">
 
         <div class="col-md-3">
             <!--asp-for="SelectedCategory"-->
             <!-- onchange="SelectCategoryItem()" -->
-                <select class="form-control" id="selectforcategory" asp-for="categorystringlist">
+                <select class="form-control" id="selectforcategory" asp-for="_categoryList">
 
                 <option>Lütfen bir kategori seçiniz.</option>
                 @foreach (Category_of_FoodDTO category in Model.Categories_of_AllFoods_DTOs)
                 {
-                        var a = TempData["Selected_Category_Name"];
-                        TempData["Selected_Category_Name"] = a;
+                    var a = TempData["Selected_Category_Name"];
+                    TempData["Selected_Category_Name"] = a;
 
-                        <option>@category.Category_of_FoodName</option> 
- 
-/*                        <input type="hidden" asp-for="MenuDetailDTO.CategoryName_of_Food" />
-*/                    
+                    <option>@category.Category_of_FoodName</option>
+
+                    /*                        <input type="hidden" asp-for="MenuDetailDTO.CategoryName_of_Food" />
+                    */
                 }
             </select>
-                <span asp-validation-for="categorystringlist" class="text-danger"></span>
+                <span asp-validation-for="_categoryList" class="text-danger"></span>
         </div>
 
-            <!-- asp-for="Category_of_FoodDTO.Category_of_FoodName" asp-items="ViewBag.Category_of_FoodNames" 
-              
-            asp-for="foodid"  asp-items="Html" Html.GetEnumSelectList<Technosoft_Project.Enums.Status>() -->
+        <!-- asp-for="Category_of_FoodDTO.Category_of_FoodName" asp-items="ViewBag.Category_of_FoodNames"
 
-            <!-- asp-items="ViewBag.food_items" gerek klamadı-->
+        asp-for="foodid"  asp-items="Html" Html.GetEnumSelectList<Technosoft_Project.Enums.Status>() -->
+        <!-- asp-items="ViewBag.food_items" gerek klamadı-->
 
         <div class="col-md-3">
-                <select class="form-control" id="foodsofcategory" asp-for="foodstringlist" >
+                <select class="form-control" id="foodsofcategory" asp-for="_foodList">
 
-                    @if (Model.foodstringlist != null)
+                    @if (Model._foodList != null)
                 {
-                        @foreach (var foodNames in Model.foodstringlist)
-                        {
-                            
-
-                            <option></option>
-          
-                       }
+                        @foreach (var foodNames in Model._foodList)
+                    {
+                        <option></option>
+                    }
                 }
             </select>
-                <span asp-validation-for="foodstringlist" class="text-danger"></span>
+                <span asp-validation-for="_foodList" class="text-danger"></span>
         </div>
 
         <div class="col-md-6">
@@ -133,87 +106,99 @@ else
         </div>
 
 
-        </div>
+    </div>
 
-        <input class="form-control" type="hidden" asp-for="menu_id" />
-
-
+    <input class="form-control" type="hidden" asp-for="menu_id" />
     </form>
 
-    /*    TempData["messageCategory_of_Food"] = 4;
-        <a class="" asp-area="Admin" asp-controller="Menu" asp-action="Get_FoodsbyCategoryID_Ajax" asp-route-id="@TempData["messageCategory_of_Food"]">İptal</a>*/
 
 
-    /*
-     </form>*/
+<!--    
+        TempData["messageCategory_of_Food"] = 4;
+        <a class="" asp-area="Admin" asp-controller="Menu" asp-action="Get_FoodsbyCategoryID_Ajax" asp-route-id="TempData["messageCategory_of_Food"]">İptal</a>
+-->
 
 
-}
 
-<div>
-    @foreach (Category_of_FoodDTO category in Model.Categories_of_Menu_DTOs)
-    {
-        /*                        int Category_of_Food_status = (int)item.Status;  // asp-route-status="@(int)item.Status" olmuyor...*/
 
-        <h5>
-            @category.Category_of_FoodName
-        </h5>
+@if (Model.MenuDetailDTOs.Count != 0)
+{
+    <div>
+        @foreach (Category_of_FoodDTO category in Model.Categories_of_Menu_DTOs)
+        {
+            /*                        int Category_of_Food_status = (int)item.Status;  // asp-route-status="@(int)item.Status" olmuyor...*/
 
-        <div class="panel panel-primary">
-            <div class="panel panel-body">
-                <table class="table table-hover table-bordered table-responsive-lg" id="tab2" width="100%" border="0" cellspacing="0" cellpadding="100%">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>Index</th>
-                            <th class="position"><p>Yemek İsmi</p></th>
-                            <th class="position"><p>Ücret</p></th>
-                            <th class="position"><p>Resim</p></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <!--<dd class="position">
+            <h5>
+                @category.Category_of_FoodName
+            </h5>
+
+            <div class="panel panel-primary">
+                <div class="panel panel-body">
+                    <table class="table table-hover table-bordered table-responsive-lg" id="tab2" width="100%" border="0" cellspacing="0" cellpadding="100%">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Index</th>
+                                <th class="position"><p>Yemek İsmi</p></th>
+                                <th class="position"><p>Ücret</p></th>
+                                <th class="position"><p>Resim</p></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <!--<dd class="position">
 
                         Yemek İsmi
                         Ücret
                         Resim
 
-                    </dd> -->
-                    @foreach (var foods in Model.MenuDetailDTOs)
-                    {
-                        @if (foods.CategoryName_of_Food == category.Category_of_FoodName)
+                        </dd> -->
+                        @foreach (var foods in Model.MenuDetailDTOs)
                         {
-                            <tr>
-                                <td></td>
-                                <td class="position">
-                                    <p> @foods.FoodName</p>
-                                </td>
-                                <td class="position">
-                                    <p> @foods.FoodPrice</p>
-                                </td>
-                                <td class="position">
-                                    <p>
-                                        @if (foods.FoodPicture != null)
-                                        {
-                                            <img style="width:85px; height:50px" src="@foods.FoodPicture" />
-                                        }
-                                    </p>
-                                </td>
-                                <td class="btnposition">
-                                    @*<a asp-action="DeleteMenu" asp-controller="Menu" asp-route-id="@foods.ID" class="btn btn-danger">Sil</a>*@
+                            @if (foods.CategoryName_of_Food == category.Category_of_FoodName)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td class="position">
+                                        <p> @foods.FoodName</p>
+                                    </td>
+                                    <td class="position">
+                                        <p> @foods.FoodPrice</p>
+                                    </td>
+                                    <td class="position">
+                                        <p>
+                                            @if (foods.FoodPicture != null)
+                                            {
+                                                <img style="width:85px; height:50px" src="@foods.FoodPicture" />
+                                            }
+                                        </p>
+                                    </td>
+                                    <td class="btnposition">
+                                        @*<a asp-action="DeleteMenu" asp-controller="Menu" asp-route-id="@foods.ID" class="btn btn-danger">Sil</a>*@
 
-                                    <button class="btn btn-danger" id="deleteMenu" value="deleteMenuValue" data-id=@foods.ID>Sil</button>
-                                </td>
-                            </tr>
+                                        <button class="btn btn-danger" id="deleteMenu" value="deleteMenuValue" data-id=@foods.ID>Sil</button>
+                                    </td>
+                                </tr>
+                            }
+
                         }
-
-                    }
-                </table>
+                    </table>
+                </div>
             </div>
-        </div>
+        }
+    </div>
+}
 
-    }
-</div>
+else
+{
+    <br />
 
+    <div class="jumbotron" id="tab1" style="padding:20px;  background-color:lightgrey"> Menü boş !   </div>
+
+    <!--   BURASIIII DEĞİLLLL <input type="submit" id="btnIslemYap" value="İşlem Yap" />
+
+     <button class="btn btn-outline-success " id="addNewFood" value="addNewFoodValue">Ürün Eklemek için tıklayınız</button> -->
+
+
+}
 
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/alertify.min.js"></script>
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/alertify.min.css" />

@@ -39,25 +39,32 @@ namespace Technosoft_Project.Areas.Admin.Controllers
         }
 
         [Route("MenuDetailList")]
-        public async Task<IActionResult> MenuDetailList(int id, string menuName, int? categoryid)
+        public async Task<IActionResult> MenuDetailList(int id, string menuName/*, int? categoryid*/)
         {
             
             TempData["Menu_ID"] = id; // menuid
             TempData["Menu_Name"] = menuName;
             int menu_id = id;
 
-            IEnumerable<object> FoodsofMenu = await _imdm.Get_FoodsofMenu_Async(id);
-            IEnumerable<object> CategoriessofMenu = await _imdm.Get_CategoriesofMenu_Async(id); // Distinct edilmiş...
+            // Menü Yemekleri
+            IEnumerable<object> Menu_Foods = await _imdm.Get_FoodsofMenu_Async(id);
 
-            IEnumerable<Category_of_Food> CategoriessofAllFoods = await _icm.GetActivesAsync(); // All...
-                                                                                                // ViewBag.Category_of_FoodNames = new SelectList(CategoriessofAllFoods); // html kısmında select tag'ı kullanıldığı için SelectList kullanıldı
+            // Menü Kategorileri (Distinct edilmiş)
+            IEnumerable<object> Menu_Categories = await _imdm.Get_CategoriesofMenu_Async(id);
 
-            //int cid = 0;
+            // All category
+            IEnumerable<Category_of_Food> AllCategories = await _icm.GetActivesAsync(); 
+
 
             Dictionary<int, string> bos = new Dictionary<int, string>();
 
+            /*
+            
+            Dropdown list kısmında backend olmadı client tarafta append kullanıldı
             List<string> pdto = new List<string>();
             var result = new List<string>();
+
+           //int cid = 0; // categoryid nullable olduğu için cid kullanıldı... -->   FoodNames = categoryid == null ? bos : FoodList, burada patlıyor
 
             //if (categoryid != null)
             //{
@@ -69,12 +76,12 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             //{
             //    bos = null;
             //}
+            */
 
-
-            Category_of_FoodDTO cdto = new Category_of_FoodDTO();
-            //List<string> FoodList = new List<string>();
+            // Category_of_FoodDTO cdto = new Category_of_FoodDTO();
+            // List<string> FoodList = new List<string>();
           
-            //int cid = 0; // categoryid nullable olduğu için cid kullanıldı... -->   FoodNames = categoryid == null ? bos : FoodList, burada patlıyor
+
             //if (categoryid != null)
             //{
             //    IEnumerable<string> Category_of_FoodNames = await _ifm.GetActivesFoodNamesByCategory_of_FoodIDAsync((int)categoryid);
@@ -88,57 +95,25 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             //    bos = new List<string>() { "asdasd", "asdasdasd" };
             //    //           bos = new List<string>();    
             //    cid = 0;
-            //}
-
-        
-
-
-            // .Adapt<IEnumerable<Category_of_FoodDTO>>();
-            //Category_of_FoodVM cvm = new Category_of_FoodVM
-            //{
-            //    Category_of_FoodDTOs = CategoriessofAll.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(),
-
-            //};
-            IEnumerable<Food> AllFoods = await _ifm.GetActivesAsync();
-          
-            //IEnumerable<Food> FoodEnumerableList = null;
-
-            //List<FoodDTO> AllFoods2 = new List<FoodDTO>();
-            //AllFoods2 = fdtos.Adapt<IEnumerable<FoodDTO>>().ToList();
-            //int denemesil = 0;
-
-            //IEnumerable<Food> AllFoods2 = null;
-            //if (categoryid != null)
-            //{
-            //     AllFoods2 = await _ifm.GetActivesFoodsByCategory_of_FoodIDAsync(1);
-
-            //    cid = (int)categoryid;
-
-            //}
-            //else
-            //{
-            //    AllFoods2 = await _ifm.GetActivesFoodsByCategory_of_FoodIDAsync(2);
-            //    cid = 0;
-            //}
+            //}      
+   
 
 
             MenuDetailVM mvm = new MenuDetailVM
             {
-                MenuDetailDTOs = FoodsofMenu.Adapt<IEnumerable<MenuDetailDTO>>().ToList(),
-                Categories_of_Menu_DTOs = CategoriessofMenu.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(), //  List<Category_of_FoodDTO> 
+                MenuDetailDTOs = Menu_Foods.Adapt<IEnumerable<MenuDetailDTO>>().ToList(),
 
-                Categories_of_AllFoods_DTOs = CategoriessofAllFoods.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(),
+                Categories_of_Menu_DTOs = Menu_Categories.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(), 
+
+                Categories_of_AllFoods_DTOs = AllCategories.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(),
                 menu_id = id,
 
-                // 654654544545   SDASDAS SelectedCategory =  cdto,
                 // FoodNames = cid == 0 ? bos : pdto,
-                //FoodNames = bos,
-                // Foods_of_Categeriesvvv = AllFoods2.Adapt<IEnumerable<FoodDTO>>().ToList(), // .Adapt<List<FoodDTO>>().ToList()
-                //AllFoods_ = AllFoods.Adapt<IEnumerable<FoodDTO>>().ToList()
-
+                // FoodNames = bos
             };
 
            // HttpContext.Session.SetObject("manipulatedData", null);
+
             return View(mvm);
         }
 
@@ -149,7 +124,6 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             // async Task<IActionResult>
 
 
-
             //IEnumerable<Food> FoodEnumerableList = await _ifm.GetActivesFoodsByCategory_of_FoodIDAsync(id);
 
             //FoodVM fvm_post = new FoodVM
@@ -157,27 +131,26 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             //    FoodDTOs = FoodEnumerableList.Adapt<IEnumerable<FoodDTO>>().ToList()            
             //};
 
-            //TempData["HttpContext"] = "valid";
+            // TempData["HttpContext"] = "valid";
             // HttpContext.Session.SetObject("manipulatedData", fvm_post.FoodDTOs);
 
             // Category_of_Food selectedCategory = await _icm.FirstOrDefault(x => x.ID == id);
-            //HttpContext.Session.SetObject("md2", selectedCategory);
+            // HttpContext.Session.SetObject("md2", selectedCategory);
 
             List<FoodDTO> FoodList = new List<FoodDTO>();
-
  
            // Category_of_Food category =  await _icm.GetByIdAsync(id);
            TempData["Selected_Category_Name"] = name;
 
-            IEnumerable<object> Category_of_FoodNames = await _ifm.GetActivesFoodNamesByCategory_of_FoodIDAsync((int)id);
+           // Kategorinin yemekleri
+           IEnumerable<Food> Category_Foods = await _ifm.GetFoodsByCategoryID_Async((int)id);
                 
-            FoodList = Category_of_FoodNames.Adapt<IEnumerable<FoodDTO>>().ToList();
-
-
-
+           FoodList = Category_Foods.Adapt<IEnumerable<FoodDTO>>().ToList();
+            // GetFoodsByCategoryID_Async
+            // GetActivesFoodsByCategory_of_FoodIDAsync
 
             Dictionary<int, string> food_items = new Dictionary<int, string>();
-            //List<string> food_items = new List<string>();
+           //List<string> food_items = new List<string>();
 
 
             for (int i = 0; i < FoodList.Count; i++)
@@ -187,7 +160,6 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
             ///////////////////////////////////////////////
             //string menunamed = (string)TempData["Menu_Name"];
-            // int a = 1;
             //return View("MenuDetailList", mvm);
             // return RedirectToAction("MenuDetailList", new { id = (int)TempData["Menu_ID"], menuName = menunamed, categoryid = id });
 
