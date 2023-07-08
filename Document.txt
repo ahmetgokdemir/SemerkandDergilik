@@ -1,5 +1,4 @@
 
-ientity.cs ve identity_models tablaloarında status (aktif pasif) olacak mı?
 
 
 KOD TESTLERİ VE DÜZENLEMESİ
@@ -8,19 +7,22 @@ repository kontrol et
 dbo.Menu Detayi da yemek fiyatına gerek yok
 menudetailvm de gereksizleri sil
 
+ientity.cs ve identity_models tablaloarında status (aktif pasif) olacak mı?
 
-
-cntrl + k + u comment   /////  cntrl + k + c comment 
 
 -----------------------------------------------------------------------------------
 
-NB-230301\\MSSQLSERVER22 iş 
-LAPTOP-PEF0Q19Q ev
+iş server name: NB-230301\\MSSQLSERVER22 
+ev server name: ahmet_gokdemir ve LAPTOP-PEF0Q19Q 
+ 
+username: sa
+password: Mssqlserver_3423 / ctz*9913
+
 
 Data Source=NB-230301\\MSSQLSERVER22 ---> sql kısmından farklı 1 tane yerine 2 tane \  
 
-migration yaptım ifnotexistdb yapmamışım
-------------------------------------------
+-----------------------------------------------------------------------------------
+
 
 mamage user secrets'i eklemeyi unutma (secret.json dosyasına) ----> FacebookOptions Facebook Google Microsoft
 {
@@ -33,16 +35,11 @@ mamage user secrets'i eklemeyi unutma (secret.json dosyasına) ----> FacebookOpti
   "Authentication:Microsoft:ClientID": "588387496267633",
   "Authentication:Microsoft:ClientSecret": "73c40dd7d1e6b50927a369da27d83cf4"
 
-}d
+}
+
 
 -----------------------------------------------------------------------------------
-
-
-
-
-
-
-
+migration yaptım ifnotexistdb yapmamışım
 
 
 Existing/mevcut bir database'e yeni bir tablo veya tablo için property eklersek 
@@ -53,6 +50,21 @@ BU ARADA add_blog_table.cs YORUMA ALINMADI!!!!
 
 migration:	add-migration FirstMigration ,,,, PM> add-migration Menu_and_MenuDetail_Entities_added
 			update-database
+
+
+
+------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
 
 principalColumn: "Primary_ID",
 
