@@ -11,9 +11,9 @@ namespace Project.BLL.ManagerServices.Abstracts
 {
     public interface IFoodManager : IManager<Food>
     {
-        Task<IEnumerable<Food>> GetActivesFoodsByCategory_of_FoodIDAsync(int Category_of_Food_id);
+        Task<IEnumerable<Food>> GetFoodsByCategoryID_Async(int categoryid);
         Task<Food> GetFoodByIdwithCategory_of_FoodValueAsync(int Food_id);
-        Task<IEnumerable<FoodDto_Repo>> GetActivesFoodNamesByCategory_of_FoodIDAsync(int Category_of_Food_id);
+        //Task<IEnumerable<FoodDto_Repo>> GetActivesFoodNamesByCategory_of_FoodIDAsync(int Category_of_Food_id);
 
     }
 

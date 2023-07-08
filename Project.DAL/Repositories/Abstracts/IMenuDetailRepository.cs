@@ -10,7 +10,7 @@ namespace Project.DAL.Repositories.Abstracts
 {
     public interface IMenuDetailRepository : IRepository<MenuDetail>
     {
-        IQueryable<MenuDetail_Repo> Get_FoodsofMenu_Async(int Menu_ID);
+        IQueryable<object> Get_FoodsofMenu_Async(int Menu_ID);
         IQueryable<CategoriesOfMenu_Repo> Get_CategoriesofMenu_Async(int Menu_ID);
 
     }
