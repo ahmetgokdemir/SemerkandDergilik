@@ -1,4 +1,7 @@
 
+þifre deðiþtirmede show password'ü koy...
+jquery ekleme (wwwroot)...
+kiþi register olunca onaylama yapma
 
 
 KOD TESTLERÝ VE DÜZENLEMESÝ
@@ -29,8 +32,8 @@ menü içeriidnde hiç yemek yoksa durumuna da yap    +++
 
 -----------------------------------------------------------------------------------
 
-iþ server name: NB-230301\\MSSQLSERVER22 
-ev server name: ahmet_gokdemir ve LAPTOP-PEF0Q19Q 
+iþ server name: NB-230301\\MSSQLSERVER22  ve ctz*9913
+ev server name: ahmet_gokdemir ve LAPTOP-PEF0Q19Q  ve Mssqlserver_3423
  
 username: sa
 password: Mssqlserver_3423 / ctz*9913

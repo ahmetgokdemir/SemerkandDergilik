@@ -26,7 +26,7 @@ namespace Project.DAL.Repositories.Concretes
         }
 
         // Kategoriye göre Ürünler.. Include
-        public IQueryable<Food> GetFoodsByCategoryID_Async(int categoryid)
+        public IQueryable<Food> Get_FoodsByCategoryID_Async(int categoryid)
         {
             return _context.Set<Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.Category_of_FoodID == categoryid).AsQueryable();
 

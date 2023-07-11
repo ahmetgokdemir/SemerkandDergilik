@@ -143,7 +143,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
            TempData["Selected_Category_Name"] = name;
 
            // Kategorinin yemekleri
-           IEnumerable<Food> Category_Foods = await _ifm.GetFoodsByCategoryID_Async((int)id);
+           IEnumerable<Food> Category_Foods = await _ifm.Get_FoodsByCategoryID_Async((int)id);
                 
            FoodList = Category_Foods.Adapt<IEnumerable<FoodDTO>>().ToList();
             // GetFoodsByCategoryID_Async
@@ -163,7 +163,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             //return View("MenuDetailList", mvm);
             // return RedirectToAction("MenuDetailList", new { id = (int)TempData["Menu_ID"], menuName = menunamed, categoryid = id });
 
-            ViewBag.food_items = new SelectList(food_items.Keys);
+            ViewBag.food_items_IDs = new SelectList(food_items.Keys);
 
             return food_items;
 
@@ -182,16 +182,24 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             ModelState.Remove("Categories_of_AllFoods_DTOs");
  ;
 
-            // ModelState.Remove("Categories_of_Menu_DTOs");
-
             //mvm_post.MenuDetailDTO.CategoryName_of_Food = TempData["Selected_Category_Name"].ToString();
             //mvm_post.MenuDetailDTO.MenuID = (int) TempData["Menu_ID"];
-            //mvm_post.MenuDetailDTO.FoodName = "";
+            //mvm_post.MenuDetailDTO.FoodID = 
             if (ModelState.IsValid)
             {
-                int id = 0;
-                // mvm_post.foodstringlist
+                //string selected_food_name = mvm_post._foodList.Values.ToList()[0];
+                //int selected_food_ID = mvm_post._foodList.Keys.ToList()[0];
+
+                // ToString gerek var mı?
+                int selected_foodID = mvm_post._foodList_ID;
+                string category_Name = mvm_post._categoryList[0].ToString();
+                int menu_ID = mvm_post.menu_id;
+
+                bool food_exists = await _imdm.IsExist_FoodinMenu_Async(selected_foodID, menu_ID);
+
+                bool sil = food_exists;
             }
+
             return null;
 
         }

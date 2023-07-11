@@ -63,7 +63,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
             Category_of_Food c = await _icm.FirstOrDefault(x => x.ID == Category_of_Food_id);
 
-            IEnumerable<Food> FoodEnumerableList = await _ipm.GetFoodsByCategoryID_Async(Category_of_Food_id);
+            IEnumerable<Food> FoodEnumerableList = await _ipm.Get_FoodsByCategoryID_Async(Category_of_Food_id);
 
 
 

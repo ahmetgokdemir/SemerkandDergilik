@@ -28,9 +28,9 @@ namespace Project.BLL.ManagerServices.Concretes
         //    _prep = prep;
         //} 
 
-        public async Task<IEnumerable<Food>> GetFoodsByCategoryID_Async(int categoryid)
+        public async Task<IEnumerable<Food>> Get_FoodsByCategoryID_Async(int categoryid)
         {
-            var Foods = await _prep.GetFoodsByCategoryID_Async(categoryid).ToListAsync(); // convert ıqueryable to IEnumerable
+            var Foods = await _prep.Get_FoodsByCategoryID_Async(categoryid).ToListAsync(); // convert ıqueryable to IEnumerable
 
             return Foods;
         }

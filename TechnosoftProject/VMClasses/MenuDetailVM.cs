@@ -1,4 +1,5 @@
 ﻿using Project.ENTITIES.Models;
+using System.ComponentModel.DataAnnotations;
 using Technosoft_Project.ViewModels;
 
 namespace Technosoft_Project.VMClasses
@@ -18,8 +19,13 @@ namespace Technosoft_Project.VMClasses
         // public int foodid { get; set; }
         // public FoodDTO foodDTO { get; set; }
 
-        public List<string> _foodList { get; set; }
+        [Required(ErrorMessage = "Yemek seçiniz.")]
+        //public Dictionary<int,string> _foodList { get; set; }
+        public int _foodList_ID { get; set; }
+
+        [Required(ErrorMessage = "Kategori seçiniz.")]
         public List<string> _categoryList { get; set; } 
+
         public int menu_id { get; set; }
 
     }

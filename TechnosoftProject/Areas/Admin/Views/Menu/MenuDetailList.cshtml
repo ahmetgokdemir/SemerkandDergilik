@@ -44,8 +44,8 @@
 <hr class="loader" />
 
 @{
-var menuName = TempData["Menu_Name"].ToString();
-TempData["Menu_Name"] = menuName;
+    var menuName = TempData["Menu_Name"].ToString();
+    TempData["Menu_Name"] = menuName;
 }
 
 <h2>
@@ -55,15 +55,15 @@ TempData["Menu_Name"] = menuName;
 <br />
 
 
-    <form asp-action="AddFoodtoMenu" method="post">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form asp-action="AddFoodtoMenu" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="row">
 
         <div class="col-md-3">
             <!--asp-for="SelectedCategory"-->
             <!-- onchange="SelectCategoryItem()" -->
-                <select class="form-control" id="selectforcategory" asp-for="_categoryList">
+            <select class="form-control" id="selectforcategory" asp-for="_categoryList">
 
                 <option>Lütfen bir kategori seçiniz.</option>
                 @foreach (Category_of_FoodDTO category in Model.Categories_of_AllFoods_DTOs)
@@ -71,13 +71,13 @@ TempData["Menu_Name"] = menuName;
                     var a = TempData["Selected_Category_Name"];
                     TempData["Selected_Category_Name"] = a;
 
-                    <option>@category.Category_of_FoodName</option>
+                    <option >@category.Category_of_FoodName</option>
 
                     /*                        <input type="hidden" asp-for="MenuDetailDTO.CategoryName_of_Food" />
                     */
                 }
             </select>
-                <span asp-validation-for="_categoryList" class="text-danger"></span>
+            <span asp-validation-for="_categoryList" class="text-danger"></span>
         </div>
 
         <!-- asp-for="Category_of_FoodDTO.Category_of_FoodName" asp-items="ViewBag.Category_of_FoodNames"
@@ -86,17 +86,18 @@ TempData["Menu_Name"] = menuName;
         <!-- asp-items="ViewBag.food_items" gerek klamadı-->
 
         <div class="col-md-3">
-                <select class="form-control" id="foodsofcategory" asp-for="_foodList">
+            <select class="form-control" id="foodsofcategory" asp-for="_foodList_ID">
 
-                    @if (Model._foodList != null)
+/*                if (Model._foodList != null)
                 {
-                        @foreach (var foodNames in Model._foodList)
+                    foreach (var foodNames in Model._foodList)
                     {
-                        <option></option>
+
+                        <!--<option itemid="foodNames.Key"></option>-->
                     }
-                }
+                }*/
             </select>
-                <span asp-validation-for="_foodList" class="text-danger"></span>
+            <span asp-validation-for="_foodList_ID" class="text-danger"></span>
         </div>
 
         <div class="col-md-6">
@@ -109,18 +110,14 @@ TempData["Menu_Name"] = menuName;
     </div>
 
     <input class="form-control" type="hidden" asp-for="menu_id" />
-    </form>
+</form>
 
 
 
-<!--    
+<!--
         TempData["messageCategory_of_Food"] = 4;
         <a class="" asp-area="Admin" asp-controller="Menu" asp-action="Get_FoodsbyCategoryID_Ajax" asp-route-id="TempData["messageCategory_of_Food"]">İptal</a>
 -->
-
-
-
-
 @if (Model.MenuDetailDTOs.Count != 0)
 {
     <div>
@@ -196,8 +193,6 @@ else
     <!--   BURASIIII DEĞİLLLL <input type="submit" id="btnIslemYap" value="İşlem Yap" />
 
      <button class="btn btn-outline-success " id="addNewFood" value="addNewFoodValue">Ürün Eklemek için tıklayınız</button> -->
-
-
 }
 
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/alertify.min.js"></script>
@@ -344,9 +339,9 @@ else
             var selectedCategoryid = $("#selectforcategory").prop('selectedIndex');
             var selectedCategoryName = $('#selectforcategory :selected').text();
 
-            var ddlCategories = $('#foodsofcategory');
-            ddlCategories.empty();
-            ddlCategories.append($("<option></option>").val('').html('Lütfen yemek seçiniz.'));
+            var ddlFoods = $('#foodsofcategory');
+            ddlFoods.empty();
+            ddlFoods.append($("<option></option>").val('').html('Lütfen yemek seçiniz.'));
 
             $.ajax({
 
@@ -360,8 +355,13 @@ else
                 success: function (data) {
 
                     /*APENDDDDDDDDD*/
-                    $.each(data, function (i, categories) {
-                        ddlCategories.append($("<option></option>").html(categories));
+/*                    $.each(data, function (i, foods) {
+                        ddlFoods.append($("<option></option>").html(foods));
+                    });*/
+
+                    $.each(data, function (index, foods) {
+                        ddlFoods.append($("<option></option>").val(index).html(foods));
+                        /* index --> _foodList_ID */
                     });
 
                 }

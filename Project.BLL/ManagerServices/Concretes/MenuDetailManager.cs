@@ -37,5 +37,12 @@ namespace Project.BLL.ManagerServices.Concretes
 
             return Categories;
         }
+
+        public async Task<bool> IsExist_FoodinMenu_Async(int selected_foodID, int menu_ID)
+        {
+            bool food_exists = await _mdrep.IsExist_FoodinMenu_Repo_Async(selected_foodID, menu_ID);//.ToListAsync();
+
+            return food_exists;
+        }
     }
 }

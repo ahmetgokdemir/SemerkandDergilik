@@ -70,6 +70,12 @@ namespace Project.DAL.Repositories.Concretes
             return com_list;
         }
 
+        public async Task<bool> IsExist_FoodinMenu_Repo_Async(int selected_foodID, int menu_ID)
+        {
+            bool food_exists = _context.Set<MenuDetail>().Any(x => x.MenuID == menu_ID && x.FoodID == selected_foodID);//.ToListAsync();
+
+            return food_exists;
+        }
 
     }
 }
