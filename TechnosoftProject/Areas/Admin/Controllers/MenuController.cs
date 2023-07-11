@@ -80,7 +80,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
             // Category_of_FoodDTO cdto = new Category_of_FoodDTO();
             // List<string> FoodList = new List<string>();
-          
+
 
             //if (categoryid != null)
             //{
@@ -96,7 +96,8 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             //    //           bos = new List<string>();    
             //    cid = 0;
             //}      
-   
+
+            
 
 
             MenuDetailVM mvm = new MenuDetailVM
@@ -112,7 +113,13 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 // FoodNames = bos
             };
 
-           // HttpContext.Session.SetObject("manipulatedData", null);
+
+            HttpContext.Session.SetObject("manipulatedData", mvm.MenuDetailDTOs);
+            HttpContext.Session.SetObject("manipulatedData2", mvm.Categories_of_Menu_DTOs);
+            HttpContext.Session.SetObject("manipulatedData3", mvm.Categories_of_AllFoods_DTOs);
+            HttpContext.Session.SetObject("manipulatedData4", mvm.menu_id);
+            // HttpContext.Session.SetObject("manipulatedData", mvm.Categories_of_Menu_DTOs);
+
 
             return View(mvm);
         }
@@ -190,18 +197,47 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 //string selected_food_name = mvm_post._foodList.Values.ToList()[0];
                 //int selected_food_ID = mvm_post._foodList.Keys.ToList()[0];
 
-                // ToString gerek var mı?
-                int selected_foodID = mvm_post._foodList_ID;
+                int selected_foodID = mvm_post._foodList_ID[0];
                 string category_Name = mvm_post._categoryList[0].ToString();
                 int menu_ID = mvm_post.menu_id;
 
                 bool food_exists = await _imdm.IsExist_FoodinMenu_Async(selected_foodID, menu_ID);
 
-                bool sil = food_exists;
+                if (!food_exists)
+                {
+                    //add selected food
+                    return null;
+                }
+
+                else
+                {
+                    // selected food all ready on menu 
+                    ModelState.AddModelError("", "Seçili yemek menüde bulunmaktadır! Başka bir ürün seçiniz."); 
+                    return null;
+
+                }
             }
 
-            return null;
+            ModelState.AddModelError("", "Kategori ve yemek tercihi yapınız...");
 
+            MenuDetailVM mvm = new MenuDetailVM
+            {
+                //MenuDetailDTOs = Menu_Foods.Adapt<IEnumerable<MenuDetailDTO>>().ToList(),
+
+                //Categories_of_Menu_DTOs = Menu_Categories.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(),
+
+                //Categories_of_AllFoods_DTOs = AllCategories.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(),
+                _foodList_ID = mvm_post._foodList_ID,
+                _categoryList = mvm_post._categoryList,
+                menu_id = mvm_post.menu_id,
+
+                // FoodNames = cid == 0 ? bos : pdto,
+                // FoodNames = bos
+            };
+
+            // HttpContext.Session.SetObject("manipulatedData", null);
+
+            return View("MenuDetailList", mvm);
         }
 
 

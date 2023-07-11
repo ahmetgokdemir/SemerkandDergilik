@@ -21,7 +21,7 @@ namespace Technosoft_Project.VMClasses
 
         [Required(ErrorMessage = "Yemek seçiniz.")]
         //public Dictionary<int,string> _foodList { get; set; }
-        public int _foodList_ID { get; set; }
+        public List<int> _foodList_ID { get; set; }
 
         [Required(ErrorMessage = "Kategori seçiniz.")]
         public List<string> _categoryList { get; set; } 

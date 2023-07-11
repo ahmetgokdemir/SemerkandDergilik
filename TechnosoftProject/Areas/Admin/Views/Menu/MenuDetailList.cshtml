@@ -88,14 +88,14 @@
         <div class="col-md-3">
             <select class="form-control" id="foodsofcategory" asp-for="_foodList_ID">
 
-/*                if (Model._foodList != null)
+                @if (Model._foodList_ID != null)
                 {
-                    foreach (var foodNames in Model._foodList)
-                    {
+                    @foreach (var foodNames in Model._foodList_ID)
+                {
 
-                        <!--<option itemid="foodNames.Key"></option>-->
-                    }
-                }*/
+                      <option></option>
+                }
+               }
             </select>
             <span asp-validation-for="_foodList_ID" class="text-danger"></span>
         </div>
