@@ -13,6 +13,8 @@ namespace Project.DAL.Repositories.Abstracts
         IQueryable<object> Get_FoodsofMenu_Async(int Menu_ID);
         IQueryable<CategoriesOfMenu_Repo> Get_CategoriesofMenu_Async(int Menu_ID);
         Task<bool> IsExist_FoodinMenu_Repo_Async(int selected_foodID, int menu_ID);
+        void Insert_FoodonMenu_Repo_Async(int selected_foodID, string category_Name, int menu_ID);
+
 
     }
 }

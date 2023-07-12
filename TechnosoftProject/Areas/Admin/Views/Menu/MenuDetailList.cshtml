@@ -38,10 +38,12 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 -->
 <!-- loader class'ın; display'i none olarak set edildi! -->
-<div class="spinner-border loader" role="status">
+
+
+<!--<div class="spinner-border loader" role="status">
     <span class="sr-only">Loading...</span>
 </div>
-<hr class="loader" />
+<hr class="loader" />-->
 
 @{
     var menuName = TempData["Menu_Name"].ToString();
@@ -54,7 +56,7 @@
 <hr />
 <br />
 
-
+<div class="row">
 <form asp-action="AddFoodtoMenu" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -112,7 +114,7 @@
     <input class="form-control" type="hidden" asp-for="menu_id" />
 </form>
 
-
+</div>
 
 <!--
         TempData["messageCategory_of_Food"] = 4;
@@ -200,12 +202,12 @@ else
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/themes/default.min.css" />
 
 
-@if (TempData["messageCategory_of_Food"] != null) // konrol yapılmazsa messageCategory_of_Food null olduğu zaman .ToString() 'de hata verir..
+@if (TempData["messageMenu"] != null) // konrol yapılmazsa messageCategory_of_Food null olduğu zaman .ToString() 'de hata verir..
 {
-    @if (TempData["messageCategory_of_Food"].ToString() == "Kategori güncellendi")
+    @if (TempData["messageMenu"].ToString() == "Yemek menüye eklendi")
     {
         <script>
-            alertify.warning("Kategori güncellendi");
+            alertify.warning("Yemek menüye eklendi");
         </script>
     }
     else if (TempData["messageCategory_of_Food"].ToString() == "Kategori silindi")

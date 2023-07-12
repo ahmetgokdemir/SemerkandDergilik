@@ -13,6 +13,7 @@ namespace Project.BLL.ManagerServices.Abstracts
         Task<IEnumerable<object>> Get_FoodsofMenu_Async(int Menu_ID);
         Task<IEnumerable<CategoriesOfMenu_Repo>> Get_CategoriesofMenu_Async(int Menu_ID);
         Task<bool> IsExist_FoodinMenu_Async(int selected_foodID, int menu_ID);
+        void Insert_FoodonMenu_Async(int selected_foodID, string category_Name, int menu_ID);
 
 
     }

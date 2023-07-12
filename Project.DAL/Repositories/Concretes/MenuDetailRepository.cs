@@ -77,5 +77,16 @@ namespace Project.DAL.Repositories.Concretes
             return food_exists;
         }
 
+        public void Insert_FoodonMenu_Repo_Async(int selected_foodID, string category_Name, int menu_ID)
+        {
+
+            MenuDetail menuDetail = new MenuDetail();
+            menuDetail.MenuID = menu_ID;
+            menuDetail.FoodID = selected_foodID;
+            menuDetail.CategoryName_of_Food = category_Name;
+
+            _context.Set<MenuDetail>().AddAsync(menuDetail);
+
+        }
     }
 }

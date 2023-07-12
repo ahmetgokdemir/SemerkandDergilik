@@ -56,7 +56,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             IEnumerable<Category_of_Food> AllCategories = await _icm.GetActivesAsync(); 
 
 
-            Dictionary<int, string> bos = new Dictionary<int, string>();
+            // Dictionary<int, string> bos = new Dictionary<int, string>();
 
             /*
             
@@ -179,6 +179,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
         // Add Food to Menu
         [Route("AddFoodtoMenu")]
+        [HttpPost]
         public async Task<IActionResult> AddFoodtoMenu(MenuDetailVM mvm_post)
         {
             ModelState.Remove("MenuDetailDTOs");
@@ -187,7 +188,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             ModelState.Remove("JavascriptToRun");
             ModelState.Remove("Categories_of_Menu_DTOs");
             ModelState.Remove("Categories_of_AllFoods_DTOs");
- ;
+ 
 
             //mvm_post.MenuDetailDTO.CategoryName_of_Food = TempData["Selected_Category_Name"].ToString();
             //mvm_post.MenuDetailDTO.MenuID = (int) TempData["Menu_ID"];
@@ -203,17 +204,49 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
                 bool food_exists = await _imdm.IsExist_FoodinMenu_Async(selected_foodID, menu_ID);
 
+                // food not exists on the menu
                 if (!food_exists)
                 {
                     //add selected food
-                    return null;
+
+                    // bool food_eASDxists = await _imdm.Insert_FoodonMenu_Async(selected_foodID, category_Name, menu_ID);
+
+                    /*
+                        await _ipm.AddAsync(prd);
+                        TempData["messageFood"] = "Ürün eklendi";                     
+                    */
+
+                    /* MealRequest mr = new MealRequest();
+                        mr.ConsumeCount = DerivedCompany.employeeCount;
+                        mr.DerivedCompanyID = DerivedCompany.ID;
+                        mr.ModifiedDate = DateTime.Today.AddDays(-1);
+                        _mrRep.Add(mr);
+
+
+                        TempData["mesaj"] = "Veri eklendi";
+                        return RedirectToAction("DerivedCompanyList", new { baseCompId = baseCompId });
+                    */
+
+                    MenuDetail menuDetail = new MenuDetail();
+                    menuDetail.MenuID = menu_ID;
+                    menuDetail.FoodID = selected_foodID;
+                    menuDetail.CategoryName_of_Food = category_Name;
+
+                    await _imdm.AddAsync(menuDetail);
+
+                    // _context.Set<MenuDetail>().AddAsync(menuDetail);
+
+                    TempData["messageMenu"] = "Yemek menüye eklendi";
+ 
+                    return RedirectToAction("MenuDetailList", new { id = menu_ID, menuName = TempData["Menu_Name"].ToString() });  
+
                 }
 
                 else
                 {
                     // selected food all ready on menu 
-                    ModelState.AddModelError("", "Seçili yemek menüde bulunmaktadır! Başka bir ürün seçiniz."); 
-                    return null;
+                    ModelState.AddModelError("", "Seçili yemek menüde bulunmaktadır! Başka bir ürün seçiniz.");
+                    return RedirectToAction("MenuDetailList", new { id = menu_ID, menuName = TempData["Menu_Name"].ToString() });
 
                 }
             }

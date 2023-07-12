@@ -44,5 +44,10 @@ namespace Project.BLL.ManagerServices.Concretes
 
             return food_exists;
         }
+
+        public void Insert_FoodonMenu_Async(int selected_foodID, string category_Name, int menu_ID)
+        {
+            _mdrep.Insert_FoodonMenu_Repo_Async(selected_foodID, category_Name, menu_ID);//.ToListAsync();
+        }
     }
 }
