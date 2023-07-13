@@ -107,10 +107,9 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 Categories_of_Menu_DTOs = Menu_Categories.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(), 
 
                 Categories_of_AllFoods_DTOs = AllCategories.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(),
-                menu_id = id,
 
-                // FoodNames = cid == 0 ? bos : pdto,
-                // FoodNames = bos
+                menu_id = id
+
             };
 
 
@@ -203,26 +202,6 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 // food not exists on the menu
                 if (!food_exists)
                 {
-                    //add selected food
-
-                    // bool food_eASDxists = await _imdm.Insert_FoodonMenu_Async(selected_foodID, category_Name, menu_ID);
-
-                    /*
-                        await _ipm.AddAsync(prd);
-                        TempData["messageFood"] = "Ürün eklendi";                     
-                    */
-
-                    /* MealRequest mr = new MealRequest();
-                        mr.ConsumeCount = DerivedCompany.employeeCount;
-                        mr.DerivedCompanyID = DerivedCompany.ID;
-                        mr.ModifiedDate = DateTime.Today.AddDays(-1);
-                        _mrRep.Add(mr);
-
-
-                        TempData["mesaj"] = "Veri eklendi";
-                        return RedirectToAction("DerivedCompanyList", new { baseCompId = baseCompId });
-                    */
-
                     MenuDetail menuDetail = new MenuDetail();
                     menuDetail.MenuID = menu_ID;
                     menuDetail.FoodID = selected_foodID;
@@ -237,19 +216,39 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                     return RedirectToAction("MenuDetailList", new { id = menu_ID, menuName = TempData["Menu_Name"].ToString() });  
 
                 }
-
                 else
                 {
                     // selected food all ready on menu 
                     ModelState.AddModelError("", "Seçili yemek menüde bulunmaktadır! Başka bir ürün seçiniz.");
-                    return RedirectToAction("MenuDetailList", new { id = menu_ID, menuName = TempData["Menu_Name"].ToString() });
+
+
+                    MenuDetailVM _mvm_allreadyexist = new MenuDetailVM
+                    {
+                       MenuDetailDTOs = HttpContext.Session.GetObject<List<MenuDetailDTO>>("manipulatedData"),
+
+                    //MenuDetailDTOs = Menu_Foods.Adapt<IEnumerable<MenuDetailDTO>>().ToList(),
+
+                        Categories_of_Menu_DTOs = HttpContext.Session.GetObject<List<Category_of_FoodDTO>>("manipulatedData2"),
+
+                        Categories_of_AllFoods_DTOs = HttpContext.Session.GetObject<List<Category_of_FoodDTO>>("manipulatedData3"),
+
+                        // _foodList_ID = mvm_post._foodList_ID,
+
+                        _categoryList = mvm_post._categoryList,
+ 
+                        menu_id = Convert.ToInt32(HttpContext.Session.GetObject<string>("manipulatedData4"))
+                    };
+
+                    int sil = 0;
+
+                    return View("MenuDetailList", _mvm_allreadyexist);
 
                 }
             }
 
             ModelState.AddModelError("", "Kategori ve yemek tercihi yapınız...");
 
-            MenuDetailVM mvm = new MenuDetailVM
+            MenuDetailVM _mvm_notselect = new MenuDetailVM
             {
                 //MenuDetailDTOs = Menu_Foods.Adapt<IEnumerable<MenuDetailDTO>>().ToList(),
 
@@ -266,7 +265,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
             // HttpContext.Session.SetObject("manipulatedData", null);
 
-            return View("MenuDetailList", mvm);
+            return View("MenuDetailList", _mvm_notselect);
         }
 
 

@@ -13,14 +13,7 @@ namespace Technosoft_Project.VMClasses
         public List<Category_of_FoodDTO> Categories_of_AllFoods_DTOs { get; set; }
 
 
-        // public Category_of_FoodDTO SelectedCategory { get; set; }        
-        // public Dictionary<int, string> FoodNames { get; set; }
-        // public List<int> FoodsID { get; set; }
-        // public int foodid { get; set; }
-        // public FoodDTO foodDTO { get; set; }
-
         [Required(ErrorMessage = "Yemek seçiniz.")]
-        //public Dictionary<int,string> _foodList { get; set; }
         public List<int> _foodList_ID { get; set; }
 
         [Required(ErrorMessage = "Kategori seçiniz.")]

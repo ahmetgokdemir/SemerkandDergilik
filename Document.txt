@@ -1,16 +1,5 @@
 
-þifre deðiþtirmede show password'ü koy...
-jquery ekleme (wwwroot)...
-kiþi register olunca onaylama yapma
-
-
-KOD TESTLERÝ VE DÜZENLEMESÝ
-isimlere standart getir...
-anlamlý isimler ver 
-repository kontrol et
-menudetailvm de gereksizleri sil
-
-ientity.cs ve identity_models tablaloarýnda status (aktif pasif) olacak mý?
+ddlFoods.append($("<option></option>").val(index).html(foods));
 
 1
 kategory ve yemek selection/dropdownlistler için 
@@ -18,13 +7,20 @@ kategory ve yemek selection/dropdownlistler için
 Client Side Validation & Server Side Validation (Backend Validation) 
 
 
-4 List olmasý gerekmeyenleri düzelt
-        public List<string> foodstringlist { get; set; }
-        public List<string> categorystringlist { get; set; } 
+Testler:
+KOD TESTLERÝ VE DÜZENLEMESÝ
+isimlere standart getir...
+repository kontrol et
 
+Sonra:
+* þifre deðiþtirmede show password'ü koy...
+* jquery ekleme (wwwroot)...
+* kiþi register olunca onaylama yapma
+* ientity.cs ve identity_models tablaloarýnda status (aktif pasif) olacak mý?
 
 
 -----------------------------------------------------------------------------------
+
 
 iþ server name: NB-230301\\MSSQLSERVER22  ve ctz*9913
 ev server name: ahmet_gokdemir ve LAPTOP-PEF0Q19Q  ve Mssqlserver_3423
@@ -68,15 +64,6 @@ migration:	add-migration FirstMigration ,,,, PM> add-migration Menu_and_MenuDeta
 
 
 ------------------------------------------
-
-
-
-
-
-
-
-
-
 
 
 
