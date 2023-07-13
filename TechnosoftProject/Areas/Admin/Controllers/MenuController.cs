@@ -248,24 +248,24 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
             ModelState.AddModelError("", "Kategori ve yemek tercihi yapınız...");
 
-            MenuDetailVM _mvm_notselect = new MenuDetailVM
+            MenuDetailVM _mvm_failedvalidation = new MenuDetailVM
             {
+                MenuDetailDTOs = HttpContext.Session.GetObject<List<MenuDetailDTO>>("manipulatedData"),
+
                 //MenuDetailDTOs = Menu_Foods.Adapt<IEnumerable<MenuDetailDTO>>().ToList(),
 
-                //Categories_of_Menu_DTOs = Menu_Categories.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(),
+                Categories_of_Menu_DTOs = HttpContext.Session.GetObject<List<Category_of_FoodDTO>>("manipulatedData2"),
 
-                //Categories_of_AllFoods_DTOs = AllCategories.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(),
-                _foodList_ID = mvm_post._foodList_ID,
-                _categoryList = mvm_post._categoryList,
-                menu_id = mvm_post.menu_id,
+                Categories_of_AllFoods_DTOs = HttpContext.Session.GetObject<List<Category_of_FoodDTO>>("manipulatedData3"),
 
-                // FoodNames = cid == 0 ? bos : pdto,
-                // FoodNames = bos
+                // _foodList_ID = mvm_post._foodList_ID,
+
+                menu_id = Convert.ToInt32(HttpContext.Session.GetObject<string>("manipulatedData4"))
             };
 
             // HttpContext.Session.SetObject("manipulatedData", null);
 
-            return View("MenuDetailList", _mvm_notselect);
+            return View("MenuDetailList", _mvm_failedvalidation);
         }
 
 
