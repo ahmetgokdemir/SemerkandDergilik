@@ -1,10 +1,7 @@
 
 ddlFoods.append($("<option></option>").val(index).html(foods));
 
-1
-kategory ve yemek selection/dropdownlistler için 
---> 
-Client Side Validation & Server Side Validation (Backend Validation) 
+1 menüden yemek silmek 
 
 
 Testler:

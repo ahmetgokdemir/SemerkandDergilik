@@ -239,8 +239,6 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                         menu_id = Convert.ToInt32(HttpContext.Session.GetObject<string>("manipulatedData4"))
                     };
 
-                    int sil = 0;
-
                     return View("MenuDetailList", _mvm_allreadyexist);
 
                 }
