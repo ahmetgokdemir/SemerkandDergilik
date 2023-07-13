@@ -8,7 +8,6 @@ KOD TESTLERÝ VE DÜZENLEMESÝ
 isimlere standart getir...
 anlamlý isimler ver 
 repository kontrol et
-dbo.Menu Detayi da yemek fiyatýna gerek yok
 menudetailvm de gereksizleri sil
 
 ientity.cs ve identity_models tablaloarýnda status (aktif pasif) olacak mý?
@@ -18,11 +17,6 @@ kategory ve yemek selection/dropdownlistler için
 --> 
 Client Side Validation & Server Side Validation (Backend Validation) 
 
-2
-menüye yemek eklerken mevcutda ayný yemekten var mý yok mu nun kontrolü...
-
-3
-menü içeriidnde hiç yemek yoksa durumuna da yap    +++
 
 4 List olmasý gerekmeyenleri düzelt
         public List<string> foodstringlist { get; set; }

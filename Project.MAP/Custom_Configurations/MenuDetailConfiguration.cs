@@ -22,7 +22,7 @@ namespace Project.MAP.Custom_Configurations
             builder.HasKey(x => new { x.MenuID, x.FoodID });
 
             builder.Property(x => x.CategoryName_of_Food).HasColumnName("Kategori Adi").IsRequired();         
-            builder.Property(x => x.FoodPrice).HasColumnName("Yemek Fiyati").HasColumnType("money"); //**
+            // builder.Property(x => x.FoodPrice).HasColumnName("Yemek Fiyati").HasColumnType("money"); //**
 
         }
     }

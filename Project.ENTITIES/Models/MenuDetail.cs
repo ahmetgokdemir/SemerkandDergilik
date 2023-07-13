@@ -11,7 +11,7 @@ namespace Project.ENTITIES.Models
     {
         public string CategoryName_of_Food { get; set; } // join ile uğraşmamak için Category_of_Food.cs'deki ismi Category_of_FoodName
 
-        public decimal FoodPrice { get; set; } // Food.cs --> UnitPrice; Configuration.cs'de money'e çevrilmeli.. 
+        // public decimal FoodPrice { get; set; } // Food.cs --> UnitPrice; Configuration.cs'de money'e çevrilmeli.. 
 
         //public int Status { get; set; } // Aktif, Pasif --> Food.cs deki Status kullaılabilir bunun yerine
 

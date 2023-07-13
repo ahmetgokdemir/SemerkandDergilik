@@ -45,6 +45,8 @@
 </div>
 <hr class="loader" />-->
 
+<form asp-action="AddFoodtoMenu" method="post">
+
 @{
     var menuName = TempData["Menu_Name"].ToString();
     TempData["Menu_Name"] = menuName;
@@ -57,7 +59,7 @@
 <br />
 
 <div class="row">
-<form asp-action="AddFoodtoMenu" method="post">
+
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="row">
@@ -70,13 +72,8 @@
                 <option>Lütfen bir kategori seçiniz.</option>
                 @foreach (Category_of_FoodDTO category in Model.Categories_of_AllFoods_DTOs)
                 {
-                    var a = TempData["Selected_Category_Name"];
-                    TempData["Selected_Category_Name"] = a;
-
                     <option >@category.Category_of_FoodName</option>
 
-                    /*                        <input type="hidden" asp-for="MenuDetailDTO.CategoryName_of_Food" />
-                    */
                 }
             </select>
             <span asp-validation-for="_categoryList" class="text-danger"></span>
@@ -102,17 +99,23 @@
             <span asp-validation-for="_foodList_ID" class="text-danger"></span>
         </div>
 
-        <div class="col-md-6">
+<!--       <div class="col-md-6">
             <div id="tab1" class="mb-3">
+
+                        button ->  modal için / submit -> post için
+
                 <button class="btn btn-outline-success " id="addNewCategory_of_Food" value="addNewCategory_of_FoodValue">Yemek seçimini Menüye Eklemek için tıklayınız</button>
             </div>
         </div>
-
+        -->
+            <div class="col-md-6">
+                <input type="submit" value="Menüye Eklemek için tıklayınız" class="btn btn-outline-success t-2" />
+            </div>
 
     </div>
 
     <input class="form-control" type="hidden" asp-for="menu_id" />
-</form>
+
 
 </div>
 
@@ -196,6 +199,9 @@ else
 
      <button class="btn btn-outline-success " id="addNewFood" value="addNewFoodValue">Ürün Eklemek için tıklayınız</button> -->
 }
+
+</form>
+
 
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/alertify.min.js"></script>
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/alertify.min.css" />

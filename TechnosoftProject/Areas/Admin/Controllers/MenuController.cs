@@ -188,11 +188,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             ModelState.Remove("JavascriptToRun");
             ModelState.Remove("Categories_of_Menu_DTOs");
             ModelState.Remove("Categories_of_AllFoods_DTOs");
- 
 
-            //mvm_post.MenuDetailDTO.CategoryName_of_Food = TempData["Selected_Category_Name"].ToString();
-            //mvm_post.MenuDetailDTO.MenuID = (int) TempData["Menu_ID"];
-            //mvm_post.MenuDetailDTO.FoodID = 
             if (ModelState.IsValid)
             {
                 //string selected_food_name = mvm_post._foodList.Values.ToList()[0];
