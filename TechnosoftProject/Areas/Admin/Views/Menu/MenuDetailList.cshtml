@@ -45,24 +45,31 @@
 </div>
 <hr class="loader" />-->
 
-<form asp-action="AddFoodtoMenu" method="post">
+<div class="panel panel-primary">
+    <div class="panel panel-body">
 
-@{
-    var menuName = TempData["Menu_Name"].ToString();
-    TempData["Menu_Name"] = menuName;
-}
+        <form asp-action="AddFoodtoMenu" method="post">
+        <div class="row">
 
-<h2>
-    @menuName
-</h2>
-<hr />
-<br />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<div class="row">
 
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <div class="row">
+
+                @{
+                    var menuName = TempData["Menu_Name"].ToString();
+                    TempData["Menu_Name"] = menuName;
+                }
+
+                <h2>
+                    @menuName
+                </h2>
+                <hr />
+                <br />
+
+
+
+ 
 
         <div class="col-md-3">
             <!--asp-for="SelectedCategory"-->
@@ -96,13 +103,15 @@
                 }
                }
             </select>
+
+            </div>
                 <!--            <span asp-validation-for="_foodList_ID" class="text-danger"></span>
-                */        </div>-->
+                       </div>-->
 
 
             <!-- button:  modal/pop up sayfası için / submit: post işlemleri için !!!-->
 
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <!-- button da type="submit" belirtilmeli !!! -->
 
                 <!-- <input type="submit" value="Menüye Eklemek için tıklayınız" class="btn btn-outline-success mt-2" /> -->
@@ -110,17 +119,21 @@
                 <button type="submit" class="btn btn-outline-success mt-2 ">Menüye Eklemek için tıklayınız</button>
             </div>
 
-    </div>
 
+                <div class="col-md-1">
     <input class="form-control" type="hidden" asp-for="menu_id" />
-
-
-</div>
-
+                </div>
+       
+    </div>
+ 
+     </form>
 <!--
         TempData["messageCategory_of_Food"] = 4;
         <a class="" asp-area="Admin" asp-controller="Menu" asp-action="Get_FoodsbyCategoryID_Ajax" asp-route-id="TempData["messageCategory_of_Food"]">İptal</a>
 -->
+
+            <div class="row">
+
 @if (Model.MenuDetailDTOs.Count != 0)
 {
     <div>
@@ -197,8 +210,11 @@ else
 
      <button class="btn btn-outline-success " id="addNewFood" value="addNewFoodValue">Ürün Eklemek için tıklayınız</button> -->
 }
+            </div>
 
-</form>
+    
+</div>
+</div>
 
 
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/alertify.min.js"></script>
