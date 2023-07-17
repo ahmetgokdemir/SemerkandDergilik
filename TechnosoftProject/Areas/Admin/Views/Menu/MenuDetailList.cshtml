@@ -227,7 +227,7 @@ else
     @if (TempData["messageMenu"].ToString() == "Yemek menüye eklendi")
     {
         <script>
-            alertify.warning("Yemek menüye eklendi");
+            alertify.success("Yemek menüye eklendi");
         </script>
     }
     else if (TempData["messageCategory_of_Food"].ToString() == "Kategori silindi")
@@ -241,7 +241,7 @@ else
     {
 
         <script>
-            alertify.success("Kategori eklendi");
+            alertify.warning("Kategori eklendi");
         </script>
     }
 
@@ -340,7 +340,7 @@ else
 
     $(function () {
 
-        $("#selectforcategory").on("change", function () {
+        $("#selectforcategory").on("click", function () {
 
             /*
             alert($('#selectforcategory :selected').text());
