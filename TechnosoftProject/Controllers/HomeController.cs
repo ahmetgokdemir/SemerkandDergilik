@@ -117,7 +117,7 @@ namespace Technosoft_Project.Controllers
 
                     TempData["EmailConfirmMessage"] = "Giriş yapabilmek için Email'inize gelen linki tıklayınız.";
 
-                    await userManager.AddToRoleAsync(user, "Member"); // assign to AspNetUserRoles 
+                    // await userManager.AddToRoleAsync(user, "Member"); // assign to AspNetUserRoles 
 
                     return RedirectToAction("LogIn");
                 }
