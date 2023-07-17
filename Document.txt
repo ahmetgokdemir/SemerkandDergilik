@@ -1,7 +1,12 @@
 
 ddlFoods.append($("<option></option>").val(index).html(foods));
 
-1 menüden yemek silmek 
+1 menü, kategori, yemek elekem güncelleme ve silme tamamen restarantlar tarafýndan mý yoksa admin de yapabilir mi ?
+
+2 CustomTagHelper çaýþmýyor
+
+2 menüden yemek silmek 
+
 
 
 Testler:
