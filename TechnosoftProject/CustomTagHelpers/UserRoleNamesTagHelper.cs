@@ -8,18 +8,18 @@ using System.Text.Encodings.Web;
 namespace Technosoft_Project.CustomTagHelpers
 {
     //  TagHelper'ın yakalayacağı şey
-    [HtmlTargetElement("td", Attributes = "user-roles")]
-    public class UserRolesName : TagHelper
+    //[HtmlTargetElement("td", Attributes = "user-roles")]
+    public class UserRoleNamesTagHelper : TagHelper
     {
         public UserManager<AppUser> UserManager { get; set; }
 
-        public UserRolesName(UserManager<AppUser> userManager)
+        public UserRoleNamesTagHelper(UserManager<AppUser> userManager)
         {
             this.UserManager = userManager;
         }
 
         // bind işlemi => user-roles="@user.Id" , user.Id alındı ve UserId'ye set edildi..
-        [HtmlAttributeName("user-roles")]
+        //[HtmlAttributeName("user-roles")]
         public string UserId { get; set; }
 
         // fill to taghelper
