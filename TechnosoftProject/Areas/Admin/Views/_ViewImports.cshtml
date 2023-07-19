@@ -2,5 +2,32 @@
 @using Technosoft_Project.ViewModels
 @using Technosoft_Project.VMClasses
 
+
+
+@*@addTagHelper *, Technosoft_Project.CustomTagHelpers*@
+@*@addTagHelper *, Technosoft_Project.CustomTagHelpers.**@
+@*,TechnosoftProject*@
+
+
+
+@* AspNetCore.Mvc.TagHelpers  --> linkler ve butonlar çalışmaz *@
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@*@addTagHelper Technosoft_Project.CustomTagHelpers.*,TechnosoftProject*@
+
+
+@addTagHelper *,Technosoft_Project
+@*@using Technosoft_Project*@
+
+
+@* Eski:
+    
+.......
+
 @addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper Technosoft_Project.CustomTagHelpers.*,TechnosoftProject
+
+*@
+
+
+
+

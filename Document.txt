@@ -2,7 +2,7 @@
 ddlFoods.append($("<option></option>").val(index).html(foods));
 
 1 menüden yemek silmek 
-
+2 menü için aktif pasif ayrýmý
 
 Testler:
 KOD TESTLERÝ VE DÜZENLEMESÝ
@@ -28,6 +28,7 @@ password: Mssqlserver_3423 / ctz*9913
 
 Data Source=NB-230301\\MSSQLSERVER22 ---> sql kýsmýndan farklý 1 tane yerine 2 tane \  
 
+ahmet_gokdemir\MSSQLSERVER22 --> ahmet_gokdemir\\MSSQLSERVER22
 -----------------------------------------------------------------------------------
 
 
@@ -43,7 +44,6 @@ mamage user secrets'i eklemeyi unutma (secret.json dosyasýna) ----> FacebookOpti
   "Authentication:Microsoft:ClientSecret": "73c40dd7d1e6b50927a369da27d83cf4"
 
 }
-
 
 -----------------------------------------------------------------------------------
 migration yaptým ifnotexistdb yapmamýþým
