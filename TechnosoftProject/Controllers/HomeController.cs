@@ -117,6 +117,8 @@ namespace Technosoft_Project.Controllers
 
                     TempData["EmailConfirmMessage"] = "Giriş yapabilmek için Email'inize gelen linki tıklayınız.";
 
+                    await userManager.AddToRoleAsync(user, "Member"); // register olan otomatik olarak member...
+
                     return RedirectToAction("LogIn");
                 }
                 else
@@ -510,6 +512,8 @@ namespace Technosoft_Project.Controllers
                                 yukarıda olduğu gibi bu kodda da user'ın Identity API tarafından, 3.party authentication ile login olduğu cookie'ye işlenir..
 
                                  */
+
+                                await userManager.AddToRoleAsync(user, "Member"); // register olan otomatik olarak member...
 
 
                                 // generate random password

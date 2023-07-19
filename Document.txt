@@ -1,8 +1,13 @@
 
 ddlFoods.append($("<option></option>").val(index).html(foods));
 
-1 menüden yemek silmek 
-2 menü için aktif pasif ayrımı
+1 menü, kategori, yemek elekem güncelleme ve silme tamamen restarantlar tarafından mı yoksa admin de yapabilir mi ?
+
+2 CustomTagHelper çaışmıyor
+
+2 menüden yemek silmek 
+
+
 
 Testler:
 KOD TESTLERİ VE DÜZENLEMESİ
@@ -61,6 +66,13 @@ migration:	add-migration FirstMigration ,,,, PM> add-migration Menu_and_MenuDeta
 
 
 ------------------------------------------
+
+Sendgrid
+
+Sendgrid_34239913
+
+
+
 
 
 
