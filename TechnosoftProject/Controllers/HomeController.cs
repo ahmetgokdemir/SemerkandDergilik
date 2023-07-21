@@ -67,6 +67,7 @@ namespace Technosoft_Project.Controllers
             return View();
         }
 
+        // Register
         [HttpPost]
         public async Task<IActionResult> SignUp(UserViewModel userViewModel)
         {
@@ -93,6 +94,8 @@ namespace Technosoft_Project.Controllers
                 //user.BirthDay = userViewModel.BirthDay;
                 user.Picture = userViewModel.Picture;
                 user.Gender = (int)userViewModel.Gender;
+
+                user.IsConfirmedAccount = 0;
 
                 // validation işlemi yapılır
                 IdentityResult result = await userManager.CreateAsync(user, userViewModel.Password);
@@ -485,15 +488,19 @@ namespace Technosoft_Project.Controllers
                         user.UserName = info.Principal.FindFirst(ClaimTypes.Email).Value;
                     }
 
-                    user.City = "Istanbul";
-                    user.BirthDay = DateTime.Now;
-                    user.Picture = "/UserPicture/user.webp";
-                    user.Gender = (int)Gender.Bay;
+
 
                     AppUser user2 = await userManager.FindByEmailAsync(user.Email);
 
                     if (user2 == null) // böyle bir kullanıcı yoksa hem AspNetUsers tablosuna kayıt işlemi yapılmalı hem de AspNetUserLogins tablosuna..
                     {
+                        user.City = "Istanbul";
+                        user.BirthDay = DateTime.Now;
+                        user.Picture = "/UserPicture/user.webp";
+                        user.Gender = (int)Gender.Bay;
+
+                        user.IsConfirmedAccount = 0;
+
                         IdentityResult createResult = await userManager.CreateAsync(user); // AspNetUsers tablosuna kayıt işlemi..
 
                         if (createResult.Succeeded) // AspNetUsers tablosuna kayıt işlemi başarılı

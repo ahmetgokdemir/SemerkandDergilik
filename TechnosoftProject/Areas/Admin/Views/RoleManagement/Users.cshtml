@@ -1,4 +1,5 @@
-﻿@model List<AppUser>
+﻿@using Microsoft.AspNetCore.Identity;
+@model List<AppUser>
 
 @{
     ViewData["Title"] = "Users";
@@ -8,13 +9,16 @@
 
 <h3>Üyeler</h3>
 <hr />
-<table class="table table-hover table-bordered table-striped table-responsive">
+<table class="table table-hover table-bordered table-striped">
+    <!-- table-responsive -->
 
     <tr>
-        <td>User Id</td>
-        <td>User Name</td>
+        <td>Kullanıcı Adı</td>
         <td>Email</td>
+
         <td>Roller</td>
+        <td>Onay Durumu</td>
+
         <td>Rol Atama</td>
         <td>Şifre değiştirme</td>
     </tr>
@@ -31,10 +35,35 @@
         @foreach (var user in Model)
         {
             <tr>
-                <td>@user.Id</td>
                 <td>@user.UserName</td>
                 <td>@user.Email</td>
+
                 <td user-roles="@user.Id"></td>
+
+ @*               @{
+                    string selectforApproval = user.Id.ToString();
+                }*@
+
+                    <td>
+                       
+                        <select class="form-control selectforApprovalv" id="@user.Id" value="@user.ID" asp-for="@user.IsConfirmedAccount">
+
+                            <!-- Project.ENTITIES.Enums.IsConfirmedAccount>() yerine SelectListItem -->
+                            @foreach (SelectListItem item in Html.GetEnumSelectList <Project.ENTITIES.Enums.IsConfirmedAccount>())
+                            { 
+                                // data: { id: $(this).attr("data-id") }, // this, value=formaintenance'ı (button) temsil eder..
+                                // <button id="unnecessary" class="btn btn-danger" data-id=@item.ID value="formaintenance">Bakıma Al</button>
+
+                                <option id="@user.Id">@item.Text</option>
+                            }
+                        </select>
+                    
+                    </td>
+
+
+@*                <input type="hidden" asp-for="FoodDTO.ID" />
+*@
+
                 <!-- CustomTagHelper.UserRolesName.cs
 
                          UserRolesName isimli TagHelper (CustomTagHelper klasöründe), [HtmlTargetElement("td", Attributes = "user-roles")], sayesinde tag'i yakalar ve dolaysıyla @@user.Id property'sine erişebilecek ve bu bilgi ile kullanıcının rolleri çekip td'nin içeine basıcağız'..
@@ -44,10 +73,51 @@
                  *@
                         -->
                 @* a tag helper'lar kullanıldığında akış get metodlarına olur*@
+
+
+
                 <td> <a class="btn btn-success" asp-action="RoleAssign" asp-route-id="@user.Id">Rol ata</a></td>
                 <td><a class="btn btn-success" asp-action="ResetUserPassword" asp-route-id="@user.Id">Şifre Yenileme</a></td>
-            </tr>
+
+@*                <td> <input type="hidden" asp-for="@user.Id" id=""/></td>
+*@            </tr>
         }
 
     }
 </table>
+
+
+<script type="text/javascript">
+
+
+    $(function () {
+
+
+
+
+        var allselects = document.querySelectorAll('select');
+
+        for (var i = 0; i < allselects.length; ++i) {
+            allselects[i].addEventListener('change', changeFunc);
+        }
+
+
+        function changeFunc() {
+
+            alert(event.target.id);
+            alert(event.target.value);
+
+
+            $.ajax({
+
+                type: 'POST',
+                dataType: 'json',
+                url: 'Confirm_Member_Ajax',
+                data: { member_ID: event.target.id, name: event.target.value }
+
+            });
+        }
+    });
+
+
+</script>
