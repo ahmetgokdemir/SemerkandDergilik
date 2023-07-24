@@ -75,6 +75,13 @@ builder.Services.AddAuthorization(opts =>
         // Claim ViolenceClaim = new Claim("violence", true.ToString(), ClaimValueTypes.String, "Internal");
     });
 
+    opts.AddPolicy("Confirmed_Member_Policy", policy =>
+    {
+        policy.RequireClaim("member","Aktif"); // claimprovider.cs
+
+        // Claim ViolenceClaim = new Claim("violence", true.ToString(), ClaimValueTypes.String, "Internal");
+    });
+
     opts.AddPolicy("ExchangePolicy", policy =>
     {
         policy.AddRequirements(new Technosoft_Project.ClaimProvider.ExpireDateExchangeRequirement()); // requirement.cs

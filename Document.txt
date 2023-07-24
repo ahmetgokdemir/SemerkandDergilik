@@ -1,4 +1,9 @@
 
+
+Admin için Onay durumu olmasın
+
+
+
 ddlFoods.append($("<option></option>").val(index).html(foods));
 
 1 gender ve status'ü entitties e taşımaya gerek yok zira int olarak tanımlandılar...
@@ -33,7 +38,7 @@ iş server name: NB-230301\\MSSQLSERVER22  ve ctz*9913
 ev server name: ahmet_gokdemir ve LAPTOP-PEF0Q19Q  ve Ms....s..._3...2...
  
 username: sa
-password: Mssqlserver_3423 / ctz*9913
+password: / ctz*9913
 
 
 Data Source=NB-230301\\MSSQLSERVER22 ---> sql kısmından farklı 1 tane yerine 2 tane \  

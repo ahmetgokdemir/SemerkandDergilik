@@ -59,6 +59,16 @@ namespace Technosoft_Project.ClaimProvider
                             identity.AddClaim(CityClaim);
                         }
                     }
+
+                    if (user.IsConfirmedAccount != null)
+                    {
+                        if (!principal.HasClaim(c => c.Type == "member")) // not exits then create it..
+                        {
+                            Claim ConfirmedAccountClaim = new Claim("member", user.IsConfirmedAccount.ToString(), ClaimValueTypes.String, "Internal");
+
+                            identity.AddClaim(ConfirmedAccountClaim);
+                        }
+                    }
                 }
             }
 

@@ -15,6 +15,7 @@ using Project.BLL.ManagerServices.Abstracts;
 namespace Technosoft_Project.Controllers
 {
     [Authorize]
+    [Authorize(Policy = "Confirmed_Member_Policy")]
     public class MemberController : BaseController
     {
         // kod tekrarı önlendi..
@@ -289,6 +290,8 @@ namespace Technosoft_Project.Controllers
             return RedirectToAction("Index","Home");
         }
         */
+
+        [AllowAnonymous]
         public void LogOut()
         {
             signInManager.SignOutAsync(); // opts.LogoutPath = new PathString("/Member/LogOut"); çalışır..
@@ -299,6 +302,7 @@ namespace Technosoft_Project.Controllers
             Eğer kullanıcın yetkisi yoksa --> opts.AccessDeniedPath = new PathString("/Member/AccessDenied"); devreye girer ve yetki hatası verir         
          */
         // // // erişim yetkisi olmayan kullanıcıyı sayfadan Access Denied etme 
+        [AllowAnonymous]
         public IActionResult AccessDenied(string ReturnUrl)
         {
             string value = ReturnUrl.ToLower();
@@ -314,6 +318,10 @@ namespace Technosoft_Project.Controllers
             else if (value.Contains("exchange"))
             {
                 ViewBag.message = "30 günlük ücretsiz deneme hakkınız sona ermiştir.";
+            }
+            else if (value.Contains("member"))
+            {
+                ViewBag.message = "Uygulamaya giriş için Yönetici onayı gerekmektedir.";
             }
             else
             {

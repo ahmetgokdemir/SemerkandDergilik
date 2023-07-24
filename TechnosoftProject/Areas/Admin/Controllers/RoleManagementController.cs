@@ -8,6 +8,7 @@ using Technosoft_Project.Controllers;
 using Technosoft_Project.ViewModels;
 using Technosoft_Project.VMClasses;
 using System.Data;
+using Project.ENTITIES.Enums;
 
 namespace Technosoft_Project.Areas.Admin.Controllers
 {
@@ -298,10 +299,45 @@ namespace Technosoft_Project.Areas.Admin.Controllers
         //Confirm_Member_Ajax
         [HttpPost]
         [Route("Confirm_Member_Ajax")]
-        public async Task<string> Confirm_Member_Ajax(string member_ID, string name)
+        public async Task<IActionResult> Confirm_Member_Ajax(string member_ID, string activation_Status)
         {
-            string kontrol = "asd"; 
-            return member_ID;
+            AppUser user = userManager.FindByIdAsync(member_ID).Result;
+
+            if (user != null) {
+
+                if (activation_Status.ToLower() == "aktif")
+                {
+                    user.IsConfirmedAccount = (IsConfirmedAccount)1;
+                }
+                else
+                {
+                    user.IsConfirmedAccount = (IsConfirmedAccount)0;
+                }
+
+            }
+
+            IdentityResult result = await userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                await userManager.UpdateSecurityStampAsync(user);
+
+               //  await signInManager.SignOutAsync();
+               // await signInManager.SignInAsync(user, true, null);
+                /* 2.yol -> test edilmedi..
+                    UserViewModel userViewModel_2 = user.Adapt<UserViewModel>(); // automap
+                    await signInManager.PasswordSignInAsync(user, userViewModel_2.Password, true, false);
+                */
+
+                ViewBag.success = "true";
+            }
+            else
+            {
+                AddModelError(result);
+            }
+
+
+            return RedirectToAction("Users");
         }
 
 

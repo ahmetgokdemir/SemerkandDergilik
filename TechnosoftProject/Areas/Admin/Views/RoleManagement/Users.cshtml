@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity;
+@using Project.ENTITIES.Enums;
 @model List<AppUser>
 
 @{
@@ -49,7 +50,7 @@
                         <select class="form-control selectforApprovalv" id="@user.Id" value="@user.ID" asp-for="@user.IsConfirmedAccount">
 
                             <!-- Project.ENTITIES.Enums.IsConfirmedAccount>() yerine SelectListItem -->
-                            @foreach (SelectListItem item in Html.GetEnumSelectList <Project.ENTITIES.Enums.IsConfirmedAccount>())
+                        @foreach (SelectListItem item in Html.GetEnumSelectList<Project.ENTITIES.Enums.IsConfirmedAccount>())
                             { 
                                 // data: { id: $(this).attr("data-id") }, // this, value=formaintenance'ı (button) temsil eder..
                                 // <button id="unnecessary" class="btn btn-danger" data-id=@item.ID value="formaintenance">Bakıma Al</button>
@@ -104,8 +105,10 @@
 
         function changeFunc() {
 
-            alert(event.target.id);
-            alert(event.target.value);
+            /* 
+                alert(event.target.id);
+                alert(event.target.value);
+            */
 
 
             $.ajax({
@@ -113,7 +116,7 @@
                 type: 'POST',
                 dataType: 'json',
                 url: 'Confirm_Member_Ajax',
-                data: { member_ID: event.target.id, name: event.target.value }
+                data: { member_ID: event.target.id, activation_Status: event.target.value }
 
             });
         }
