@@ -26,10 +26,13 @@ namespace Project.ENTITIES.Identity_Models
         public DateTime? BirthDay { get; set; }
         public int Gender { get; set; }
 
+        public IsConfirmedAccount IsConfirmedAccount { get; set; } = 0; // Pasif
+
         public AppUser() : base()
         {
             CreatedDate = DateTime.Now;
             DataStatus = Enums.DataStatus.Inserted;
+            // IsConfirmedAccount = 0; 
         }
 
         public AppUser(string userName) : base(userName)

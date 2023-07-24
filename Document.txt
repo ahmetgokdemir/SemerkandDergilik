@@ -1,9 +1,14 @@
 
 ddlFoods.append($("<option></option>").val(index).html(foods));
 
-1 menü, kategori, yemek elekem güncelleme ve silme tamamen restarantlar tarafýndan mý yoksa admin de yapabilir mi ?
+1 gender ve status'ü entitties e taþýmaya gerek yok zira int olarak tanýmlandýlar...
 
-2 CustomTagHelper çaýþmýyor
+// IsConfirmedAccount = 0;   sbase de mi property de mi?
+// <select class="form-control" id="foodsofcategory" asp-for="_foodList_ID"> içindeki foreach gerek yok galiba 
+// *** IsConfirmedAccount= ENTITIES.Enums.IsConfirmedAccount.Aktif --> seedroles.cs (DAL)
+
+
+1 menü, kategori, yemek elekem güncelleme ve silme tamamen restarantlar tarafýndan mý yoksa admin de yapabilir mi ?
 
 2 menüden yemek silmek 
 
@@ -25,7 +30,7 @@ Sonra:
 
 
 iþ server name: NB-230301\\MSSQLSERVER22  ve ctz*9913
-ev server name: ahmet_gokdemir ve LAPTOP-PEF0Q19Q  ve Mssqlserver_3423
+ev server name: ahmet_gokdemir ve LAPTOP-PEF0Q19Q  ve Ms....s..._3...2...
  
 username: sa
 password: Mssqlserver_3423 / ctz*9913
@@ -33,6 +38,7 @@ password: Mssqlserver_3423 / ctz*9913
 
 Data Source=NB-230301\\MSSQLSERVER22 ---> sql kýsmýndan farklý 1 tane yerine 2 tane \  
 
+ahmet_gokdemir\MSSQLSERVER22 --> ahmet_gokdemir\\MSSQLSERVER22
 -----------------------------------------------------------------------------------
 
 
@@ -48,7 +54,6 @@ mamage user secrets'i eklemeyi unutma (secret.json dosyasýna) ----> FacebookOpti
   "Authentication:Microsoft:ClientSecret": "73c40dd7d1e6b50927a369da27d83cf4"
 
 }
-
 
 -----------------------------------------------------------------------------------
 migration yaptým ifnotexistdb yapmamýþým

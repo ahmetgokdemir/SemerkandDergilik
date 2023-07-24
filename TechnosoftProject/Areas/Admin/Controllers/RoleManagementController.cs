@@ -295,8 +295,17 @@ namespace Technosoft_Project.Areas.Admin.Controllers
         }
 
 
+        //Confirm_Member_Ajax
+        [HttpPost]
+        [Route("Confirm_Member_Ajax")]
+        public async Task<string> Confirm_Member_Ajax(string member_ID, string name)
+        {
+            string kontrol = "asd"; 
+            return member_ID;
+        }
 
 
 
-    }
+
+        }
 }

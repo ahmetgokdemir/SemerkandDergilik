@@ -21,7 +21,7 @@ namespace Project.DAL.Strategy
 
                 List<AppUser> userlist = new List<AppUser>()
                 {
-                    new AppUser(){ UserName="ahmetgokdemir", PasswordHash= "ctz*9913", Email = "ahmetgokdemirtc@gmail.com", EmailConfirmed = true, Gender = 1, Picture = "/UserPicture/user.webp", City="Istanbul" }
+                    new AppUser(){ UserName="ahmetgokdemir", PasswordHash= "ctz*9913", Email = "ahmetgokdemirtc@gmail.com", EmailConfirmed = true, Gender = 1, Picture = "/UserPicture/user.webp", City="Istanbul", IsConfirmedAccount= ENTITIES.Enums.IsConfirmedAccount.Aktif }
                     // new AppUser(){UserName ="David@hotmial.com", Password="Abc12345!"}
                 };
 
@@ -62,7 +62,7 @@ namespace Project.DAL.Strategy
 
                 foreach (AppUser user in userlist)
                 {
-                    if (!_userManager.Users.Any(r => r.UserName == user.UserName))
+                    if (!_userManager.Users.Any(r => r.Email == user.Email))
                     {
                         //var newuser = new IdentityUser { UserName = user.UserName, Email = user.UserName };
                         IdentityResult result = await _userManager.CreateAsync(user, user.PasswordHash);

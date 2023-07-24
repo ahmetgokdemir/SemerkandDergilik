@@ -27,9 +27,9 @@
                 <ul class="navbar-nav">
                     @if (User.IsInRole("Member"))
                     {
-                    <li class="nav-item">
-                        <a class="nav-link me-2" asp-action="Index" asp-controller="Member">Üye Ana Sayfa</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link me-2" asp-action="Index" asp-controller="Member">Üye Ana Sayfa</a>
+                        </li>
                     }
                     @if (User.IsInRole("Admin"))
                     {
@@ -51,8 +51,7 @@
                             <a class="nav-link" style="color: white;" asp-action="Editor" asp-controller="Member">Editor ana sayfa</a>
                         </li>
                     }
-
-
+                    
                     <li class="nav-item">
                         <a class="nav-link" style="color: white;" asp-action="Blog" asp-controller="Member">Blog sayfası</a>
                     </li>
