@@ -74,7 +74,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             {
                 FoodDTOs = FoodEnumerableList.Adapt<IEnumerable<FoodDTO>>().ToList(),
                 JavascriptToRun = JSpopupPage,
-                Category_of_FoodDTO = FoodsList.Count > 0 ? FoodsList[0].Category_of_Food.Adapt<Category_of_FoodDTO>() : null
+                Category_of_FoodDTO = FoodsList.Count > 0 ? /*FoodsList[0].Category_of_Food.Adapt<Category_of_FoodDTO>()*/ null : null // *** İsmail Bey - Değişiklikleri
             };
 
             /*

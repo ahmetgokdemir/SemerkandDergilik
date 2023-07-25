@@ -10,7 +10,7 @@ namespace Project.DAL.Migrations
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
-        {
+        {/*
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -245,8 +245,8 @@ namespace Project.DAL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateTable(
+            */
+            /*migrationBuilder.CreateTable(
                 name: "Foods",
                 columns: table => new
                 {
@@ -272,9 +272,21 @@ namespace Project.DAL.Migrations
                         column: x => x.Category_of_FoodID,
                         principalTable: "Category_of_Foods",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                });*/
 
+
+           /* migrationBuilder.AddForeignKey(
+                name: "FK_Foods_Category_of_Foods_Category_of_FoodID",
+                table: "Foods",
+                column: "Category_of_FoodID",
+                principalTable: "Category_of_Foods",
+                principalColumn: "ID",
+                onDelete: ReferentialAction.Cascade);
+           */
+
+            /*
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -313,16 +325,17 @@ namespace Project.DAL.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
-
+            */
+            /*
             migrationBuilder.CreateIndex(
                 name: "IX_Foods_Category_of_FoodID",
                 table: "Foods",
-                column: "Category_of_FoodID");
+                column: "Category_of_FoodID");*/
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        {/*
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -355,6 +368,7 @@ namespace Project.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Category_of_Foods");
+            */
         }
     }
 }

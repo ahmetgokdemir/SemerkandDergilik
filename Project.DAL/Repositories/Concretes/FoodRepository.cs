@@ -28,7 +28,9 @@ namespace Project.DAL.Repositories.Concretes
         // Kategoriye göre Ürünler.. Include
         public IQueryable<Food> Get_FoodsByCategoryID_Async(int categoryid)
         {
-            return _context.Set<Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.Category_of_FoodID == categoryid).AsQueryable();
+            // return _context.Set<Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.Category_of_FoodID == categoryid).AsQueryable();
+            // *** İsmail Bey - Değişiklikleri
+            return null;
 
             //.Include(x=> x.Category_of_Food).AsQueryable();
         }
@@ -54,7 +56,10 @@ namespace Project.DAL.Repositories.Concretes
         // Ürünü, kategori bilgileri ile getirmek...
         public IQueryable<Food> GetFoodByIdwithCategory_of_FoodValueAsync(int Food_id)
         {
-            return _context.Set<Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.ID == Food_id).Include(x => x.Category_of_Food).AsQueryable();
+            //return _context.Set<Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.ID == Food_id).Include(x => x.Category_of_Food).AsQueryable();
+            // *** İsmail Bey - Değişiklikleri
+            return null;
+        
         }
 
     }

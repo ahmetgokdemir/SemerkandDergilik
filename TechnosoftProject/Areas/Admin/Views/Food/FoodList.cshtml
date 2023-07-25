@@ -35,6 +35,7 @@
     .btnposition {
         vertical-align: middle;
         text-align: center;
+        width: 20%;
     }
 </style>
 
@@ -66,14 +67,14 @@ else
 
     <div class="panel panel-primary  ml-5">
         <div class="panel panel-body">
-            <table class="table table-hover table-bordered table-responsive-xl" id="tab2">
+            <table class="table table-hover table-bordered table-responsive-s" id="tab2">
                 <thead class="thead-light">
                     <tr>
                         <th>Index</th>
                         <th class="position"><p>Ürün İsmi</p></th>
                         <th class="position"><p>Ürün Fiyat</p></th>
 @*                        <th class="position"><p>Ürün Adet</p></th>
-*@                        <th class="position"><p>İskonto</p></th>
+*@                        @*<th class="position"><p>İskonto</p></th>*@
 
                         @*<th>Kategori ID</th>*@
                         <th class="position"><p>Kategori Adı</p></th>
@@ -92,7 +93,7 @@ else
                             <td class="position"><p>@item.FoodName</p></td>
                             <td class="position"><p>@item.UnitPrice</p></td>
                             @*<td class="position"><p>@item.UnitsInStock</p></td>*@
-                            <td class="position"><p>@item.Discount</p></td>
+@*                            <td class="position"><p>@item.Discount</p></td>*@
 
                             @*<td>@item.Category_of_FoodID</td>*@
                             <td class="position"><p>@Model.Category_of_FoodDTO.Category_of_FoodName</p></td>
