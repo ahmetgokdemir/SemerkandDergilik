@@ -53,9 +53,9 @@ else if (Model.MenuDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
 
 
             <div class="form-group">
-                <label asp-for="MenuDTO.Status" class="control-label"></label>
-                <select class="form-control" asp-for="MenuDTO.Status" asp-items="Html.GetEnumSelectList<Technosoft_Project.Enums.Status>()"></select>
-                <span asp-validation-for="MenuDTO.Status" class="text-danger"></span>
+                <label asp-for="MenuDTO._ExistentStatus" class="control-label"></label>
+                <select class="form-control" asp-for="MenuDTO._ExistentStatus" asp-items="Html.GetEnumSelectList<Project.ENTITIES.Enums.ExistentStatus>()"></select>
+                <span asp-validation-for="MenuDTO._ExistentStatus" class="text-danger"></span>
             </div>
 
 

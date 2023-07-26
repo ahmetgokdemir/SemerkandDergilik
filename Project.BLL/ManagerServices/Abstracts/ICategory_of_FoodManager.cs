@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Project.BLL.ManagerServices.Abstracts
 {
-    public interface ICategory_of_FoodManager : IManager<Category_of_Food>
+    public interface ICategoryofFoodManager : IManager<CategoryofFood>
     {
 
-        Task<IEnumerable<string>> GetActivesCategory_of_FoodNamesAsync();
-        Task<string> GetCategory_of_FoodNameAccordingToFoodAsync(int Category_of_Food_id);
+        Task<IEnumerable<string>> GetActivesCategoryofFoodNamesAsync();
+        Task<string> GetCategoryofFoodNameAccordingToFoodAsync(int CategoryofFood_id);
 
     }
 }

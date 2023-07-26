@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace Project.BLL.ManagerServices.Concretes
 {
-    public class Category_of_FoodManager : BaseManager<Category_of_Food>, ICategory_of_FoodManager
+    public class CategoryofFoodManager : BaseManager<CategoryofFood>, ICategoryofFoodManager
     {
-        ICategory_of_FoodRepository _crep;
+        ICategoryofFoodRepository _crep;
         // ICollection _icol;
         // Collection önce kave seç...
 
-        // IRepository (_iRep) ve ICategory_of_FoodRepository (_crep) aynı constructor içeriside dependency injection'a tabii tutuldular..
+        // IRepository (_iRep) ve ICategoryofFoodRepository (_crep) aynı constructor içeriside dependency injection'a tabii tutuldular..
         // IRepository irep'nin metodlarını kullanabilmek için dependency injection'a tabii tutuldu (Inheritance/ : base(irep))
 
         /*         
@@ -29,31 +29,31 @@ namespace Project.BLL.ManagerServices.Concretes
         }         
         */
 
-        public Category_of_FoodManager(IRepository<Category_of_Food> irep, ICategory_of_FoodRepository crep) : base(irep)
+        public CategoryofFoodManager(IRepository<CategoryofFood> irep, ICategoryofFoodRepository crep) : base(irep)
         {
             _crep = crep;
         }
 
-        public async Task<IEnumerable<string>> GetActivesCategory_of_FoodNamesAsync()
+        public async Task<IEnumerable<string>> GetActivesCategoryofFoodNamesAsync()
         {
-            var Category_of_FoodNames = await _crep.GetActivesCategory_of_FoodNamesAsync().ToListAsync(); // convert ıqueryable to IEnumerable
+            var CategoryofFoodNames = await _crep.GetActivesCategoryofFoodNamesAsync().ToListAsync(); // convert ıqueryable to IEnumerable
 
-            return Category_of_FoodNames;
+            return CategoryofFoodNames;
         }
 
-        public async Task<string> GetCategory_of_FoodNameAccordingToFoodAsync(int Category_of_Food_id)
+        public async Task<string> GetCategoryofFoodNameAccordingToFoodAsync(int CategoryofFood_id)
         {
-            var Category_of_FoodNameAccordingToFood = await _crep.GetCategory_of_FoodNameAccordingToFoodAsync(Category_of_Food_id).ToListAsync(); // convert ıqueryable to IEnumerable
+            var CategoryofFoodNameAccordingToFood = await _crep.GetCategoryofFoodNameAccordingToFoodAsync(CategoryofFood_id).ToListAsync(); // convert ıqueryable to IEnumerable
  
-            return Category_of_FoodNameAccordingToFood[0];
+            return CategoryofFoodNameAccordingToFood[0];
          
 
         }
 
         /*
-           public override async Task AddAsync(Category_of_Food item)
+           public override async Task AddAsync(CategoryofFood item)
            {
-              if (item.Category_of_FoodName != null)
+              if (item.CategoryofFoodName != null)
               {
                   _iRep.AddAsync(item);
                   //return "Kategori eklendi";

@@ -1,4 +1,4 @@
-﻿namespace Technosoft_Project.Enums
+﻿namespace Project.ENTITIES.Enums
 {
     public enum Gender
     {

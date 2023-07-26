@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Technosoft_Project.Enums;
+﻿using Project.ENTITIES.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Technosoft_Project.ViewModels
 {
@@ -13,7 +13,7 @@ namespace Technosoft_Project.ViewModels
 
         [Display(Name = "Durum")]
         [Required(ErrorMessage = "Menü durumunu giriniz.")]
-        public Status Status { get; set; } // Aktif, Pasif
+        public ExistentStatus _ExistentStatus { get; set; } // Aktif, Pasif
 
 
     }

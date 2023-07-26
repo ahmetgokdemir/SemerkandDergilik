@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Technosoft_Project.Enums;
+﻿using Project.ENTITIES.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Technosoft_Project.ViewModels
 {
@@ -33,7 +33,7 @@ namespace Technosoft_Project.ViewModels
         public string? FoodPicture { get; set; }
 
         [Display(Name = "Durum")]
-        public Status Status { get; set; } // Aktif, Pasif 
+        public ExistentStatus _ExistentStatus { get; set; } // Aktif, Pasif 
 
     }
 }

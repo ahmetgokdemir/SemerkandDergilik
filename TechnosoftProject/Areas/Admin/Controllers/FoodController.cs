@@ -9,13 +9,13 @@ using Newtonsoft.Json;
 using Project.BLL.ManagerServices.Abstracts;
 using Project.ENTITIES.Models;
 using Technosoft_Project.CommonTools;
-using Technosoft_Project.Enums;
 using Technosoft_Project.ViewModels;
 using Technosoft_Project.VMClasses;
 using System;
 using System.Collections;
 using System.Data;
 using System.Xml.Linq;
+using Project.ENTITIES.Enums;
 
 namespace Technosoft_Project.Areas.Admin.Controllers
 {
@@ -25,9 +25,9 @@ namespace Technosoft_Project.Areas.Admin.Controllers
     public class FoodController : Controller
     {
         readonly IFoodManager _ipm;
-        readonly ICategory_of_FoodManager _icm;
+        readonly ICategoryofFoodManager _icm;
 
-        public FoodController(IFoodManager ipm, ICategory_of_FoodManager icm) // services.AddRepManServices(); 
+        public FoodController(IFoodManager ipm, ICategoryofFoodManager icm) // services.AddRepManServices(); 
         {
             _ipm = ipm;
             _icm = icm;
@@ -58,12 +58,12 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 JSpopupPage = null; // pop-up sıfırlanır yoksa sayfayı reflesleyince geliyor
             }
 
-            int Category_of_Food_id = id;
-            int Category_of_Food_status = status;
+            int CategoryofFood_id = id;
+            int CategoryofFood_status = status;
 
-            Category_of_Food c = await _icm.FirstOrDefault(x => x.ID == Category_of_Food_id);
+            CategoryofFood c = await _icm.FirstOrDefault(x => x.ID == CategoryofFood_id);
 
-            IEnumerable<Food> FoodEnumerableList = await _ipm.Get_FoodsByCategoryID_Async(Category_of_Food_id);
+            IEnumerable<Food> FoodEnumerableList = await _ipm.Get_FoodsByCategoryID_Async(CategoryofFood_id);
 
 
 
@@ -74,29 +74,29 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             {
                 FoodDTOs = FoodEnumerableList.Adapt<IEnumerable<FoodDTO>>().ToList(),
                 JavascriptToRun = JSpopupPage,
-                Category_of_FoodDTO = FoodsList.Count > 0 ? /*FoodsList[0].Category_of_Food.Adapt<Category_of_FoodDTO>()*/ null : null // *** İsmail Bey - Değişiklikleri
+                CategoryofFoodDTO = FoodsList.Count > 0 ? /*FoodsList[0].CategoryofFood.Adapt<CategoryofFoodDTO>()*/ null : null // *** İsmail Bey - Değişiklikleri
             };
 
             /*
             if (pvm.Foods.Count > 0)
             {
-                TempData["Category_of_FoodName"] = pvm.Foods[0].Category_of_Food.Category_of_FoodName;
-                TempData["Category_of_FoodID"] = pvm.Foods[0].Category_of_Food.ID;
-                TempData["Category_of_FoodStatus"] = pvm.Foods[0].Category_of_Food.Status;
-                TempData["Category_of_FoodPicture"] = pvm.Foods[0].Category_of_Food.Category_of_FoodPicture;
+                TempData["CategoryofFoodName"] = pvm.Foods[0].CategoryofFood.CategoryofFoodName;
+                TempData["CategoryofFoodID"] = pvm.Foods[0].CategoryofFood.ID;
+                TempData["CategoryofFoodStatus"] = pvm.Foods[0].CategoryofFood.Status;
+                TempData["CategoryofFoodPicture"] = pvm.Foods[0].CategoryofFood.CategoryofFoodPicture;
             }
             */
             //if (pvm.FoodDTOs.Count > 0)
             //{
-            //    TempData["Category_of_FoodName"] = FoodsList[0].Category_of_Food.Category_of_FoodName;
+            //    TempData["CategoryofFoodName"] = FoodsList[0].CategoryofFood.CategoryofFoodName;
             //}
             
-            TempData["Category_of_FoodName"] = c.Category_of_FoodName;
-            // TempData["Category_of_FoodName"] = FoodsList[0].Category_of_Food.Category_of_FoodName; --> ArgumentOutOfRangeException hatası
+            TempData["CategoryofFoodName"] = c.CategoryName_of_Foods;
+            // TempData["CategoryofFoodName"] = FoodsList[0].CategoryofFood.CategoryofFoodName; --> ArgumentOutOfRangeException hatası
 
 
-            TempData["Category_of_Food_id"] = Category_of_Food_id;
-            TempData["Category_of_Food_status"] = Category_of_Food_status;
+            TempData["CategoryofFood_id"] = CategoryofFood_id;
+            TempData["CategoryofFood_status"] = CategoryofFood_status;
 
             return View(pvm);
         }
@@ -105,10 +105,10 @@ namespace Technosoft_Project.Areas.Admin.Controllers
         [Route("AddFoodAjax")]
         public async Task<PartialViewResult> AddFoodAjax()
         {
-            IEnumerable<string> Category_of_FoodNames = await _icm.GetActivesCategory_of_FoodNamesAsync();
-            ViewBag.Category_of_FoodNames = new SelectList(Category_of_FoodNames); // html kısmında select tag'ı kullanıldığı için SelectList kullanıldı
+            IEnumerable<string> CategoryofFoodNames = await _icm.GetActivesCategoryofFoodNamesAsync();
+            ViewBag.CategoryofFoodNames = new SelectList(CategoryofFoodNames); // html kısmında select tag'ı kullanıldığı için SelectList kullanıldı
 
-            ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
+            ViewBag.Status = new SelectList(Enum.GetNames(typeof(ExistentStatus)));
 
 
             FoodDTO pdto = new FoodDTO();
@@ -133,35 +133,35 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             */
 
 
-            // *string Category_of_FoodNameAccordingToFood = await _icm.GetCategory_of_FoodNameAccordingToFoodAsync((int)TempData["Category_of_Food_id"]);
+            // *string CategoryofFoodNameAccordingToFood = await _icm.GetCategoryofFoodNameAccordingToFoodAsync((int)TempData["CategoryofFood_id"]);
 
-            // ViewBag.Category_of_FoodName = Category_of_FoodNameAccordingToFood; --> asp-for, ViewBag kabul etmediği için pdto, cdto, cdto.Category_of_FoodName değerleri tanımlandı..
-            // asp-for="Category_of_Food.Category_of_FoodName" değer atamak için pdto, cdto, cdto.Category_of_FoodName değerleri tanımlandı..
-
-
-
-            Category_of_FoodDTO cdto = new Category_of_FoodDTO(); // yazılmazsa null referance hatası verir.. 
-                                                  //cdto.Category_of_FoodName = Category_of_FoodNameAccordingToFood; // 2.yol
-
-            cdto.Category_of_FoodName = TempData["Category_of_FoodName"].ToString();
-            cdto.ID = (int)TempData["Category_of_Food_id"];
-
-            string kontrol = TempData["Category_of_Food_status"].ToString();
-            cdto.Status = (Status)TempData["Category_of_Food_status"];
+            // ViewBag.CategoryofFoodName = CategoryofFoodNameAccordingToFood; --> asp-for, ViewBag kabul etmediği için pdto, cdto, cdto.CategoryofFoodName değerleri tanımlandı..
+            // asp-for="CategoryofFood.CategoryofFoodName" değer atamak için pdto, cdto, cdto.CategoryofFoodName değerleri tanımlandı..
 
 
-            // Food'ın Category_of_Food_id'si 
-            pdto.Category_of_FoodID = (int)TempData["Category_of_Food_id"]; // <input type="hidden" asp-for="FoodDTO.Category_of_FoodID" /> kısmı için bu kod gerekli..
-            // pdto.Category_of_Food = cdto; // yazılmazsa null referance hatası verir... 
+
+            CategoryofFoodDTO cdto = new CategoryofFoodDTO(); // yazılmazsa null referance hatası verir.. 
+                                                  //cdto.CategoryofFoodName = CategoryofFoodNameAccordingToFood; // 2.yol
+
+            cdto.CategoryofFoodName = TempData["CategoryofFoodName"].ToString();
+            cdto.ID = (int)TempData["CategoryofFood_id"];
+
+            string kontrol = TempData["CategoryofFood_status"].ToString();
+            cdto._ExistentStatus = (ExistentStatus)TempData["CategoryofFood_status"];
 
 
-            TempData["Category_of_Food_id"] = cdto.ID;
-            TempData["Category_of_FoodName"] = cdto.Category_of_FoodName; // 2.yol kullanılırsa gerekli olacak kod..
-            TempData["Category_of_Food_status"] = cdto.Status;
+            // Food'ın CategoryofFood_id'si 
+            pdto.CategoryofFoodID = (int)TempData["CategoryofFood_id"]; // <input type="hidden" asp-for="FoodDTO.CategoryofFoodID" /> kısmı için bu kod gerekli..
+            // pdto.CategoryofFood = cdto; // yazılmazsa null referance hatası verir... 
+
+
+            TempData["CategoryofFood_id"] = cdto.ID;
+            TempData["CategoryofFoodName"] = cdto.CategoryofFoodName; // 2.yol kullanılırsa gerekli olacak kod..
+            TempData["CategoryofFood_status"] = cdto._ExistentStatus;
 
             FoodVM pvm = new FoodVM
             {
-                Category_of_FoodDTO = cdto,
+                CategoryofFoodDTO = cdto,
                 FoodDTO = pdto
             };
 
@@ -191,34 +191,34 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
             Thread.Sleep(500);
 
-            return PartialView("_CrudFoodPartial", pvm); // pdto değeri döndürmemizin nedeni cdto.Category_of_FoodName nin html'de dolu olması diğer değerler boş gelecek...
+            return PartialView("_CrudFoodPartial", pvm); // pdto değeri döndürmemizin nedeni cdto.CategoryofFoodName nin html'de dolu olması diğer değerler boş gelecek...
 
 
             /*else
             {
                  
 
-                Category_of_FoodDTO cdto = new Category_of_FoodDTO(); // yazılmazsa null referance hatası verir.. 
-                                                      //cdto.Category_of_FoodName = Category_of_FoodNameAccordingToFood; // 2.yol
+                CategoryofFoodDTO cdto = new CategoryofFoodDTO(); // yazılmazsa null referance hatası verir.. 
+                                                      //cdto.CategoryofFoodName = CategoryofFoodNameAccordingToFood; // 2.yol
 
-                cdto.Category_of_FoodName = TempData["Category_of_FoodName"].ToString();
-                cdto.ID = (int)TempData["Category_of_Food_id"];
+                cdto.CategoryofFoodName = TempData["CategoryofFoodName"].ToString();
+                cdto.ID = (int)TempData["CategoryofFood_id"];
 
-                TempData["Category_of_Food_id"] = cdto.ID;
-                TempData["Category_of_FoodName"] = cdto.Category_of_FoodName; // 2.yol kullanılırsa gerekli olacak kod..
+                TempData["CategoryofFood_id"] = cdto.ID;
+                TempData["CategoryofFoodName"] = cdto.CategoryofFoodName; // 2.yol kullanılırsa gerekli olacak kod..
 
                 FoodVM pvm = new FoodVM
                 {
-                    Category_of_FoodDTO = cdto,
+                    CategoryofFoodDTO = cdto,
                     FoodDTO =  pdto_reloaddata                
 
                 };
 
 
-                TempData["Category_of_Food_id"] = cdto.ID;
-                TempData["Category_of_FoodName"] = cdto.Category_of_FoodName; // 2.yol kullanılırsa gerekli olacak kod..
+                TempData["CategoryofFood_id"] = cdto.ID;
+                TempData["CategoryofFoodName"] = cdto.CategoryofFoodName; // 2.yol kullanılırsa gerekli olacak kod..
 
-                return PartialView("_CrudFoodPartial", pvm); // pdto değeri döndürmemizin nedeni cdto.Category_of_FoodName nin html'de dolu olması diğer değerler boş gelecek...
+                return PartialView("_CrudFoodPartial", pvm); // pdto değeri döndürmemizin nedeni cdto.CategoryofFoodName nin html'de dolu olması diğer değerler boş gelecek...
 
             }
             */
@@ -229,14 +229,14 @@ namespace Technosoft_Project.Areas.Admin.Controllers
         [Route("UpdateFoodAjax")]
         public async Task<PartialViewResult> UpdateFoodAjax(int id)
         {
-            IEnumerable<string> Category_of_FoodNames = await _icm.GetActivesCategory_of_FoodNamesAsync();
-            ViewBag.Category_of_FoodNames = new SelectList(Category_of_FoodNames);
+            IEnumerable<string> CategoryofFoodNames = await _icm.GetActivesCategoryofFoodNamesAsync();
+            ViewBag.CategoryofFoodNames = new SelectList(CategoryofFoodNames);
 
-            ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
+            ViewBag.Status = new SelectList(Enum.GetNames(typeof(ExistentStatus)));
 
 
 
-            // Food Food_item_control = await _ipm.GetFoodByIdwithCategory_of_FoodValueAsync(id);
+            // Food Food_item_control = await _ipm.GetFoodByIdwithCategoryofFoodValueAsync(id);
             // yukarıdaki kod Ürünü, kategori bilgileri ile getirir buna gerek yok.. Food_item.Adapt<FoodDTO>() yeterli
 
 
@@ -263,20 +263,20 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
 
             /*
-            string Category_of_FoodNameAccordingToFood = await _icm.GetCategory_of_FoodNameAccordingToFoodAsync((int)TempData["Category_of_Food_id"]);      
+            string CategoryofFoodNameAccordingToFood = await _icm.GetCategoryofFoodNameAccordingToFoodAsync((int)TempData["CategoryofFood_id"]);      
             */
 
-            Category_of_FoodDTO cdto = new Category_of_FoodDTO(); // yazılmazsa cdto.Category_of_FoodName null referance hatası verir.. 
-            cdto.Category_of_FoodName = TempData["Category_of_FoodName"].ToString(); // asp-for="Category_of_Food.Category_of_FoodName" değer atamak için 
-            // cdto.Category_of_FoodName = Category_of_FoodNameAccordingToFood;  2.yol
-            // pDTO.Category_of_Food = cdto; // yazılmazsa null referance hatası verir.. 
-            cdto.ID = (int)TempData["Category_of_Food_id"];
+            CategoryofFoodDTO cdto = new CategoryofFoodDTO(); // yazılmazsa cdto.CategoryofFoodName null referance hatası verir.. 
+            cdto.CategoryofFoodName = TempData["CategoryofFoodName"].ToString(); // asp-for="CategoryofFood.CategoryofFoodName" değer atamak için 
+            // cdto.CategoryofFoodName = CategoryofFoodNameAccordingToFood;  2.yol
+            // pDTO.CategoryofFood = cdto; // yazılmazsa null referance hatası verir.. 
+            cdto.ID = (int)TempData["CategoryofFood_id"];
 
-            string kontrol = TempData["Category_of_Food_status"].ToString();
-            cdto.Status = (Status)TempData["Category_of_Food_status"];
+            string kontrol = TempData["CategoryofFood_status"].ToString();
+            cdto._ExistentStatus = (ExistentStatus)TempData["CategoryofFood_status"];
              /*
-             Food Food_item = await _ipm.GetByIdAsync(id); kod sayesinde pdto.Category_of_FoodID geldiği için 
-             AddFoodAjax'taki gibi pdto.Category_of_FoodID = (int)TempData["Category_of_Food_id"]; koda gerek kalmadı...
+             Food Food_item = await _ipm.GetByIdAsync(id); kod sayesinde pdto.CategoryofFoodID geldiği için 
+             AddFoodAjax'taki gibi pdto.CategoryofFoodID = (int)TempData["CategoryofFood_id"]; koda gerek kalmadı...
             
              */
 
@@ -284,7 +284,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             FoodVM pvm = new FoodVM
             {
                 FoodDTO = pdto,
-                Category_of_FoodDTO = cdto
+                CategoryofFoodDTO = cdto
             };
 
             if (TempData["HttpContext"] != null)
@@ -312,12 +312,12 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             }
 
             /*
-             int Category_of_Food_id = (int)TempData["Category_of_Food_id"];
-            TempData["Category_of_Food_id"] = Category_of_Food_id;
+             int CategoryofFood_id = (int)TempData["CategoryofFood_id"];
+            TempData["CategoryofFood_id"] = CategoryofFood_id;
             */
-            TempData["Category_of_Food_id"] = cdto.ID;
-            TempData["Category_of_FoodName"] = cdto.Category_of_FoodName; // 2.yol kullanılırsa gerekli olacak kod..
-            TempData["Category_of_Food_status"] = cdto.Status;
+            TempData["CategoryofFood_id"] = cdto.ID;
+            TempData["CategoryofFoodName"] = cdto.CategoryofFoodName; // 2.yol kullanılırsa gerekli olacak kod..
+            TempData["CategoryofFood_status"] = cdto._ExistentStatus;
 
             Thread.Sleep(500);
 
@@ -350,20 +350,20 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             if (TempData["Deleted"] == null)
             {
                 ModelState.Remove("FoodPicture");
-                // ModelState.Remove("Category_of_Food");
+                // ModelState.Remove("CategoryofFood");
                 ModelState.Remove("FoodDTOs");
                 ModelState.Remove("JavascriptToRun");
-                ModelState.Remove("Category_of_FoodDTO");
+                ModelState.Remove("CategoryofFoodDTO");
 
             
 
-                // Category_of_FoodDTO cdto = new Category_of_FoodDTO();// yazılmazsa null referance hatası verir.. 
-                // // cdto.ID = (int) TempData["Category_of_FoodID"];
-                // pdto.Category_of_Food = cdto;
-                // pdto.Category_of_Food.ID = (int)TempData["Category_of_FoodID"];
-                // pdto.Category_of_Food.Category_of_FoodName = TempData["Category_of_FoodName"].ToString();
-                // pdto.Category_of_Food.Status = (Status)TempData["Category_of_FoodStatus"];
-                // pdto.Category_of_Food.Category_of_FoodPicture = TempData["Category_of_FoodPicture"].ToString();
+                // CategoryofFoodDTO cdto = new CategoryofFoodDTO();// yazılmazsa null referance hatası verir.. 
+                // // cdto.ID = (int) TempData["CategoryofFoodID"];
+                // pdto.CategoryofFood = cdto;
+                // pdto.CategoryofFood.ID = (int)TempData["CategoryofFoodID"];
+                // pdto.CategoryofFood.CategoryofFoodName = TempData["CategoryofFoodName"].ToString();
+                // pdto.CategoryofFood.Status = (Status)TempData["CategoryofFoodStatus"];
+                // pdto.CategoryofFood.CategoryofFoodPicture = TempData["CategoryofFoodPicture"].ToString();
 
 
 
@@ -373,9 +373,9 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
                     //prd.Status = (int)pvm_post.FoodDTO.Status; // casting bu olmadan dene
                     
-                    //  <input type="hidden" asp-for="Category_of_FoodID" /> bunu kullandığımız için prd.Category_of_FoodID = (int)TempData["Category_of_Food_id"]; ama bu koda gerek kalmadı... zira FoodDTO'da Category_of_FoodID ile veriyi aldık.. 
-                    // prd.Category_of_Food = null;
-                    // prd.Category_of_FoodID = pvm_post.Category_of_FoodDTO.ID; bu koda gerek kalmadı çünkü <input type="hidden" asp-for="FoodDTO.Category_of_FoodID" /> bunu kullandığımız için.. bunu da pdto.Category_of_FoodID = (int)TempData["Category_of_Food_id"]; bu kodla sağladık.. 
+                    //  <input type="hidden" asp-for="CategoryofFoodID" /> bunu kullandığımız için prd.CategoryofFoodID = (int)TempData["CategoryofFood_id"]; ama bu koda gerek kalmadı... zira FoodDTO'da CategoryofFoodID ile veriyi aldık.. 
+                    // prd.CategoryofFood = null;
+                    // prd.CategoryofFoodID = pvm_post.CategoryofFoodDTO.ID; bu koda gerek kalmadı çünkü <input type="hidden" asp-for="FoodDTO.CategoryofFoodID" /> bunu kullandığımız için.. bunu da pdto.CategoryofFoodID = (int)TempData["CategoryofFood_id"]; bu kodla sağladık.. 
 
                     //////
                     ///
@@ -390,7 +390,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                         {
                             await FoodPicture.CopyToAsync(stream); // userPicture'ı, stream'e kayıt
 
-                            prd.FoodPicture = "/FoodPicture/" + fileName;   // veritabanına kayıt (wwwroot belirtmeye gerek yok)
+                            /* !!! !!! prd.FoodPicture = "/FoodPicture/" + fileName;   // veritabanına kayıt (wwwroot belirtmeye gerek yok)  !!! !!! */
 
                         }
                     }
@@ -401,10 +401,11 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                         {
                             Food prdv2 = await _ipm.GetByIdAsync(pvm_post.FoodDTO.ID);
 
-                            if (prdv2.FoodPicture != null) // önceden veritabanında resim varsa ve resim seçilmedi ise..
+                            /* !!! !!! if (prdv2.FoodPicture != null) // önceden veritabanında resim varsa ve resim seçilmedi ise..
                             {
                                 prd.FoodPicture = prdv2.FoodPicture;
                             }
+                             !!! !!! */
                         }
 
                     }
@@ -421,20 +422,20 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                     }
 
                     /*
-                    int Category_of_Food_id = (int)TempData["Category_of_Food_id"];
-                    TempData["Category_of_Food_id"] = Category_of_Food_id;
+                    int CategoryofFood_id = (int)TempData["CategoryofFood_id"];
+                    TempData["CategoryofFood_id"] = CategoryofFood_id;
                     */
 
-                    // var deneme = cdto.ID;
-                    // TempData["Category_of_FoodID"] = cdto.ID;                    
-                    // TempData["Category_of_FoodName"] = cdto.Category_of_FoodName;
-                    // TempData["Status"] = (Status) cdto.Status; 
-                    // TempData["Category_of_FoodPicture"] = cdto.Category_of_FoodPicture;
+                            // var deneme = cdto.ID;
+                            // TempData["CategoryofFoodID"] = cdto.ID;                    
+                            // TempData["CategoryofFoodName"] = cdto.CategoryofFoodName;
+                            // TempData["Status"] = (Status) cdto.Status; 
+                            // TempData["CategoryofFoodPicture"] = cdto.CategoryofFoodPicture;
 
-                    return RedirectToAction("FoodList", new { id = (int)TempData["Category_of_Food_id"], status = (int)TempData["Category_of_Food_status"] }); // comment'te alınırsa TempData["mesaj"] = "Ürün adı ve statü giriniz.."; da çalışır..
+                            return RedirectToAction("FoodList", new { id = (int)TempData["CategoryofFood_id"], status = (int)TempData["CategoryofFood_status"] }); // comment'te alınırsa TempData["mesaj"] = "Ürün adı ve statü giriniz.."; da çalışır..
 
                     /*
-                        return RedirectToAction("FoodList", new { id = (int)TempData["Category_of_Food_id"], status = (int)TempData["Category_of_Food_status"], JSpopupPage = TempData["JSpopupPage"].ToString() });
+                        return RedirectToAction("FoodList", new { id = (int)TempData["CategoryofFood_id"], status = (int)TempData["CategoryofFood_status"], JSpopupPage = TempData["JSpopupPage"].ToString() });
                      
                      */
 
@@ -450,7 +451,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
                 _ipm.Delete(await _ipm.GetByIdAsync(pvm_post.FoodDTO.ID));
 
-                // Category_of_Food ctg = cdto.Adapt<Category_of_Food>();
+                // CategoryofFood ctg = cdto.Adapt<CategoryofFood>();
 
                 // _icm.Delete(ctg);
 
@@ -459,7 +460,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 TempData["Deleted"] = null;
 
                 //  return RedirectToAction("FoodList");
-                return RedirectToAction("FoodList", new { id = (int)TempData["Category_of_Food_id"], status = (int)TempData["Category_of_Food_status"] });
+                return RedirectToAction("FoodList", new { id = (int)TempData["CategoryofFood_id"], status = (int)TempData["CategoryofFood_status"] });
             }
 
             // TempData["mesaj"] = "Ürün adı ve statü giriniz..";
@@ -480,7 +481,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             if (pvm_post.FoodDTO.ID != 0) //update
             {
                 TempData["JSpopupPage"] = $"ShowErrorUpdateOperationPopup({pvm_post.FoodDTO.ID})";
-                return RedirectToAction("FoodList", new { id = (int)TempData["Category_of_Food_id"], status = (int)TempData["Category_of_Food_status"], JSpopupPage = TempData["JSpopupPage"].ToString() });
+                return RedirectToAction("FoodList", new { id = (int)TempData["CategoryofFood_id"], status = (int)TempData["CategoryofFood_status"], JSpopupPage = TempData["JSpopupPage"].ToString() });
 
             }
             else // add // (pvm_post.FoodDTO.ID == 0) çevir...
@@ -490,7 +491,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 // pvm.JavascriptToRun = $"ShowErrorInsertOperationPopup()";
 
                 TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
-                return RedirectToAction("FoodList", new { id = (int)TempData["Category_of_Food_id"], status = (int)TempData["Category_of_Food_status"], JSpopupPage = TempData["JSpopupPage"].ToString() });
+                return RedirectToAction("FoodList", new { id = (int)TempData["CategoryofFood_id"], status = (int)TempData["CategoryofFood_status"], JSpopupPage = TempData["JSpopupPage"].ToString() });
             }
 
 

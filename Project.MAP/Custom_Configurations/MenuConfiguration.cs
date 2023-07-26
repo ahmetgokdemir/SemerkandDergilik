@@ -17,7 +17,11 @@ namespace Project.MAP.Custom_Configurations
         {
             base.Configure(builder);
 
-            builder.Property(x => x.Menu_Name).HasColumnName("Menu Adi").IsRequired();
+            builder.Ignore(x => x.AppUserID);
+
+            builder.Property(x => x.Menu_Name).HasColumnName("Menu Ad").IsRequired();
+            builder.Property(x => x.Menu_Status).HasColumnName("Menu Durum").IsRequired();
+
 
         }
     }

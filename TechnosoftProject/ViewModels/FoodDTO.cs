@@ -1,6 +1,6 @@
-﻿using Technosoft_Project.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
+using Project.ENTITIES.Enums;
 
 namespace Technosoft_Project.ViewModels
 {
@@ -30,19 +30,19 @@ namespace Technosoft_Project.ViewModels
         public short? Discount { get; set; }
 
 
-        //public int Category_of_FoodID { get; set; }
-        public int Category_of_FoodID { get; set; }
+        //public int CategoryofFoodID { get; set; }
+        public int CategoryofFoodID { get; set; }
          
         //[Display(Name = "Kategori Adı")]
-        //public string Category_of_FoodName { get; set; } // Aktif, Pasif
+        //public string CategoryofFoodName { get; set; } // Aktif, Pasif
         // [Display(Name = "Kategori DTO Adı")]
         // [Required(ErrorMessage = "Kategori ismi gereklidir...")]
-        // public Category_of_FoodDTO Category_of_Food { get; set; }
+        // public CategoryofFoodDTO CategoryofFood { get; set; }
 
 
         [Display(Name = "Durum")]
         [Required(ErrorMessage = "Yemek durumunu giriniz.")]
-        public Status Status { get; set; } // Aktif, Pasif
+        public ExistentStatus _ExistentStatus { get; set; } // Aktif, Pasif
 
 
         [Display(Name = "Yemek Resmi")]

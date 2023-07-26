@@ -1,4 +1,4 @@
-﻿@using Technosoft_Project.Enums;
+﻿@using Project.ENTITIES.Enums;
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -57,34 +57,34 @@ else if (Model.FoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
                 <span asp-validation-for="FoodDTO.Discount" class="text-danger"></span>
             </div>*@
 
-            <input type="hidden" asp-for="FoodDTO.Category_of_FoodID" />
+            <input type="hidden" asp-for="FoodDTO.CategoryofFoodID" />
 
             @*  
-                <input type="hidden" asp-for="Category_of_FoodDTO.ID" />
-                <input type="hidden" asp-for="Category_of_FoodDTO.Category_of_FoodName" />
+                <input type="hidden" asp-for="CategoryofFoodDTO.ID" />
+                <input type="hidden" asp-for="CategoryofFoodDTO.CategoryofFoodName" />
             *@
 
 
             <div class="form-group">
-                <label asp-for="Category_of_FoodDTO.Category_of_FoodName" class="control-label"></label>
-                <select class="form-control" asp-for="Category_of_FoodDTO.Category_of_FoodName" asp-items="@ViewBag.Category_of_FoodNames" disabled></select>
-                <span asp-validation-for="Category_of_FoodDTO.Category_of_FoodName" class="text-danger"></span>
+                <label asp-for="CategoryofFoodDTO.CategoryofFoodName" class="control-label"></label>
+                <select class="form-control" asp-for="CategoryofFoodDTO.CategoryofFoodName" asp-items="@ViewBag.CategoryofFoodNames" disabled></select>
+                <span asp-validation-for="CategoryofFoodDTO.CategoryofFoodName" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="FoodDTO.Status" class="control-label"></label>
-                @if ((int)TempData["Category_of_Food_status"] == 0)
+                <label asp-for="FoodDTO._ExistentStatus" class="control-label"></label>
+                @if ((int)TempData["CategoryofFood_status"] == 0)
                 {
 @*                    <select disabled class="form-control" asp-for="@Enum.GetNames(typeof(Status))[1].ToString()" asp-items="@ViewBag.Status"></select>*@
-                    <select disabled class="form-control" asp-for="FoodDTO.Status" asp-items="@ViewBag.Status"></select>
-                    TempData["Category_of_Food_status"] = Model.Category_of_FoodDTO.Status; // bu kod olmaz ise kullanıcı butona basmadan çıkarsa sayfadan TempData boş kalır null hatası döner ... tedbiren kalsın bu kod
+                    <select disabled class="form-control" asp-for="FoodDTO._ExistentStatus" asp-items="@ViewBag.Status"></select>
+                    TempData["CategoryofFood_status"] = Model.CategoryofFoodDTO._ExistentStatus; // bu kod olmaz ise kullanıcı butona basmadan çıkarsa sayfadan TempData boş kalır null hatası döner ... tedbiren kalsın bu kod
                 }
                 else
                 {
-                    <select class="form-control" asp-for="FoodDTO.Status" asp-items="@ViewBag.Status"></select>
-                    TempData["Category_of_Food_status"] = Model.Category_of_FoodDTO.Status; // bu kod olmaz ise kullanıcı butona basmadan çıkarsa sayfadan TempData boş kalır null hatası döner ... tedbiren kalsın bu kod
+                    <select class="form-control" asp-for="FoodDTO._ExistentStatus" asp-items="@ViewBag.Status"></select>
+                    TempData["CategoryofFood_status"] = Model.CategoryofFoodDTO._ExistentStatus; // bu kod olmaz ise kullanıcı butona basmadan çıkarsa sayfadan TempData boş kalır null hatası döner ... tedbiren kalsın bu kod
                 }
-                <span asp-validation-for="FoodDTO.Status" class="text-danger"></span>
+                <span asp-validation-for="FoodDTO._ExistentStatus" class="text-danger"></span>
             </div>
 
             <div class="form-group">

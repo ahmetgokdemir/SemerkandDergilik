@@ -34,7 +34,7 @@
     }
 
     function escapeAttributeValue(value) {
-        // As mentioned on http://api.jquery.com/Category_of_Food/selectors/
+        // As mentioned on http://api.jquery.com/CategoryofFood/selectors/
         return value.replace(/([!"#$%&'()*+,./:;<=>?@\[\\\]^`{|}~])/g, "\\$1");
     }
 

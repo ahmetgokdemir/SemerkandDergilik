@@ -70,16 +70,16 @@
                     <select class="form-control" id="selectforcategory" asp-for="_categoryList">
 
                         <option>Lütfen bir kategori seçiniz.</option>
-                        @foreach (Category_of_FoodDTO category in Model.Categories_of_AllFoods_DTOs)
+                        @foreach (CategoryofFoodDTO category in Model.Categories_of_AllFoods_DTOs)
                         {
-                            <option>@category.Category_of_FoodName</option>
+                            <option>@category.CategoryofFoodName</option>
 
                         }
                     </select>
                     <!--<span asp-validation-for="_categoryList" class="text-danger"></span>-->
                 </div>
 
-                <!-- asp-for="Category_of_FoodDTO.Category_of_FoodName" asp-items="ViewBag.Category_of_FoodNames"
+                <!-- asp-for="CategoryofFoodDTO.CategoryofFoodName" asp-items="ViewBag.CategoryofFoodNames"
 
                 asp-for="foodid"  asp-items="Html" Html.GetEnumSelectList<Technosoft_Project.Enums.Status>() -->
                 <!-- asp-items="ViewBag.food_items" gerek klamadı-->
@@ -118,8 +118,8 @@
 
         </form>
         <!--
-                TempData["messageCategory_of_Food"] = 4;
-                <a class="" asp-area="Admin" asp-controller="Menu" asp-action="Get_FoodsbyCategoryID_Ajax" asp-route-id="TempData["messageCategory_of_Food"]">İptal</a>
+                TempData["messageCategoryofFood"] = 4;
+                <a class="" asp-area="Admin" asp-controller="Menu" asp-action="Get_FoodsbyCategoryID_Ajax" asp-route-id="TempData["messageCategoryofFood"]">İptal</a>
         -->
 
         <div class="row">
@@ -127,12 +127,12 @@
             @if (Model.MenuDetailDTOs.Count != 0)
             {
                 <div>
-                    @foreach (Category_of_FoodDTO category in Model.Categories_of_Menu_DTOs)
+                    @foreach (CategoryofFoodDTO category in Model.Categories_of_Menu_DTOs)
                     {
-                        /*                        int Category_of_Food_status = (int)item.Status;  // asp-route-status="@(int)item.Status" olmuyor...*/
+                        /*                        int CategoryofFood_status = (int)item.Status;  // asp-route-status="@(int)item.Status" olmuyor...*/
 
                         <h5>
-                            @category.Category_of_FoodName
+                            @category.CategoryofFoodName
                         </h5>
 
                         <div class="panel panel-primary">
@@ -156,7 +156,7 @@
                                     </dd> -->
                                     @foreach (var foods in Model.MenuDetailDTOs)
                                     {
-                                        @if (foods.CategoryName_of_Food == category.Category_of_FoodName)
+                                        @if (foods.CategoryName_of_Food == category.CategoryofFoodName)
                                         {
                                             <tr>
                                                 <td></td>
@@ -212,7 +212,7 @@
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/themes/default.min.css" />
 
 
-@if (TempData["messageMenu"] != null) // konrol yapılmazsa messageCategory_of_Food null olduğu zaman .ToString() 'de hata verir..
+@if (TempData["messageMenu"] != null) // konrol yapılmazsa messageCategoryofFood null olduğu zaman .ToString() 'de hata verir..
 {
     @if (TempData["messageMenu"].ToString() == "Yemek menüye eklendi")
     {
@@ -220,14 +220,14 @@
             alertify.success("Yemek menüye eklendi");
         </script>
     }
-    else if (TempData["messageCategory_of_Food"].ToString() == "Kategori silindi")
+    else if (TempData["messageCategoryofFood"].ToString() == "Kategori silindi")
     {
 
         <script>
             alertify.error("Kategori silindi");
         </script>
     }
-    else if (TempData["messageCategory_of_Food"].ToString() == "Kategori eklendi")
+    else if (TempData["messageCategoryofFood"].ToString() == "Kategori eklendi")
     {
 
         <script>
@@ -235,7 +235,7 @@
         </script>
     }
 
-    TempData["messageCategory_of_Food"] = null;
+    TempData["messageCategoryofFood"] = null;
 
 }
 
@@ -252,13 +252,13 @@
 
             $.ajax({
                 //url: '@@Url.Action("AddFoodAjax","Food")',
-                url: 'AddCategory_of_FoodAjax',
+                url: 'AddCategoryofFoodAjax',
                 //data: { pdto_reloaddata: @@Model.FoodDTO },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#CRUDCategory_of_Food").html(data);
-                    CRUDCategory_of_FoodModalLoaded();
+                    $("#CRUDCategoryofFood").html(data);
+                    CRUDCategoryofFoodModalLoaded();
 
                 },
                 beforeSend: function () {
@@ -279,13 +279,13 @@
 
         $.ajax({
             //url: '@@Url.Action("AddFoodAjax","Food")',
-            url: 'UpdateCategory_of_FoodAjax',
+            url: 'UpdateCategoryofFoodAjax',
             data: { id: _id },
             type: 'GET',
             dataType: 'html',
             success: function (data) {
-                $("#CRUDCategory_of_Food").html(data);
-                CRUDCategory_of_FoodModalLoaded();
+                $("#CRUDCategoryofFood").html(data);
+                CRUDCategoryofFoodModalLoaded();
 
             },
             beforeSend: function () {
@@ -303,8 +303,8 @@
 
 
 
-    function CRUDCategory_of_FoodModalLoaded() {
-        $("#CRUDCategory_of_FoodModal").modal('show'); // #CRUDCategory_of_FoodModal içinde CRUDCategory_of_Food var (<div class="modal-body" id="CRUDCategory_of_Food">) onun içinde de data var (_CrudCategory_of_FoodPartial)
+    function CRUDCategoryofFoodModalLoaded() {
+        $("#CRUDCategoryofFoodModal").modal('show'); // #CRUDCategoryofFoodModal içinde CRUDCategoryofFood var (<div class="modal-body" id="CRUDCategoryofFood">) onun içinde de data var (_CrudCategoryofFoodPartial)
     }
 
     /*
@@ -383,16 +383,16 @@
 
 
     $(function () {
-        //$("#addNewCategory_of_Food").click(function () {
-        $("#tab1").on("click", "[value=addNewCategory_of_FoodValue]", function () {
+        //$("#addNewCategoryofFood").click(function () {
+        $("#tab1").on("click", "[value=addNewCategoryofFoodValue]", function () {
             $.ajax({
-                //url: '@@Url.Action("AddCategory_of_FoodAjax","Category_of_Food")',
-                url: 'AddCategory_of_FoodAjax',
+                //url: '@@Url.Action("AddCategoryofFoodAjax","CategoryofFood")',
+                url: 'AddCategoryofFoodAjax',
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#CRUDCategory_of_Food").html(data);
-                    CRUDCategory_of_FoodModalLoaded();
+                    $("#CRUDCategoryofFood").html(data);
+                    CRUDCategoryofFoodModalLoaded();
 
                 },
                 beforeSend: function () {
@@ -409,24 +409,24 @@
     });
 
     $(function () {
-        //$("#updateCategory_of_Food").click(function () {
-        $("#tab2").on("click", "[value=updateCategory_of_FoodValue]", function () {
+        //$("#updateCategoryofFood").click(function () {
+        $("#tab2").on("click", "[value=updateCategoryofFoodValue]", function () {
             $.ajax({
-                //url: '@@Url.Action("AddCategory_of_FoodAjax","Category_of_Food")',
-                url: 'UpdateCategory_of_FoodAjax',
+                //url: '@@Url.Action("AddCategoryofFoodAjax","CategoryofFood")',
+                url: 'UpdateCategoryofFoodAjax',
                 data: { id: $(this).attr("data-id") },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#CRUDCategory_of_Food").html(data);
-                    CRUDCategory_of_FoodModalLoaded();
+                    $("#CRUDCategoryofFood").html(data);
+                    CRUDCategoryofFoodModalLoaded();
 
                 },
                 beforeSend: function () {
-                    $("#LoadingCategory_of_FoodModal").modal('show');
+                    $("#LoadingCategoryofFoodModal").modal('show');
                 },
                 complete: function () {
-                    $("#LoadingCategory_of_FoodModal").modal('hide');
+                    $("#LoadingCategoryofFoodModal").modal('hide');
 
                     // $('.loader').hide(); //Hide this loader
                 },
@@ -439,17 +439,17 @@
 
 
     $(function () {
-        //$("#addNewCategory_of_Food").click(function () {
-        $("#tab2").on("click", "[value=deleteCategory_of_FoodValue]", function () {
+        //$("#addNewCategoryofFood").click(function () {
+        $("#tab2").on("click", "[value=deleteCategoryofFoodValue]", function () {
             $.ajax({
-                //url: '@@Url.Action("AddCategory_of_FoodAjax","Category_of_Food")',
-                url: 'DeleteCategory_of_FoodAjax',
+                //url: '@@Url.Action("AddCategoryofFoodAjax","CategoryofFood")',
+                url: 'DeleteCategoryofFoodAjax',
                 data: { id: $(this).attr("data-id") },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#CRUDCategory_of_Food").html(data);
-                    CRUDCategory_of_FoodModalLoaded();
+                    $("#CRUDCategoryofFood").html(data);
+                    CRUDCategoryofFoodModalLoaded();
 
                 },
                 error: function () {

@@ -28,19 +28,19 @@ namespace Project.DAL.Repositories.Concretes
         // Kategoriye göre Ürünler.. Include
         public IQueryable<Food> Get_FoodsByCategoryID_Async(int categoryid)
         {
-            // return _context.Set<Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.Category_of_FoodID == categoryid).AsQueryable();
+            // return _context.Set<Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.CategoryofFoodID == categoryid).AsQueryable();
             // *** İsmail Bey - Değişiklikleri
             return null;
 
-            //.Include(x=> x.Category_of_Food).AsQueryable();
+            //.Include(x=> x.CategoryofFood).AsQueryable();
         }
 
         /*
         // Kategoriye göre Ürünlerin isimleri..  
-        public IQueryable<FoodDto_Repo> GetActivesFoodNamesByCategory_of_FoodIDAsync(int Category_of_Food_id)
+        public IQueryable<FoodDto_Repo> GetActivesFoodNamesByCategoryofFoodIDAsync(int CategoryofFood_id)
         {
 
-            return _context.Set<Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.Category_of_FoodID == Category_of_Food_id).Select(x => new FoodDto_Repo
+            return _context.Set<Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.CategoryofFoodID == CategoryofFood_id).Select(x => new FoodDto_Repo
             {
                 ID = x.ID,
                 FoodName =  x.FoodName
@@ -48,15 +48,15 @@ namespace Project.DAL.Repositories.Concretes
             }).AsQueryable();   // ToList
 
 
-            //.Include(x=> x.Category_of_Food).AsQueryable();
+            //.Include(x=> x.CategoryofFood).AsQueryable();
         }
         */
 
         // Kullanılmadı !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Ürünü, kategori bilgileri ile getirmek...
-        public IQueryable<Food> GetFoodByIdwithCategory_of_FoodValueAsync(int Food_id)
+        public IQueryable<Food> GetFoodByIdwithCategoryofFoodValueAsync(int Food_id)
         {
-            //return _context.Set<Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.ID == Food_id).Include(x => x.Category_of_Food).AsQueryable();
+            //return _context.Set<Food>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted && x.ID == Food_id).Include(x => x.CategoryofFood).AsQueryable();
             // *** İsmail Bey - Değişiklikleri
             return null;
         

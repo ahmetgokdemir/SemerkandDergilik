@@ -1,24 +1,18 @@
 
-sdfsdfdsfdf
-sdfsdfsdfsdfdfsf
-sdfsdf
 
-Admin için Onay durumu olmasýn
+/* !!! !!! 
+
+!!! !!! */
+
 
 
 
 ddlFoods.append($("<option></option>").val(index).html(foods));
 
-1 gender ve status'ü entitties e taþýmaya gerek yok zira int olarak tanýmlandýlar...
-
-// IsConfirmedAccount = 0;   sbase de mi property de mi?
 // <select class="form-control" id="foodsofcategory" asp-for="_foodList_ID"> içindeki foreach gerek yok galiba 
 // *** IsConfirmedAccount= ENTITIES.Enums.IsConfirmedAccount.Aktif --> seedroles.cs (DAL)
 
 
-1 menü, kategori, yemek elekem güncelleme ve silme tamamen restarantlar tarafýndan mý yoksa admin de yapabilir mi ?
-
-2 menüden yemek silmek 
 
 
 
@@ -26,6 +20,8 @@ Testler:
 KOD TESTLERÝ VE DÜZENLEMESÝ
 isimlere standart getir...
 repository kontrol et
+Admin için Onay durumu olmasýn
+
 
 Sonra:
 * þifre deðiþtirmede show password'ü koy...
@@ -103,7 +99,7 @@ IdentityAPI kendisi, Identity sýnýflarý arasýnda navigationlarý kuruyor.. Ayrýye
         //public virtual ICollection<AppRoleClaim> AppRoleClaims { get; set; } gibi...
 
 Identity sýnýflarý sadece IEnitityden miras aldýðý için property'leri implement edilmeli ve constructor tanýmlanlamlý.. ama diðer sýnýflar
-(Category_of_Food,Food vs.) ayrýca Entity'den miras aldýðý için ve Entity class da bu propertyleri implement ettiðinden bu sýnýflarda ayrýyeten 
+(CategoryofFood,Food vs.) ayrýca Entity'den miras aldýðý için ve Entity class da bu propertyleri implement ettiðinden bu sýnýflarda ayrýyeten 
 implementasyona gerek yok..
 
 ---
@@ -187,9 +183,9 @@ result = HttpContext.Session.GetObject<FoodDTO>("manipulatedData");
 
 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-Category_of_FoodController
+CategoryofFoodController
 
-HttpContext.Session.SetObject("manipulatedData", cvm_post.Category_of_FoodDTO); // object to json
+HttpContext.Session.SetObject("manipulatedData", cvm_post.CategoryofFoodDTO); // object to json
 HttpContext.Session.SetObject("manipulatedData", null); // resetlemek
 
 

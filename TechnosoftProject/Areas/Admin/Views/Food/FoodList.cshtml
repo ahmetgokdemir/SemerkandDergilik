@@ -95,11 +95,11 @@ else
                             @*<td class="position"><p>@item.UnitsInStock</p></td>*@
 @*                            <td class="position"><p>@item.Discount</p></td>*@
 
-                            @*<td>@item.Category_of_FoodID</td>*@
-                            <td class="position"><p>@Model.Category_of_FoodDTO.Category_of_FoodName</p></td>
+                            @*<td>@item.CategoryofFoodID</td>*@
+                            <td class="position"><p>@Model.CategoryofFoodDTO.CategoryofFoodName</p></td>
 
-                            <td class="position"><p>@item.Status</p></td>
-                            @*<td colspan="2" style="padding-left:150px">@item.Category_of_FoodPicture</td>*@
+                            <td class="position"><p>@item._ExistentStatus</p></td>
+                            @*<td colspan="2" style="padding-left:150px">@item.CategoryofFoodPicture</td>*@
                             <td style="text-align: center;">
                                 @if (item.FoodPicture != null)
                                 {
@@ -108,10 +108,10 @@ else
                             </td>
                             <td class="btnposition">
                                 <a class="btn btn-warning" value="updateFoodValue" data-id=@item.ID>Güncelle</a>
-                                @* BURASIIII  <button class="btn btn-warning " id="updateCategory_of_Food" value="updateCategory_of_FoodValue" data-id=@item.ID>Güncelle</button>*@
+                                @* BURASIIII  <button class="btn btn-warning " id="updateCategoryofFood" value="updateCategoryofFoodValue" data-id=@item.ID>Güncelle</button>*@
                             </td>
                             <td class="btnposition">
-                                @*<a asp-action="DeleteCategory_of_Food" asp-controller="Category_of_Food" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
+                                @*<a asp-action="DeleteCategoryofFood" asp-controller="CategoryofFood" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
 
                                 <button class="btn btn-danger " id="deleteFood" value="deleteFoodValue" data-id=@item.ID>Sil</button>
                             </td>
@@ -124,7 +124,7 @@ else
 }
 
 
-<a asp-action="Category_of_FoodList" asp-controller="Category_of_Food" class="btn btn-outline-info mb-3">Kategori Sayfasına Geri Dön</a>
+<a asp-action="CategoryofFoodList" asp-controller="CategoryofFood" class="btn btn-outline-info mb-3">Kategori Sayfasına Geri Dön</a>
 
 
 <div class="modal fade" id="CRUDFoodModal" tabindex="-1" role="dialog">
@@ -153,7 +153,7 @@ else
         </script>
     }*@
 
-<div class="modal fade" id="LoadingCategory_of_FoodModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="LoadingCategoryofFoodModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -161,7 +161,7 @@ else
                 <h4 class="modal-title"></h4>
             </div>
 
-            <div class="modal-body" id="CRUDCategory_of_Food">
+            <div class="modal-body" id="CRUDCategoryofFood">
                 <div class="spinner-border" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
@@ -348,10 +348,10 @@ else
 
                 },
                 beforeSend: function () {
-                    $("#LoadingCategory_of_FoodModal").modal('show');
+                    $("#LoadingCategoryofFoodModal").modal('show');
                 },
                 complete: function () {
-                    $("#LoadingCategory_of_FoodModal").modal('hide');
+                    $("#LoadingCategoryofFoodModal").modal('hide');
 
                     // $('.loader').hide(); //Hide this loader
                 },

@@ -33,9 +33,12 @@ namespace Project.DAL.Context
             builder.ApplyConfiguration(new AppUserRoleConfiguration());
             builder.ApplyConfiguration(new AppUserTokenConfiguration());
 
-            builder.ApplyConfiguration(new Category_of_FoodConfiguration());
-            builder.ApplyConfiguration(new CategoryFoodJunctionConfiguration());
+            builder.ApplyConfiguration(new CategoryofFoodConfiguration());
             builder.ApplyConfiguration(new FoodConfiguration());
+
+            builder.ApplyConfiguration(new UserCategoryJunctionConfiguration());
+            builder.ApplyConfiguration(new UserFoodJunctionConfiguration());
+
             builder.ApplyConfiguration(new MenuConfiguration());
             builder.ApplyConfiguration(new MenuDetailConfiguration());
 
@@ -59,9 +62,6 @@ namespace Project.DAL.Context
 
             //    //builder.Property(roleClaim => roleClaim.RoleId).HasColumnName("Vendor Name");
             //});
-
-
-
 
 
 
@@ -118,17 +118,16 @@ namespace Project.DAL.Context
         public DbSet<AppUserLogin> AppUserLogins { get; set; }
         public DbSet<AppUserRole> AppUserRoles { get; set; }
         public DbSet<AppUserToken> AppUserTokens { get; set; }
-        public DbSet<Category_of_Food> Category_of_Foods { get; set; }
+
+        public DbSet<CategoryofFood> CategoryofFoods { get; set; }
         public DbSet<Food> Foods { get; set; }
-        public DbSet<CategoryFoodJunction> CategoryFoodJunctions { get; set; }
+        public DbSet<UserCategoryJunction> UserCategoryJunctions { get; set; }
+        public DbSet<UserFoodJunction> UserFoodJunctions { get; set; }
         public DbSet<Menu> Menus { get; set; }
         public DbSet<MenuDetail> MenuDetails { get; set; }
+
         public DbSet<Coupon> Coupons { get; set; }
         public DbSet<Blog> Blogs { get; set; }
-
-
-
-
 
     }
 }

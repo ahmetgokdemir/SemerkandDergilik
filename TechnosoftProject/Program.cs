@@ -183,7 +183,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped<IMenuRepository, MenuRepository>();
 builder.Services.AddScoped<IMenuDetailRepository, MenuDetailRepository>();
 
-builder.Services.AddScoped<ICategory_of_FoodRepository, Category_of_FoodRepository>();
+builder.Services.AddScoped<ICategoryofFoodRepository, CategoryofFoodRepository>();
 builder.Services.AddScoped<IFoodRepository, FoodRepository>();
 
 //Managers
@@ -192,7 +192,7 @@ builder.Services.AddScoped(typeof(IManager<>), typeof(BaseManager<>));
 builder.Services.AddScoped<IMenuManager, MenuManager>();
 builder.Services.AddScoped<IMenuDetailManager, MenuDetailManager>();
 
-builder.Services.AddScoped<ICategory_of_FoodManager, Category_of_FoodManager>();
+builder.Services.AddScoped<ICategoryofFoodManager, CategoryofFoodManager>();
 builder.Services.AddScoped<IFoodManager, FoodManager>();
 builder.Services.AddScoped<IBlogManager, BlogManager>();
 

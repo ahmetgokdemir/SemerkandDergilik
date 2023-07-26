@@ -1,5 +1,5 @@
-﻿using Technosoft_Project.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Project.ENTITIES.Enums;
 
 namespace Technosoft_Project.ViewModels
 {

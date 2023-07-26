@@ -1,7 +1,7 @@
-﻿@model Category_of_FoodVM
+﻿@model CategoryofFoodVM
 
 @{
-    ViewData["Title"] = "Category_of_FoodList";
+    ViewData["Title"] = "CategoryofFoodList";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -40,18 +40,18 @@
 <hr class="loader"/>
 
 
-@if (Model.Category_of_FoodDTOs.Count == 0)
+@if (Model.CategoryofFoodDTOs.Count == 0)
 {
     <div class="jumbotron" id="tab1" style="padding:20px;  background-color:lightgrey">
         @*<input type="submit" id="btnIslemYap" value="İşlem Yap" />*@
 
-        <button class="btn btn-outline-success " id="addNewCategory_of_Food" value="addNewCategory_of_FoodValue">Kategori Eklemek için tıklayınız</button>
+        <button class="btn btn-outline-success " id="addNewCategoryofFood" value="addNewCategoryofFoodValue">Kategori Eklemek için tıklayınız</button>
     </div>
 }
 else
 {
     <div id="tab1" class="mb-3">
-        <button class="btn btn-outline-success " id="addNewCategory_of_Food" value="addNewCategory_of_FoodValue">Kategori Eklemek için tıklayınız</button>
+        <button class="btn btn-outline-success " id="addNewCategoryofFood" value="addNewCategoryofFoodValue">Kategori Eklemek için tıklayınız</button>
     </div>
 
 
@@ -69,36 +69,36 @@ else
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (Category_of_FoodDTO item in Model.Category_of_FoodDTOs)
+                    @foreach (CategoryofFoodDTO item in Model.CategoryofFoodDTOs)
                     {
-                        int Category_of_Food_status = (int)item.Status;  // asp-route-status="@(int)item.Status" olmuyor...
+                        int CategoryofFood_status = (int)item._ExistentStatus;  // asp-route-status="@(int)item.Status" olmuyor...
 
                         <tr>
                             <td></td>
                             <td class="position">
-                                <a class="" asp-area="Admin" asp-controller="Food" asp-action="FoodList" asp-route-id="@item.ID" asp-route-status="@Category_of_Food_status">@item.Category_of_FoodName</a>
+                                <a class="" asp-area="Admin" asp-controller="Food" asp-action="FoodList" asp-route-id="@item.ID" asp-route-status="@CategoryofFood_status">@item.CategoryofFoodName</a>
                             </td>
                             <td class="position">
-                                <p>@item.Status</p>
+                                <p>@item._ExistentStatus</p>
                             </td>
-                            @*<td colspan="2" style="padding-left:150px">@item.Category_of_FoodPicture</td>*@
+                            @*<td colspan="2" style="padding-left:150px">@item.CategoryofFoodPicture</td>*@
                             <td style="text-align: center;">
-                                @if (item.Category_of_FoodPicture != null)
+                                @if (item.CategoryofFoodPicture != null)
                                 {
-                                    <img style="width:85px; height:40px" src="@item.Category_of_FoodPicture" />
+                                    <img style="width:85px; height:40px" src="@item.CategoryofFoodPicture" />
                                 }                                
                             </td>
                             <td class="btnposition">
-                                @*<a asp-action="UpdateCategory_of_Food" asp-controller="Category_of_Food" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
-                                <button class="btn btn-warning" id="updateCategory_of_Food" value="updateCategory_of_FoodValue" data-id=@item.ID>
+                                @*<a asp-action="UpdateCategoryofFood" asp-controller="CategoryofFood" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
+                                <button class="btn btn-warning" id="updateCategoryofFood" value="updateCategoryofFoodValue" data-id=@item.ID>
                                     Güncelle
                                 </button>
                           
                             </td>
                             <td class="btnposition">
-                                @*<a asp-action="DeleteCategory_of_Food" asp-controller="Category_of_Food" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
+                                @*<a asp-action="DeleteCategoryofFood" asp-controller="CategoryofFood" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
 
-                                <button class="btn btn-danger" id="deleteCategory_of_Food" value="deleteCategory_of_FoodValue" data-id=@item.ID>Sil</button>
+                                <button class="btn btn-danger" id="deleteCategoryofFood" value="deleteCategoryofFoodValue" data-id=@item.ID>Sil</button>
                             </td>
                         </tr>
                     }
@@ -108,7 +108,7 @@ else
     </div>
 }
 
-<div class="modal fade" id="CRUDCategory_of_FoodModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="CRUDCategoryofFoodModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -116,7 +116,7 @@ else
                 <h4 class="modal-title"></h4>
             </div>
 
-            <div class="modal-body" id="CRUDCategory_of_Food">
+            <div class="modal-body" id="CRUDCategoryofFood">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
@@ -126,7 +126,7 @@ else
 </div>
 
 
-<div class="modal fade" id="LoadingCategory_of_FoodModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="LoadingCategoryofFoodModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -134,7 +134,7 @@ else
                 <h4 class="modal-title"></h4>
             </div>
 
-            <div class="modal-body" id="CRUDCategory_of_Food">
+            <div class="modal-body" id="CRUDCategoryofFood">
                 <div class="spinner-border" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
@@ -152,23 +152,23 @@ else
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/alertify.min.css" />
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/themes/default.min.css" />
 
-@if (TempData["messageCategory_of_Food"] != null) // konrol yapılmazsa messageCategory_of_Food null olduğu zaman .ToString() 'de hata verir..
+@if (TempData["messageCategoryofFood"] != null) // konrol yapılmazsa messageCategoryofFood null olduğu zaman .ToString() 'de hata verir..
 {
-    @if (TempData["messageCategory_of_Food"].ToString() == "Kategori güncellendi")
+    @if (TempData["messageCategoryofFood"].ToString() == "Kategori güncellendi")
     {
          
         <script>
             alertify.warning("Kategori güncellendi");
         </script>
     }    
-    else if (TempData["messageCategory_of_Food"].ToString() == "Kategori silindi")
+    else if (TempData["messageCategoryofFood"].ToString() == "Kategori silindi")
     {
          
         <script>
             alertify.error("Kategori silindi");
         </script>
     }
-    else if (TempData["messageCategory_of_Food"].ToString() == "Kategori eklendi")
+    else if (TempData["messageCategoryofFood"].ToString() == "Kategori eklendi")
     {
          
         <script>
@@ -176,7 +176,7 @@ else
         </script>
     }
 
-    TempData["messageCategory_of_Food"] = null;
+    TempData["messageCategoryofFood"] = null;
 
 }
 
@@ -226,13 +226,13 @@ else
 
             $.ajax({
                 //url: '@@Url.Action("AddFoodAjax","Food")',
-                url: 'AddCategory_of_FoodAjax',
+                url: 'AddCategoryofFoodAjax',
                 //data: { pdto_reloaddata: @@Model.FoodDTO },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#CRUDCategory_of_Food").html(data);
-                    CRUDCategory_of_FoodModalLoaded();
+                    $("#CRUDCategoryofFood").html(data);
+                    CRUDCategoryofFoodModalLoaded();
 
                 },
                 beforeSend: function () {
@@ -253,13 +253,13 @@ else
 
         $.ajax({
             //url: '@@Url.Action("AddFoodAjax","Food")',
-            url: 'UpdateCategory_of_FoodAjax',
+            url: 'UpdateCategoryofFoodAjax',
             data: { id: _id },
             type: 'GET',
             dataType: 'html',
             success: function (data) {
-                $("#CRUDCategory_of_Food").html(data);
-                CRUDCategory_of_FoodModalLoaded();
+                $("#CRUDCategoryofFood").html(data);
+                CRUDCategoryofFoodModalLoaded();
 
             },
             beforeSend: function () {
@@ -277,21 +277,21 @@ else
 
 
 
-    function CRUDCategory_of_FoodModalLoaded() {
-        $("#CRUDCategory_of_FoodModal").modal('show'); // #CRUDCategory_of_FoodModal içinde CRUDCategory_of_Food var (<div class="modal-body" id="CRUDCategory_of_Food">) onun içinde de data var (_CrudCategory_of_FoodPartial)
+    function CRUDCategoryofFoodModalLoaded() {
+        $("#CRUDCategoryofFoodModal").modal('show'); // #CRUDCategoryofFoodModal içinde CRUDCategoryofFood var (<div class="modal-body" id="CRUDCategoryofFood">) onun içinde de data var (_CrudCategoryofFoodPartial)
     }
 
     $(function () {
-        //$("#addNewCategory_of_Food").click(function () {
-        $("#tab1").on("click", "[value=addNewCategory_of_FoodValue]", function () {
+        //$("#addNewCategoryofFood").click(function () {
+        $("#tab1").on("click", "[value=addNewCategoryofFoodValue]", function () {
             $.ajax({
-                //url: '@@Url.Action("AddCategory_of_FoodAjax","Category_of_Food")',
-                url: 'AddCategory_of_FoodAjax',
+                //url: '@@Url.Action("AddCategoryofFoodAjax","CategoryofFood")',
+                url: 'AddCategoryofFoodAjax',
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#CRUDCategory_of_Food").html(data);
-                    CRUDCategory_of_FoodModalLoaded();
+                    $("#CRUDCategoryofFood").html(data);
+                    CRUDCategoryofFoodModalLoaded();
 
                 },
                 beforeSend: function () {
@@ -308,24 +308,24 @@ else
     });
 
     $(function () {
-        //$("#updateCategory_of_Food").click(function () {
-        $("#tab2").on("click", "[value=updateCategory_of_FoodValue]", function () {
+        //$("#updateCategoryofFood").click(function () {
+        $("#tab2").on("click", "[value=updateCategoryofFoodValue]", function () {
             $.ajax({
-                //url: '@@Url.Action("AddCategory_of_FoodAjax","Category_of_Food")',
-                url: 'UpdateCategory_of_FoodAjax',
+                //url: '@@Url.Action("AddCategoryofFoodAjax","CategoryofFood")',
+                url: 'UpdateCategoryofFoodAjax',
                 data: { id: $(this).attr("data-id") },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#CRUDCategory_of_Food").html(data);
-                    CRUDCategory_of_FoodModalLoaded();
+                    $("#CRUDCategoryofFood").html(data);
+                    CRUDCategoryofFoodModalLoaded();
 
                 },
                 beforeSend: function () {
-                       $("#LoadingCategory_of_FoodModal").modal('show');
+                       $("#LoadingCategoryofFoodModal").modal('show');
                 },
                 complete: function () {
-                    $("#LoadingCategory_of_FoodModal").modal('hide');
+                    $("#LoadingCategoryofFoodModal").modal('hide');
 
                     // $('.loader').hide(); //Hide this loader
                 },
@@ -338,17 +338,17 @@ else
 
 
     $(function () {
-        //$("#addNewCategory_of_Food").click(function () {
-        $("#tab2").on("click", "[value=deleteCategory_of_FoodValue]", function () {
+        //$("#addNewCategoryofFood").click(function () {
+        $("#tab2").on("click", "[value=deleteCategoryofFoodValue]", function () {
             $.ajax({
-                //url: '@@Url.Action("AddCategory_of_FoodAjax","Category_of_Food")',
-                url: 'DeleteCategory_of_FoodAjax',
+                //url: '@@Url.Action("AddCategoryofFoodAjax","CategoryofFood")',
+                url: 'DeleteCategoryofFoodAjax',
                 data: { id: $(this).attr("data-id") },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#CRUDCategory_of_Food").html(data);
-                    CRUDCategory_of_FoodModalLoaded();
+                    $("#CRUDCategoryofFood").html(data);
+                    CRUDCategoryofFoodModalLoaded();
 
                 },
                 error: function () {

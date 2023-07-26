@@ -1,4 +1,5 @@
 ﻿using Project.ENTITIES.CoreInterfaces;
+using Project.ENTITIES.Identity_Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +10,19 @@ namespace Project.ENTITIES.Models
 {
     public class MenuDetail : EntityBase, IEntity
     {
-        public string CategoryName_of_Food { get; set; } // join ile uğraşmamak için Category_of_Food.cs'deki ismi Category_of_FoodName
+        public string CategoryName_of_Foods { get; set; } // join ile uğraşmamak için CategoryofFood.cs'deki ismi CategoryName_of_Foods
 
-        // public decimal FoodPrice { get; set; } // Food.cs --> UnitPrice; Configuration.cs'de money'e çevrilmeli.. 
+        // public decimal FoodPrice { get; set; } // UserFoodJunction.cs --> UnitPrice; Configuration.cs'de money'e çevrilmeli.. 
 
-        //public int Status { get; set; } // Aktif, Pasif --> Food.cs deki Status kullaılabilir bunun yerine
-
+        //public ExistentStatus Status_MenuDetail { get; set; } // Aktif, Pasif --> UserFoodJunction.cs deki ExistentStatus kullaılabilir bunun yerine
 
         public int MenuID { get; set; }
-        public int FoodID { get; set; }
         public virtual Menu Menu { get; set; }
+        public int FoodID { get; set; }
         public virtual Food Food { get; set; }
+
+        // ?
+        // public int AppUserID { get; set; }
+        // public virtual AppUser AppUser { get; set; } // AppUserID olayı (ID) AppUser (class isminden mi) AppUser (class'a verilen isimden mi idi?) hangisinden idi 
     }
 }

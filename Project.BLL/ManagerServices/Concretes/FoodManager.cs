@@ -36,17 +36,17 @@ namespace Project.BLL.ManagerServices.Concretes
         }
 
         /*
-        public async Task<IEnumerable<FoodDto_Repo>> GetActivesFoodNamesByCategory_of_FoodIDAsync(int Category_of_Food_id)
+        public async Task<IEnumerable<FoodDto_Repo>> GetActivesFoodNamesByCategoryofFoodIDAsync(int CategoryofFood_id)
         {
-            var FoodNames = await _prep.GetActivesFoodNamesByCategory_of_FoodIDAsync(Category_of_Food_id).ToListAsync();
+            var FoodNames = await _prep.GetActivesFoodNamesByCategoryofFoodIDAsync(CategoryofFood_id).ToListAsync();
 
             return FoodNames;
         }
         */
 
-        public async Task<Food> GetFoodByIdwithCategory_of_FoodValueAsync(int Food_id)
+        public async Task<Food> GetFoodByIdwithCategoryofFoodValueAsync(int Food_id)
         {
-            var Food = await _prep.GetFoodByIdwithCategory_of_FoodValueAsync(Food_id).ToListAsync(); // convert ıqueryable to IEnumerable
+            var Food = await _prep.GetFoodByIdwithCategoryofFoodValueAsync(Food_id).ToListAsync(); // convert ıqueryable to IEnumerable
 
             return Food[0];
         }

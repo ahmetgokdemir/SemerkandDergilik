@@ -7,7 +7,6 @@ using Project.BLL.ManagerServices.Abstracts;
 using Project.ENTITIES.Identity_Models;
 using Project.ENTITIES.Models;
 using Technosoft_Project.CommonTools;
-using Technosoft_Project.Enums;
 using Technosoft_Project.ViewModels;
 using Technosoft_Project.VMClasses;
 using System.Data;
@@ -18,26 +17,26 @@ using Technosoft_Project.Helper;
 namespace Technosoft_Project.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("Admin/Category_of_Food")]
+    [Route("Admin/CategoryofFood")]
     [Authorize(Roles = "Admin")] // case sensitive  
-    public class Category_of_FoodController : Controller
+    public class CategoryofFoodController : Controller
     {
-        readonly ICategory_of_FoodManager _icm;
+        readonly ICategoryofFoodManager _icm;
 
-        public Category_of_FoodController(ICategory_of_FoodManager icm) // services.AddRepManServices(); 
+        public CategoryofFoodController(ICategoryofFoodManager icm) // services.AddRepManServices(); 
         {
             _icm = icm;
         }
 
-        [Route("Category_of_FoodIndex")]
+        [Route("CategoryofFoodIndex")]
         public IActionResult Index()
         {
             return View();
         }
 
 
-        [Route("Category_of_FoodList")]
-        public async Task<IActionResult> Category_of_FoodList(string? JSpopupPage)
+        [Route("CategoryofFoodList")]
+        public async Task<IActionResult> CategoryofFoodList(string? JSpopupPage)
         {
 
             if (TempData["JavascriptToRun"] == null)
@@ -45,11 +44,11 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 JSpopupPage = null; // pop-up sıfırlanır yoksa sayfayı reflesleyince geliyor
             }
 
-            IEnumerable<Category_of_Food> Category_of_FoodList = await _icm.GetActivesAsync();
+            IEnumerable<CategoryofFood> CategoryofFoodList = await _icm.GetActivesAsync();
 
-            Category_of_FoodVM cvm = new Category_of_FoodVM
+            CategoryofFoodVM cvm = new CategoryofFoodVM
             {
-                Category_of_FoodDTOs = Category_of_FoodList.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(),
+                CategoryofFoodDTOs = CategoryofFoodList.Adapt<IEnumerable<CategoryofFoodDTO>>().ToList(),
                 JavascriptToRun = JSpopupPage
 
             };
@@ -57,35 +56,35 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             return View(cvm);
         }
 
-        [Route("AddCategory_of_FoodAjax")]
-        public PartialViewResult AddCategory_of_FoodAjax()
+        [Route("AddCategoryofFoodAjax")]
+        public PartialViewResult AddCategoryofFoodAjax()
         {
             // ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status))); => yerine                                                                 asp-items="Html.GetEnumSelectList<Technosoft_Project.Enums.Status>()" kullanıldı..
 
-            var result = new Category_of_FoodDTO();
-            Category_of_FoodDTO cDTO = new Category_of_FoodDTO();
+            var result = new CategoryofFoodDTO();
+            CategoryofFoodDTO cDTO = new CategoryofFoodDTO();
 
-            // HttpContext.Session.SetObject("manipulatedData", pvm_post.Category_of_FoodDTO);
+            // HttpContext.Session.SetObject("manipulatedData", pvm_post.CategoryofFoodDTO);
             if (TempData["HttpContext"] != null)
             {
-                cDTO = new Category_of_FoodDTO();
-                result = HttpContext.Session.GetObject<Category_of_FoodDTO>("manipulatedData");
+                cDTO = new CategoryofFoodDTO();
+                result = HttpContext.Session.GetObject<CategoryofFoodDTO>("manipulatedData");
                 cDTO = result;
 
             }
 
-            Category_of_FoodVM cVM = new Category_of_FoodVM
+            CategoryofFoodVM cVM = new CategoryofFoodVM
             {
-                Category_of_FoodDTO = cDTO
+                CategoryofFoodDTO = cDTO
             };
 
             if (TempData["HttpContext"] != null)
             {
                 TempData["HttpContext"] = null;
 
-                if (string.IsNullOrEmpty(cVM.Category_of_FoodDTO.Category_of_FoodName))
+                if (string.IsNullOrEmpty(cVM.CategoryofFoodDTO.CategoryofFoodName))
                 {
-                    ModelState.AddModelError("Category_of_FoodDTO.Category_of_FoodName", "Kategori adı giriniz.");
+                    ModelState.AddModelError("CategoryofFoodDTO.CategoryofFoodName", "Kategori adı giriniz.");
                 }
 
                 HttpContext.Session.SetObject("manipulatedData", null);
@@ -93,45 +92,45 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
             Thread.Sleep(500); // pop-up sayfasını tekrar açmayı tetikleyince bazen gelmiyor o yüzden bu kod eklendi..
 
-            return PartialView("_CrudCategory_of_FoodPartial", cVM);
+            return PartialView("_CrudCategoryofFoodPartial", cVM);
         }
 
 
 
 
-        [Route("UpdateCategory_of_FoodAjax")]
-        public async Task<PartialViewResult> UpdateCategory_of_FoodAjax(int id)
+        [Route("UpdateCategoryofFoodAjax")]
+        public async Task<PartialViewResult> UpdateCategoryofFoodAjax(int id)
         {
-            // Category_of_Food Category_of_Food_item = await _icm.GetByIdAsync(id);
-            // Category_of_FoodDTO cDTO = Category_of_Food_item.Adapt<Category_of_FoodDTO>();
+            // CategoryofFood CategoryofFood_item = await _icm.GetByIdAsync(id);
+            // CategoryofFoodDTO cDTO = CategoryofFood_item.Adapt<CategoryofFoodDTO>();
 
             // ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status))); => yerine                                                                 asp-items="Html.GetEnumSelectList<Technosoft_Project.Enums.Status>()" kullanıldı..
 
 
-            Category_of_FoodDTO cDTO = new Category_of_FoodDTO();
+            CategoryofFoodDTO cDTO = new CategoryofFoodDTO();
 
-            var result = new Category_of_FoodDTO();
+            var result = new CategoryofFoodDTO();
 
             if (TempData["HttpContext"] != null)
             {
-                result = HttpContext.Session.GetObject<Category_of_FoodDTO>("manipulatedData");
+                result = HttpContext.Session.GetObject<CategoryofFoodDTO>("manipulatedData");
                 cDTO = result;
 
                 // HttpContext.Session.SetObject("manipulatedData", null);
             }
             else
             {
-                Category_of_Food Category_of_Food_item = await _icm.GetByIdAsync(id);
-                cDTO = Category_of_Food_item.Adapt<Category_of_FoodDTO>();
-                // cdto = Food_item.Adapt<Category_of_FoodDTO>();
+                CategoryofFood CategoryofFood_item = await _icm.GetByIdAsync(id);
+                cDTO = CategoryofFood_item.Adapt<CategoryofFoodDTO>();
+                // cdto = Food_item.Adapt<CategoryofFoodDTO>();
             }
 
 
 
 
-            Category_of_FoodVM cVM = new Category_of_FoodVM
+            CategoryofFoodVM cVM = new CategoryofFoodVM
             {
-                Category_of_FoodDTO = cDTO
+                CategoryofFoodDTO = cDTO
             };
 
 
@@ -140,9 +139,9 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             {
                 TempData["HttpContext"] = null;
 
-                if (string.IsNullOrEmpty(cVM.Category_of_FoodDTO.Category_of_FoodName))
+                if (string.IsNullOrEmpty(cVM.CategoryofFoodDTO.CategoryofFoodName))
                 {
-                    ModelState.AddModelError("Category_of_FoodDTO.Category_of_FoodName", "Kategori adı giriniz.");
+                    ModelState.AddModelError("CategoryofFoodDTO.CategoryofFoodName", "Kategori adı giriniz.");
                 }
 
                 HttpContext.Session.SetObject("manipulatedData", null);
@@ -150,34 +149,34 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
             Thread.Sleep(500);
 
-            return PartialView("_CrudCategory_of_FoodPartial", cVM);
+            return PartialView("_CrudCategoryofFoodPartial", cVM);
         }
 
 
-        [Route("DeleteCategory_of_FoodAjax")]
-        public async Task<PartialViewResult> DeleteCategory_of_FoodAjax(int id)
+        [Route("DeleteCategoryofFoodAjax")]
+        public async Task<PartialViewResult> DeleteCategoryofFoodAjax(int id)
         {
-            Category_of_Food Category_of_Food_item = await _icm.GetByIdAsync(id);
-            Category_of_FoodDTO cDTO = Category_of_Food_item.Adapt<Category_of_FoodDTO>();
+            CategoryofFood CategoryofFood_item = await _icm.GetByIdAsync(id);
+            CategoryofFoodDTO cDTO = CategoryofFood_item.Adapt<CategoryofFoodDTO>();
 
             //ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
-            ViewBag.Category_of_FoodNameDelete = cDTO.Category_of_FoodName;
+            ViewBag.CategoryofFoodNameDelete = cDTO.CategoryofFoodName;
 
             ViewBag.CRUD = "delete_operation";
 
-            Category_of_FoodVM cVM = new Category_of_FoodVM
+            CategoryofFoodVM cVM = new CategoryofFoodVM
             {
-                Category_of_FoodDTO = cDTO
+                CategoryofFoodDTO = cDTO
             };
 
-            return PartialView("_CrudCategory_of_FoodPartial", cVM);
+            return PartialView("_CrudCategoryofFoodPartial", cVM);
         }
 
 
 
-        [Route("CRUDCategory_of_Food")]
+        [Route("CRUDCategoryofFood")]
         [HttpPost]
-        public async Task<IActionResult> CRUDCategory_of_Food(Category_of_FoodVM cvm_post, IFormFile Category_of_FoodPicture)
+        public async Task<IActionResult> CRUDCategoryofFood(CategoryofFoodVM cvm_post, IFormFile CategoryofFoodPicture)
         {
             
             /*
@@ -197,59 +196,61 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
             if (TempData["Deleted"] == null)
              {
-                 ModelState.Remove("Category_of_FoodPicture");
-                 ModelState.Remove("Category_of_FoodDTOs");
+                 ModelState.Remove("CategoryofFoodPicture");
+                 ModelState.Remove("CategoryofFoodDTOs");
                  ModelState.Remove("JavascriptToRun");
 
 
                  if (ModelState.IsValid)
                  {
-                     Category_of_Food ctg = cvm_post.Category_of_FoodDTO.Adapt<Category_of_Food>();
+                     CategoryofFood ctg = cvm_post.CategoryofFoodDTO.Adapt<CategoryofFood>();
 
-                     ctg.Status = (int)cvm_post.Category_of_FoodDTO.Status;
+                    /* !!! !!! ctg.Status = (int)cvm_post.CategoryofFoodDTO.Status; !!! !!!*/
 
 
 
-                     //////
-                     ///
-                     if (Category_of_FoodPicture != null && Category_of_FoodPicture.Length > 0)
+                    //////
+                    ///
+                    if (CategoryofFoodPicture != null && CategoryofFoodPicture.Length > 0)
                      {
-                         var fileName = Guid.NewGuid().ToString() + Path.GetExtension(Category_of_FoodPicture.FileName); // path oluşturma
+                         var fileName = Guid.NewGuid().ToString() + Path.GetExtension(CategoryofFoodPicture.FileName); // path oluşturma
 
-                         var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Category_of_FoodPicture", fileName); // server'a kayıt edilecek path => wwwroot/UserPicture/fileName
+                         var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/CategoryofFoodPicture", fileName); // server'a kayıt edilecek path => wwwroot/UserPicture/fileName
 
                          // kayıt işlemi
                          using (var stream = new FileStream(path, FileMode.Create))
                          {
-                             await Category_of_FoodPicture.CopyToAsync(stream); // userPicture'ı, stream'e kayıt
+                             await CategoryofFoodPicture.CopyToAsync(stream); // userPicture'ı, stream'e kayıt
 
-                             ctg.Category_of_FoodPicture = "/Category_of_FoodPicture/" + fileName;   // veritabanına kayıt (wwwroot belirtmeye gerek yok)
+                            /* !!! !!! ctg.CategoryofFoodPicture = "/CategoryofFoodPicture/" + fileName;   // veritabanına kayıt (wwwroot belirtmeye gerek yok) !!! !!! */
 
-                         }
-                     }
+                        }
+                    }
                      else
                      {
-                         Category_of_Food ctgv2 = await _icm.GetByIdAsync(cvm_post.Category_of_FoodDTO.ID);
+                         CategoryofFood ctgv2 = await _icm.GetByIdAsync(cvm_post.CategoryofFoodDTO.ID);
 
                          if (ctgv2 != null)
                          {
-                             if (ctgv2.Category_of_FoodPicture != null)
+                            /* !!! !!!
+                             if (ctgv2.CategoryofFoodPicture != null)
                              {
-                                 ctg.Category_of_FoodPicture = ctgv2.Category_of_FoodPicture;
+                                 ctg.CategoryofFoodPicture = ctgv2.CategoryofFoodPicture;
                              }
-                         }
+                            !!! !!! */
+                        }
 
-                     }
+                    }
 
                      if (ctg.ID == 0)
                      {
                          await _icm.AddAsync(ctg);
-                         TempData["messageCategory_of_Food"] = "Kategori eklendi";
+                         TempData["messageCategoryofFood"] = "Kategori eklendi";
                      }
                      else
                      {
                          _icm.Update(ctg);
-                         // yapılacak ödev:  Category_of_Food pasife çekilirse Foodları da pasife çekilsin!!! Update metodu içerisinde yapılabilir... ekstra metoda gerek yok
+                         // yapılacak ödev:  CategoryofFood pasife çekilirse Foodları da pasife çekilsin!!! Update metodu içerisinde yapılabilir... ekstra metoda gerek yok
 
                          /*
                           * 
@@ -271,41 +272,41 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
                           */
 
-            TempData["messageCategory_of_Food"] = "Kategori güncellendi";
+            TempData["messageCategoryofFood"] = "Kategori güncellendi";
 
                     }
 
-                    return RedirectToAction("Category_of_FoodList");
+                    return RedirectToAction("CategoryofFoodList");
                 }
 
             }
             else
             {
-                _icm.Delete(await _icm.GetByIdAsync(cvm_post.Category_of_FoodDTO.ID));
+                _icm.Delete(await _icm.GetByIdAsync(cvm_post.CategoryofFoodDTO.ID));
 
-                // Category_of_Food ctg = cdto.Adapt<Category_of_Food>();
+                // CategoryofFood ctg = cdto.Adapt<CategoryofFood>();
 
                 // _icm.Delete(ctg);
-                TempData["messageCategory_of_Food"] = "Kategori silindi";
+                TempData["messageCategoryofFood"] = "Kategori silindi";
 
                 TempData["Deleted"] = null;
 
-                return RedirectToAction("Category_of_FoodList");
+                return RedirectToAction("CategoryofFoodList");
             }
 
             // TempData["mesaj"] = "Kategori adı ve statü giriniz..";
             // ModelState.AddModelError("", "Ürün adı ve statü giriniz..");
 
-            Category_of_FoodVM cVM = new Category_of_FoodVM();
-            HttpContext.Session.SetObject("manipulatedData", cvm_post.Category_of_FoodDTO);
+            CategoryofFoodVM cVM = new CategoryofFoodVM();
+            HttpContext.Session.SetObject("manipulatedData", cvm_post.CategoryofFoodDTO);
 
             TempData["JavascriptToRun"] = "valid";
             TempData["HttpContext"] = "valid";
 
-            if (cvm_post.Category_of_FoodDTO.ID != 0) //update
+            if (cvm_post.CategoryofFoodDTO.ID != 0) //update
             {
-                cVM.JavascriptToRun = $"ShowErrorUpdateOperationPopup({cvm_post.Category_of_FoodDTO.ID})";
-                return RedirectToAction("Category_of_FoodList", new { JSpopupPage = cVM.JavascriptToRun });
+                cVM.JavascriptToRun = $"ShowErrorUpdateOperationPopup({cvm_post.CategoryofFoodDTO.ID})";
+                return RedirectToAction("CategoryofFoodList", new { JSpopupPage = cVM.JavascriptToRun });
 
             }
             else // add // (pvm_post.FoodDTO.ID == 0) çevir...
@@ -315,7 +316,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 // pvm.JavascriptToRun = $"ShowErrorInsertOperationPopup()";
 
                 TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
-                return RedirectToAction("Category_of_FoodList", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
+                return RedirectToAction("CategoryofFoodList", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
             }
 
 

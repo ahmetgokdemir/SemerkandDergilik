@@ -15,9 +15,16 @@ namespace Project.MAP.Custom_Configurations
         public override void Configure(EntityTypeBuilder<Food> builder)
         {
             base.Configure(builder);
-            builder.Property(x => x.UnitPrice).HasColumnType("money");
 
-            builder.Property(x => x.FoodName).HasColumnName("Ürün Adı").IsRequired();
+            builder.ToTable("Yemekler");
+
+            builder.Property(x => x.Food_Name).HasColumnName("Yemek Ad").IsRequired();
+
+            /*
+             * 
+             
+            builder.Property(x => x.UnitPrice).HasColumnType("money");
+             */
         }
     }
 }

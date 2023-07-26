@@ -16,12 +16,12 @@ namespace Project.MAP.Custom_Configurations
         {
             base.Configure(builder);
 
-            builder.ToTable("Menu Detayi");
+            builder.ToTable("Menu Detay");
 
             builder.Ignore(x => x.ID); 
             builder.HasKey(x => new { x.MenuID, x.FoodID });
 
-            builder.Property(x => x.CategoryName_of_Food).HasColumnName("Kategori Adi").IsRequired();         
+            builder.Property(x => x.CategoryName_of_Foods).HasColumnName("Kategori Ad").IsRequired();         
             // builder.Property(x => x.FoodPrice).HasColumnName("Yemek Fiyati").HasColumnType("money"); //**
 
         }

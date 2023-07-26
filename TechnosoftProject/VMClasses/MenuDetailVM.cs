@@ -9,8 +9,8 @@ namespace Technosoft_Project.VMClasses
         public MenuDetailDTO MenuDetailDTO { get; set; }
         public List<MenuDetailDTO> MenuDetailDTOs { get; set; }
         public string JavascriptToRun { get; set; }
-        public List<Category_of_FoodDTO> Categories_of_Menu_DTOs { get; set; }
-        public List<Category_of_FoodDTO> Categories_of_AllFoods_DTOs { get; set; }
+        public List<CategoryofFoodDTO> Categories_of_Menu_DTOs { get; set; }
+        public List<CategoryofFoodDTO> Categories_of_AllFoods_DTOs { get; set; }
 
 
         [Required(ErrorMessage = "Yemek seçiniz.")]

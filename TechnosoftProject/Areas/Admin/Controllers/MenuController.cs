@@ -6,7 +6,6 @@ using Project.BLL.ManagerServices.Abstracts;
 using Project.ENTITIES.Models;
 using System.Data;
 using Technosoft_Project.CommonTools;
-using Technosoft_Project.Enums;
 using Technosoft_Project.ViewModels;
 using Technosoft_Project.VMClasses;
 using static Project.DAL.Repositories.Concretes.FoodRepository;
@@ -26,11 +25,11 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
         readonly IMenuManager _imm;
         readonly IMenuDetailManager _imdm;
-        readonly ICategory_of_FoodManager _icm;
+        readonly ICategoryofFoodManager _icm;
         readonly IFoodManager _ifm;
 
 
-        public MenuController(IMenuManager imm, IMenuDetailManager imdm, ICategory_of_FoodManager icm, IFoodManager ifm) // services.AddRepManServices(); 
+        public MenuController(IMenuManager imm, IMenuDetailManager imdm, ICategoryofFoodManager icm, IFoodManager ifm) // services.AddRepManServices(); 
         {
             _imm = imm;
             _imdm = imdm;
@@ -53,7 +52,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             IEnumerable<object> Menu_Categories = await _imdm.Get_CategoriesofMenu_Async(id);
 
             // All category
-            IEnumerable<Category_of_Food> AllCategories = await _icm.GetActivesAsync(); 
+            IEnumerable<CategoryofFood> AllCategories = await _icm.GetActivesAsync(); 
 
 
             // Dictionary<int, string> bos = new Dictionary<int, string>();
@@ -78,14 +77,14 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             //}
             */
 
-            // Category_of_FoodDTO cdto = new Category_of_FoodDTO();
+            // CategoryofFoodDTO cdto = new CategoryofFoodDTO();
             // List<string> FoodList = new List<string>();
 
 
             //if (categoryid != null)
             //{
-            //    IEnumerable<string> Category_of_FoodNames = await _ifm.GetActivesFoodNamesByCategory_of_FoodIDAsync((int)categoryid);
-            //    FoodList = Category_of_FoodNames.Adapt<IEnumerable<string>>().ToList();
+            //    IEnumerable<string> CategoryofFoodNames = await _ifm.GetActivesFoodNamesByCategoryofFoodIDAsync((int)categoryid);
+            //    FoodList = CategoryofFoodNames.Adapt<IEnumerable<string>>().ToList();
 
             //    cid = (int)categoryid;
 
@@ -104,9 +103,9 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             {
                 MenuDetailDTOs = Menu_Foods.Adapt<IEnumerable<MenuDetailDTO>>().ToList(),
 
-                Categories_of_Menu_DTOs = Menu_Categories.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(), 
+                Categories_of_Menu_DTOs = Menu_Categories.Adapt<IEnumerable<CategoryofFoodDTO>>().ToList(), 
 
-                Categories_of_AllFoods_DTOs = AllCategories.Adapt<IEnumerable<Category_of_FoodDTO>>().ToList(),
+                Categories_of_AllFoods_DTOs = AllCategories.Adapt<IEnumerable<CategoryofFoodDTO>>().ToList(),
 
                 menu_id = id
 
@@ -130,7 +129,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             // async Task<IActionResult>
 
 
-            //IEnumerable<Food> FoodEnumerableList = await _ifm.GetActivesFoodsByCategory_of_FoodIDAsync(id);
+            //IEnumerable<Food> FoodEnumerableList = await _ifm.GetActivesFoodsByCategoryofFoodIDAsync(id);
 
             //FoodVM fvm_post = new FoodVM
             //{
@@ -140,12 +139,12 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             // TempData["HttpContext"] = "valid";
             // HttpContext.Session.SetObject("manipulatedData", fvm_post.FoodDTOs);
 
-            // Category_of_Food selectedCategory = await _icm.FirstOrDefault(x => x.ID == id);
+            // CategoryofFood selectedCategory = await _icm.FirstOrDefault(x => x.ID == id);
             // HttpContext.Session.SetObject("md2", selectedCategory);
 
             List<FoodDTO> FoodList = new List<FoodDTO>();
  
-           // Category_of_Food category =  await _icm.GetByIdAsync(id);
+           // CategoryofFood category =  await _icm.GetByIdAsync(id);
            TempData["Selected_Category_Name"] = name;
 
            // Kategorinin yemekleri
@@ -153,7 +152,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 
            FoodList = Category_Foods.Adapt<IEnumerable<FoodDTO>>().ToList();
             // GetFoodsByCategoryID_Async
-            // GetActivesFoodsByCategory_of_FoodIDAsync
+            // GetActivesFoodsByCategoryofFoodIDAsync
 
             Dictionary<int, string> food_items = new Dictionary<int, string>();
            //List<string> food_items = new List<string>();
@@ -205,7 +204,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                     MenuDetail menuDetail = new MenuDetail();
                     menuDetail.MenuID = menu_ID;
                     menuDetail.FoodID = selected_foodID;
-                    menuDetail.CategoryName_of_Food = category_Name;
+                    menuDetail.CategoryName_of_Foods = category_Name;
 
                     await _imdm.AddAsync(menuDetail);
 
@@ -228,9 +227,9 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
                     //MenuDetailDTOs = Menu_Foods.Adapt<IEnumerable<MenuDetailDTO>>().ToList(),
 
-                        Categories_of_Menu_DTOs = HttpContext.Session.GetObject<List<Category_of_FoodDTO>>("manipulatedData2"),
+                        Categories_of_Menu_DTOs = HttpContext.Session.GetObject<List<CategoryofFoodDTO>>("manipulatedData2"),
 
-                        Categories_of_AllFoods_DTOs = HttpContext.Session.GetObject<List<Category_of_FoodDTO>>("manipulatedData3"),
+                        Categories_of_AllFoods_DTOs = HttpContext.Session.GetObject<List<CategoryofFoodDTO>>("manipulatedData3"),
 
                         // _foodList_ID = mvm_post._foodList_ID,
 
@@ -252,9 +251,9 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
                 //MenuDetailDTOs = Menu_Foods.Adapt<IEnumerable<MenuDetailDTO>>().ToList(),
 
-                Categories_of_Menu_DTOs = HttpContext.Session.GetObject<List<Category_of_FoodDTO>>("manipulatedData2"),
+                Categories_of_Menu_DTOs = HttpContext.Session.GetObject<List<CategoryofFoodDTO>>("manipulatedData2"),
 
-                Categories_of_AllFoods_DTOs = HttpContext.Session.GetObject<List<Category_of_FoodDTO>>("manipulatedData3"),
+                Categories_of_AllFoods_DTOs = HttpContext.Session.GetObject<List<CategoryofFoodDTO>>("manipulatedData3"),
 
                 // _foodList_ID = mvm_post._foodList_ID,
 
@@ -428,7 +427,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 {
                     Menu ctg = mvm_post.MenuDTO.Adapt<Menu>();
 
-                    ctg.Status = (int)mvm_post.MenuDTO.Status;
+                    ctg.Menu_Status = mvm_post.MenuDTO._ExistentStatus;
 
 
 

@@ -6,11 +6,11 @@ using Mapster;
 using Technosoft_Project.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security;
-using Technosoft_Project.Enums;
 using System.Security.Claims;
 using Technosoft_Project.VMClasses;
 using Project.ENTITIES.Models;
 using Project.BLL.ManagerServices.Abstracts;
+using Project.ENTITIES.Enums;
 
 namespace Technosoft_Project.Controllers
 {

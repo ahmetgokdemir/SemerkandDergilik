@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Project.DAL.Repositories.Abstracts
 {
-    public interface ICategory_of_FoodRepository : IRepository<Category_of_Food>
+    public interface ICategoryofFoodRepository : IRepository<CategoryofFood>
     {
-        IQueryable<string> GetActivesCategory_of_FoodNamesAsync();
-        IQueryable<string> GetCategory_of_FoodNameAccordingToFoodAsync(int Category_of_Food_id);
+        IQueryable<string> GetActivesCategoryofFoodNamesAsync();
+        IQueryable<string> GetCategoryofFoodNameAccordingToFoodAsync(int CategoryofFood_id);
          
     }
 }
