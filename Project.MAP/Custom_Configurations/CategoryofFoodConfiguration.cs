@@ -15,7 +15,7 @@ namespace Project.MAP.Custom_Configurations
             builder.ToTable("Kategoriler");
 
             builder.Property(x => x.CategoryName_of_Foods).HasColumnName("Kategori Ad").IsRequired();
-
+            builder.Property(x => x.CategoryName_of_Foods).HasMaxLength(128);
             //builder.HasMany<Food>().WithOne().HasForeignKey(p => p.CategoryofFoodID).IsRequired();
 
         }

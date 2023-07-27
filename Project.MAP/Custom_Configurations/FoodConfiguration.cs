@@ -19,6 +19,7 @@ namespace Project.MAP.Custom_Configurations
             builder.ToTable("Yemekler");
 
             builder.Property(x => x.Food_Name).HasColumnName("Yemek Ad").IsRequired();
+            builder.Property(x => x.Food_Name).HasMaxLength(128);
 
             /*
              * 

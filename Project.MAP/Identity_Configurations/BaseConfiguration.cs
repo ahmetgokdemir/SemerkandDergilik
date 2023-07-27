@@ -16,9 +16,15 @@ namespace Project.MAP.Identity_Configurations
             // builder.HasKey(x => x.Primary_ID);
             builder.HasKey(x => x.ID); // //[Key] yerine bu best practice (FATİH ÇAKIROĞLU)
 
-            builder.Property(x => x.CreatedDate).HasColumnName("Oluşturulma Tarihi");
-            builder.Property(x => x.DeletedDate).HasColumnName("Silinme Tarihi");
-            builder.Property(x => x.ModifiedDate).HasColumnName("Güncelleme Tarihi");
+            builder.Property(x => x.DataStatus).HasColumnName("Crud Durum").IsRequired();
+
+            builder.Property(x => x.ID).HasColumnType("smallint").IsRequired(); //**
+            builder.Property(x => x.DataStatus).HasColumnType("smallint");
+
+
+            builder.Property(x => x.CreatedDate).HasColumnName("Oluşturulma Tarihi").IsRequired();//.HasColumnType("smalldatetime");
+            builder.Property(x => x.DeletedDate).HasColumnName("Silinme Tarihi");// .HasColumnType("smalldatetime");
+            builder.Property(x => x.ModifiedDate).HasColumnName("Güncelleme Tarihi");// .HasColumnType("smalldatetime");
         }
     }
 }

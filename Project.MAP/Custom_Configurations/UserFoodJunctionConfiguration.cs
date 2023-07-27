@@ -17,20 +17,25 @@ namespace Project.MAP.Custom_Configurations
         {
             base.Configure(builder);
 
-            builder.ToTable("Restoran Yemek Detayı");
+            builder.ToTable("Restoran Yemek Detay");
 
             builder.Ignore(x => x.ID);
-            builder.Ignore(x => x.AppUserID);
+            // builder.Ignore(x => x.AppUser.Id);
 
-            builder.HasKey(x => new { x.AppUser.Email, x.FoodID });
+            // builder.HasKey(x => new { x.AppUser.AccessibleID, x.FoodID }); // ... is not a valid member access expression. The expression should represent a simple property or field acces HATASI VERİYOR
+            builder.HasKey(x => new { x.AccessibleID, x.FoodID });
 
-            builder.Property(x => x.Food_Price).HasColumnName("Yemek Fiyat").IsRequired();
-            builder.Property(x => x.Food_Status).HasColumnName("Yemek Durum").IsRequired();
-            builder.Property(x => x.Food_Description).HasColumnName("Yemek Açıklama").IsRequired();
-            builder.Property(x => x.Food_Picture).HasColumnName("Yemek Resim").IsRequired();
+ 
+            builder.Property(x => x.Food_Price).HasColumnName("Yemek Fiyat").IsRequired(); 
+            builder.Property(x => x.Food_Status).HasColumnName("Yemek Mevcudiyet Durum").IsRequired();
+            builder.Property(x => x.Food_Description).HasColumnName("Yemek Açıklama");
+            builder.Property(x => x.Food_Picture).HasColumnName("Yemek Resim");
 
+            builder.Property(x => x.Food_Price).HasColumnType("smallmoney");
+            builder.Property(x => x.Food_Status).HasColumnType("smallint");
 
-            // builder.Property(x => x.FoodPrice).HasColumnName("Yemek Fiyati").HasColumnType("money"); //**
+            builder.Property(x => x.Food_Description).HasMaxLength(256);
+            // builder.Property(x => x.Food_Picture).HasMaxLength(256);
 
         }
     }

@@ -32,21 +32,21 @@ namespace Technosoft_Project.ClaimProvider
 
                 if (user != null)
                 {
-                    if (user.BirthDay != null)
-                    {
-                        if (!principal.HasClaim(c => c.Type == "violence")) // not exits then create it.. ben ekledim!!
-                        {
-                            var tdy = DateTime.Today;
-                            var age = tdy.Year - user.BirthDay?.Year;
+                    //if (user.BirthDay != null)
+                    //{
+                    //    if (!principal.HasClaim(c => c.Type == "violence")) // not exits then create it.. ben ekledim!!
+                    //    {
+                    //        var tdy = DateTime.Today;
+                    //        var age = tdy.Year - user.BirthDay?.Year;
 
-                            if (age > 15)
-                            {
-                                Claim ViolenceClaim = new Claim("violence", true.ToString(), ClaimValueTypes.String, "Internal");
+                    //        if (age > 15)
+                    //        {
+                    //            Claim ViolenceClaim = new Claim("violence", true.ToString(), ClaimValueTypes.String, "Internal");
 
-                                identity.AddClaim(ViolenceClaim);
-                            }
-                        }
-                    }
+                    //            identity.AddClaim(ViolenceClaim);
+                    //        }
+                    //    }
+                    //}
 
                     if (user.City != null)
                     {

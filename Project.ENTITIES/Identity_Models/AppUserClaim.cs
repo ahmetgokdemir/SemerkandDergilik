@@ -12,12 +12,13 @@ namespace Project.ENTITIES.Identity_Models
     public class AppUserClaim: IdentityUserClaim<Guid>,IEntity
     {
         //public int Primary_ID { get; set; }
-        public int ID { get; set; }
+        public short ID { get; set; }
 
         public DateTime CreatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
-        public DataStatus? DataStatus { get; set; }
+
+        public DataStatus DataStatus { get; set; }
 
         //public int AppUserID { get; set; }
         //public virtual AppUser AppUser { get; set; }

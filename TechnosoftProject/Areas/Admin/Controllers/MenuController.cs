@@ -38,7 +38,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
         }
 
         [Route("MenuDetailList")]
-        public async Task<IActionResult> MenuDetailList(int id, string menuName/*, int? categoryid*/)
+        public async Task<IActionResult> MenuDetailList(short id, string menuName/*, int? categoryid*/)
         {
             
             TempData["Menu_ID"] = id; // menuid
@@ -192,9 +192,9 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 //string selected_food_name = mvm_post._foodList.Values.ToList()[0];
                 //int selected_food_ID = mvm_post._foodList.Keys.ToList()[0];
 
-                int selected_foodID = mvm_post._foodList_ID[0];
+                short selected_foodID = (short)mvm_post._foodList_ID[0];
                 string category_Name = mvm_post._categoryList[0].ToString();
-                int menu_ID = mvm_post.menu_id;
+                short menu_ID = (short)mvm_post.menu_id;
 
                 bool food_exists = await _imdm.IsExist_FoodinMenu_Async(selected_foodID, menu_ID);
 

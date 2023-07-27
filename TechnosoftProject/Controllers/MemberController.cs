@@ -235,8 +235,8 @@ namespace Technosoft_Project.Controllers
                 user.Email = userViewModel.Email;
                 // user.PhoneNumber = userViewModel.PhoneNumber;
                 user.City = userViewModel.City;                
-                user.BirthDay = userViewModel.BirthDay;                
-                user.Gender = (int)userViewModel.Gender;
+                // user.BirthDay = userViewModel.BirthDay;                
+                // user.Gender = userViewModel.Gender;
 
                 userViewModel.Picture = user.Picture;
 

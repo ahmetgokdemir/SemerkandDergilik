@@ -42,7 +42,7 @@ password: / ctz*9913
 
 Data Source=NB-230301\\MSSQLSERVER22 ---> sql kýsmýndan farklý 1 tane yerine 2 tane \  
 
-ahmet_gokdemir\MSSQLSERVER22 --> ahmet_gokdemir\\MSSQLSERVER22
+ahmet_gokdemir\MSSQLSERVER22 --> ahmet_gokdemir\\MSSQLSERVER22 Ms....s..._3...2...
 -----------------------------------------------------------------------------------
 
 

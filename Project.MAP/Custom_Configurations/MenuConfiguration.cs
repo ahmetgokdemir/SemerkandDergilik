@@ -22,6 +22,9 @@ namespace Project.MAP.Custom_Configurations
             builder.Property(x => x.Menu_Name).HasColumnName("Menu Ad").IsRequired();
             builder.Property(x => x.Menu_Status).HasColumnName("Menu Durum").IsRequired();
 
+            builder.Property(x => x.Menu_Status).HasColumnType("smallint");
+
+            builder.Property(x => x.Menu_Name).HasMaxLength(128);
 
         }
     }

@@ -10,7 +10,7 @@ namespace Project.DAL.Repositories.Abstracts
     public interface ICategoryofFoodRepository : IRepository<CategoryofFood>
     {
         IQueryable<string> GetActivesCategoryofFoodNamesAsync();
-        IQueryable<string> GetCategoryofFoodNameAccordingToFoodAsync(int CategoryofFood_id);
+        IQueryable<string> GetCategoryofFoodNameAccordingToFoodAsync(short CategoryofFood_id);
          
     }
 }

@@ -41,7 +41,7 @@ namespace Project.BLL.ManagerServices.Concretes
             return CategoryofFoodNames;
         }
 
-        public async Task<string> GetCategoryofFoodNameAccordingToFoodAsync(int CategoryofFood_id)
+        public async Task<string> GetCategoryofFoodNameAccordingToFoodAsync(short CategoryofFood_id)
         {
             var CategoryofFoodNameAccordingToFood = await _crep.GetCategoryofFoodNameAccordingToFoodAsync(CategoryofFood_id).ToListAsync(); // convert ıqueryable to IEnumerable
  

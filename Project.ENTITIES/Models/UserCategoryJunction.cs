@@ -11,14 +11,14 @@ namespace Project.ENTITIES.Models
 {
     public class UserCategoryJunction : EntityBase, IEntity
     {
-        public ExistentStatus CategoryofFood_Status { get; set; } = (ExistentStatus)1; // Aktif, Pasif (Kategori Durumu)
+        public ExistentStatus CategoryofFood_Status { get; set; } = (ExistentStatus) 1; // Aktif, Pasif (Kategori Durumu)
         public string? CategoryofFood_Description { get; set; }
         public string? CategoryofFood_Picture { get; set; } // çoklu resim
 
 
-        public int AppUserID { get; set; }
+        public short AccessibleID { get; set; }
         public virtual AppUser AppUser { get; set; }
-        public int CategoryofFoodID { get; set; }
+        public short CategoryofFoodID { get; set; }
         public virtual CategoryofFood CategoryofFood { get; set; }
 
     }

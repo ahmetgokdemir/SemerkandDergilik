@@ -15,7 +15,7 @@ namespace Project.ENTITIES.Models
         public ExistentStatus Menu_Status { get; set; } = (ExistentStatus) 1;
 
         //Relational Properties
-        public int AppUserID { get; set; }
+        public short AppUserID { get; set; }
         public virtual AppUser AppUser { get; set; } // AppUserID olayı (ID) AppUser (class isminden mi) AppUser (class'a verilen isimden mi idi?) hangisinden idi 
         public virtual List<MenuDetail> MenuDetails { get; set; }
 

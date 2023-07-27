@@ -93,7 +93,7 @@ namespace Technosoft_Project.Controllers
                 user.City = userViewModel.City;
                 //user.BirthDay = userViewModel.BirthDay;
                 user.Picture = userViewModel.Picture;
-                user.Gender = (int)userViewModel.Gender;
+                // user.Gender = userViewModel.Gender;
 
                 user.IsConfirmedAccount = 0;
 
@@ -495,9 +495,9 @@ namespace Technosoft_Project.Controllers
                     if (user2 == null) // böyle bir kullanıcı yoksa hem AspNetUsers tablosuna kayıt işlemi yapılmalı hem de AspNetUserLogins tablosuna..
                     {
                         user.City = "Istanbul";
-                        user.BirthDay = DateTime.Now;
+                        //user.BirthDay = DateTime.Now;
                         user.Picture = "/UserPicture/user.webp";
-                        user.Gender = (int)Gender.Bay;
+                        //user.Gender = Gender.Bay;
 
                         user.IsConfirmedAccount = 0;
 

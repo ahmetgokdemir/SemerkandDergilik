@@ -13,27 +13,34 @@ namespace Project.ENTITIES.Identity_Models
     public class AppUser : IdentityUser<Guid>, IEntity
     {
         //public int Primary_ID { get; set; }
-        public int ID { get; set; }
+        public short ID { get; set; }
+        public short AccessibleID { get; set; }
+        // short short short short
 
         public DateTime CreatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
-        public DataStatus? DataStatus { get; set; }
 
-        ////////
+        // Status:
+        public DataStatus DataStatus { get; set; }
+        public IsConfirmedAccount IsConfirmedAccount { get; set; } = 0; // Pasif , (IsConfirmedAccount) 0 --> redundant (gereksiz)
+
+        // public Gender Gender { get; set; }
+
+        //////// specific properties
 
         public string City { get; set; }
         public string Picture { get; set; }
-        public DateTime? BirthDay { get; set; }
-        public int Gender { get; set; }
 
-        public IsConfirmedAccount IsConfirmedAccount { get; set; } = 0; // Pasif , (IsConfirmedAccount) 0 --> redundant (gereksiz)
+        // public DateTime? BirthDay { get; set; }
+
 
         public AppUser() : base()
         {
             CreatedDate = DateTime.Now;
             DataStatus = Enums.DataStatus.Inserted;
             // IsConfirmedAccount = 0; 
+            AccessibleID = ID;
         }
 
         public AppUser(string userName) : base(userName)

@@ -21,7 +21,7 @@ namespace Project.DAL.Strategy
 
                 List<AppUser> userlist = new List<AppUser>()
                 {
-                    new AppUser(){ UserName="ahmetgokdemir", PasswordHash= "ctz*9913", Email = "ahmetgokdemirtc@gmail.com", EmailConfirmed = true, Gender = 1, Picture = "/UserPicture/user.webp", City="Istanbul", IsConfirmedAccount= ENTITIES.Enums.IsConfirmedAccount.Aktif }
+                    new AppUser(){ UserName="ahmetgokdemir", PasswordHash= "ctz*9913", Email = "ahmetgokdemirtc@gmail.com", EmailConfirmed = true /*, Gender = ENTITIES.Enums.Gender.Bay*/, Picture = "/UserPicture/user.webp", City="Istanbul", IsConfirmedAccount= ENTITIES.Enums.IsConfirmedAccount.Aktif }
                     // new AppUser(){UserName ="David@hotmial.com", Password="Abc12345!"}
                 };
 
@@ -44,7 +44,9 @@ namespace Project.DAL.Strategy
                     {
                         new AppRole(){ Name="Admin" },
                         new AppRole(){ Name="Manager" },
-                        new AppRole(){ Name="Editor" }
+                        new AppRole(){ Name="Editor" },
+                        new AppRole(){ Name="Member" }
+
 
                     };
 
@@ -68,7 +70,7 @@ namespace Project.DAL.Strategy
                         IdentityResult result = await _userManager.CreateAsync(user, user.PasswordHash);
                         bool b = result.Succeeded;
                         await _userManager.AddToRoleAsync(user, "Admin");
-                        bool a = result.Succeeded;
+                         
                     }
 
                     

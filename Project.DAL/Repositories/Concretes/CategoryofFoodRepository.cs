@@ -23,7 +23,7 @@ namespace Project.DAL.Repositories.Concretes
         }
 
         // kullanılmadı
-        public IQueryable<string> GetCategoryofFoodNameAccordingToFoodAsync(int CategoryofFood_id)
+        public IQueryable<string> GetCategoryofFoodNameAccordingToFoodAsync(short CategoryofFood_id)
         {
             IQueryable<string> CategoryofFoodNameAccordingToFood = _context.Set<CategoryofFood>().Where(x => x.ID == CategoryofFood_id).Select(x => x.CategoryName_of_Foods);
 
