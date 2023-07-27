@@ -19,7 +19,7 @@ namespace Project.ENTITIES.Models
 
         // public int Status { get; set; } // Aktif, Pasif... EntityBase'de ki gibi DataStatus verilebilir idi int yerine... ve casting işlemlerine gerek kalmaz idi..
 
-        public short AccessibleID { get; set; }
+        public Guid AccessibleID { get; set; }
         public virtual AppUser AppUser { get; set; }
         public short FoodID { get; set; }
         public virtual Food Food { get; set; }

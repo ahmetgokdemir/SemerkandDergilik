@@ -54,12 +54,14 @@ namespace Technosoft_Project.Controllers
         }
 
         // PasswordChange actiom metot ->MemberLayouttan geliyor
+        [AllowAnonymous]
         public IActionResult PasswordChange()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> PasswordChange(PasswordChangeViewModel passwordChangeViewModel)
         {
             if (ModelState.IsValid)

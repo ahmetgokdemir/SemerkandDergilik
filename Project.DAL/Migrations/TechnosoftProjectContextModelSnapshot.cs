@@ -116,8 +116,8 @@ namespace Project.DAL.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<short>("AccessibleID")
-                        .HasColumnType("smallint");
+                    b.Property<Guid>("AccessibleID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -584,8 +584,8 @@ namespace Project.DAL.Migrations
 
             modelBuilder.Entity("Project.ENTITIES.Models.UserCategoryJunction", b =>
                 {
-                    b.Property<short>("AccessibleID")
-                        .HasColumnType("smallint");
+                    b.Property<Guid>("AccessibleID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<short>("CategoryofFoodID")
                         .HasColumnType("smallint");
@@ -633,8 +633,8 @@ namespace Project.DAL.Migrations
 
             modelBuilder.Entity("Project.ENTITIES.Models.UserFoodJunction", b =>
                 {
-                    b.Property<short>("AccessibleID")
-                        .HasColumnType("smallint");
+                    b.Property<Guid>("AccessibleID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<short>("FoodID")
                         .HasColumnType("smallint");

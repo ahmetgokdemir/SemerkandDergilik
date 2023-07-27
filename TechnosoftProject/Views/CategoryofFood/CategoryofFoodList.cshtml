@@ -6,38 +6,38 @@
 }
 
 <style>
-.loader {
-    display: none;
-}
+    .loader {
+        display: none;
+    }
 
- .position {
+    .position {
         width: 25%;
-    position: relative;
-  }
+        position: relative;
+    }
 
-.position a, p{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
+        .position a, p {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
 
-.btnposition{
-    vertical-align: middle;
-    text-align: center;
-}
+    .btnposition {
+        vertical-align: middle;
+        text-align: center;
+    }
 
     <!-- -ms-transform: translate(-50%, -50%); -->
 
 </style>
 @*<h4 style="color:red;">@TempData["mesaj"] </h4>*@
 
- 
+
 <!-- loader class'ın; display'i none olarak set edildi! -->
 <div class="spinner-border loader" role="status">
-  <span class="sr-only">Loading...</span>
+    <span class="sr-only">Loading...</span>
 </div>
-<hr class="loader"/>
+<hr class="loader" />
 
 
 @if (Model.CategoryofFoodDTOs.Count == 0)
@@ -69,36 +69,36 @@ else
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (CategoryofFoodDTO item in Model.CategoryofFoodDTOs)
+                    @foreach (UserCategoryJunctionDTO item in Model.UserCategoryJunctionDTOs)
                     {
-                        int CategoryofFood_status = (int)item._ExistentStatus;  // asp-route-status="@(int)item.Status" olmuyor...
+                        int CategoryofFood_status = (int)item._CategoryofFood_Status;  // asp-route-status="@(int)item.Status" olmuyor...
 
                         <tr>
                             <td></td>
                             <td class="position">
-                                <a class="" asp-area="Admin" asp-controller="Food" asp-action="FoodList" asp-route-id="@item.ID" asp-route-status="@CategoryofFood_status">@item._CategoryName_of_Foods</a>
+                                <p>@item._CategoryName_of_Foods</p>
                             </td>
                             <td class="position">
-                                <p>@item._ExistentStatus</p>
+                                <p>@item._CategoryofFood_Status</p>
                             </td>
                             @*<td colspan="2" style="padding-left:150px">@item.CategoryofFoodPicture</td>*@
                             <td style="text-align: center;">
-                                @if (item.CategoryofFoodPicture != null)
+                                @if (item._CategoryofFoodPicture != null)
                                 {
-                                    <img style="width:85px; height:40px" src="@item.CategoryofFoodPicture" />
-                                }                                
+                                    <img style="width:85px; height:40px" src="@item._CategoryofFoodPicture" />
+                                }
                             </td>
                             <td class="btnposition">
                                 @*<a asp-action="UpdateCategoryofFood" asp-controller="CategoryofFood" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
-                                <button class="btn btn-warning" id="updateCategoryofFood" value="updateCategoryofFoodValue" data-id=@item.ID>
+                                <button class="btn btn-warning" id="updateCategoryofFood" value="updateCategoryofFoodValue" data-id=@item._CategoryofFoodID>
                                     Güncelle
                                 </button>
-                          
+
                             </td>
                             <td class="btnposition">
                                 @*<a asp-action="DeleteCategoryofFood" asp-controller="CategoryofFood" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
 
-                                <button class="btn btn-danger" id="deleteCategoryofFood" value="deleteCategoryofFoodValue" data-id=@item.ID>Sil</button>
+                                <button class="btn btn-danger" id="deleteCategoryofFood" value="deleteCategoryofFoodValue" data-id=@item._CategoryofFoodID>Sil</button>
                             </td>
                         </tr>
                     }
@@ -139,7 +139,7 @@ else
                     <span class="sr-only">Loading...</span>
                 </div>
                 <div style="display:inline">Loading...</div>
-             </div>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
             </div>
@@ -156,21 +156,21 @@ else
 {
     @if (TempData["messageCategoryofFood"].ToString() == "Kategori güncellendi")
     {
-         
+
         <script>
             alertify.warning("Kategori güncellendi");
         </script>
-    }    
+    }
     else if (TempData["messageCategoryofFood"].ToString() == "Kategori silindi")
     {
-         
+
         <script>
             alertify.error("Kategori silindi");
         </script>
     }
     else if (TempData["messageCategoryofFood"].ToString() == "Kategori eklendi")
     {
-         
+
         <script>
             alertify.success("Kategori eklendi");
         </script>
@@ -322,7 +322,7 @@ else
 
                 },
                 beforeSend: function () {
-                       $("#LoadingCategoryofFoodModal").modal('show');
+                    $("#LoadingCategoryofFoodModal").modal('show');
                 },
                 complete: function () {
                     $("#LoadingCategoryofFoodModal").modal('hide');

@@ -38,9 +38,9 @@ else if (Model.FoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label asp-for="FoodDTO.UnitPrice" class="control-label"></label>
-                        <input asp-for="FoodDTO.UnitPrice" class="form-control" placeholder="Ürün fiyatı giriniz..." />
-                        <span asp-validation-for="FoodDTO.UnitPrice" class="text-danger"></span>
+                        <label asp-for="FoodDTO.FoodPrice" class="control-label"></label>
+                        <input asp-for="FoodDTO.FoodPrice" class="form-control" placeholder="Ürün fiyatı giriniz..." />
+                        <span asp-validation-for="FoodDTO.FoodPrice" class="text-danger"></span>
                     </div>
                 </div>
 @*                <div class="col-md-6">
@@ -66,9 +66,9 @@ else if (Model.FoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
 
 
             <div class="form-group">
-                <label asp-for="CategoryofFoodDTO.CategoryofFoodName" class="control-label"></label>
-                <select class="form-control" asp-for="CategoryofFoodDTO.CategoryofFoodName" asp-items="@ViewBag.CategoryofFoodNames" disabled></select>
-                <span asp-validation-for="CategoryofFoodDTO.CategoryofFoodName" class="text-danger"></span>
+                <label asp-for="CategoryofFoodDTO._CategoryName_of_Foods" class="control-label"></label>
+                <select class="form-control" asp-for="CategoryofFoodDTO._CategoryName_of_Foods" asp-items="@ViewBag.CategoryofFoodNames" disabled></select>
+                <span asp-validation-for="CategoryofFoodDTO._CategoryName_of_Foods" class="text-danger"></span>
             </div>
 
             <div class="form-group">

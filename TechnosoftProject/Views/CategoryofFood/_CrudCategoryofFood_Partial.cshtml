@@ -45,27 +45,27 @@ else if (Model.CategoryofFoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
 
 
 
-@*            <div class="form-group">
-                <label asp-for="CategoryofFoodDTO.Status" class="control-label"></label>
-                <select class="form-control" asp-for="CategoryofFoodDTO.Status" asp-items="@ViewBag.Status"></select>
-                <span asp-validation-for="CategoryofFoodDTO.Status" class="text-danger"></span>
-            </div>*@
+            @*            <div class="form-group">
+        <label asp-for="CategoryofFoodDTO.Status" class="control-label"></label>
+        <select class="form-control" asp-for="CategoryofFoodDTO.Status" asp-items="@ViewBag.Status"></select>
+        <span asp-validation-for="CategoryofFoodDTO.Status" class="text-danger"></span>
+        </div>*@
 
-            
+
             <div class="form-group">
                 <label asp-for="CategoryofFoodDTO._ExistentStatus" class="control-label"></label>
                 <select class="form-control" asp-for="CategoryofFoodDTO._ExistentStatus" asp-items="Html.GetEnumSelectList<Project.ENTITIES.Enums.ExistentStatus>()"></select>
                 <span asp-validation-for="CategoryofFoodDTO._ExistentStatus" class="text-danger"></span>
             </div>
 
-            
+
 
             <div class="form-group">
                 <label asp-for="CategoryofFoodDTO.CategoryofFoodPicture" class="control-label"></label>
                 <input class="form-control" type="file" name="CategoryofFoodPicture" src="CategoryofFoodDTO.CategoryofFoodPicture" />
             </div>
 
-            @if (Model.CategoryofFoodDTO.ID== 0)
+            @if (Model.CategoryofFoodDTO.ID == 0)
             {
                 <div class="form-group">
                     <input type="submit" value="Kategori Ekle" class="btn btn-primary mt-2" />

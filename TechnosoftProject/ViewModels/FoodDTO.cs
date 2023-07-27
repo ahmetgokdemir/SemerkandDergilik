@@ -16,7 +16,7 @@ namespace Technosoft_Project.ViewModels
         [Required(ErrorMessage = "Yemek fiyatı giriniz.")]
         [Display(Name = "Ürün Fiyat")]
         [Range(1, 1000000000000)]
-        public decimal UnitPrice { get; set; } // FoodConfiguration.cs'de money'e çevrilmeli.. 
+        public decimal FoodPrice { get; set; } // FoodConfiguration.cs'de money'e çevrilmeli.. 
 
         
         //[Required(ErrorMessage = "Stok sayısı giriniz.")]

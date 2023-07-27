@@ -12,7 +12,7 @@ using Project.DAL.Context;
 namespace Project.DAL.Migrations
 {
     [DbContext(typeof(TechnosoftProjectContext))]
-    [Migration("20230727144543_FirstMigration")]
+    [Migration("20230727192028_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -119,8 +119,8 @@ namespace Project.DAL.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<short>("AccessibleID")
-                        .HasColumnType("smallint");
+                    b.Property<Guid>("AccessibleID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -587,8 +587,8 @@ namespace Project.DAL.Migrations
 
             modelBuilder.Entity("Project.ENTITIES.Models.UserCategoryJunction", b =>
                 {
-                    b.Property<short>("AccessibleID")
-                        .HasColumnType("smallint");
+                    b.Property<Guid>("AccessibleID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<short>("CategoryofFoodID")
                         .HasColumnType("smallint");
@@ -636,8 +636,8 @@ namespace Project.DAL.Migrations
 
             modelBuilder.Entity("Project.ENTITIES.Models.UserFoodJunction", b =>
                 {
-                    b.Property<short>("AccessibleID")
-                        .HasColumnType("smallint");
+                    b.Property<Guid>("AccessibleID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<short>("FoodID")
                         .HasColumnType("smallint");

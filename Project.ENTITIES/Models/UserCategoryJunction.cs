@@ -16,7 +16,7 @@ namespace Project.ENTITIES.Models
         public string? CategoryofFood_Picture { get; set; } // çoklu resim
 
 
-        public short AccessibleID { get; set; }
+        public Guid AccessibleID { get; set; }
         public virtual AppUser AppUser { get; set; }
         public short CategoryofFoodID { get; set; }
         public virtual CategoryofFood CategoryofFood { get; set; }

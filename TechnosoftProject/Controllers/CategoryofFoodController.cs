@@ -1,38 +1,29 @@
 ﻿using Mapster;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Project.BLL.ManagerServices.Abstracts;
 using Project.ENTITIES.Identity_Models;
 using Project.ENTITIES.Models;
 using Technosoft_Project.CommonTools;
 using Technosoft_Project.ViewModels;
 using Technosoft_Project.VMClasses;
-using System.Data;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Castle.Core.Smtp;
-using Technosoft_Project.Helper;
 
-namespace Technosoft_Project.Areas.Admin.Controllers
+namespace Technosoft_Project.Controllers
 {
-    [Area("Admin")]
-    [Route("Admin/CategoryofFood")]
-    [Authorize(Roles = "Admin")] // case sensitive  
-    public class CategoryofFoodController : Controller
+    public class CategoryofFoodController : BaseController
     {
         readonly ICategoryofFoodManager _icm;
 
-        public CategoryofFoodController(ICategoryofFoodManager icm) // services.AddRepManServices(); 
+        public CategoryofFoodController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, ICategoryofFoodManager icm) : base(userManager, null, roleManager)
         {
             _icm = icm;
         }
 
-        [Route("CategoryofFoodIndex")]
-        public IActionResult Index()
-        {
-            return View();
-        }
+        //[Route("CategoryofFoodIndex")]
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
 
 
         [Route("CategoryofFoodList")]
@@ -50,7 +41,6 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             {
                 CategoryofFoodDTOs = CategoryofFoodList.Adapt<IEnumerable<CategoryofFoodDTO>>().ToList(),
                 JavascriptToRun = JSpopupPage
-
             };
 
             return View(cvm);
@@ -92,7 +82,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
             Thread.Sleep(500); // pop-up sayfasını tekrar açmayı tetikleyince bazen gelmiyor o yüzden bu kod eklendi..
 
-            return PartialView("_CrudCategoryofFoodPartial", cVM);
+            return PartialView("_CrudCategoryofFood_Partial", cVM);
         }
 
 
@@ -149,7 +139,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
             Thread.Sleep(500);
 
-            return PartialView("_CrudCategoryofFoodPartial", cVM);
+            return PartialView("_CrudCategoryofFood_Partial", cVM);
         }
 
 
@@ -169,7 +159,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 CategoryofFoodDTO = cDTO
             };
 
-            return PartialView("_CrudCategoryofFoodPartial", cVM);
+            return PartialView("_CrudCategoryofFood_Partial", cVM);
         }
 
 
@@ -178,7 +168,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CRUDCategoryofFood(CategoryofFoodVM cvm_post, IFormFile CategoryofFoodPicture)
         {
-            
+
             /*
               var urlHelper = new UrlHelper(ControllerContext);
               var url = urlHelper.Action("About", "Home");
@@ -195,15 +185,15 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
 
             if (TempData["Deleted"] == null)
-             {
-                 ModelState.Remove("CategoryofFoodPicture");
-                 ModelState.Remove("CategoryofFoodDTOs");
-                 ModelState.Remove("JavascriptToRun");
+            {
+                ModelState.Remove("CategoryofFoodPicture");
+                ModelState.Remove("CategoryofFoodDTOs");
+                ModelState.Remove("JavascriptToRun");
 
 
-                 if (ModelState.IsValid)
-                 {
-                     CategoryofFood ctg = cvm_post.CategoryofFoodDTO.Adapt<CategoryofFood>();
+                if (ModelState.IsValid)
+                {
+                    CategoryofFood ctg = cvm_post.CategoryofFoodDTO.Adapt<CategoryofFood>();
 
                     /* !!! !!! ctg.Status = (int)cvm_post.CategoryofFoodDTO.Status; !!! !!!*/
 
@@ -212,26 +202,26 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                     //////
                     ///
                     if (CategoryofFoodPicture != null && CategoryofFoodPicture.Length > 0)
-                     {
-                         var fileName = Guid.NewGuid().ToString() + Path.GetExtension(CategoryofFoodPicture.FileName); // path oluşturma
+                    {
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(CategoryofFoodPicture.FileName); // path oluşturma
 
-                         var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/CategoryofFoodPicture", fileName); // server'a kayıt edilecek path => wwwroot/UserPicture/fileName
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/CategoryofFoodPicture", fileName); // server'a kayıt edilecek path => wwwroot/UserPicture/fileName
 
-                         // kayıt işlemi
-                         using (var stream = new FileStream(path, FileMode.Create))
-                         {
-                             await CategoryofFoodPicture.CopyToAsync(stream); // userPicture'ı, stream'e kayıt
+                        // kayıt işlemi
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await CategoryofFoodPicture.CopyToAsync(stream); // userPicture'ı, stream'e kayıt
 
                             /* !!! !!! ctg.CategoryofFoodPicture = "/CategoryofFoodPicture/" + fileName;   // veritabanına kayıt (wwwroot belirtmeye gerek yok) !!! !!! */
 
                         }
                     }
-                     else
-                     {
-                         CategoryofFood ctgv2 = await _icm.GetByIdAsync(cvm_post.CategoryofFoodDTO.ID);
+                    else
+                    {
+                        CategoryofFood ctgv2 = await _icm.GetByIdAsync(cvm_post.CategoryofFoodDTO.ID);
 
-                         if (ctgv2 != null)
-                         {
+                        if (ctgv2 != null)
+                        {
                             /* !!! !!!
                              if (ctgv2.CategoryofFoodPicture != null)
                              {
@@ -242,37 +232,37 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
                     }
 
-                     if (ctg.ID == 0)
-                     {
-                         await _icm.AddAsync(ctg);
-                         TempData["messageCategoryofFood"] = "Kategori eklendi";
-                     }
-                     else
-                     {
-                         _icm.Update(ctg);
-                         // yapılacak ödev:  CategoryofFood pasife çekilirse Foodları da pasife çekilsin!!! Update metodu içerisinde yapılabilir... ekstra metoda gerek yok
+                    if (ctg.ID == 0)
+                    {
+                        await _icm.AddAsync(ctg);
+                        TempData["messageCategoryofFood"] = "Kategori eklendi";
+                    }
+                    else
+                    {
+                        _icm.Update(ctg);
+                        // yapılacak ödev:  CategoryofFood pasife çekilirse Foodları da pasife çekilsin!!! Update metodu içerisinde yapılabilir... ekstra metoda gerek yok
 
-                         /*
-                          * 
-                          Fonksiyon, belirli bir görevi gerçekleştirmek için bir dizi talimat veya prosedürdür. 
+                        /*
+                         * 
+                         Fonksiyon, belirli bir görevi gerçekleştirmek için bir dizi talimat veya prosedürdür. 
 
-                         Metot ise bir NSENEYLE ilişkili bir dizi talimattır. 
+                        Metot ise bir NSENEYLE ilişkili bir dizi talimattır. 
 
-                         Bir fonksiyon herhangi bir nesneye ihtiyaç duymaz ve bağımsızdır, 
-                         metot ise herhangi bir nesneyle bağlantılı bir işlevdir. 
+                        Bir fonksiyon herhangi bir nesneye ihtiyaç duymaz ve bağımsızdır, 
+                        metot ise herhangi bir nesneyle bağlantılı bir işlevdir. 
 
-                         Metotlar, OOP (Nesne Yönelimli Programlama) ile ilgili bir kavram  --> _icm nesnesi İLE Update Metodu gibi
+                        Metotlar, OOP (Nesne Yönelimli Programlama) ile ilgili bir kavram  --> _icm nesnesi İLE Update Metodu gibi
 
-                          Bu yuzden methodlar classlar icinde define edilir ve obje varyasyonlari ile kullanilir. Functionlarda class icinde define edilir ama o classa ait seyler icermez, objeye dependent olmaz. 
+                         Bu yuzden methodlar classlar icinde define edilir ve obje varyasyonlari ile kullanilir. Functionlarda class icinde define edilir ama o classa ait seyler icermez, objeye dependent olmaz. 
 
-                         Yani soyle bir sey dusunulebilir, bir dog classi, havlamak diye bir METHOD icerir, cunku sadece kopekler havlar, bu yuzden kopek objesine ihtiyac vardir.
+                        Yani soyle bir sey dusunulebilir, bir dog classi, havlamak diye bir METHOD icerir, cunku sadece kopekler havlar, bu yuzden kopek objesine ihtiyac vardir.
 
- Fakat ayni zamanda bir human classi olsun, diyelim ki beslenmek diye bir FONKSIYON yazilacak. Cunku sart su, beslenmeyi kopek de insan da yapabilir, e bu yuzden particular bir class ihtiyaci dogurmaz. 
+Fakat ayni zamanda bir human classi olsun, diyelim ki beslenmek diye bir FONKSIYON yazilacak. Cunku sart su, beslenmeyi kopek de insan da yapabilir, e bu yuzden particular bir class ihtiyaci dogurmaz. 
 
 
-                          */
+                         */
 
-            TempData["messageCategoryofFood"] = "Kategori güncellendi";
+                        TempData["messageCategoryofFood"] = "Kategori güncellendi";
 
                     }
 
@@ -321,9 +311,5 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
 
         }
-
-
-
-
     }
 }

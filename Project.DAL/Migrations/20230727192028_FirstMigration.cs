@@ -34,7 +34,7 @@ namespace Project.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AccessibleID = table.Column<short>(type: "smallint", nullable: false),
+                    AccessibleID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OluşturulmaTarihi = table.Column<DateTime>(name: "Oluşturulma Tarihi", type: "datetime2", nullable: false),
                     SilinmeTarihi = table.Column<DateTime>(name: "Silinme Tarihi", type: "datetime2", nullable: true),
                     GüncellemeTarihi = table.Column<DateTime>(name: "Güncelleme Tarihi", type: "datetime2", nullable: true),
@@ -289,7 +289,7 @@ namespace Project.DAL.Migrations
                 name: "Restoran Kategori Detay",
                 columns: table => new
                 {
-                    AccessibleID = table.Column<short>(type: "smallint", nullable: false),
+                    AccessibleID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CategoryofFoodID = table.Column<short>(type: "smallint", nullable: false),
                     KategoriMevcudiyetDurum = table.Column<short>(name: "Kategori Mevcudiyet Durum", type: "smallint", nullable: false),
                     KategoriAçıklama = table.Column<string>(name: "Kategori Açıklama", type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -321,7 +321,7 @@ namespace Project.DAL.Migrations
                 name: "Restoran Yemek Detay",
                 columns: table => new
                 {
-                    AccessibleID = table.Column<short>(type: "smallint", nullable: false),
+                    AccessibleID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FoodID = table.Column<short>(type: "smallint", nullable: false),
                     YemekFiyat = table.Column<decimal>(name: "Yemek Fiyat", type: "smallmoney", nullable: false),
                     YemekMevcudiyetDurum = table.Column<short>(name: "Yemek Mevcudiyet Durum", type: "smallint", nullable: false),

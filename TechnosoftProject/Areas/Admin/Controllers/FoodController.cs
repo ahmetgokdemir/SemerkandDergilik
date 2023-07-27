@@ -143,7 +143,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             CategoryofFoodDTO cdto = new CategoryofFoodDTO(); // yazılmazsa null referance hatası verir.. 
                                                   //cdto.CategoryofFoodName = CategoryofFoodNameAccordingToFood; // 2.yol
 
-            cdto.CategoryofFoodName = TempData["CategoryofFoodName"].ToString();
+            cdto._CategoryName_of_Foods = TempData["CategoryofFoodName"].ToString();
             cdto.ID = (int)TempData["CategoryofFood_id"];
 
             string kontrol = TempData["CategoryofFood_status"].ToString();
@@ -156,7 +156,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
 
             TempData["CategoryofFood_id"] = cdto.ID;
-            TempData["CategoryofFoodName"] = cdto.CategoryofFoodName; // 2.yol kullanılırsa gerekli olacak kod..
+            TempData["CategoryofFoodName"] = cdto._CategoryName_of_Foods; // 2.yol kullanılırsa gerekli olacak kod..
             TempData["CategoryofFood_status"] = cdto._ExistentStatus;
 
             FoodVM pvm = new FoodVM
@@ -173,7 +173,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 {
                     ModelState.AddModelError("FoodDTO.FoodName", "Ürün adı giriniz.");
                 }
-                if (pvm.FoodDTO.UnitPrice <= 0)
+                if (pvm.FoodDTO.FoodPrice <= 0)
                 {
                     ModelState.AddModelError("FoodDTO.UnitPrice", "Ürün fiyatı sıfırdan büyük sayısı olmalıdır.");
                 }
@@ -241,14 +241,14 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
 
 
-            FoodDTO pdto = new FoodDTO();
+            FoodDTO fdto = new FoodDTO();
 
             var result = new FoodDTO();
 
             if (TempData["HttpContext"] != null)
             {
                 result = HttpContext.Session.GetObject<FoodDTO>("manipulatedData");
-                pdto = result;
+                fdto = result;
 
                 // HttpContext.Session.SetObject("manipulatedData", null);
             }
@@ -256,7 +256,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             {
                 Food Food_item = await _ipm.GetByIdAsync(id);
 
-                pdto = Food_item.Adapt<FoodDTO>();
+                fdto = Food_item.Adapt<FoodDTO>();
             }
 
 
@@ -267,7 +267,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             */
 
             CategoryofFoodDTO cdto = new CategoryofFoodDTO(); // yazılmazsa cdto.CategoryofFoodName null referance hatası verir.. 
-            cdto.CategoryofFoodName = TempData["CategoryofFoodName"].ToString(); // asp-for="CategoryofFood.CategoryofFoodName" değer atamak için 
+            cdto._CategoryName_of_Foods = TempData["CategoryofFoodName"].ToString(); // asp-for="CategoryofFood.CategoryofFoodName" değer atamak için 
             // cdto.CategoryofFoodName = CategoryofFoodNameAccordingToFood;  2.yol
             // pDTO.CategoryofFood = cdto; // yazılmazsa null referance hatası verir.. 
             cdto.ID = (int)TempData["CategoryofFood_id"];
@@ -283,7 +283,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
             FoodVM pvm = new FoodVM
             {
-                FoodDTO = pdto,
+                FoodDTO = fdto,
                 CategoryofFoodDTO = cdto
             };
 
@@ -295,7 +295,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 {
                     ModelState.AddModelError("FoodDTO.FoodName", "Ürün adı giriniz.");
                 }
-                if (pdto.UnitPrice <= 0)
+                if (fdto.FoodPrice <= 0)
                 {
                     ModelState.AddModelError("FoodDTO.UnitPrice", "Ürün fiyatı sıfırdan büyük sayısı olmalıdır.");
                 }
@@ -316,7 +316,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             TempData["CategoryofFood_id"] = CategoryofFood_id;
             */
             TempData["CategoryofFood_id"] = cdto.ID;
-            TempData["CategoryofFoodName"] = cdto.CategoryofFoodName; // 2.yol kullanılırsa gerekli olacak kod..
+            TempData["CategoryofFoodName"] = cdto._CategoryName_of_Foods; // 2.yol kullanılırsa gerekli olacak kod..
             TempData["CategoryofFood_status"] = cdto._ExistentStatus;
 
             Thread.Sleep(500);
@@ -369,7 +369,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    Food prd = pvm_post.FoodDTO.Adapt<Food>();
+                    Food fd = pvm_post.FoodDTO.Adapt<Food>();
 
                     //prd.Status = (int)pvm_post.FoodDTO.Status; // casting bu olmadan dene
                     
@@ -410,14 +410,14 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
                     }
 
-                    if (prd.ID == 0)
+                    if (fd.ID == 0)
                     {
-                        await _ipm.AddAsync(prd);
+                        await _ipm.AddAsync(fd);
                         TempData["messageFood"] = "Ürün eklendi";
                     }
                     else
                     {
-                        _ipm.Update(prd);
+                        _ipm.Update(fd);
                         TempData["messageFood"] = "Ürün güncellendi";
                     }
 

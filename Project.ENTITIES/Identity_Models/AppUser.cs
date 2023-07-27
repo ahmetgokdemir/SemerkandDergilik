@@ -14,7 +14,7 @@ namespace Project.ENTITIES.Identity_Models
     {
         //public int Primary_ID { get; set; }
         public short ID { get; set; }
-        public short AccessibleID { get; set; }
+        public Guid AccessibleID { get; set; }
         // short short short short
 
         public DateTime CreatedDate { get; set; }
@@ -40,7 +40,7 @@ namespace Project.ENTITIES.Identity_Models
             CreatedDate = DateTime.Now;
             DataStatus = Enums.DataStatus.Inserted;
             // IsConfirmedAccount = 0; 
-            AccessibleID = ID;
+            AccessibleID = Guid.NewGuid();
         }
 
         public AppUser(string userName) : base(userName)
