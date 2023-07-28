@@ -5,7 +5,7 @@
 !!! !!! */
 
 CategoryofFoodDTO.cs deðiþiklik
-
+root --> CategoryofFoodPicture klasör ismi
 
 
 ddlFoods.append($("<option></option>").val(index).html(foods));

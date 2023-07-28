@@ -143,11 +143,11 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             CategoryofFoodDTO cdto = new CategoryofFoodDTO(); // yazılmazsa null referance hatası verir.. 
                                                   //cdto.CategoryofFoodName = CategoryofFoodNameAccordingToFood; // 2.yol
 
-            cdto._CategoryName_of_Foods = TempData["CategoryofFoodName"].ToString();
+            cdto.CategoryName_of_Foods = TempData["CategoryofFoodName"].ToString();
             cdto.ID = (int)TempData["CategoryofFood_id"];
 
             string kontrol = TempData["CategoryofFood_status"].ToString();
-            cdto._ExistentStatus = (ExistentStatus)TempData["CategoryofFood_status"];
+            cdto.ExistentStatus = (ExistentStatus)TempData["CategoryofFood_status"];
 
 
             // Food'ın CategoryofFood_id'si 
@@ -156,8 +156,8 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
 
             TempData["CategoryofFood_id"] = cdto.ID;
-            TempData["CategoryofFoodName"] = cdto._CategoryName_of_Foods; // 2.yol kullanılırsa gerekli olacak kod..
-            TempData["CategoryofFood_status"] = cdto._ExistentStatus;
+            TempData["CategoryofFoodName"] = cdto.CategoryName_of_Foods; // 2.yol kullanılırsa gerekli olacak kod..
+            TempData["CategoryofFood_status"] = cdto.ExistentStatus;
 
             FoodVM pvm = new FoodVM
             {
@@ -267,13 +267,13 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             */
 
             CategoryofFoodDTO cdto = new CategoryofFoodDTO(); // yazılmazsa cdto.CategoryofFoodName null referance hatası verir.. 
-            cdto._CategoryName_of_Foods = TempData["CategoryofFoodName"].ToString(); // asp-for="CategoryofFood.CategoryofFoodName" değer atamak için 
+            cdto.CategoryName_of_Foods = TempData["CategoryofFoodName"].ToString(); // asp-for="CategoryofFood.CategoryofFoodName" değer atamak için 
             // cdto.CategoryofFoodName = CategoryofFoodNameAccordingToFood;  2.yol
             // pDTO.CategoryofFood = cdto; // yazılmazsa null referance hatası verir.. 
             cdto.ID = (int)TempData["CategoryofFood_id"];
 
             string kontrol = TempData["CategoryofFood_status"].ToString();
-            cdto._ExistentStatus = (ExistentStatus)TempData["CategoryofFood_status"];
+            cdto.ExistentStatus = (ExistentStatus)TempData["CategoryofFood_status"];
              /*
              Food Food_item = await _ipm.GetByIdAsync(id); kod sayesinde pdto.CategoryofFoodID geldiği için 
              AddFoodAjax'taki gibi pdto.CategoryofFoodID = (int)TempData["CategoryofFood_id"]; koda gerek kalmadı...
@@ -316,8 +316,8 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             TempData["CategoryofFood_id"] = CategoryofFood_id;
             */
             TempData["CategoryofFood_id"] = cdto.ID;
-            TempData["CategoryofFoodName"] = cdto._CategoryName_of_Foods; // 2.yol kullanılırsa gerekli olacak kod..
-            TempData["CategoryofFood_status"] = cdto._ExistentStatus;
+            TempData["CategoryofFoodName"] = cdto.CategoryName_of_Foods; // 2.yol kullanılırsa gerekli olacak kod..
+            TempData["CategoryofFood_status"] = cdto.ExistentStatus;
 
             Thread.Sleep(500);
 

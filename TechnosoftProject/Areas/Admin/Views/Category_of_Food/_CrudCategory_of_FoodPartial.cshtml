@@ -37,9 +37,9 @@ else if (Model.CategoryofFoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
             // asp-for="" kullanımında içerisine Model.CategoryofFoodDTO.CategoryofFoodName tanımlanamaz (Model olmamalı) yani CategoryofFoodDTO.CategoryofFoodName şeklinde olacak.. ViewBag de tanımlanamaz.. ama TempData kullanılabilir sanırım..
 
             <div class="form-group">
-                <label asp-for="CategoryofFoodDTO._CategoryName_of_Foods" class="control-label"></label>
-                <input asp-for="CategoryofFoodDTO._CategoryName_of_Foods" class="form-control" />
-                <span asp-validation-for="CategoryofFoodDTO._CategoryName_of_Foods" class="text-danger"></span>
+                <label asp-for="CategoryofFoodDTO.CategoryName_of_Foods" class="control-label"></label>
+                <input asp-for="CategoryofFoodDTO.CategoryName_of_Foods" class="form-control" />
+                <span asp-validation-for="CategoryofFoodDTO.CategoryName_of_Foods" class="text-danger"></span>
             </div>
 
 
@@ -53,9 +53,9 @@ else if (Model.CategoryofFoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
 
             
             <div class="form-group">
-                <label asp-for="CategoryofFoodDTO._ExistentStatus" class="control-label"></label>
-                <select class="form-control" asp-for="CategoryofFoodDTO._ExistentStatus" asp-items="Html.GetEnumSelectList<Project.ENTITIES.Enums.ExistentStatus>()"></select>
-                <span asp-validation-for="CategoryofFoodDTO._ExistentStatus" class="text-danger"></span>
+                <label asp-for="CategoryofFoodDTO.ExistentStatus" class="control-label"></label>
+                <select class="form-control" asp-for="CategoryofFoodDTO.ExistentStatus" asp-items="Html.GetEnumSelectList<Project.ENTITIES.Enums.ExistentStatus>()"></select>
+                <span asp-validation-for="CategoryofFoodDTO.ExistentStatus" class="text-danger"></span>
             </div>
 
             
@@ -90,7 +90,7 @@ else if (Model.CategoryofFoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
             <input type="hidden" asp-for="CategoryofFoodDTO.ID" />
 
             <div class="form-group">
-                <span asp-validation-for="CategoryofFoodDTO._CategoryName_of_Foods"></span> <label style="width:100%; height:100%">@ViewBag.CategoryofFoodNameDelete silmek istediğinizden emin misiniz ?</label>
+                <span asp-validation-for="CategoryofFoodDTO.CategoryName_of_Foods"></span> <label style="width:100%; height:100%">@ViewBag.CategoryofFoodNameDelete silmek istediğinizden emin misiniz ?</label>
 
             </div>
 

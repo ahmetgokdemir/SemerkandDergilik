@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "CategoryofFoodList";
-    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Member/_MemberLayout.cshtml";
 }
 
 <style>
@@ -61,7 +61,7 @@ else
                 <thead class="thead-light">
                     <tr>
                         <th>Index</th>
-                        <th class="position"><p>Kategori İsmi</p></th>
+                        <!--<th class="position"><p>Kategori İsmi</p></th>-->
                         <th class="position"><p>Durum</p></th>
                         <th class="position"><p>Resim</p></th>
                         <th></th>
@@ -71,26 +71,26 @@ else
                 <tbody>
                     @foreach (UserCategoryJunctionDTO item in Model.UserCategoryJunctionDTOs)
                     {
-                        int CategoryofFood_status = (int)item._CategoryofFood_Status;  // asp-route-status="@(int)item.Status" olmuyor...
+                        int CategoryofFood_status = (int)item.CategoryofFood_Status;  // asp-route-status="@(int)item.Status" olmuyor...
 
                         <tr>
                             <td></td>
+<!--                            <td class="position">
+                                <p>item._CategoryName_of_Foods</p>
+                            </td>-->
                             <td class="position">
-                                <p>@item._CategoryName_of_Foods</p>
-                            </td>
-                            <td class="position">
-                                <p>@item._CategoryofFood_Status</p>
+                                <p>@item.CategoryofFood_Status</p>
                             </td>
                             @*<td colspan="2" style="padding-left:150px">@item.CategoryofFoodPicture</td>*@
                             <td style="text-align: center;">
-                                @if (item._CategoryofFoodPicture != null)
+                                @if (item.CategoryofFoodPicture != null)
                                 {
-                                    <img style="width:85px; height:40px" src="@item._CategoryofFoodPicture" />
+                                    <img style="width:85px; height:40px" src="@item.CategoryofFoodPicture" />
                                 }
                             </td>
                             <td class="btnposition">
                                 @*<a asp-action="UpdateCategoryofFood" asp-controller="CategoryofFood" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
-                                <button class="btn btn-warning" id="updateCategoryofFood" value="updateCategoryofFoodValue" data-id=@item._CategoryofFoodID>
+                                <button class="btn btn-warning" id="updateCategoryofFood" value="updateCategoryofFoodValue" data-id=@item.CategoryofFoodID>
                                     Güncelle
                                 </button>
 
@@ -98,7 +98,7 @@ else
                             <td class="btnposition">
                                 @*<a asp-action="DeleteCategoryofFood" asp-controller="CategoryofFood" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
 
-                                <button class="btn btn-danger" id="deleteCategoryofFood" value="deleteCategoryofFoodValue" data-id=@item._CategoryofFoodID>Sil</button>
+                                <button class="btn btn-danger" id="deleteCategoryofFood" value="deleteCategoryofFoodValue" data-id=@item.CategoryofFoodID>Sil</button>
                             </td>
                         </tr>
                     }

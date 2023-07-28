@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Project.BLL.ManagerServices.Abstracts;
+using Project.ENTITIES.Enums;
 using Project.ENTITIES.Identity_Models;
 using Project.ENTITIES.Models;
 using Technosoft_Project.CommonTools;
@@ -13,10 +14,12 @@ namespace Technosoft_Project.Controllers
     public class CategoryofFoodController : BaseController
     {
         readonly ICategoryofFoodManager _icm;
+        readonly IUserCategoryJunctionManager _iucjm;
 
-        public CategoryofFoodController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, ICategoryofFoodManager icm) : base(userManager, null, roleManager)
+        public CategoryofFoodController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, ICategoryofFoodManager icm, IUserCategoryJunctionManager iucjm) : base(userManager, null, roleManager)
         {
             _icm = icm;
+            _iucjm = iucjm;
         }
 
         //[Route("CategoryofFoodIndex")]
@@ -72,7 +75,7 @@ namespace Technosoft_Project.Controllers
             {
                 TempData["HttpContext"] = null;
 
-                if (string.IsNullOrEmpty(cVM.CategoryofFoodDTO._CategoryName_of_Foods))
+                if (string.IsNullOrEmpty(cVM.CategoryofFoodDTO.CategoryName_of_Foods))
                 {
                     ModelState.AddModelError("CategoryofFoodDTO.CategoryofFoodName", "Kategori adı giriniz.");
                 }
@@ -129,7 +132,7 @@ namespace Technosoft_Project.Controllers
             {
                 TempData["HttpContext"] = null;
 
-                if (string.IsNullOrEmpty(cVM.CategoryofFoodDTO._CategoryName_of_Foods))
+                if (string.IsNullOrEmpty(cVM.CategoryofFoodDTO.CategoryName_of_Foods))
                 {
                     ModelState.AddModelError("CategoryofFoodDTO.CategoryofFoodName", "Kategori adı giriniz.");
                 }
@@ -150,7 +153,7 @@ namespace Technosoft_Project.Controllers
             CategoryofFoodDTO cDTO = CategoryofFood_item.Adapt<CategoryofFoodDTO>();
 
             //ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
-            ViewBag.CategoryofFoodNameDelete = cDTO._CategoryName_of_Foods;
+            ViewBag.CategoryofFoodNameDelete = cDTO.CategoryName_of_Foods;
 
             ViewBag.CRUD = "delete_operation";
 
@@ -166,7 +169,7 @@ namespace Technosoft_Project.Controllers
 
         [Route("CRUDCategoryofFood")]
         [HttpPost]
-        public async Task<IActionResult> CRUDCategoryofFood(CategoryofFoodVM cvm_post, IFormFile CategoryofFoodPicture)
+        public async Task<IActionResult> CRUDCategoryofFood(CategoryofFoodVM cvm_post, IFormFile _CategoryofFoodPicture)
         {
 
             /*
@@ -186,55 +189,71 @@ namespace Technosoft_Project.Controllers
 
             if (TempData["Deleted"] == null)
             {
-                ModelState.Remove("CategoryofFoodPicture");
-                ModelState.Remove("CategoryofFoodDTOs");
-                ModelState.Remove("JavascriptToRun");
-
+                //ModelState.Remove("CategoryofFoodPicture");
+                //ModelState.Remove("CategoryofFoodDTOs");
+                //ModelState.Remove("JavascriptToRun");
+                ModelState.Remove("ExistentStatus");
+                ModelState.Remove("_CategoryofFoodPicture"); // IFormFile _CategoryofFoodPicture İÇİN
+                ModelState.Remove("CategoryofFoodDTO.ExistentStatus");
 
                 if (ModelState.IsValid)
                 {
                     CategoryofFood ctg = cvm_post.CategoryofFoodDTO.Adapt<CategoryofFood>();
+                    UserCategoryJunction ucj = cvm_post.UserCategoryJunctionDTO.Adapt<UserCategoryJunction>();
 
                     /* !!! !!! ctg.Status = (int)cvm_post.CategoryofFoodDTO.Status; !!! !!!*/
 
 
-
-                    //////
-                    ///
-                    if (CategoryofFoodPicture != null && CategoryofFoodPicture.Length > 0)
+                    if (_CategoryofFoodPicture != null && _CategoryofFoodPicture.Length > 0)
                     {
-                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(CategoryofFoodPicture.FileName); // path oluşturma
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(_CategoryofFoodPicture.FileName); // path oluşturma
 
                         var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/CategoryofFoodPicture", fileName); // server'a kayıt edilecek path => wwwroot/UserPicture/fileName
 
                         // kayıt işlemi
                         using (var stream = new FileStream(path, FileMode.Create))
                         {
-                            await CategoryofFoodPicture.CopyToAsync(stream); // userPicture'ı, stream'e kayıt
+                            await _CategoryofFoodPicture.CopyToAsync(stream); // userPicture'ı, stream'e kayıt
 
                             /* !!! !!! ctg.CategoryofFoodPicture = "/CategoryofFoodPicture/" + fileName;   // veritabanına kayıt (wwwroot belirtmeye gerek yok) !!! !!! */
 
+                            ucj.CategoryofFood_Picture = "/CategoryofFoodPicture/" + fileName;
+
                         }
                     }
-                    else
+                    else // resim yüklenmedi ise...
                     {
-                        CategoryofFood ctgv2 = await _icm.GetByIdAsync(cvm_post.CategoryofFoodDTO.ID);
+                        // mevcut da resmi db ' de varsa ... mevcut resmi db den çekip tekrar set etmeye gerek yok gibi ?! --> _icm.Update(ctg); kısmında bir kontrol et !!!
 
-                        if (ctgv2 != null)
+                        /* if (ucj.DataStatus == DataStatus.Updated)
                         {
-                            /* !!! !!!
-                             if (ctgv2.CategoryofFoodPicture != null)
-                             {
-                                 ctg.CategoryofFoodPicture = ctgv2.CategoryofFoodPicture;
-                             }
-                            !!! !!! */
-                        }
+                            UserCategoryJunction ucj_controller = await _iucjm.GetByIdAsync(cvm_post.CategoryofFoodDTO.ID);
 
+                            if (ucj_controller != null)
+                            {
+
+                                if (ucj_controller.CategoryofFood_Picture != null)
+                                {
+                                    ucj.CategoryofFood_Picture = ucj_controller.CategoryofFood_Picture;
+                                }
+
+                            }
+                        }*/
                     }
 
                     if (ctg.ID == 0)
                     {
                         await _icm.AddAsync(ctg);
+
+                        ucj.AccessibleID = CurrentUser.AccessibleID;
+                        ucj.CategoryofFoodID = ctg.ID;
+                        
+                        // short control = CurrentUser.ID; olmadı
+                        Guid control2 = CurrentUser.Id;
+                        ucj.AppUser = CurrentUser;
+                        //ucj.AppUser.Id = CurrentUser.Id;
+
+                        await _iucjm.AddAsync(ucj);
                         TempData["messageCategoryofFood"] = "Kategori eklendi";
                     }
                     else

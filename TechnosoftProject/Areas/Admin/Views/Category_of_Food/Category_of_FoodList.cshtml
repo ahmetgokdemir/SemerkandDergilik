@@ -71,15 +71,15 @@ else
                 <tbody>
                     @foreach (CategoryofFoodDTO item in Model.CategoryofFoodDTOs)
                     {
-                        int CategoryofFood_status = (int)item._ExistentStatus;  // asp-route-status="@(int)item.Status" olmuyor...
+                        int CategoryofFood_status = (int)item.ExistentStatus;  // asp-route-status="@(int)item.Status" olmuyor...
 
                         <tr>
                             <td></td>
                             <td class="position">
-                                <a class="" asp-area="Admin" asp-controller="Food" asp-action="FoodList" asp-route-id="@item.ID" asp-route-status="@CategoryofFood_status">@item._CategoryName_of_Foods</a>
+                                <a class="" asp-area="Admin" asp-controller="Food" asp-action="FoodList" asp-route-id="@item.ID" asp-route-status="@CategoryofFood_status">@item.CategoryName_of_Foods</a>
                             </td>
                             <td class="position">
-                                <p>@item._ExistentStatus</p>
+                                <p>@item.ExistentStatus</p>
                             </td>
                             @*<td colspan="2" style="padding-left:150px">@item.CategoryofFoodPicture</td>*@
                             <td style="text-align: center;">

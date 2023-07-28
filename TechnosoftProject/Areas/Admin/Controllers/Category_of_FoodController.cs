@@ -82,7 +82,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             {
                 TempData["HttpContext"] = null;
 
-                if (string.IsNullOrEmpty(cVM.CategoryofFoodDTO._CategoryName_of_Foods))
+                if (string.IsNullOrEmpty(cVM.CategoryofFoodDTO.CategoryName_of_Foods))
                 {
                     ModelState.AddModelError("CategoryofFoodDTO.CategoryofFoodName", "Kategori adı giriniz.");
                 }
@@ -139,7 +139,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             {
                 TempData["HttpContext"] = null;
 
-                if (string.IsNullOrEmpty(cVM.CategoryofFoodDTO._CategoryName_of_Foods))
+                if (string.IsNullOrEmpty(cVM.CategoryofFoodDTO.CategoryName_of_Foods))
                 {
                     ModelState.AddModelError("CategoryofFoodDTO.CategoryofFoodName", "Kategori adı giriniz.");
                 }
@@ -160,7 +160,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             CategoryofFoodDTO cDTO = CategoryofFood_item.Adapt<CategoryofFoodDTO>();
 
             //ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
-            ViewBag.CategoryofFoodNameDelete = cDTO._CategoryName_of_Foods;
+            ViewBag.CategoryofFoodNameDelete = cDTO.CategoryName_of_Foods;
 
             ViewBag.CRUD = "delete_operation";
 

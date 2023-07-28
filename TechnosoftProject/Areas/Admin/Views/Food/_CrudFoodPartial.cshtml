@@ -66,9 +66,9 @@ else if (Model.FoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
 
 
             <div class="form-group">
-                <label asp-for="CategoryofFoodDTO._CategoryName_of_Foods" class="control-label"></label>
-                <select class="form-control" asp-for="CategoryofFoodDTO._CategoryName_of_Foods" asp-items="@ViewBag.CategoryofFoodNames" disabled></select>
-                <span asp-validation-for="CategoryofFoodDTO._CategoryName_of_Foods" class="text-danger"></span>
+                <label asp-for="CategoryofFoodDTO.CategoryName_of_Foods" class="control-label"></label>
+                <select class="form-control" asp-for="CategoryofFoodDTO.CategoryName_of_Foods" asp-items="@ViewBag.CategoryofFoodNames" disabled></select>
+                <span asp-validation-for="CategoryofFoodDTO.CategoryName_of_Foods" class="text-danger"></span>
             </div>
 
             <div class="form-group">
@@ -77,12 +77,12 @@ else if (Model.FoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
                 {
 @*                    <select disabled class="form-control" asp-for="@Enum.GetNames(typeof(Status))[1].ToString()" asp-items="@ViewBag.Status"></select>*@
                     <select disabled class="form-control" asp-for="FoodDTO._ExistentStatus" asp-items="@ViewBag.Status"></select>
-                    TempData["CategoryofFood_status"] = Model.CategoryofFoodDTO._ExistentStatus; // bu kod olmaz ise kullanıcı butona basmadan çıkarsa sayfadan TempData boş kalır null hatası döner ... tedbiren kalsın bu kod
+                    TempData["CategoryofFood_status"] = Model.CategoryofFoodDTO.ExistentStatus; // bu kod olmaz ise kullanıcı butona basmadan çıkarsa sayfadan TempData boş kalır null hatası döner ... tedbiren kalsın bu kod
                 }
                 else
                 {
                     <select class="form-control" asp-for="FoodDTO._ExistentStatus" asp-items="@ViewBag.Status"></select>
-                    TempData["CategoryofFood_status"] = Model.CategoryofFoodDTO._ExistentStatus; // bu kod olmaz ise kullanıcı butona basmadan çıkarsa sayfadan TempData boş kalır null hatası döner ... tedbiren kalsın bu kod
+                    TempData["CategoryofFood_status"] = Model.CategoryofFoodDTO.ExistentStatus; // bu kod olmaz ise kullanıcı butona basmadan çıkarsa sayfadan TempData boş kalır null hatası döner ... tedbiren kalsın bu kod
                 }
                 <span asp-validation-for="FoodDTO._ExistentStatus" class="text-danger"></span>
             </div>
