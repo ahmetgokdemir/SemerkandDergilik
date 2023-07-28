@@ -40,10 +40,16 @@ namespace Technosoft_Project.Controllers
 
             IEnumerable<CategoryofFood> CategoryofFoodList = await _icm.GetActivesAsync();
 
-            IEnumerable<UserCategoryJunction> UserCategoryJunctionList = await _iucjm.Get_ByGuidId_Async(CurrentUser.Id); // IdentityUser --> Id
+            IEnumerable<object> UserCategoryJunctionList = await _iucjm.Get_ByGuidId_Async(CurrentUser.Id);
 
+
+            // Adapt<IEnumerable<UserCategoryJunctionDTO>>().ToList()
+            // IdentityUser --> Id
+            // .Adapt<IEnumerable<CategoryofFoodDTO>>().ToList()
+            // IEnumerable<object> Menu_Categories 
             CategoryofFoodVM cvm = new CategoryofFoodVM
             {
+                UserCategoryJunctionDTOs = UserCategoryJunctionList.Adapt<IEnumerable<UserCategoryJunctionDTO>>().ToList(),
                 CategoryofFoodDTOs = CategoryofFoodList.Adapt<IEnumerable<CategoryofFoodDTO>>().ToList(),
                 JavascriptToRun = JSpopupPage
             };

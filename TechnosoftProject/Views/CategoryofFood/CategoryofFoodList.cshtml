@@ -40,7 +40,7 @@
 <hr class="loader" />
 
 
-@if (Model.CategoryofFoodDTOs.Count == 0)
+@if (Model.UserCategoryJunctionDTOs.Count == 0)
 {
     <div class="jumbotron" id="tab1" style="padding:20px;  background-color:lightgrey">
         @*<input type="submit" id="btnIslemYap" value="İşlem Yap" />*@
@@ -61,7 +61,7 @@ else
                 <thead class="thead-light">
                     <tr>
                         <th>Index</th>
-                        <!--<th class="position"><p>Kategori İsmi</p></th>-->
+                        <th class="position"><p>Kategori İsmi</p></th>
                         <th class="position"><p>Durum</p></th>
                         <th class="position"><p>Resim</p></th>
                         <th></th>
@@ -75,17 +75,17 @@ else
 
                         <tr>
                             <td></td>
-<!--                            <td class="position">
-                                <p>item._CategoryName_of_Foods</p>
-                            </td>-->
+                            <td class="position">
+                                <p>@item.CategoryName_of_Foods</p>
+                            </td>
                             <td class="position">
                                 <p>@item.CategoryofFood_Status</p>
                             </td>
                             @*<td colspan="2" style="padding-left:150px">@item.CategoryofFoodPicture</td>*@
                             <td style="text-align: center;">
-                                @if (item.CategoryofFoodPicture != null)
+                                @if (item.CategoryofFood_Picture != null)
                                 {
-                                    <img style="width:85px; height:40px" src="@item.CategoryofFoodPicture" />
+                                    <img style="width:85px; height:40px" src="@item.CategoryofFood_Picture" />
                                 }
                             </td>
                             <td class="btnposition">

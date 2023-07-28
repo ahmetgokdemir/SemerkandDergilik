@@ -30,7 +30,7 @@ namespace Project.DAL.Repositories.Concretes
             {
                 CategoryName_of_Foods = x.CategoryofFood.CategoryName_of_Foods,
                 CategoryofFood_Picture = x.CategoryofFood_Picture,
-                DataStatus = x.DataStatus
+                CategoryofFood_Status = x.CategoryofFood_Status
 
 
             }).AsQueryable();   

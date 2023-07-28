@@ -14,7 +14,7 @@ namespace Technosoft_Project.ViewModels
         public ExistentStatus CategoryofFood_Status { get; set; } // Aktif, Pasif , Adapt, _CategoryofFood_Status şeklinde ('_') kabul etmiyor 
 
         [Display(Name = "Kategori Resim")]
-        public string? CategoryofFoodPicture { get; set; }  // çoklu resim
+        public string? CategoryofFood_Picture { get; set; }  // çoklu resim
 
         [Display(Name = "Kategori Açıklama")]
         [MaxLength(256, ErrorMessage = "Açıklama en fazla 256 karakterli olmalıdır.")]
