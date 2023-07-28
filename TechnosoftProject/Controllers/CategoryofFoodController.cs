@@ -40,6 +40,8 @@ namespace Technosoft_Project.Controllers
 
             IEnumerable<CategoryofFood> CategoryofFoodList = await _icm.GetActivesAsync();
 
+            IEnumerable<UserCategoryJunction> UserCategoryJunctionList = await _iucjm.Get_ByGuidId_Async(CurrentUser.Id); // IdentityUser --> Id
+
             CategoryofFoodVM cvm = new CategoryofFoodVM
             {
                 CategoryofFoodDTOs = CategoryofFoodList.Adapt<IEnumerable<CategoryofFoodDTO>>().ToList(),
@@ -195,6 +197,7 @@ namespace Technosoft_Project.Controllers
                 ModelState.Remove("ExistentStatus");
                 ModelState.Remove("_CategoryofFoodPicture"); // IFormFile _CategoryofFoodPicture İÇİN
                 ModelState.Remove("CategoryofFoodDTO.ExistentStatus");
+                ModelState.Remove("UserCategoryJunctionDTO.CategoryName_of_Foods");
 
                 if (ModelState.IsValid)
                 {

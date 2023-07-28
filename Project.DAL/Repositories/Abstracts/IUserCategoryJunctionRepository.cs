@@ -9,5 +9,6 @@ namespace Project.DAL.Repositories.Abstracts
 {
     public interface IUserCategoryJunctionRepository : IRepository<UserCategoryJunction>
     {
+        IQueryable<object> Get_ByGuidId_Async(Guid id);
     }
 }

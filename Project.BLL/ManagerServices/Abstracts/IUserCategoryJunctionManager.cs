@@ -1,4 +1,5 @@
-﻿using Project.ENTITIES.Models;
+﻿using Project.ENTITIES.CoreInterfaces;
+using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace Project.BLL.ManagerServices.Abstracts
 {
     public interface IUserCategoryJunctionManager : IManager<UserCategoryJunction>
     {
+        Task<IEnumerable<object>> Get_ByGuidId_Async(Guid id);
     }
 }

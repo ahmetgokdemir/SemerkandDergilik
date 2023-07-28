@@ -23,6 +23,10 @@ namespace Technosoft_Project.ViewModels
         public Guid AccessibleID { get; set; } // user_id useraccessavleid
         public short CategoryofFoodID { get; set; }
 
+        [Required(ErrorMessage = "Kategori ismi gereklidir.")]
+        [Display(Name = "Kategori Adı")]
+        public string CategoryName_of_Foods { get; set; }
+
 
     }
 }
