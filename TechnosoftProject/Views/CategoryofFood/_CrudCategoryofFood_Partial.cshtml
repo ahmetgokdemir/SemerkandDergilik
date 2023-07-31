@@ -56,17 +56,16 @@ else if (Model.CategoryofFoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
             <div class="form-group">
                 <label asp-for="UserCategoryJunctionDTO.CategoryofFood_Status" class="control-label"></label>
                 <!--asp-items="Html.GetEnumSelectList<Project.ENTITIES.Enums.ExistentStatus>()" -->
-                <select class="form-control" asp-for="UserCategoryJunctionDTO.CategoryofFood_Status" >
-                    <option selected="selected">Kategori Durumunu seçiniz.</option>
+                <select class="form-select" asp-for="UserCategoryJunctionDTO.CategoryofFood_Status">
+                    <option value="0"  selected>Kategori Durumunu seçiniz.</option>
                     @foreach (SelectListItem es in Html.GetEnumSelectList<Project.ENTITIES.Enums.ExistentStatus>())
                     {
-                        <option>@es.Text</option>
+                        <option value="@es.Value">@es.Text</option>
 
                     }
                  </select>
                 <span asp-validation-for="UserCategoryJunctionDTO.CategoryofFood_Status" class="text-danger"></span>
             </div>
-
 
 
             <div class="form-group">

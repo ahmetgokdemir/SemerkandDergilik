@@ -131,7 +131,7 @@ namespace Technosoft_Project.Controllers
                 {
                     TempData["HttpContext2"] = null;
 
-                    if (cVM.UserCategoryJunctionDTO.CategoryofFood_Status == null)
+                    if (cVM.UserCategoryJunctionDTO.CategoryofFood_Status == 0)
                     {
                         ModelState.AddModelError("UserCategoryJunctionDTO.CategoryofFood_Status", "Kategori durumunu giriniz.");
                     }
@@ -384,7 +384,7 @@ Fakat ayni zamanda bir human classi olsun, diyelim ki beslenmek diye bir FONKSIY
             // TempData["mesaj"] = "Kategori adı ve statü giriniz..";
             // ModelState.AddModelError("", "Ürün adı ve statü giriniz..");
 
-            if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status == null)
+            if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status == 0)
             {
                 HttpContext.Session.SetObject("manipulatedData2", cvm_post.UserCategoryJunctionDTO);
                 TempData["HttpContext2"] = "valid";

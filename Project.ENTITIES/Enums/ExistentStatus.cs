@@ -3,6 +3,6 @@
     public enum ExistentStatus
     {
         Aktif = 1,
-        Pasif = 0
+        Pasif = 2
     }
 }
