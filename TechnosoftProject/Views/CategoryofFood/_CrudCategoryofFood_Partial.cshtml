@@ -54,7 +54,9 @@ else if (Model.CategoryofFoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
 
             <div class="form-group">
                 <label asp-for="UserCategoryJunctionDTO.CategoryofFood_Status" class="control-label"></label>
-                <select class="form-control" asp-for="UserCategoryJunctionDTO.CategoryofFood_Status" asp-items="Html.GetEnumSelectList<Project.ENTITIES.Enums.ExistentStatus>()"></select>
+                <select class="form-control" asp-for="UserCategoryJunctionDTO.CategoryofFood_Status" asp-items="Html.GetEnumSelectList<Project.ENTITIES.Enums.ExistentStatus>()">
+                    <option selected>Kategori Durumunu seçiniz.</option>
+                 </select>
                 <span asp-validation-for="UserCategoryJunctionDTO.CategoryofFood_Status" class="text-danger"></span>
             </div>
 

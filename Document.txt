@@ -4,8 +4,10 @@
 
 !!! !!! */
 
-CategoryofFoodDTO.cs deðiþiklik
-root --> CategoryofFoodPicture klasör ismi
+
+Kullanýcý üyelik oluþturunca ve de random þifre oluþturulunca Þifre deðiþtirmesi için (kolaylýk olmasý için)  link  ver
+
+
 
 
 ddlFoods.append($("<option></option>").val(index).html(foods));
