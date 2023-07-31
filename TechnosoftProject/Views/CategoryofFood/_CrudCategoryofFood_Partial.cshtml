@@ -1,4 +1,5 @@
-﻿@*
+﻿@using Project.ENTITIES.Enums;
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
@@ -54,8 +55,14 @@ else if (Model.CategoryofFoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
 
             <div class="form-group">
                 <label asp-for="UserCategoryJunctionDTO.CategoryofFood_Status" class="control-label"></label>
-                <select class="form-control" asp-for="UserCategoryJunctionDTO.CategoryofFood_Status" asp-items="Html.GetEnumSelectList<Project.ENTITIES.Enums.ExistentStatus>()">
-                    <option selected>Kategori Durumunu seçiniz.</option>
+                <!--asp-items="Html.GetEnumSelectList<Project.ENTITIES.Enums.ExistentStatus>()" -->
+                <select class="form-control" asp-for="UserCategoryJunctionDTO.CategoryofFood_Status" >
+                    <option selected="selected">Kategori Durumunu seçiniz.</option>
+                    @foreach (SelectListItem es in Html.GetEnumSelectList<Project.ENTITIES.Enums.ExistentStatus>())
+                    {
+                        <option>@es.Text</option>
+
+                    }
                  </select>
                 <span asp-validation-for="UserCategoryJunctionDTO.CategoryofFood_Status" class="text-danger"></span>
             </div>
