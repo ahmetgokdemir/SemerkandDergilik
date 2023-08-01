@@ -52,7 +52,7 @@ namespace Project.BLL.ManagerServices.Abstracts
 
         //Find Command
         // T Find(int id); // Task<T> GetByIdAsync(int id);
-        Task<TEntity> GetByIdAsync(int id);
+        Task<TEntity> GetByIdAsync(short id);
 
         //Last Data
         // T GetLastData();

@@ -26,7 +26,7 @@ namespace Project.MAP.Custom_Configurations
             //IdentityUser iu = new IdentityUser();
             // x.AccessibleID
 
-            // builder.HasKey(x => new { x.AppUser.AccessibleID, x.CategoryofFoodID });
+            // builder.HasKey(x => new { x.AppUser.Id, x.CategoryofFoodID });
             // ... is not a valid member access expression. The expression should represent a simple property or field acces HATASI VERİYOR
 
             builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID });

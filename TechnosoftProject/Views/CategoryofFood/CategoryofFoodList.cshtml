@@ -56,8 +56,13 @@ else
 
     <div class="form-check form-switch" style=" display: inline;">
         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-        <label class="form-check-label" for="flexSwitchCheckDefault">Default switch checkbox input</label>
+        <label class="form-check-label" for="flexSwitchCheckDefault">Havuzdaki diğer kategoriler</label>
     </div>
+
+
+    <br />
+    <br />
+
 
 
     <div class="panel panel-primary">
@@ -95,7 +100,7 @@ else
                             </td>
                             <td class="btnposition">
                                 @*<a asp-action="UpdateCategoryofFood" asp-controller="CategoryofFood" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
-                                <button class="btn btn-warning" id="updateCategoryofFood" value="updateCategoryofFoodValue" data-id=@item.CategoryofFoodID>
+                                <button class="btn btn-warning" id="updateCategoryofFood" value="updateCategoryofFoodValue" data-categoryID=@item.CategoryofFoodID data-userID=@item.AppUserId>
                                     Güncelle
                                 </button>
 
@@ -318,7 +323,7 @@ else
             $.ajax({
                 //url: '@@Url.Action("AddCategoryofFoodAjax","CategoryofFood")',
                 url: 'UpdateCategoryofFoodAjax',
-                data: { id: $(this).attr("data-id") },
+                data: { categoryID: $(this).attr("data-categoryID"), userID: $(this).attr("data-userID") },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {

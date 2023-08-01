@@ -99,7 +99,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
 
         [Route("UpdateCategoryofFoodAjax")]
-        public async Task<PartialViewResult> UpdateCategoryofFoodAjax(int id)
+        public async Task<PartialViewResult> UpdateCategoryofFoodAjax(short id)
         {
             // CategoryofFood CategoryofFood_item = await _icm.GetByIdAsync(id);
             // CategoryofFoodDTO cDTO = CategoryofFood_item.Adapt<CategoryofFoodDTO>();
@@ -156,7 +156,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
         [Route("DeleteCategoryofFoodAjax")]
         public async Task<PartialViewResult> DeleteCategoryofFoodAjax(int id)
         {
-            CategoryofFood CategoryofFood_item = await _icm.GetByIdAsync(id);
+            CategoryofFood CategoryofFood_item = await _icm.GetByIdAsync((short)id);
             CategoryofFoodDTO cDTO = CategoryofFood_item.Adapt<CategoryofFoodDTO>();
 
             //ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
@@ -228,7 +228,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                     }
                      else
                      {
-                         CategoryofFood ctgv2 = await _icm.GetByIdAsync(cvm_post.CategoryofFoodDTO.ID);
+                         CategoryofFood ctgv2 = await _icm.GetByIdAsync((short)cvm_post.CategoryofFoodDTO.ID);
 
                          if (ctgv2 != null)
                          {
@@ -282,7 +282,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             }
             else
             {
-                _icm.Delete(await _icm.GetByIdAsync(cvm_post.CategoryofFoodDTO.ID));
+                _icm.Delete(await _icm.GetByIdAsync((short)cvm_post.CategoryofFoodDTO.ID));
 
                 // CategoryofFood ctg = cdto.Adapt<CategoryofFood>();
 

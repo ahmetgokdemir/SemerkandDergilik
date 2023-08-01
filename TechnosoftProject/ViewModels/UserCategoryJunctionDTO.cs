@@ -22,10 +22,21 @@ namespace Technosoft_Project.ViewModels
 
         public Guid AccessibleID { get; set; } // user_id useraccessavleid
         public short CategoryofFoodID { get; set; }
+        public Guid AppUserId { get; set; }
 
         [Required(ErrorMessage = "Kategori ismi gereklidir.")]
         [Display(Name = "Kategori Adı")]
         public string CategoryName_of_Foods { get; set; }
+
+        /*
+                             CategoryName_of_Foods = x.CategoryofFood.CategoryName_of_Foods, // include
+                    CategoryofFood_Picture = x.CategoryofFood_Picture,
+                    CategoryofFood_Status = x.CategoryofFood_Status,
+                    AppUserId = x.AppUser.Id, // ID (IdentityUser'den gelir ve erişilemez onun yerine AppUser dan id e erişilir)
+                    CategoryofFoodID = x.CategoryofFoodID
+         
+         
+         */
 
 
     }

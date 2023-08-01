@@ -52,7 +52,7 @@ namespace Project.DAL.Repositories.Abstracts
 
         //Find Command
         // T Find(int id); // Task<T> GetByIdAsync(int id);
-        Task<T> GetByIdAsync(int id);
+        Task<T> GetByIdAsync(short id);
 
         //Last Data
         // T GetLastData();

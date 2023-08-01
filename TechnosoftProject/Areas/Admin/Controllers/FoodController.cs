@@ -254,7 +254,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             }
             else
             {
-                Food Food_item = await _ipm.GetByIdAsync(id);
+                Food Food_item = await _ipm.GetByIdAsync((short)id);
 
                 fdto = Food_item.Adapt<FoodDTO>();
             }
@@ -328,7 +328,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
         [Route("DeleteFoodAjax")]
         public async Task<PartialViewResult> DeleteFoodAjax(int id)
         {
-            Food Food_item = await _ipm.GetByIdAsync(id);
+            Food Food_item = await _ipm.GetByIdAsync((short)id);
             // FoodDTO pDTO = Food_item.Adapt<FoodDTO>();
 
             FoodVM pvm = new FoodVM
@@ -399,7 +399,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                         // Update işleminde çalışır
                         if (pvm_post.FoodDTO.ID != 0)
                         {
-                            Food prdv2 = await _ipm.GetByIdAsync(pvm_post.FoodDTO.ID);
+                            Food prdv2 = await _ipm.GetByIdAsync((short)pvm_post.FoodDTO.ID);
 
                             /* !!! !!! if (prdv2.FoodPicture != null) // önceden veritabanında resim varsa ve resim seçilmedi ise..
                             {
@@ -449,7 +449,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
                 // _ipm.Delete(prd);
 
-                _ipm.Delete(await _ipm.GetByIdAsync(pvm_post.FoodDTO.ID));
+                _ipm.Delete(await _ipm.GetByIdAsync((short)pvm_post.FoodDTO.ID));
 
                 // CategoryofFood ctg = cdto.Adapt<CategoryofFood>();
 

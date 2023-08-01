@@ -10,6 +10,8 @@ namespace Project.BLL.ManagerServices.Abstracts
 {
     public interface IUserCategoryJunctionManager : IManager<UserCategoryJunction>
     {
-        Task<IEnumerable<object>> Get_ByGuidId_Async(Guid id);
+        Task<IEnumerable<object>> Get_ByUserID_Async(Guid userID);
+        Task<IEnumerable<object>> Get_ByUserID_with_CategoryID_Async(Guid userID, short categoryID );
+
     }
 }

@@ -348,7 +348,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             }
             else
             {
-                Menu Menu_item = await _imm.GetByIdAsync(id);
+                Menu Menu_item = await _imm.GetByIdAsync((short)id);
                 cDTO = Menu_item.Adapt<MenuDTO>();
                 // cdto = Food_item.Adapt<MenuDTO>();
             }
@@ -380,7 +380,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
         [Route("DeleteMenuAjax")]
         public async Task<PartialViewResult> DeleteMenuAjax(int id)
         {
-            Menu Menu_item = await _imm.GetByIdAsync(id);
+            Menu Menu_item = await _imm.GetByIdAsync((short)id);
             MenuDTO cDTO = Menu_item.Adapt<MenuDTO>();
 
             //ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
@@ -475,7 +475,7 @@ Fakat ayni zamanda bir human classi olsun, diyelim ki beslenmek diye bir FONKSIY
             }
             else
             {
-                _imm.Delete(await _imm.GetByIdAsync(mvm_post.MenuDTO.ID));
+                _imm.Delete(await _imm.GetByIdAsync((short)mvm_post.MenuDTO.ID));
 
                 // Menu ctg = cdto.Adapt<Menu>();
 

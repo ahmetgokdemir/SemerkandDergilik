@@ -83,7 +83,7 @@ namespace Project.BLL.ManagerServices.Concretes
 
         }
 
-        public async Task<TEntity> GetByIdAsync(int id)
+        public async Task<TEntity> GetByIdAsync(short id)
         {
             var Food = await _iRep.GetByIdAsync(id);
 

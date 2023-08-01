@@ -85,7 +85,7 @@ namespace Project.DAL.Repositories.Concretes
 
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(short id)
         {
             // _context.Set<T>().Find(id);
             var entity = await _context.Set<T>().FindAsync(id);

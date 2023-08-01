@@ -40,7 +40,7 @@ namespace Technosoft_Project.Controllers
 
             // IEnumerable<CategoryofFood> CategoryofFoodList = await _icm.GetActivesAsync();
 
-            IEnumerable<object> UserCategoryJunctionList = await _iucjm.Get_ByGuidId_Async(CurrentUser.Id);
+            IEnumerable<object> UserCategoryJunctionList = await _iucjm.Get_ByUserID_Async(CurrentUser.Id);
 
 
             // Adapt<IEnumerable<UserCategoryJunctionDTO>>().ToList()
@@ -73,20 +73,63 @@ namespace Technosoft_Project.Controllers
 
             // HttpContext.Session.SetObject("manipulatedData", pvm_post.CategoryofFoodDTO);
             
-            if (TempData["HttpContext"] != null)
+            if (TempData["ValidError_Name"] != null)
             {
+                if (TempData["ValidError_Status"] == null)
+                {
+                    result_2 = HttpContext.Session.GetObject<UserCategoryJunctionDTO>("manipulatedData_Status");
+                    ucjDTO = result_2;
+                }
 
-                result = HttpContext.Session.GetObject<CategoryofFoodDTO>("manipulatedData");
+                if (HttpContext.Session.GetObject<CategoryofFoodDTO>("manipulatedData_Name") != null)
+                {
+                    result = HttpContext.Session.GetObject<CategoryofFoodDTO>("manipulatedData_Name");
+                    cDTO = result;                    
+
+                }
+
+
+                if (string.IsNullOrEmpty(cDTO.CategoryName_of_Foods))
+                {                  
+                    ModelState.AddModelError("CategoryofFoodDTO.CategoryName_of_Foods", "Kategori adı giriniz.");
+                }
+                else if (cDTO.CategoryName_of_Foods.Length >= 128)
+                {
+                    ModelState.AddModelError("CategoryofFoodDTO.CategoryName_of_Foods", "Kategori 128 karakterden fazla olamaz.");
+                }
+
+                TempData["ValidError_Name"] = null;
+
+
+            } // aynı veri db'de varsa !!
+            else if (TempData["ValidError_NameExist"] != null)
+            {
+                
+                result = HttpContext.Session.GetObject<CategoryofFoodDTO>("manipulatedData_NameExist");
                 cDTO = result;
 
+                if (TempData["ValidError_Status"] == null)
+                {
+                    result_2 = HttpContext.Session.GetObject<UserCategoryJunctionDTO>("manipulatedData_Status");
+                    ucjDTO = result_2;
+                }
+
+                ModelState.AddModelError("CategoryofFoodDTO.CategoryName_of_Foods", "Kategori listede mevcuttur.");
+                TempData["ValidError_NameExist"] = null;
             }
 
-            if (TempData["HttpContext2"] != null)
+
+            if (TempData["ValidError_Status"] != null)
             {
+                if (HttpContext.Session.GetObject<CategoryofFoodDTO>("manipulatedData_Name") != null)
+                {
+                    result = HttpContext.Session.GetObject<CategoryofFoodDTO>("manipulatedData_Name");
+                    cDTO = result;
 
-                result_2 = HttpContext.Session.GetObject<UserCategoryJunctionDTO>("manipulatedData2");
-                ucjDTO = result_2;
+                }
 
+                ModelState.AddModelError("UserCategoryJunctionDTO.CategoryofFood_Status", "Kategori durumunu giriniz.");
+                TempData["ValidError_Status"] = null;
             }
 
             CategoryofFoodVM cVM = new CategoryofFoodVM
@@ -95,51 +138,25 @@ namespace Technosoft_Project.Controllers
                 CategoryofFoodDTO = cDTO
             };
 
+            HttpContext.Session.SetObject("manipulatedData_Name", null);
+            HttpContext.Session.SetObject("manipulatedData_Status", null);
+            HttpContext.Session.SetObject("manipulatedData_NameExist", null);
 
-            if (TempData["HttpContext3"] != null)
-            {
-                TempData["HttpContext3"] = null;
 
-                ModelState.AddModelError("CategoryofFoodDTO.CategoryName_of_Foods", "Kategori listede mevcuttur.");
 
-                if (cVM.UserCategoryJunctionDTO.CategoryofFood_Status == null)
-                {
-                    ModelState.AddModelError("UserCategoryJunctionDTO.CategoryofFood_Status", "Kategori durumunu giriniz.");
-                }
+                //if (TempData["HttpContext2"] != null)
+                //{
+                //    TempData["HttpContext2"] = null;
 
-                HttpContext.Session.SetObject("manipulatedData3", null);
+                //    if (cVM.UserCategoryJunctionDTO.CategoryofFood_Status == 0)
+                //    {
+                //        ModelState.AddModelError("UserCategoryJunctionDTO.CategoryofFood_Status", "Kategori durumunu giriniz.");
+                //    }
 
-            }
-            // yeni kayıt ise
-            else
-            {
-                if (TempData["HttpContext"] != null)
-                {
-                    TempData["HttpContext"] = null;
+                //    HttpContext.Session.SetObject("manipulatedData_Status", null);
 
-                    if (string.IsNullOrEmpty(cVM.CategoryofFoodDTO.CategoryName_of_Foods))
-                    {
-                        // ***
-                        ModelState.AddModelError("CategoryofFoodDTO.CategoryName_of_Foods", "Kategori adı giriniz.");
-                    }
-
-                    HttpContext.Session.SetObject("manipulatedData", null);
-
-                }
-
-                if (TempData["HttpContext2"] != null)
-                {
-                    TempData["HttpContext2"] = null;
-
-                    if (cVM.UserCategoryJunctionDTO.CategoryofFood_Status == 0)
-                    {
-                        ModelState.AddModelError("UserCategoryJunctionDTO.CategoryofFood_Status", "Kategori durumunu giriniz.");
-                    }
-
-                    HttpContext.Session.SetObject("manipulatedData2", null);
-
-                }
-            }
+                //}
+         
 
             Thread.Sleep(500); // pop-up sayfasını tekrar açmayı tetikleyince bazen gelmiyor o yüzden bu kod eklendi..
 
@@ -150,7 +167,7 @@ namespace Technosoft_Project.Controllers
 
 
         [Route("UpdateCategoryofFoodAjax")]
-        public async Task<PartialViewResult> UpdateCategoryofFoodAjax(int id)
+        public async Task<PartialViewResult> UpdateCategoryofFoodAjax(short categoryID, Guid userID)
         {
             // CategoryofFood CategoryofFood_item = await _icm.GetByIdAsync(id);
             // CategoryofFoodDTO cDTO = CategoryofFood_item.Adapt<CategoryofFoodDTO>();
@@ -159,7 +176,9 @@ namespace Technosoft_Project.Controllers
 
 
             CategoryofFoodDTO cDTO = new CategoryofFoodDTO();
-
+            List<UserCategoryJunctionDTO> ucjDTO = new List<UserCategoryJunctionDTO>();
+            // UserCategoryJunctionDTO ucjDTO;
+ 
             var result = new CategoryofFoodDTO();
 
             if (TempData["HttpContext"] != null)
@@ -171,16 +190,22 @@ namespace Technosoft_Project.Controllers
             }
             else
             {
-                CategoryofFood CategoryofFood_item = await _icm.GetByIdAsync(id);
+                CategoryofFood CategoryofFood_item = await _icm.GetByIdAsync(categoryID);
                 cDTO = CategoryofFood_item.Adapt<CategoryofFoodDTO>();
-                // cdto = Food_item.Adapt<CategoryofFoodDTO>();
+
+                IEnumerable<object> ucj = await _iucjm.Get_ByUserID_with_CategoryID_Async(userID,categoryID);
+                ucjDTO = ucj.Adapt<IEnumerable<UserCategoryJunctionDTO>>().ToList();
+                //UserCategoryJunctionDTOs = UserCategoryJunctionList.Adapt<IEnumerable<UserCategoryJunctionDTO>>().ToList(),
+                //                 UserCategoryJunctionDTOs = UserCategoryJunctionList.Adapt<IEnumerable<UserCategoryJunctionDTO>>().ToList(),
+
+
+                // GetByIdAsync (Repository) int --> short 
             }
-
-
 
 
             CategoryofFoodVM cVM = new CategoryofFoodVM
             {
+                UserCategoryJunctionDTO = ucjDTO[0],
                 CategoryofFoodDTO = cDTO
             };
 
@@ -207,7 +232,7 @@ namespace Technosoft_Project.Controllers
         [Route("DeleteCategoryofFoodAjax")]
         public async Task<PartialViewResult> DeleteCategoryofFoodAjax(int id)
         {
-            CategoryofFood CategoryofFood_item = await _icm.GetByIdAsync(id);
+            CategoryofFood CategoryofFood_item = await _icm.GetByIdAsync((short)id);
             CategoryofFoodDTO cDTO = CategoryofFood_item.Adapt<CategoryofFoodDTO>();
 
             //ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status)));
@@ -305,14 +330,18 @@ namespace Technosoft_Project.Controllers
                         // Aynı isimli kayıt db'de zaten varsa 
                         if (await _icm.Any(x => x.CategoryName_of_Foods == ctg.CategoryName_of_Foods))
                         {
-                            HttpContext.Session.SetObject("manipulatedData3", cvm_post.CategoryofFoodDTO);
-                            TempData["HttpContext3"] = "valid";
+                            HttpContext.Session.SetObject("manipulatedData_NameExist", cvm_post.CategoryofFoodDTO);
+
+                            TempData["ValidError_NameExist"] = "valid";
                             TempData["JavascriptToRun"] = "valid";
 
-                            if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status == null)
+                            if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status != 0)
                             {
-                                HttpContext.Session.SetObject("manipulatedData2", cvm_post.UserCategoryJunctionDTO);
-                                TempData["HttpContext2"] = "valid";
+                                HttpContext.Session.SetObject("manipulatedData_Status", cvm_post.UserCategoryJunctionDTO);                                
+                            }
+                            else
+                            {
+                                TempData["ValidError_Status"] = "valid";
                             }
 
                             TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
@@ -369,7 +398,7 @@ Fakat ayni zamanda bir human classi olsun, diyelim ki beslenmek diye bir FONKSIY
             }
             else
             {
-                _icm.Delete(await _icm.GetByIdAsync(cvm_post.CategoryofFoodDTO.ID));
+                _icm.Delete(await _icm.GetByIdAsync((short)cvm_post.CategoryofFoodDTO.ID));
 
                 // CategoryofFood ctg = cdto.Adapt<CategoryofFood>();
 
@@ -386,14 +415,23 @@ Fakat ayni zamanda bir human classi olsun, diyelim ki beslenmek diye bir FONKSIY
 
             if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status == 0)
             {
-                HttpContext.Session.SetObject("manipulatedData2", cvm_post.UserCategoryJunctionDTO);
-                TempData["HttpContext2"] = "valid";
+                TempData["ValidError_Status"] = "valid";
+
+                if (!String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods))
+                {
+                    HttpContext.Session.SetObject("manipulatedData_Name", cvm_post.CategoryofFoodDTO);
+                }
+                
             }
 
-            if (String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods))
-            {
-                HttpContext.Session.SetObject("manipulatedData", cvm_post.CategoryofFoodDTO);
-                TempData["HttpContext"] = "valid";
+            if (String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods) /* || cvm_post.CategoryofFoodDTO.CategoryName_of_Foods.Lengt >= 128 */)
+            {               
+                TempData["ValidError_Name"] = "valid";
+
+                if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status != 0)
+                {
+                    HttpContext.Session.SetObject("manipulatedData_Status", cvm_post.UserCategoryJunctionDTO);
+                }
             }
 
             CategoryofFoodVM cVM = new CategoryofFoodVM();

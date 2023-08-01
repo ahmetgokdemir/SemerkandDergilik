@@ -19,9 +19,21 @@ namespace Project.BLL.ManagerServices.Concretes
         {
             _iucjrep = iucjrep;
         }
-        public async Task<IEnumerable<object>> Get_ByGuidId_Async(Guid id)
+        public async Task<IEnumerable<object>> Get_ByUserID_Async(Guid userID)
         {
-            var found_Item = await _iucjrep.Get_ByGuidId_Async(id).ToListAsync();
+            var found_Item = await _iucjrep.Get_ByUserID_Async(userID).ToListAsync();
+
+            if (found_Item == null)
+            {
+                return null;
+            }
+
+            return found_Item;
+        }
+
+        public async Task<IEnumerable<object>> Get_ByUserID_with_CategoryID_Async(Guid userID, short categoryID)
+        {
+            var found_Item = await _iucjrep.Get_ByUserID_with_CategoryID_Async(userID, categoryID);
 
             if (found_Item == null)
             {
