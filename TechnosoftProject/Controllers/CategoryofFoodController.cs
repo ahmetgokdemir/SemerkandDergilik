@@ -325,7 +325,7 @@ namespace Technosoft_Project.Controllers
                         }*/
                     }
 
-                    if (ctg.ID == 0)
+                    if (ctg.ID == 0) // insert
                     {
                         // Aynı isimli kayıt db'de zaten varsa 
                         if (await _icm.Any(x => x.CategoryName_of_Foods == ctg.CategoryName_of_Foods))
@@ -356,37 +356,33 @@ namespace Technosoft_Project.Controllers
                         ucj.CategoryofFoodID = ctg.ID;
                         
                         // short control = CurrentUser.ID; olmadı
-                        Guid control2 = CurrentUser.Id;
+                        // Guid control2 = CurrentUser.Id;
                         ucj.AppUser = CurrentUser;
                         //ucj.AppUser.Id = CurrentUser.Id;
 
                         await _iucjm.AddAsync(ucj);
                         TempData["messageCategoryofFood"] = "Kategori eklendi";
                     }
-                    else
+                    else // update 
                     {
+                        if (await _icm.Any(x => x.CategoryName_of_Foods == ctg.CategoryName_of_Foods))
+                        {
+                            HttpContext.Session.SetObject("manipulatedData_NameExist", cvm_post.CategoryofFoodDTO);
+
+                            TempData["ValidError_NameExist"] = "valid";
+                            TempData["JavascriptToRun"] = "valid";
+                            
+                            HttpContext.Session.SetObject("manipulatedData_Status", cvm_post.UserCategoryJunctionDTO);                           
+
+
+                            TempData["JSpopupPage"] = $"ShowErrorUpdateOperationPopup({cvm_post.CategoryofFoodDTO.ID})"; // diğer paramaetre de eklenecek
+
+                            return RedirectToAction("CategoryofFoodList", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
+                        }
+
+
                         _icm.Update(ctg);
-                        // yapılacak ödev:  CategoryofFood pasife çekilirse Foodları da pasife çekilsin!!! Update metodu içerisinde yapılabilir... ekstra metoda gerek yok
 
-                        /*
-                         * 
-                         Fonksiyon, belirli bir görevi gerçekleştirmek için bir dizi talimat veya prosedürdür. 
-
-                        Metot ise bir NSENEYLE ilişkili bir dizi talimattır. 
-
-                        Bir fonksiyon herhangi bir nesneye ihtiyaç duymaz ve bağımsızdır, 
-                        metot ise herhangi bir nesneyle bağlantılı bir işlevdir. 
-
-                        Metotlar, OOP (Nesne Yönelimli Programlama) ile ilgili bir kavram  --> _icm nesnesi İLE Update Metodu gibi
-
-                         Bu yuzden methodlar classlar icinde define edilir ve obje varyasyonlari ile kullanilir. Functionlarda class icinde define edilir ama o classa ait seyler icermez, objeye dependent olmaz. 
-
-                        Yani soyle bir sey dusunulebilir, bir dog classi, havlamak diye bir METHOD icerir, cunku sadece kopekler havlar, bu yuzden kopek objesine ihtiyac vardir.
-
-Fakat ayni zamanda bir human classi olsun, diyelim ki beslenmek diye bir FONKSIYON yazilacak. Cunku sart su, beslenmeyi kopek de insan da yapabilir, e bu yuzden particular bir class ihtiyaci dogurmaz. 
-
-
-                         */
 
                         TempData["messageCategoryofFood"] = "Kategori güncellendi";
 
@@ -445,7 +441,7 @@ Fakat ayni zamanda bir human classi olsun, diyelim ki beslenmek diye bir FONKSIY
                 return RedirectToAction("CategoryofFoodList", new { JSpopupPage = cVM.JavascriptToRun });
 
             }
-            else // add // (pvm_post.FoodDTO.ID == 0) çevir...
+            else // add // (pvm_post.FoodDTO.ID == 0) 
             {
                 // pvm.JavascriptToRun = $"ShowErrorPopup( {pvm_post.FoodDTO} )";
 
