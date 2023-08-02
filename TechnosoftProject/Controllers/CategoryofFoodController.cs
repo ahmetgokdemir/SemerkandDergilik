@@ -40,7 +40,7 @@ namespace Technosoft_Project.Controllers
 
             // IEnumerable<CategoryofFood> CategoryofFoodList = await _icm.GetActivesAsync();
 
-            IEnumerable<object> UserCategoryJunctionList = await _iucjm.Get_ByUserID_Async(CurrentUser.Id);
+            IEnumerable<object> UserCategoryJunctionList = await _iucjm.Get_ByUserID_Async(CurrentUser.Id); // IdentityUser'dan gelen Id (Guid tipli)
 
 
             // Adapt<IEnumerable<UserCategoryJunctionDTO>>().ToList()
@@ -200,6 +200,9 @@ namespace Technosoft_Project.Controllers
 
 
                 // GetByIdAsync (Repository) int --> short 
+
+                HttpContext.Session.SetObject("willbedeletedUserCategoryJuncData", ucj.FirstOrDefault());
+
             }
 
 
@@ -255,6 +258,7 @@ namespace Technosoft_Project.Controllers
         public async Task<IActionResult> CRUDCategoryofFood(CategoryofFoodVM cvm_post, IFormFile _CategoryofFoodPicture)
         {
 
+
             /*
               var urlHelper = new UrlHelper(ControllerContext);
               var url = urlHelper.Action("About", "Home");
@@ -272,6 +276,18 @@ namespace Technosoft_Project.Controllers
 
             if (TempData["Deleted"] == null)
             {
+                
+                UserCategoryJunction old_ucj = null;
+
+                if (HttpContext.Session.GetObject<UserCategoryJunction>("willbedeletedUserCategoryJuncData") != null)
+                {
+
+                    old_ucj = new UserCategoryJunction();
+                    old_ucj = HttpContext.Session.GetObject<UserCategoryJunction>("willbedeletedUserCategoryJuncData");
+                }
+
+
+
                 //ModelState.Remove("CategoryofFoodPicture");
                 //ModelState.Remove("CategoryofFoodDTOs");
                 //ModelState.Remove("JavascriptToRun");
@@ -282,11 +298,25 @@ namespace Technosoft_Project.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    CategoryofFood ctg = cvm_post.CategoryofFoodDTO.Adapt<CategoryofFood>();
+                    CategoryofFood ctg_add = null;
+                    CategoryofFood ctg_update = null;
+                    short old_categoryID = 0;
+
+                    if (cvm_post.CategoryofFoodDTO.ID == 0)
+                    {
+                        ctg_add = cvm_post.CategoryofFoodDTO.Adapt<CategoryofFood>();
+
+                    }
+                    else
+                    {
+                        old_categoryID = cvm_post.CategoryofFoodDTO.ID;
+                        ctg_update = new CategoryofFood();
+                        ctg_update.CategoryName_of_Foods = cvm_post.CategoryofFoodDTO.CategoryName_of_Foods;
+                    }
+
                     UserCategoryJunction ucj = cvm_post.UserCategoryJunctionDTO.Adapt<UserCategoryJunction>();
 
                     /* !!! !!! ctg.Status = (int)cvm_post.CategoryofFoodDTO.Status; !!! !!!*/
-
 
                     if (_CategoryofFoodPicture != null && _CategoryofFoodPicture.Length > 0)
                     {
@@ -325,10 +355,10 @@ namespace Technosoft_Project.Controllers
                         }*/
                     }
 
-                    if (ctg.ID == 0) // insert
+                    if (cvm_post.CategoryofFoodDTO.ID == 0) // insert
                     {
                         // Aynı isimli kayıt db'de zaten varsa 
-                        if (await _icm.Any(x => x.CategoryName_of_Foods == ctg.CategoryName_of_Foods))
+                        if (await _icm.Any(x => x.CategoryName_of_Foods == ctg_add.CategoryName_of_Foods))
                         {
                             HttpContext.Session.SetObject("manipulatedData_NameExist", cvm_post.CategoryofFoodDTO);
 
@@ -350,14 +380,14 @@ namespace Technosoft_Project.Controllers
 
                         }
 
-                        await _icm.AddAsync(ctg);
+                        await _icm.AddAsync(ctg_add);
 
                         ucj.AccessibleID = CurrentUser.AccessibleID;
-                        ucj.CategoryofFoodID = ctg.ID;
-                        
-                        // short control = CurrentUser.ID; olmadı
+                        ucj.CategoryofFoodID = ctg_add.ID;
+
+                        // short control = CurrentUser.ID; olmadı // AppUser'dan gelen Id olmuyor (short tipli), ignore edilmişti zaten
                         // Guid control2 = CurrentUser.Id;
-                        ucj.AppUser = CurrentUser;
+                        ucj.AppUser = CurrentUser; // IdentityUser'ın Id'si de tabloya eklnemiş oldu..
                         //ucj.AppUser.Id = CurrentUser.Id;
 
                         await _iucjm.AddAsync(ucj);
@@ -365,7 +395,8 @@ namespace Technosoft_Project.Controllers
                     }
                     else // update 
                     {
-                        if (await _icm.Any(x => x.CategoryName_of_Foods == ctg.CategoryName_of_Foods))
+                        // Aynı isimli kayıt db'de zaten varsa 
+                        if (await _icm.Any(x => x.CategoryName_of_Foods == ctg_update.CategoryName_of_Foods))
                         {
                             HttpContext.Session.SetObject("manipulatedData_NameExist", cvm_post.CategoryofFoodDTO);
 
@@ -380,9 +411,30 @@ namespace Technosoft_Project.Controllers
                             return RedirectToAction("CategoryofFoodList", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
                         }
 
+                        // yeni bir kategori olarak eklenecek ... güncellenmeyecek
+                        await _icm.AddAsync(ctg_update);
+                        // _icm.Update(ctg);
 
-                        _icm.Update(ctg);
+                        // usercategory olarak da eklenecek...
+                        ucj.AccessibleID = CurrentUser.AccessibleID;
+                        // ucj.AppUser.Id = CurrentUser.Id; erişilemiyor
+                        ucj.CategoryofFoodID = ctg_update.ID;
+                        ucj.AppUser = CurrentUser; // IdentityUser'ın Id'si de tabloya eklnemiş oldu..
 
+                        await _iucjm.AddAsync(ucj);
+
+                        // builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID }); sayesinde 
+                        // _iucjm.Update_OldCategory_with_NewOne(CurrentUser.AccessibleID, old_categoryID, ucj); // await yok // IdentityUser'dan gelen Id (Guid tipli)
+
+                        // eski usercategory pasife alınacak...
+                        // _iucjm.Delete(old_ucj);
+
+                        old_ucj.DataStatus = DataStatus.Deleted;
+                        old_ucj.ModifiedDate = DateTime.Now;
+                        old_ucj.AccessibleID = CurrentUser.AccessibleID;
+                        old_ucj.AppUser = CurrentUser;
+                        old_ucj.CategoryofFood_Status = ExistentStatus.Pasif;
+                        _iucjm.Delete_OldCategory_from_User(CurrentUser.AccessibleID, old_categoryID, old_ucj);
 
                         TempData["messageCategoryofFood"] = "Kategori güncellendi";
 
@@ -390,6 +442,7 @@ namespace Technosoft_Project.Controllers
 
                     return RedirectToAction("CategoryofFoodList");
                 }
+                // else --> validation olmayan kod kısmını buraya al
 
             }
             else

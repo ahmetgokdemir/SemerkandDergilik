@@ -5,7 +5,7 @@ namespace Technosoft_Project.ViewModels
 {
     public class BlogDTO
     {
-        public int ID { get; set; }
+        public short ID { get; set; }
 
         [Required(ErrorMessage = "Başlık gereklidir.")]
         [Display(Name = "Başlık")]

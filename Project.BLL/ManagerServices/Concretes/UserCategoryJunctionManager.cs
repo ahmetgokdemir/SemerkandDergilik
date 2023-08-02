@@ -42,5 +42,22 @@ namespace Project.BLL.ManagerServices.Concretes
 
             return found_Item;
         }
+
+        
+        public async void Delete_OldCategory_from_User(Guid accessibleID, short old_categoryID, UserCategoryJunction old_ucj)
+        {
+            _iucjrep.Delete_OldCategory_from_User_Repo(accessibleID, old_categoryID, old_ucj);
+
+            //if (found_Item == null)
+            //{
+            //    return null;
+            //}
+
+            //return found_Item;
+        }
+
+
+
+
     }
 }

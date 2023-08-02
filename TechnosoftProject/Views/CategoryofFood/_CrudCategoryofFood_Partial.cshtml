@@ -86,6 +86,8 @@ else if (Model.CategoryofFoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
                 </div>
             }
 
+@*
+        Güncellemelerde artık ürün güncellemesi yerine yeni bir ürün gibi ekleme olacak .. yani yeni bir ID olacak..*@
             @if (Model.CategoryofFoodDTO.ID != 0)
             {
                 <input type="hidden" asp-for="CategoryofFoodDTO.ID" />

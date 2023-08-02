@@ -144,7 +144,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                                                   //cdto.CategoryofFoodName = CategoryofFoodNameAccordingToFood; // 2.yol
 
             cdto.CategoryName_of_Foods = TempData["CategoryofFoodName"].ToString();
-            cdto.ID = (int)TempData["CategoryofFood_id"];
+            cdto.ID = (short)TempData["CategoryofFood_id"];
 
             string kontrol = TempData["CategoryofFood_status"].ToString();
             cdto.ExistentStatus = (ExistentStatus)TempData["CategoryofFood_status"];
@@ -270,7 +270,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             cdto.CategoryName_of_Foods = TempData["CategoryofFoodName"].ToString(); // asp-for="CategoryofFood.CategoryofFoodName" değer atamak için 
             // cdto.CategoryofFoodName = CategoryofFoodNameAccordingToFood;  2.yol
             // pDTO.CategoryofFood = cdto; // yazılmazsa null referance hatası verir.. 
-            cdto.ID = (int)TempData["CategoryofFood_id"];
+            cdto.ID = (short)TempData["CategoryofFood_id"];
 
             string kontrol = TempData["CategoryofFood_status"].ToString();
             cdto.ExistentStatus = (ExistentStatus)TempData["CategoryofFood_status"];

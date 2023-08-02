@@ -12,9 +12,9 @@ namespace Technosoft_Project.ViewModels
         //public string Menu_Name { get; set; }
 
         // MenuDetail Tablosundan gelecekler: 
-        public int MenuID { get; set; }
+        public short MenuID { get; set; }
 
-        public int FoodID { get; set; }
+        public short FoodID { get; set; }
 
         [Required(ErrorMessage = "Kategori seçmelisiniz.")]
         [Display(Name = "Kategori Adı")]

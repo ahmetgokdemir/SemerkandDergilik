@@ -6,7 +6,7 @@ namespace Technosoft_Project.ViewModels
 {
     public class CategoryofFoodDTO
     {
-        public int ID { get; set; }
+        public short ID { get; set; }
 
         [Required(ErrorMessage = "Kategori ismi gereklidir.")]
         [Display(Name = "Kategori Adı")]

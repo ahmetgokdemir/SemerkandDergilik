@@ -6,7 +6,7 @@ namespace Technosoft_Project.ViewModels
 {
     public class FoodDTO
     {
-        public int ID { get; set; }
+        public short ID { get; set; }
 
         [Required(ErrorMessage = "Yemek ismi gereklidir.")]
         [Display(Name = "Ürün Adı")]
