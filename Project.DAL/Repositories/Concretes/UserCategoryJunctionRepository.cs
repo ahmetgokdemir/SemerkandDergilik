@@ -95,5 +95,31 @@ namespace Project.DAL.Repositories.Concretes
             _context.SaveChanges();
 
         }
+
+        public async void Update_UserCategoryJuncTable_Repo(Guid accessibleID, short categoryofFood_ID, UserCategoryJunction ucj)
+        {
+            /*ucj.DataStatus = ENTITIES.Enums.DataStatus.Updated;
+            ucj.ModifiedDate = DateTime.Now;*/
+
+
+            // T toBeUpdated = Find(entity.ID);
+
+            // builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID }); sayesinde 
+            var toBeUpdated = _context.Set<UserCategoryJunction>().Find(accessibleID, categoryofFood_ID);
+            // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
+
+            //if (toBeUpdated is CategoryofFood /* || entity is Food*/ )
+            //{
+            //    CategoryofFood c = toBeUpdated as CategoryofFood;
+
+
+            //}
+
+            _context.Entry(toBeUpdated).CurrentValues.SetValues(ucj);
+
+            // _context.Save();
+            _context.SaveChanges();
+
+        }
     }
 }

@@ -202,6 +202,8 @@ namespace Technosoft_Project.Controllers
                 // GetByIdAsync (Repository) int --> short 
 
                 HttpContext.Session.SetObject("willbedeletedUserCategoryJuncData", ucj.FirstOrDefault());
+                HttpContext.Session.SetObject("willbedeletedCategoryofFoodData", CategoryofFood_item);
+
 
             }
 
@@ -278,12 +280,22 @@ namespace Technosoft_Project.Controllers
             {
                 
                 UserCategoryJunction old_ucj = null;
+                CategoryofFood old_cof = null;
 
-                if (HttpContext.Session.GetObject<UserCategoryJunction>("willbedeletedUserCategoryJuncData") != null)
+
+                if (HttpContext.Session.GetObject<UserCategoryJunction>("willbedeletedUserCategoryJuncData") != null && HttpContext.Session.GetObject<CategoryofFood>("willbedeletedCategoryofFoodData") != null)
                 {
 
                     old_ucj = new UserCategoryJunction();
                     old_ucj = HttpContext.Session.GetObject<UserCategoryJunction>("willbedeletedUserCategoryJuncData");
+
+                    old_cof = new CategoryofFood();
+                    old_cof = HttpContext.Session.GetObject<CategoryofFood>("willbedeletedCategoryofFoodData");
+
+                    HttpContext.Session.SetObject("willbedeletedUserCategoryJuncData", null);
+                    HttpContext.Session.SetObject("willbedeletedCategoryofFoodData", null);
+
+
                 }
 
 
@@ -395,52 +407,91 @@ namespace Technosoft_Project.Controllers
                     }
                     else // update 
                     {
-                        // Aynı isimli kayıt db'de zaten varsa 
-                        if (await _icm.Any(x => x.CategoryName_of_Foods == ctg_update.CategoryName_of_Foods))
+                        // Yeni bir kategori
+                        if (old_cof.CategoryName_of_Foods != ctg_update.CategoryName_of_Foods)
                         {
-                            HttpContext.Session.SetObject("manipulatedData_NameExist", cvm_post.CategoryofFoodDTO);
 
-                            TempData["ValidError_NameExist"] = "valid";
-                            TempData["JavascriptToRun"] = "valid";
-                            
-                            HttpContext.Session.SetObject("manipulatedData_Status", cvm_post.UserCategoryJunctionDTO);                           
+                            // Yeni kategori eğer havuzda zaten varsa 
+                            if (await _icm.Any(x => x.CategoryName_of_Foods == ctg_update.CategoryName_of_Foods))
+                            {
+                                HttpContext.Session.SetObject("manipulatedData_NameExist", cvm_post.CategoryofFoodDTO);
+
+                                TempData["ValidError_NameExist"] = "valid";
+                                TempData["JavascriptToRun"] = "valid";
+
+                                HttpContext.Session.SetObject("manipulatedData_Status", cvm_post.UserCategoryJunctionDTO);
 
 
-                            TempData["JSpopupPage"] = $"ShowErrorUpdateOperationPopup({cvm_post.CategoryofFoodDTO.ID})"; // diğer paramaetre de eklenecek
+                                TempData["JSpopupPage"] = $"ShowErrorUpdateOperationPopup({cvm_post.CategoryofFoodDTO.ID})"; // diğer paramaetre de eklenecek
 
-                            return RedirectToAction("CategoryofFoodList", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
+                                return RedirectToAction("CategoryofFoodList", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
+                            }
+
+                            // Yeni kategori eğer havuzda da yoksa 
+                            else
+                            {
+                                // yeni bir kategori olarak eklenecek ... güncellenmeyecek
+                                await _icm.AddAsync(ctg_update);
+                                // _icm.Update(ctg);
+
+                                // usercategory olarak da eklenecek...
+                                ucj.AccessibleID = CurrentUser.AccessibleID;
+                                // ucj.AppUser.Id = CurrentUser.Id; erişilemiyor
+                                ucj.CategoryofFoodID = ctg_update.ID;
+                                ucj.AppUser = CurrentUser; // IdentityUser'ın Id'si de tabloya eklnemiş oldu..
+
+                                await _iucjm.AddAsync(ucj);
+
+                                // builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID }); sayesinde 
+                                // _iucjm.Update_OldCategory_with_NewOne(CurrentUser.AccessibleID, old_categoryID, ucj); // await yok // IdentityUser'dan gelen Id (Guid tipli)
+
+                                // eski usercategory pasife alınacak...
+                                // _iucjm.Delete(old_ucj);
+
+                                old_ucj.DataStatus = DataStatus.Deleted;
+                                old_ucj.ModifiedDate = DateTime.Now;
+                                old_ucj.AccessibleID = CurrentUser.AccessibleID;
+                                old_ucj.AppUser = CurrentUser;
+                                old_ucj.CategoryofFood_Status = ExistentStatus.Pasif;
+                                _iucjm.Delete_OldCategory_from_User(CurrentUser.AccessibleID, old_categoryID, old_ucj);
+
+                                TempData["messageCategoryofFood"] = "Kategori güncellendi";                                
+
+                            }
+
+                            return RedirectToAction("CategoryofFoodList");
                         }
 
-                        // yeni bir kategori olarak eklenecek ... güncellenmeyecek
-                        await _icm.AddAsync(ctg_update);
-                        // _icm.Update(ctg);
+                        else // eski kategori
+                        {
+                            // ucj tablosunda değişiklik var
+                            if (old_ucj.CategoryofFood_Status != cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status) {
 
-                        // usercategory olarak da eklenecek...
-                        ucj.AccessibleID = CurrentUser.AccessibleID;
-                        // ucj.AppUser.Id = CurrentUser.Id; erişilemiyor
-                        ucj.CategoryofFoodID = ctg_update.ID;
-                        ucj.AppUser = CurrentUser; // IdentityUser'ın Id'si de tabloya eklnemiş oldu..
+                                // _iucjm.Update(ucj);
+                                // old_categoryID = cvm_post.CategoryofFoodDTO.ID;
 
-                        await _iucjm.AddAsync(ucj);
+                                ucj.DataStatus = DataStatus.Updated;
+                                ucj.ModifiedDate = DateTime.Now;
+                                ucj.AccessibleID = CurrentUser.AccessibleID;
+                                ucj.AppUser = CurrentUser;
 
-                        // builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID }); sayesinde 
-                        // _iucjm.Update_OldCategory_with_NewOne(CurrentUser.AccessibleID, old_categoryID, ucj); // await yok // IdentityUser'dan gelen Id (Guid tipli)
+                                ucj.CategoryofFood = cvm_post.CategoryofFoodDTO.Adapt<CategoryofFood>();
+                                ucj.CategoryofFoodID = cvm_post.CategoryofFoodDTO.ID;
 
-                        // eski usercategory pasife alınacak...
-                        // _iucjm.Delete(old_ucj);
+                                _iucjm.Update_UserCategoryJuncTable(CurrentUser.AccessibleID, cvm_post.CategoryofFoodDTO.ID, ucj);
+                                TempData["messageCategoryofFood"] = "Kategori güncellendi";
 
-                        old_ucj.DataStatus = DataStatus.Deleted;
-                        old_ucj.ModifiedDate = DateTime.Now;
-                        old_ucj.AccessibleID = CurrentUser.AccessibleID;
-                        old_ucj.AppUser = CurrentUser;
-                        old_ucj.CategoryofFood_Status = ExistentStatus.Pasif;
-                        _iucjm.Delete_OldCategory_from_User(CurrentUser.AccessibleID, old_categoryID, old_ucj);
+                            }
 
-                        TempData["messageCategoryofFood"] = "Kategori güncellendi";
+                            return RedirectToAction("CategoryofFoodList");
+
+                        }
+
+
 
                     }
 
-                    return RedirectToAction("CategoryofFoodList");
+                  
                 }
                 // else --> validation olmayan kod kısmını buraya al
 

@@ -56,7 +56,12 @@ namespace Project.BLL.ManagerServices.Concretes
             //return found_Item;
         }
 
+        public async void Update_UserCategoryJuncTable(Guid accessibleID, short categoryofFood_ID, UserCategoryJunction ucj)
+        {
+            _iucjrep.Update_UserCategoryJuncTable_Repo(accessibleID, categoryofFood_ID, ucj);
 
+
+        }
 
 
     }
