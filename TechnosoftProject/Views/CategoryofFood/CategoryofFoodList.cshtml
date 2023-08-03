@@ -264,7 +264,7 @@ else
         $.ajax({
             //url: '@@Url.Action("AddFoodAjax","Food")',
             url: 'UpdateCategoryofFoodAjax',
-            data: { id: _id },
+            data: { categoryID: _id, userID: "80bce695-114a-41d2-be48-08db91a3e366" },
             type: 'GET',
             dataType: 'html',
             success: function (data) {
