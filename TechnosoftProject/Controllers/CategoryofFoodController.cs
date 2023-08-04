@@ -169,12 +169,15 @@ namespace Technosoft_Project.Controllers
 
 
         [Route("UpdateCategoryofFoodAjax")]
-        public async Task<PartialViewResult> UpdateCategoryofFoodAjax(short categoryID, Guid userID)
+        public async Task<PartialViewResult> UpdateCategoryofFoodAjax(short categoryID/*, Guid userID*/)
         {
             // CategoryofFood CategoryofFood_item = await _icm.GetByIdAsync(id);
             // CategoryofFoodDTO cDTO = CategoryofFood_item.Adapt<CategoryofFoodDTO>();
 
             // ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status))); => yerine                                                                 asp-items="Html.GetEnumSelectList<Technosoft_Project.Enums.Status>()" kullanıldı..
+
+
+            Guid new_userID = CurrentUser.Id;
 
 
             CategoryofFoodDTO cDTO = new CategoryofFoodDTO();
@@ -257,7 +260,7 @@ namespace Technosoft_Project.Controllers
                 CategoryofFood_item = await _icm.GetByIdAsync(categoryID);
                 cDTO = CategoryofFood_item.Adapt<CategoryofFoodDTO>();
 
-                ucj = await _iucjm.Get_ByUserID_with_CategoryID_Async(userID,categoryID);
+                ucj = await _iucjm.Get_ByUserID_with_CategoryID_Async(new_userID, categoryID);
                 ucjDTO = ucj.Adapt<IEnumerable<UserCategoryJunctionDTO>>().ToList();
                 //UserCategoryJunctionDTOs = UserCategoryJunctionList.Adapt<IEnumerable<UserCategoryJunctionDTO>>().ToList(),
                 //                 UserCategoryJunctionDTOs = UserCategoryJunctionList.Adapt<IEnumerable<UserCategoryJunctionDTO>>().ToList(),

@@ -259,12 +259,12 @@ else
         }
 
     function ShowErrorUpdateOperationPopup(_id) {
-        // alert('Sorry, we could not process your order.');
+        // alert('Sorry, we could not process your order.'); , userID: "80bce695-114a-41d2-be48-08db91a3e366"
 
         $.ajax({
             //url: '@@Url.Action("AddFoodAjax","Food")',
             url: 'UpdateCategoryofFoodAjax',
-            data: { categoryID: _id, userID: "80bce695-114a-41d2-be48-08db91a3e366" },
+            data: { categoryID: _id },
             type: 'GET',
             dataType: 'html',
             success: function (data) {
@@ -318,12 +318,13 @@ else
     });
 
     $(function () {
-        //$("#updateCategoryofFood").click(function () {
+        //$("#updateCategoryofFood").click(function () { 
+            // , userID: $(this).attr("data-userID")
         $("#tab2").on("click", "[value=updateCategoryofFoodValue]", function () {
             $.ajax({
                 //url: '@@Url.Action("AddCategoryofFoodAjax","CategoryofFood")',
                 url: 'UpdateCategoryofFoodAjax',
-                data: { categoryID: $(this).attr("data-categoryID"), userID: $(this).attr("data-userID") },
+                data: { categoryID: $(this).attr("data-categoryID") },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
