@@ -453,6 +453,9 @@ namespace Technosoft_Project.Controllers
 
                         await _iucjm.AddAsync(ucj);
                         TempData["messageCategoryofFood"] = "Kategori eklendi";
+
+                        return RedirectToAction("CategoryofFoodList");
+
                     }
                     else // update 
                     {
@@ -512,11 +515,13 @@ namespace Technosoft_Project.Controllers
 
                                 _iucjm.Delete_OldCategory_from_User(CurrentUser.AccessibleID, old_categoryID, userCategoryJunction);
 
-                                TempData["messageCategoryofFood"] = "Kategori güncellendi";                                
+                                TempData["messageCategoryofFood"] = "Kategori güncellendi";
+
+                                return RedirectToAction("CategoryofFoodList");
 
                             }
 
-                            return RedirectToAction("CategoryofFoodList");
+                            
                         }
 
                         else // eski kategori old_cof.CategoryName_of_Foods == ctg_update.CategoryName_of_Foods
@@ -558,6 +563,9 @@ namespace Technosoft_Project.Controllers
 
                             }
 
+
+                            // else { değişiklik olmadı mesajı }
+
                             return RedirectToAction("CategoryofFoodList");
 
                         }
@@ -569,6 +577,126 @@ namespace Technosoft_Project.Controllers
                   
                 }
                 // else --> validation olmayan kod kısmını buraya al
+                else
+                {
+                    // TempData["mesaj"] = "Kategori adı ve statü giriniz..";
+                    // ModelState.AddModelError("", "Ürün adı ve statü giriniz..");
+
+                    if (cvm_post.CategoryofFoodDTO.ID == 0)
+                    {
+                        if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status == 0)
+                        {
+                            TempData["ValidError_Status"] = "valid";
+
+                            if (!String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods))
+                            {
+                                HttpContext.Session.SetObject("manipulatedData_Name", cvm_post.CategoryofFoodDTO);
+                            }
+
+                        }
+
+                        if (String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods) /* || cvm_post.CategoryofFoodDTO.CategoryName_of_Foods.Lengt >= 128 */)
+                        {
+                            TempData["ValidError_Name"] = "valid";
+
+                            if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status != 0)
+                            {
+                                HttpContext.Session.SetObject("manipulatedData_Status", cvm_post.UserCategoryJunctionDTO);
+                            }
+                        }
+                    }
+                    else// update için olan validation error
+                    {
+                        if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status == 0)
+                        {
+                            TempData["ValidError_Status"] = "valid";
+
+                            if (!String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods))
+                            {
+                                // girdiği isim kayıtlarda yoksa (havuzda) ve girdiği ismi tutmak için
+                                if (await _icm.Any(x => x.CategoryName_of_Foods == cvm_post.CategoryofFoodDTO.CategoryName_of_Foods))
+                                {
+                                    TempData["categoryinPool"] = $"{cvm_post.CategoryofFoodDTO.CategoryName_of_Foods}" + ", Kategori havuzda mevcuttur. Oradan ekleye bilirsiniz.";
+
+                                }
+
+                                /*
+                                else //  ama girdiği isim havuzda varsa hata döner..
+                                // girdiği isim kayıtlarda yoksa (havuzda) ve girdiği ismi tutmak için
+                                {
+                                    old_cof.CategoryName_of_Foods = cvm_post.CategoryofFoodDTO.CategoryName_of_Foods;
+                                }
+                                */
+
+                                HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
+                            }
+                            // ... Aşağıda zaten yapıyor bu işlemi 
+                            //else 
+                            //{
+                            //    HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
+                            //    TempData["emptyNameData"] = "İsim Boş bırakılamaz";
+
+                            //}
+
+                            HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
+                            TempData["emptyStatusData"] = "Statu Boş bırakılamaz";
+
+
+                        }
+
+                        if (String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods) /* || cvm_post.CategoryofFoodDTO.CategoryName_of_Foods.Lengt >= 128 */)
+                        {
+                            TempData["ValidError_Name"] = "valid";
+
+                            if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status != 0)
+                            {
+                                old_ucj.CategoryofFood_Status = cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status;
+
+                                HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
+                            }
+                            //else ... Yukarıda zaten yapıyor bu işlemi 
+                            //{
+                            //    HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
+                            //    TempData["emptyStatusData"] = "Statu Boş bırakılamaz";
+
+                            //}
+
+
+                            //  cvm_post.CategoryofFoodDTO.CategoryName_of_Foods.Lengt >= 128  ileride bu durumun kontrolü için --> await _icm.Any(x => x.CategoryName_of_Foods != cvm_post.CategoryofFoodDTO.CategoryName_of_Foods) gerek olmayabilir ama olabilirde 
+
+
+                            HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
+                            TempData["emptyNameData"] = "İsim Boş bırakılamaz";
+
+                        }
+
+                    }
+
+
+                    CategoryofFoodVM cVM = new CategoryofFoodVM();
+
+                    TempData["JavascriptToRun"] = "valid";
+
+
+                    if (cvm_post.CategoryofFoodDTO.ID != 0) //update
+                    {
+                        // ,{CurrentUser.Id}
+                        cVM.JavascriptToRun = $"ShowErrorUpdateOperationPopup({cvm_post.CategoryofFoodDTO.ID})";
+                        return RedirectToAction("CategoryofFoodList", new { JSpopupPage = cVM.JavascriptToRun });
+
+                    }
+                    else // add // (pvm_post.FoodDTO.ID == 0) 
+                    {
+                        // pvm.JavascriptToRun = $"ShowErrorPopup( {pvm_post.FoodDTO} )";
+
+                        // pvm.JavascriptToRun = $"ShowErrorInsertOperationPopup()";
+
+                        TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
+                        return RedirectToAction("CategoryofFoodList", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
+                    }
+
+
+                }
 
             }
             else
@@ -585,121 +713,121 @@ namespace Technosoft_Project.Controllers
                 return RedirectToAction("CategoryofFoodList");
             }
 
-            // TempData["mesaj"] = "Kategori adı ve statü giriniz..";
-            // ModelState.AddModelError("", "Ürün adı ve statü giriniz..");
+            //// TempData["mesaj"] = "Kategori adı ve statü giriniz..";
+            //// ModelState.AddModelError("", "Ürün adı ve statü giriniz..");
 
-            if (cvm_post.CategoryofFoodDTO.ID == 0)  
-            {
-                if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status == 0)
-                {
-                    TempData["ValidError_Status"] = "valid";
+            //if (cvm_post.CategoryofFoodDTO.ID == 0)  
+            //{
+            //    if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status == 0)
+            //    {
+            //        TempData["ValidError_Status"] = "valid";
 
-                    if (!String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods))
-                    {
-                        HttpContext.Session.SetObject("manipulatedData_Name", cvm_post.CategoryofFoodDTO);
-                    }
+            //        if (!String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods))
+            //        {
+            //            HttpContext.Session.SetObject("manipulatedData_Name", cvm_post.CategoryofFoodDTO);
+            //        }
 
-                }
+            //    }
 
-                if (String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods) /* || cvm_post.CategoryofFoodDTO.CategoryName_of_Foods.Lengt >= 128 */)
-                {
-                    TempData["ValidError_Name"] = "valid";
+            //    if (String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods) /* || cvm_post.CategoryofFoodDTO.CategoryName_of_Foods.Lengt >= 128 */)
+            //    {
+            //        TempData["ValidError_Name"] = "valid";
 
-                    if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status != 0)
-                    {
-                        HttpContext.Session.SetObject("manipulatedData_Status", cvm_post.UserCategoryJunctionDTO);
-                    }
-                }
-            }
-            else// update için olan validation error
-            {
-                if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status == 0)
-                {
-                    TempData["ValidError_Status"] = "valid";
+            //        if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status != 0)
+            //        {
+            //            HttpContext.Session.SetObject("manipulatedData_Status", cvm_post.UserCategoryJunctionDTO);
+            //        }
+            //    }
+            //}
+            //else// update için olan validation error
+            //{
+            //    if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status == 0)
+            //    {
+            //        TempData["ValidError_Status"] = "valid";
 
-                    if (!String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods))
-                    {
-                        // girdiği isim kayıtlarda yoksa (havuzda) ve girdiği ismi tutmak için
-                        if (await _icm.Any(x => x.CategoryName_of_Foods == cvm_post.CategoryofFoodDTO.CategoryName_of_Foods))
-                        {
-                            TempData["categoryinPool"] = $"{ cvm_post.CategoryofFoodDTO.CategoryName_of_Foods}" + ", Kategori havuzda mevcuttur. Oradan ekleye bilirsiniz.";
+            //        if (!String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods))
+            //        {
+            //            // girdiği isim kayıtlarda yoksa (havuzda) ve girdiği ismi tutmak için
+            //            if (await _icm.Any(x => x.CategoryName_of_Foods == cvm_post.CategoryofFoodDTO.CategoryName_of_Foods))
+            //            {
+            //                TempData["categoryinPool"] = $"{ cvm_post.CategoryofFoodDTO.CategoryName_of_Foods}" + ", Kategori havuzda mevcuttur. Oradan ekleye bilirsiniz.";
                             
-                        }
+            //            }
 
-                        /*
-                        else //  ama girdiği isim havuzda varsa hata döner..
-                        // girdiği isim kayıtlarda yoksa (havuzda) ve girdiği ismi tutmak için
-                        {
-                            old_cof.CategoryName_of_Foods = cvm_post.CategoryofFoodDTO.CategoryName_of_Foods;
-                        }
-                        */
+            //            /*
+            //            else //  ama girdiği isim havuzda varsa hata döner..
+            //            // girdiği isim kayıtlarda yoksa (havuzda) ve girdiği ismi tutmak için
+            //            {
+            //                old_cof.CategoryName_of_Foods = cvm_post.CategoryofFoodDTO.CategoryName_of_Foods;
+            //            }
+            //            */
 
-                        HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
-                    }
-                    // ... Aşağıda zaten yapıyor bu işlemi 
-                    //else 
-                    //{
-                    //    HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
-                    //    TempData["emptyNameData"] = "İsim Boş bırakılamaz";
+            //            HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
+            //        }
+            //        // ... Aşağıda zaten yapıyor bu işlemi 
+            //        //else 
+            //        //{
+            //        //    HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
+            //        //    TempData["emptyNameData"] = "İsim Boş bırakılamaz";
 
-                    //}
+            //        //}
 
-                    HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
-                    TempData["emptyStatusData"] = "Statu Boş bırakılamaz";
-
-
-                }
-
-                if (String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods) /* || cvm_post.CategoryofFoodDTO.CategoryName_of_Foods.Lengt >= 128 */)
-                {
-                    TempData["ValidError_Name"] = "valid";
-
-                    if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status != 0)
-                    {
-                        old_ucj.CategoryofFood_Status = cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status;
-
-                        HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
-                    }
-                    //else ... Yukarıda zaten yapıyor bu işlemi 
-                    //{
-                    //    HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
-                    //    TempData["emptyStatusData"] = "Statu Boş bırakılamaz";
-
-                    //}
+            //        HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
+            //        TempData["emptyStatusData"] = "Statu Boş bırakılamaz";
 
 
-                    //  cvm_post.CategoryofFoodDTO.CategoryName_of_Foods.Lengt >= 128  ileride bu durumun kontrolü için --> await _icm.Any(x => x.CategoryName_of_Foods != cvm_post.CategoryofFoodDTO.CategoryName_of_Foods) gerek olmayabilir ama olabilirde 
+            //    }
+
+            //    if (String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods) /* || cvm_post.CategoryofFoodDTO.CategoryName_of_Foods.Lengt >= 128 */)
+            //    {
+            //        TempData["ValidError_Name"] = "valid";
+
+            //        if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status != 0)
+            //        {
+            //            old_ucj.CategoryofFood_Status = cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status;
+
+            //            HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
+            //        }
+            //        //else ... Yukarıda zaten yapıyor bu işlemi 
+            //        //{
+            //        //    HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
+            //        //    TempData["emptyStatusData"] = "Statu Boş bırakılamaz";
+
+            //        //}
 
 
-                    HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
-                    TempData["emptyNameData"] = "İsim Boş bırakılamaz";
-
-                }
-
-            }
+            //        //  cvm_post.CategoryofFoodDTO.CategoryName_of_Foods.Lengt >= 128  ileride bu durumun kontrolü için --> await _icm.Any(x => x.CategoryName_of_Foods != cvm_post.CategoryofFoodDTO.CategoryName_of_Foods) gerek olmayabilir ama olabilirde 
 
 
-            CategoryofFoodVM cVM = new CategoryofFoodVM();
+            //        HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
+            //        TempData["emptyNameData"] = "İsim Boş bırakılamaz";
 
-            TempData["JavascriptToRun"] = "valid";
+            //    }
+
+            //}
 
 
-            if (cvm_post.CategoryofFoodDTO.ID != 0) //update
-            {
-                // ,{CurrentUser.Id}
-                cVM.JavascriptToRun = $"ShowErrorUpdateOperationPopup({cvm_post.CategoryofFoodDTO.ID})";
-                return RedirectToAction("CategoryofFoodList", new { JSpopupPage = cVM.JavascriptToRun });
+            //CategoryofFoodVM cVM = new CategoryofFoodVM();
 
-            }
-            else // add // (pvm_post.FoodDTO.ID == 0) 
-            {
-                // pvm.JavascriptToRun = $"ShowErrorPopup( {pvm_post.FoodDTO} )";
+            //TempData["JavascriptToRun"] = "valid";
 
-                // pvm.JavascriptToRun = $"ShowErrorInsertOperationPopup()";
 
-                TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
-                return RedirectToAction("CategoryofFoodList", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
-            }
+            //if (cvm_post.CategoryofFoodDTO.ID != 0) //update
+            //{
+            //    // ,{CurrentUser.Id}
+            //    cVM.JavascriptToRun = $"ShowErrorUpdateOperationPopup({cvm_post.CategoryofFoodDTO.ID})";
+            //    return RedirectToAction("CategoryofFoodList", new { JSpopupPage = cVM.JavascriptToRun });
+
+            //}
+            //else // add // (pvm_post.FoodDTO.ID == 0) 
+            //{
+            //    // pvm.JavascriptToRun = $"ShowErrorPopup( {pvm_post.FoodDTO} )";
+
+            //    // pvm.JavascriptToRun = $"ShowErrorInsertOperationPopup()";
+
+            //    TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
+            //    return RedirectToAction("CategoryofFoodList", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
+            //}
 
 
         }
