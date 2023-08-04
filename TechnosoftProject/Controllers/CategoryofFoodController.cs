@@ -196,7 +196,7 @@ namespace Technosoft_Project.Controllers
 
             var result_2 = new UserCategoryJunctionDTO();
 
-            if (TempData["ValidError_NameExist"] != null)
+            if (TempData["ValidError_NameExist"] != null) // 1.validasyon kontrolü 
             {
                 List<object> ucj2 = new List<object>();
 
@@ -215,7 +215,7 @@ namespace Technosoft_Project.Controllers
                 HttpContext.Session.SetObject("willbedeletedUserCategoryJuncData", ucjDTO[0]);
                 HttpContext.Session.SetObject("willbedeletedCategoryofFoodData", cDTO);
             }
-            else if (TempData["ValidError_Name"] != null || TempData["ValidError_Status"] != null)
+            else if (TempData["ValidError_Name"] != null || TempData["ValidError_Status"] != null) // 2.validasyon kontrolü 
             {
                 if (TempData["ValidError_Name"] != null)
                 {
@@ -226,6 +226,12 @@ namespace Technosoft_Project.Controllers
                 if (TempData["ValidError_Status"] != null)
                 {
                     ModelState.AddModelError("UserCategoryJunctionDTO.CategoryofFood_Status", $"{TempData["emptyStatusData"]}");
+
+                    if (TempData["categoryinPool"] != null)
+                    {
+                        ModelState.AddModelError("CategoryofFoodDTO.CategoryName_of_Foods", $"{TempData["categoryinPool"]}");
+
+                    }
                 }// "UserCategoryJunctionDTO.CategoryofFood_Status", "Kategori durumunu giriniz."
 
                 result_2 = HttpContext.Session.GetObject<UserCategoryJunctionDTO>("manipulatedData_Status");
@@ -246,7 +252,7 @@ namespace Technosoft_Project.Controllers
                 HttpContext.Session.SetObject("willbedeletedCategoryofFoodData", cDTO);
 
             }        
-            else
+            else // ilk güncelleme denemesi ise
             {
                 CategoryofFood_item = await _icm.GetByIdAsync(categoryID);
                 cDTO = CategoryofFood_item.Adapt<CategoryofFoodDTO>();
@@ -271,20 +277,6 @@ namespace Technosoft_Project.Controllers
                 UserCategoryJunctionDTO = ucjDTO[0],
                 CategoryofFoodDTO = cDTO
             };
-
-
-
-            if (TempData["HttpContext"] != null)
-            {
-                TempData["HttpContext"] = null;
-
-                if (string.IsNullOrEmpty(cVM.CategoryofFoodDTO.CategoryName_of_Foods))
-                {
-                    ModelState.AddModelError("CategoryofFoodDTO.CategoryofFoodName", "Kategori adı giriniz.");
-                }
-
-                HttpContext.Session.SetObject("manipulatedData", null);
-            }
 
             Thread.Sleep(500);
 
@@ -624,16 +616,30 @@ namespace Technosoft_Project.Controllers
 
                     if (!String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods))
                     {
-                        old_cof.CategoryName_of_Foods = cvm_post.CategoryofFoodDTO.CategoryName_of_Foods;
+                        // girdiği isim kayıtlarda yoksa (havuzda) ve girdiği ismi tutmak için
+                        if (await _icm.Any(x => x.CategoryName_of_Foods == cvm_post.CategoryofFoodDTO.CategoryName_of_Foods))
+                        {
+                            TempData["categoryinPool"] = $"{ cvm_post.CategoryofFoodDTO.CategoryName_of_Foods}" + ", Kategori havuzda mevcuttur. Oradan ekleye bilirsiniz.";
+                            
+                        }
+
+                        /*
+                        else //  ama girdiği isim havuzda varsa hata döner..
+                        // girdiği isim kayıtlarda yoksa (havuzda) ve girdiği ismi tutmak için
+                        {
+                            old_cof.CategoryName_of_Foods = cvm_post.CategoryofFoodDTO.CategoryName_of_Foods;
+                        }
+                        */
+
                         HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
                     }
-                    else
-                    {
-                        HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
-                        TempData["emptyNameData"] = "İsim Boş bırakılamaz";
+                    // ... Aşağıda zaten yapıyor bu işlemi 
+                    //else 
+                    //{
+                    //    HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
+                    //    TempData["emptyNameData"] = "İsim Boş bırakılamaz";
 
-
-                    }
+                    //}
 
                     HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
                     TempData["emptyStatusData"] = "Statu Boş bırakılamaz";
@@ -651,15 +657,18 @@ namespace Technosoft_Project.Controllers
 
                         HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
                     }
-                    else
-                    {
-                        HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
-                        TempData["emptyStatusData"] = "Statu Boş bırakılamaz";
+                    //else ... Yukarıda zaten yapıyor bu işlemi 
+                    //{
+                    //    HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
+                    //    TempData["emptyStatusData"] = "Statu Boş bırakılamaz";
+
+                    //}
 
 
-                    }
+                    //  cvm_post.CategoryofFoodDTO.CategoryName_of_Foods.Lengt >= 128  ileride bu durumun kontrolü için --> await _icm.Any(x => x.CategoryName_of_Foods != cvm_post.CategoryofFoodDTO.CategoryName_of_Foods) gerek olmayabilir ama olabilirde 
 
-                    HttpContext.Session.SetObject("manipulatedData_Name", old_ucj);
+
+                    HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
                     TempData["emptyNameData"] = "İsim Boş bırakılamaz";
 
                 }
