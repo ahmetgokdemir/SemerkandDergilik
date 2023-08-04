@@ -400,20 +400,22 @@ namespace Technosoft_Project.Controllers
                     {
                         // mevcut da resmi db ' de varsa ... mevcut resmi db den çekip tekrar set etmeye gerek yok gibi ?! --> _icm.Update(ctg); kısmında bir kontrol et !!!
 
-                        /* if (ucj.DataStatus == DataStatus.Updated)
-                        {
-                            UserCategoryJunction ucj_controller = await _iucjm.GetByIdAsync(cvm_post.CategoryofFoodDTO.ID);
-
-                            if (ucj_controller != null)
+                        /*if (ucj.DataStatus == DataStatus.Updated || .Inserted)
+                        {*/
+                        UserCategoryJunctionDTO ucj_controller_2 = null;
+                            IEnumerable<object> ucj_controller = await _iucjm.Get_ByUserID_with_CategoryID_Async(CurrentUser.Id, cvm_post.CategoryofFoodDTO.ID);//await _iucjm.GetByIdAsync(cvm_post.CategoryofFoodDTO.ID);
+                        ucj_controller_2 = ucj_controller.FirstOrDefault().Adapt<UserCategoryJunctionDTO>();
+                        if (ucj_controller_2 != null)
                             {
 
-                                if (ucj_controller.CategoryofFood_Picture != null)
+                                if (ucj_controller_2 != null)
                                 {
-                                    ucj.CategoryofFood_Picture = ucj_controller.CategoryofFood_Picture;
+                                    ucj.CategoryofFood_Picture = ucj_controller_2.CategoryofFood_Picture;
                                 }
 
                             }
-                        }*/
+
+                        /*}*/
                     }
 
                     if (cvm_post.CategoryofFoodDTO.ID == 0) // insert
@@ -474,7 +476,11 @@ namespace Technosoft_Project.Controllers
                                 TempData["ValidError_NameExist"] = "valid";
                                 TempData["JavascriptToRun"] = "valid";
 
-                                HttpContext.Session.SetObject("manipulatedData_Status", cvm_post.UserCategoryJunctionDTO);
+                                old_ucj.CategoryofFood_Status = cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status;
+
+
+
+                                HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
 
                                 // ,{CurrentUser.Id}
                                 TempData["JSpopupPage"] = $"ShowErrorUpdateOperationPopup({cvm_post.CategoryofFoodDTO.ID})"; // diğer paramaetre de eklenecek
@@ -545,7 +551,7 @@ namespace Technosoft_Project.Controllers
 
 
                             // ucj tablosunda değişiklik var
-                            if (old_ucj.CategoryofFood_Status != cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status) {
+                            // if (old_ucj.CategoryofFood_Status != cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status) {
 
                                 // _iucjm.Update(ucj);
                                 // old_categoryID = cvm_post.CategoryofFoodDTO.ID;
@@ -557,12 +563,14 @@ namespace Technosoft_Project.Controllers
 
                                 ucj.CategoryofFood = cvm_post.CategoryofFoodDTO.Adapt<CategoryofFood>();
                                 ucj.CategoryofFoodID = cvm_post.CategoryofFoodDTO.ID;
+                                //  ucj.CategoryofFood_Picture = "/CategoryofFoodPicture/" + fileName;
 
-                                _iucjm.Update_UserCategoryJuncTable(CurrentUser.AccessibleID, cvm_post.CategoryofFoodDTO.ID, ucj);
-                                TempData["messageCategoryofFood"] = "Kategori güncellendi";
 
-                            }
 
+                            
+
+                            _iucjm.Update_UserCategoryJuncTable(CurrentUser.AccessibleID, cvm_post.CategoryofFoodDTO.ID, ucj);
+                            TempData["messageCategoryofFood"] = "Kategori güncellendi";
 
                             // else { değişiklik olmadı mesajı }
 
