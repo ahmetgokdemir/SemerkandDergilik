@@ -108,7 +108,7 @@ else
                             <td class="btnposition">
                                 @*<a asp-action="DeleteCategoryofFood" asp-controller="CategoryofFood" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
 
-                                <button class="btn btn-danger" id="deleteCategoryofFood" value="deleteCategoryofFoodValue" data-id=@item.CategoryofFoodID>Sil</button>
+                                <button class="btn btn-danger" id="deleteCategoryofFood" value="deleteCategoryofFoodValue" data-categoryID=@item.CategoryofFoodID>Sil</button>
                             </td>
                         </tr>
                     }
@@ -354,7 +354,8 @@ else
             $.ajax({
                 //url: '@@Url.Action("AddCategoryofFoodAjax","CategoryofFood")',
                 url: 'DeleteCategoryofFoodAjax',
-                data: { id: $(this).attr("data-id") },
+                // data: { categoryID: $(this).attr("data-categoryID") },
+                data: { categoryID: $(this).attr("data-categoryID") },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
