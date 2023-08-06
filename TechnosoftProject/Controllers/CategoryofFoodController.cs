@@ -761,5 +761,17 @@ namespace Technosoft_Project.Controllers
 
 
         }
+
+        //CategoryofFood_InPool_Ajax
+        [Route("CategoryofFood_InPool_Ajax")]
+        public string CategoryofFood_InPool_Ajax(string poolID)
+        {
+            string a = poolID;
+
+
+            return poolID;
+        }
+
+
     }
 }
