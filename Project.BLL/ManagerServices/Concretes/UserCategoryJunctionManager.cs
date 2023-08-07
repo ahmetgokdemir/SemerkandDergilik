@@ -31,6 +31,18 @@ namespace Project.BLL.ManagerServices.Concretes
             return found_Item;
         }
 
+        public async Task<IEnumerable<object>> Get_ByAll_exceptUserID_Async(Guid userID)
+        {
+            var found_Item = await _iucjrep.Get_ByAll_exceptUserID_Async_Repo(userID).ToListAsync();
+
+            if (found_Item == null)
+            {
+                return null;
+            }
+
+            return found_Item;
+        }
+
         public async Task<IEnumerable<object>> Get_ByUserID_with_CategoryID_Async(Guid userID, short categoryID)
         {
             var found_Item = await _iucjrep.Get_ByUserID_with_CategoryID_Async(userID, categoryID);

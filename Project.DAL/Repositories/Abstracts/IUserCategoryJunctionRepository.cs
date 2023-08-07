@@ -13,6 +13,7 @@ namespace Project.DAL.Repositories.Abstracts
         Task<IEnumerable<object>> Get_ByUserID_with_CategoryID_Async(Guid userID, short categoryID);
         void Delete_OldCategory_from_User_Repo(Guid accessibleID, short old_categoryID, UserCategoryJunction old_ucj);
         void Update_UserCategoryJuncTable_Repo(Guid accessibleID, short categoryofFood_ID, UserCategoryJunction ucj);
+        IQueryable<object> Get_ByAll_exceptUserID_Async_Repo(Guid userID);
 
 
     }

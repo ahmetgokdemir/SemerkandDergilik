@@ -32,8 +32,10 @@ namespace Technosoft_Project.Controllers
 
 
         [Route("CategoryofFoodList")]
-        public async Task<IActionResult> CategoryofFoodList(string? JSpopupPage)
+        public async Task<IActionResult> CategoryofFoodList(string? JSpopupPage, string? onlyOnce)
         {
+            TempData["onlyOnce"] = onlyOnce;
+
 
             if (TempData["JavascriptToRun"] == null)
             {
@@ -55,6 +57,9 @@ namespace Technosoft_Project.Controllers
                 // CategoryofFoodDTOs = CategoryofFoodList.Adapt<IEnumerable<CategoryofFoodDTO>>().ToList(),
                 JavascriptToRun = JSpopupPage
             };
+
+            TempData["MyModal"] = true;
+            TempData["onlyOnce"] = true;
 
             return View(cvm);
         }
@@ -764,13 +769,48 @@ namespace Technosoft_Project.Controllers
 
         //CategoryofFood_InPool_Ajax
         [Route("CategoryofFood_InPool_Ajax")]
-        public string CategoryofFood_InPool_Ajax(string poolID)
+        public async Task<IActionResult> CategoryofFood_InPool_Ajax(string poolID, string? JSpopupPage)
         {
-            string a = poolID;
+            // string a = poolID;
+            // var b = poolID2;
 
+            if (poolID.ToLower() == "false")
+            {
+                return RedirectToAction("CategoryofFoodList");
 
-            return poolID;
+            }
+
+            else // poolID.ToLower() == "true"
+            {
+                return RedirectToAction("CategoryofFoodList_forOtherUsers");
+            }
+
         }
+
+        [Route("CategoryofFoodListforOtherUsers")]
+        public async Task<IActionResult> CategoryofFoodList_forOtherUsers(string poolID, string? JSpopupPage)
+        {
+            if (TempData["JavascriptToRun"] == null)
+            {
+                JSpopupPage = null; // pop-up sıfırlanır yoksa sayfayı reflesleyince geliyor
+            }
+
+            IEnumerable<object> UserCategoryJunctionList = await _iucjm.Get_ByAll_exceptUserID_Async(CurrentUser.Id); // IdentityUser'dan gelen Id (Guid tipli)
+
+            CategoryofFoodVM cvm = new CategoryofFoodVM
+            {
+                UserCategoryJunctionDTOs = UserCategoryJunctionList.Adapt<IEnumerable<UserCategoryJunctionDTO>>().ToList(),
+                JavascriptToRun = JSpopupPage
+            };
+
+            // return PartialView("_denemePartial");
+            // 
+            // return PartialView("_CategoryofFoodListforOtherUsers_Partial", cvm);
+            return View("CategoryofFoodList", cvm);
+
+        }
+
+
 
 
     }

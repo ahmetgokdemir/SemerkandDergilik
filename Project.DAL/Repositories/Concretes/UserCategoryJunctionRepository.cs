@@ -44,6 +44,29 @@ namespace Project.DAL.Repositories.Concretes
             // return control_deneme;
         }
 
+        public IQueryable<object> Get_ByAll_exceptUserID_Async_Repo(Guid userID)
+        {
+
+            return _context.Set<UserCategoryJunction>()
+                .Where(x => x.AppUser.Id != userID && x.DataStatus != ENTITIES.Enums.DataStatus.Deleted)
+                .Include(x => x.CategoryofFood)
+                .Include(x => x.AppUser)
+                .Select(x => new
+                {
+                    CategoryName_of_Foods = x.CategoryofFood.CategoryName_of_Foods,
+                    CategoryofFood_Picture = x.CategoryofFood_Picture,
+                    CategoryofFood_Status = x.CategoryofFood_Status,
+                    AppUserId = x.AppUser.Id, // ID (IdentityUser'den gelir ve erişilemez onun yerine AppUser dan id e erişilir)
+                    CategoryofFoodID = x.CategoryofFoodID
+
+
+                }
+            ).AsQueryable();
+
+            // return control_deneme;
+        }
+
+
         public async Task<IEnumerable<object>> Get_ByUserID_with_CategoryID_Async(Guid userID, short categoryID)
         {
             // var entity = _context.Set<T>().Find(id).AsQueryable(); --> find one item not for list
