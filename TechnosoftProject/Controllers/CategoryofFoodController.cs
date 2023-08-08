@@ -512,7 +512,7 @@ namespace Technosoft_Project.Controllers
                                 // ,{CurrentUser.Id}
                                 TempData["JSpopupPage"] = $"ShowErrorUpdateOperationPopup({cvm_post.CategoryofFoodDTO.ID})"; // diğer paramaetre de eklenecek
 
-                                return RedirectToAction("CategoryofFoodList_forMember", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
+                                return RedirectToAction("CategoryofFoodList_forMember", new { JSpopupPage = TempData["JSpopupPage"].ToString(), onlyOnce = "1" });
                             }
 
                             // Yeni kategori eğer havuzda da yoksa 
@@ -550,7 +550,7 @@ namespace Technosoft_Project.Controllers
 
                                 TempData["messageCategoryofFood"] = "Kategori güncellendi";
 
-                                return RedirectToAction("CategoryofFoodList_forMember");
+                                return RedirectToAction("CategoryofFoodList_forMember", new { onlyOnce = "1" });
 
                             }
 
@@ -601,7 +601,7 @@ namespace Technosoft_Project.Controllers
 
                             // else { değişiklik olmadı mesajı }
 
-                            return RedirectToAction("CategoryofFoodList_forMember");
+                            return RedirectToAction("CategoryofFoodList_forMember", new { onlyOnce = "1" });
 
                         }
 
@@ -611,7 +611,7 @@ namespace Technosoft_Project.Controllers
 
 
                 }
-                // else --> validation olmayan kod kısmını buraya al
+                // else --> validation olmayan kod kısmı
                 else
                 {
                     // TempData["mesaj"] = "Kategori adı ve statü giriniz..";
@@ -717,7 +717,7 @@ namespace Technosoft_Project.Controllers
                     {
                         // ,{CurrentUser.Id}
                         cVM.JavascriptToRun = $"ShowErrorUpdateOperationPopup({cvm_post.CategoryofFoodDTO.ID})";
-                        return RedirectToAction("CategoryofFoodList_forMember", new { JSpopupPage = cVM.JavascriptToRun });
+                        return RedirectToAction("CategoryofFoodList_forMember", new { JSpopupPage = cVM.JavascriptToRun, onlyOnce = "1" });
 
                     }
                     else // add // (pvm_post.FoodDTO.ID == 0) 
@@ -766,7 +766,7 @@ namespace Technosoft_Project.Controllers
                 TempData["messageCategoryofFood"] = "Kategori silindi";
                 TempData["Deleted"] = null;
 
-                return RedirectToAction("CategoryofFoodList");
+                return RedirectToAction("CategoryofFoodList_forMember", new {onlyOnce = "1" });
 
             }
 

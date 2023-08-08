@@ -48,7 +48,7 @@ namespace Project.DAL.Repositories.Concretes
         {
 
             return _context.Set<UserCategoryJunction>()
-                .Where(x => x.AppUser.Id != userID && x.DataStatus != ENTITIES.Enums.DataStatus.Deleted)
+                .Where(x => (x.AppUser.Id != userID) || (x.AppUser.Id == userID && x.DataStatus == ENTITIES.Enums.DataStatus.Deleted) )
                 .Include(x => x.CategoryofFood)
                 .Include(x => x.AppUser)
                 .Select(x => new
