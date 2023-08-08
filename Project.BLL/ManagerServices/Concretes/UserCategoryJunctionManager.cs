@@ -36,16 +36,16 @@ namespace Project.BLL.ManagerServices.Concretes
             return found_Item;
         }
 
-        public async Task<IEnumerable<object>> Get_ByAll_exceptUserID_Async(Guid userID)
+        public async Task<List<CategoryofFood>> Get_ByAll_exceptUserID_Async(Guid userID)
         {
-            var found_Item = await _iucjrep.Get_ByAll_exceptUserID_Async_Repo(userID).ToListAsync();
+            List<CategoryofFood> found_Items = await _iucjrep.Get_ByAll_exceptUserID_Async_Repo(userID);
 
-            if (found_Item == null)
+            if (found_Items == null)
             {
                 return null;
             }
 
-            return found_Item;
+            return found_Items;
         }
 
         public async Task<IEnumerable<object>> Get_ByUserID_with_CategoryID_Async(Guid userID, short categoryID)
@@ -80,17 +80,17 @@ namespace Project.BLL.ManagerServices.Concretes
 
         }
 
-        public async Task<string> Control_IsExisted_InMyListBefore_Async(Guid userID, short categoryID, Guid accessibleID)
+        public async Task<string> Control_IsExisted_InMyListBefore_Async(Guid userID, short categoryID, AppUser _userInfo)
         {
             bool found_Item = await _iucjrep.Control_IsExisted_InMyListBefore_Async_Repo(userID, categoryID);
 
             // existed
             if (found_Item == true)
             {
-                return await _iucjrep.Update_MyList_Async_Repo(accessibleID, categoryID);
+                return await _iucjrep.Update_MyList_Async_Repo(_userInfo.AccessibleID, categoryID);
             }
             // not existed.. will add
-            return "not existed";
+            return await _iucjrep.Add_CategoryItem_toMyList_Async_Repo(_userInfo.AccessibleID, categoryID, _userInfo);
         }
 
     }

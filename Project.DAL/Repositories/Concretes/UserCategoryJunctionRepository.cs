@@ -2,6 +2,7 @@
 using Project.DAL.Context;
 using Project.DAL.Repositories.Abstracts;
 using Project.ENTITIES.CoreInterfaces;
+using Project.ENTITIES.Identity_Models;
 using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
@@ -44,26 +45,78 @@ namespace Project.DAL.Repositories.Concretes
             // return control_deneme;
         }
 
-        public IQueryable<object> Get_ByAll_exceptUserID_Async_Repo(Guid userID)
+        public async Task<List<CategoryofFood>> Get_ByAll_exceptUserID_Async_Repo(Guid userID)
         {
+            // x.AppUser.Id == userID && x.DataStatus == ENTITIES.Enums.DataStatus.Deleted : önceden ekleyip sildiklerim
 
-            return _context.Set<UserCategoryJunction>()
-                .Where(x => (x.AppUser.Id != userID) || (x.AppUser.Id == userID && x.DataStatus == ENTITIES.Enums.DataStatus.Deleted) )
-                .Include(x => x.CategoryofFood)
-                .Include(x => x.AppUser)
-                .Select(x => new
+            List<UserCategoryJunction> mydeletedList = new List<UserCategoryJunction>();
+
+
+            mydeletedList = _context.Set<UserCategoryJunction>().Where(x => x.AppUser.Id == userID && x.DataStatus == ENTITIES.Enums.DataStatus.Deleted).ToList();
+
+            //.Include(x => x.CategoryofFood)
+            //.Include(x => x.AppUser)
+            //.Select(x => //new
+
+            //x.CategoryofFood.CategoryName_of_Foods).ToString()
+            //CategoryofFood_Picture = x.CategoryofFood_Picture,
+            //CategoryofFood_Status = x.CategoryofFood_Status,
+            // AppUserId = x.AppUser.Id, // ID (IdentityUser'den gelir ve erişilemez onun yerine AppUser dan id e erişilir)
+            // CategoryofFoodID = x.CategoryofFoodID
+
+
+            List<CategoryofFood> mydeletedList2 = new List<CategoryofFood>();
+
+            foreach (UserCategoryJunction not_exist in mydeletedList)
+            {
+                mydeletedList2.Add( (CategoryofFood)_context.Set<CategoryofFood>().Where(x => x.ID == not_exist.CategoryofFoodID));
+            }
+
+
+
+
+
+            List<UserCategoryJunction> others = _context.Set<UserCategoryJunction>()
+                .Where(x => (x.AppUser.Id != userID)).ToList();
+
+
+            IQueryable<object> mines = _context.Set<UserCategoryJunction>()
+                .Where(x=> x.AppUser.Id == userID && x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).AsQueryable();
+
+            List<CategoryofFood> category_not_exits_in_MyList = new List<CategoryofFood>();
+
+            int sayac = 0;
+
+            foreach (short othersCategoryofFoodIDs in others.Select(x=> x.CategoryofFoodID))
+            {
+                foreach (UserCategoryJunction mine in mines)
                 {
-                    CategoryName_of_Foods = x.CategoryofFood.CategoryName_of_Foods,
-                    CategoryofFood_Picture = x.CategoryofFood_Picture,
-                    CategoryofFood_Status = x.CategoryofFood_Status,
-                    AppUserId = x.AppUser.Id, // ID (IdentityUser'den gelir ve erişilemez onun yerine AppUser dan id e erişilir)
-                    CategoryofFoodID = x.CategoryofFoodID
-
-
+                    if (mine.CategoryofFoodID == othersCategoryofFoodIDs)
+                    {
+                        // bende de var demektir çık dönğüden
+                        continue;                    
+                    }
                 }
-            ).AsQueryable();
 
-            // return control_deneme;
+                // bende yok demektir listeye ekle
+                category_not_exits_in_MyList[sayac].ID = othersCategoryofFoodIDs;
+                ++sayac;
+            }
+
+
+            List<CategoryofFood> otherlist_notexist_in_MyList =  new List<CategoryofFood>();
+            
+            foreach (CategoryofFood not_exist in category_not_exits_in_MyList)
+            {
+                otherlist_notexist_in_MyList = _context.Set<CategoryofFood>().Where(x => x.ID == not_exist.ID).ToList();
+            }
+
+            List<CategoryofFood> allList_notexist = new List<CategoryofFood>();
+
+
+            allList_notexist.Concat(otherlist_notexist_in_MyList).Concat(mydeletedList2);
+ 
+            return allList_notexist;
         }
 
 
@@ -178,17 +231,59 @@ namespace Project.DAL.Repositories.Concretes
 
             if (success == 1)
             {
-                 result_Message = "Oldu";
+                 result_Message = "Başarılı";
             }
             else
             {
-                result_Message = "Hata meydana  geldi";
+                result_Message = "Hata";
             }
 
             return result_Message;
         }
 
+        public async Task<string> Add_CategoryItem_toMyList_Async_Repo(Guid accessibleID, short categoryID, AppUser _userInfo)
+        {
+            UserCategoryJunction ucj = new UserCategoryJunction();
+            ucj.AppUser = _userInfo;           
 
+            ucj.CategoryofFoodID = categoryID;
+            ucj.CategoryofFood_Status = ENTITIES.Enums.ExistentStatus.Aktif;
+            // ucj.CategoryofFood_Description = 
+            // ucj.CategoryofFood_Picture
+            ucj.AccessibleID = accessibleID;
+
+
+            /*
+                EntityBase.cs
+                
+                public EntityBase()
+                {
+                    CreatedDate = DateTime.Now;
+                    DataStatus = Enums.DataStatus.Inserted;
+                }            
+             
+             */
+            // ucj.CreatedDate = DateTime.Now;
+            // ucj.DataStatus = ENTITIES.Enums.DataStatus.Inserted; // ***           
+
+            // _context.Set<UserCategoryJunction>().AddAsync(ucj);
+            _context.AddAsync(ucj);
+
+            int success = _context.SaveChanges();
+
+            string result_Message;
+
+            if (success == 1)
+            {
+                result_Message = "Başarılı";
+            }
+            else
+            {
+                result_Message = "Hata";
+            }
+
+            return result_Message;
+        }
 
     }
 }

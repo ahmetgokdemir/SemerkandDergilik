@@ -808,11 +808,11 @@ namespace Technosoft_Project.Controllers
                 JSpopupPage = null; // pop-up sıfırlanır yoksa sayfayı reflesleyince geliyor
             }
 
-            IEnumerable<object> UserCategoryJunctionList = await _iucjm.Get_ByAll_exceptUserID_Async(CurrentUser.Id); // IdentityUser'dan gelen Id (Guid tipli)
+            List<CategoryofFood> UserCategoryJunctionList = await _iucjm.Get_ByAll_exceptUserID_Async(CurrentUser.Id); // IdentityUser'dan gelen Id (Guid tipli)
 
             CategoryofFoodVM cvm = new CategoryofFoodVM
             {
-                UserCategoryJunctionDTOs = UserCategoryJunctionList.Adapt<IEnumerable<UserCategoryJunctionDTO>>().ToList(),
+                CategoryofFoodDTOs = UserCategoryJunctionList.Adapt<List<CategoryofFoodDTO>>(),
                 JavascriptToRun = JSpopupPage
             };
 
@@ -847,14 +847,14 @@ namespace Technosoft_Project.Controllers
         [HttpPost]
         public async Task<IActionResult> CRUDCategoryofFood_InOtherUsersList(CategoryofFoodVM cvm_post)
         {
-            Guid userID = CurrentUser.Id;
-            Guid accessibleID = CurrentUser.AccessibleID;
-            
+            // Guid userID = CurrentUser.Id;
+            // Guid accessibleID = CurrentUser.AccessibleID;
+            AppUser _userInfo = CurrentUser;
 
             if (TempData["Added"] != null)
             {
-                TempData["_accessibleID"] = accessibleID;
-                string result_Message = await _iucjm.Control_IsExisted_InMyListBefore_Async(userID, cvm_post.CategoryofFoodDTO.ID, accessibleID);
+                // TempData["_accessibleID"] = accessibleID;
+                string result_Message = await _iucjm.Control_IsExisted_InMyListBefore_Async(_userInfo.Id, cvm_post.CategoryofFoodDTO.ID, _userInfo);
  
                 TempData["messageCategoryofFood_InOtherUsersList"] = result_Message;                
 

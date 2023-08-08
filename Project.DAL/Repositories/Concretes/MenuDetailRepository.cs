@@ -89,7 +89,8 @@ namespace Project.DAL.Repositories.Concretes
             menuDetail.FoodID = selected_foodID;
             /* !!! !!!  menuDetail.CategoryName_of_Food = category_Name; !!! !!! */
 
-            _context.Set<MenuDetail>().AddAsync(menuDetail);
+            // _context.Set<MenuDetail>().AddAsync(menuDetail);
+            _context.AddAsync(menuDetail);
 
         }
     }
