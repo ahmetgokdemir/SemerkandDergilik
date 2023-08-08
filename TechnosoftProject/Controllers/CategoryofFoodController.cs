@@ -30,12 +30,17 @@ namespace Technosoft_Project.Controllers
         //    return View();
         //}
 
-
+        // CategoryofFoodList
         [Route("CategoryofFoodList")]
-        public async Task<IActionResult> CategoryofFoodList(string? JSpopupPage, string? onlyOnce)
+        public async Task<IActionResult> CategoryofFoodList(string? JSpopupPage)
+        {
+            return View();
+        }
+
+        [Route("CategoryofFoodList_forMember")]
+        public async Task<IActionResult> CategoryofFoodList_forMember(string? JSpopupPage, string? onlyOnce)
         {
             TempData["onlyOnce"] = onlyOnce;
-
 
             if (TempData["JavascriptToRun"] == null)
             {
@@ -58,14 +63,11 @@ namespace Technosoft_Project.Controllers
                 JavascriptToRun = JSpopupPage
             };
 
-            TempData["MyModal"] = true;
-            TempData["onlyOnce"] = true;
-
-            return View(cvm);
+            return View("CategoryofFoodListforMember", cvm);
         }
 
         [Route("AddCategoryofFoodAjax")]
-        public PartialViewResult AddCategoryofFoodAjax()
+        public async Task<PartialViewResult> AddCategoryofFoodAjax()
         {
             // ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status))); => yerine                                                                 asp-items="Html.GetEnumSelectList<Technosoft_Project.Enums.Status>()" kullanıldı..
 
@@ -295,10 +297,10 @@ namespace Technosoft_Project.Controllers
         [Route("DeleteCategoryofFoodAjax")]
         public async Task<PartialViewResult> DeleteCategoryofFoodAjax(short categoryID)
         {
-            
+
             CategoryofFood CategoryofFood_item = await _icm.GetByIdAsync(categoryID);
-            CategoryofFoodDTO cDTO = CategoryofFood_item.Adapt<CategoryofFoodDTO>();            
- 
+            CategoryofFoodDTO cDTO = CategoryofFood_item.Adapt<CategoryofFoodDTO>();
+
 
             //IEnumerable<object> ucj = null;
             //Guid new_userID = CurrentUser.Id;
@@ -307,7 +309,7 @@ namespace Technosoft_Project.Controllers
 
             //ucj = await _iucjm.Get_ByUserID_with_CategoryID_Async(new_userID, categoryID);
             //ucjDTO = ucj.Adapt<IEnumerable<UserCategoryJunctionDTO>>().ToList();
- 
+
 
             // HttpContext.Session.SetObject("willbedeletedUserCategoryJuncData", ucjDTO[0]);
             // HttpContext.Session.SetObject("willbedeletedCategoryofFoodData", cDTO);
@@ -331,6 +333,8 @@ namespace Technosoft_Project.Controllers
         [HttpPost]
         public async Task<IActionResult> CRUDCategoryofFood(CategoryofFoodVM cvm_post, IFormFile _CategoryofFoodPicture)
         {
+            // CategoryofFoodList
+            // RedirectToAction("CategoryofFoodList_forM
 
             /*
               var urlHelper = new UrlHelper(ControllerContext);
@@ -459,7 +463,9 @@ namespace Technosoft_Project.Controllers
                             }
 
                             TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
-                            return RedirectToAction("CategoryofFoodList", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
+
+
+                            return RedirectToAction("CategoryofFoodList_forMember", new { JSpopupPage = TempData["JSpopupPage"].ToString(), onlyOnce = "1" });
 
 
                         }
@@ -477,7 +483,7 @@ namespace Technosoft_Project.Controllers
                         await _iucjm.AddAsync(ucj);
                         TempData["messageCategoryofFood"] = "Kategori eklendi";
 
-                        return RedirectToAction("CategoryofFoodList");
+                        return RedirectToAction("CategoryofFoodList_forMember", new { onlyOnce = "1" });
 
                     }
                     else // update 
@@ -506,7 +512,7 @@ namespace Technosoft_Project.Controllers
                                 // ,{CurrentUser.Id}
                                 TempData["JSpopupPage"] = $"ShowErrorUpdateOperationPopup({cvm_post.CategoryofFoodDTO.ID})"; // diğer paramaetre de eklenecek
 
-                                return RedirectToAction("CategoryofFoodList", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
+                                return RedirectToAction("CategoryofFoodList_forMember", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
                             }
 
                             // Yeni kategori eğer havuzda da yoksa 
@@ -544,7 +550,7 @@ namespace Technosoft_Project.Controllers
 
                                 TempData["messageCategoryofFood"] = "Kategori güncellendi";
 
-                                return RedirectToAction("CategoryofFoodList");
+                                return RedirectToAction("CategoryofFoodList_forMember");
 
                             }
 
@@ -595,7 +601,7 @@ namespace Technosoft_Project.Controllers
 
                             // else { değişiklik olmadı mesajı }
 
-                            return RedirectToAction("CategoryofFoodList");
+                            return RedirectToAction("CategoryofFoodList_forMember");
 
                         }
 
@@ -711,7 +717,7 @@ namespace Technosoft_Project.Controllers
                     {
                         // ,{CurrentUser.Id}
                         cVM.JavascriptToRun = $"ShowErrorUpdateOperationPopup({cvm_post.CategoryofFoodDTO.ID})";
-                        return RedirectToAction("CategoryofFoodList", new { JSpopupPage = cVM.JavascriptToRun });
+                        return RedirectToAction("CategoryofFoodList_forMember", new { JSpopupPage = cVM.JavascriptToRun });
 
                     }
                     else // add // (pvm_post.FoodDTO.ID == 0) 
@@ -721,7 +727,8 @@ namespace Technosoft_Project.Controllers
                         // pvm.JavascriptToRun = $"ShowErrorInsertOperationPopup()";
 
                         TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
-                        return RedirectToAction("CategoryofFoodList", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
+                        return RedirectToAction("CategoryofFoodList_forMember", new { JSpopupPage = TempData["JSpopupPage"].ToString(), onlyOnce = "1" });
+
                     }
 
 
@@ -761,11 +768,10 @@ namespace Technosoft_Project.Controllers
 
                 return RedirectToAction("CategoryofFoodList");
 
-
             }
 
-
         }
+
 
         //CategoryofFood_InPool_Ajax
         [Route("CategoryofFood_InPool_Ajax")]
@@ -776,7 +782,7 @@ namespace Technosoft_Project.Controllers
 
             if (poolID.ToLower() == "false")
             {
-                return RedirectToAction("CategoryofFoodList");
+                return RedirectToAction("CategoryofFoodList_forMember");
 
             }
 
@@ -806,11 +812,9 @@ namespace Technosoft_Project.Controllers
             // return PartialView("_denemePartial");
             // 
             // return PartialView("_CategoryofFoodListforOtherUsers_Partial", cvm);
-            return View("CategoryofFoodList", cvm);
+            return View("CategoryofFoodListforOtherUsers", cvm);
 
         }
-
-
 
 
     }

@@ -1,0 +1,169 @@
+﻿@model CategoryofFoodVM
+
+@{
+    ViewData["Title"] = "CategoryofFoodListforOtherUsers";
+    Layout = null;
+    // Layout = "~/Views/CategoryofFood/_CategoryofFoodLayout.cshtml";
+}
+
+<style>
+    .loader {
+        display: none;
+    }
+
+    .position {
+        width: 25%;
+        position: relative;
+    }
+
+        .position a, p {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+    .btnposition {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    <!-- -ms-transform: translate(-50%, -50%); -->
+
+</style>
+@*<h4 style="color:red;">@TempData["mesaj"] </h4>*@
+
+
+<!-- loader class'ın; display'i none olarak set edildi! -->
+<div class="spinner-border loader" role="status">
+    <span class="sr-only">Loading...</span>
+</div>
+<hr class="loader" />
+
+
+@if (Model.UserCategoryJunctionDTOs.Count == 0)
+{
+    <div>
+        <label class="" for="" id="">BOŞŞŞ</label>
+    </div>
+}
+else
+{
+    <div class="panel panel-primary">
+        <div class="panel panel-body">
+            <table class="table table-hover table-bordered table-responsive-lg" id="tab2" width="100%" border="0" cellspacing="0" cellpadding="100%">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Index</th>
+                        <th class="position"><p>Kategori İsmi</p></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (UserCategoryJunctionDTO item in Model.UserCategoryJunctionDTOs)
+                    {
+
+                        <tr>
+                            <td></td>
+
+                            <td class="position">
+                                <p>@item.CategoryName_of_Foods</p>
+                            </td>
+
+                            <td class="position"></td>
+
+                            <td class="btnposition">
+                                @*<a asp-action="UpdateCategoryofFood" asp-controller="CategoryofFood" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
+                                <button class="btn btn-success" id="addCategoryofFoodtoMyList" value="addCategoryofFoodtoMyListValue" data-categoryID=@item.CategoryofFoodID data-userID=@item.AppUserId>
+                                    Kategori Listeme Ekle
+                                </button>
+
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/alertify.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/alertify.min.css" />
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/themes/default.min.css" />
+
+@if (TempData["messageCategoryofFood"] != null) // konrol yapılmazsa messageCategoryofFood null olduğu zaman .ToString() 'de hata verir..
+{
+    @if (TempData["messageCategoryofFood"].ToString() == "İptal edildi")
+    {
+
+        <script>
+            alertify.warning("İptal edildi");
+        </script>
+    }
+    else if (TempData["messageCategoryofFood"].ToString() == "Kategori listenize eklendi")
+    {
+
+        <script>
+            alertify.success("Kategori listenize eklendi");
+        </script>
+    }
+
+    TempData["messageCategoryofFood"] = null;
+
+}
+
+
+
+<script>
+    $(document).ready(function () {
+
+        var t = $('#tab2').DataTable({
+
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+            },
+            columnDefs: [  // indexleme
+                {
+                    searchable: false,
+                    orderable: false,
+                    targets: 0,
+                },
+            ],
+            order: [[1, 'asc']],
+            pagingType: 'full_numbers' // ilk ve son butonları eklendi..
+
+        });
+
+        // indexleme
+        t.on('order.dt search.dt', function () {
+            let i = 1;
+
+            t.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
+                this.data(i++);
+            });
+        }).draw();
+
+        $("#flexSwitchCheckText").text("Kategorilerime geri dön.");
+        document.getElementById("flexSwitchCheckDefault").checked = true;
+
+    });
+</script>
+
+<script type="text/javascript">
+
+
+
+    @Model.JavascriptToRun // yaptığı iş, içinde barındırdığı ShowErrorInsertOperationPopup veya ShowErrorUpdateOperationPopup fonksiyonu sayesinde, bu fonksiyonları çağırmak
+
+
+
+        function CRUDCategoryofFoodModalLoaded() {
+            $("#CRUDCategoryofFoodModal").modal('show'); // #CRUDCategoryofFoodModal içinde CRUDCategoryofFood var (<div class="modal-body" id="CRUDCategoryofFood">) onun içinde de data var (_CrudCategoryofFoodPartial)
+        }
+
+
+
+</script>
