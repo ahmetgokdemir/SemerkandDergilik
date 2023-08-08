@@ -65,6 +65,7 @@ namespace Project.DAL.Repositories.Concretes
             // CategoryofFoodID = x.CategoryofFoodID
 
 
+
             List<CategoryofFood> mydeletedList2 = new List<CategoryofFood>();
 
             foreach (UserCategoryJunction not_exist in mydeletedList)
