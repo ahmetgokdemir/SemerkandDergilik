@@ -48,6 +48,7 @@ namespace Project.DAL.Repositories.Concretes
         public async Task<List<CategoryofFood>> Get_ByAll_exceptUserID_Async_Repo(Guid userID)
         {
             // x.AppUser.Id == userID && x.DataStatus == ENTITIES.Enums.DataStatus.Deleted : önceden ekleyip sildiklerim
+            List<CategoryofFood> allList_notexist = new List<CategoryofFood>();
 
             List<UserCategoryJunction> mydeletedList = new List<UserCategoryJunction>();
 
@@ -65,12 +66,14 @@ namespace Project.DAL.Repositories.Concretes
             // CategoryofFoodID = x.CategoryofFoodID
 
 
-
             List<CategoryofFood> mydeletedList2 = new List<CategoryofFood>();
 
             foreach (UserCategoryJunction not_exist in mydeletedList)
             {
-                mydeletedList2.Add( (CategoryofFood)_context.Set<CategoryofFood>().Where(x => x.ID == not_exist.CategoryofFoodID));
+                //mydeletedList2.Add( (CategoryofFood)_context.Set<CategoryofFood>().Where(x => x.ID == not_exist.CategoryofFoodID));
+
+                CategoryofFood cof = _context.Set<CategoryofFood>().Where(x => x.ID == not_exist.CategoryofFoodID).FirstOrDefault();
+                allList_notexist.Add(cof);
             }
 
 
@@ -87,7 +90,6 @@ namespace Project.DAL.Repositories.Concretes
 
             List<CategoryofFood> category_not_exits_in_MyList = new List<CategoryofFood>();
 
-            int sayac = 0;
 
             foreach (short othersCategoryofFoodIDs in others.Select(x=> x.CategoryofFoodID))
             {
@@ -96,28 +98,44 @@ namespace Project.DAL.Repositories.Concretes
                     if (mine.CategoryofFoodID == othersCategoryofFoodIDs)
                     {
                         // bende de var demektir çık dönğüden
-                        continue;                    
+                        continue;                
                     }
+                    else
+                    {
+                        break; 
+
+
+                    }
+                    
                 }
 
+                // continue buraya gelmneli
+                CategoryofFood cof2 = _context.Set<CategoryofFood>().Where(x => x.ID == othersCategoryofFoodIDs).FirstOrDefault();
+                allList_notexist.Add(cof2);
+
+                /*
+                 
+                    CategoryofFood cof2 = _context.Set<CategoryofFood>().Where(x => x.ID == othersCategoryofFoodIDs).FirstOrDefault();
+                    allList_notexist.Add(cof2);
+                 */
+
                 // bende yok demektir listeye ekle
-                category_not_exits_in_MyList[sayac].ID = othersCategoryofFoodIDs;
-                ++sayac;
+                //category_not_exits_in_MyList[sayac].ID = othersCategoryofFoodIDs;
+                //++sayac;
             }
 
 
-            List<CategoryofFood> otherlist_notexist_in_MyList =  new List<CategoryofFood>();
-            
-            foreach (CategoryofFood not_exist in category_not_exits_in_MyList)
-            {
-                otherlist_notexist_in_MyList = _context.Set<CategoryofFood>().Where(x => x.ID == not_exist.ID).ToList();
-            }
+            //List<CategoryofFood> otherlist_notexist_in_MyList =  new List<CategoryofFood>();
 
-            List<CategoryofFood> allList_notexist = new List<CategoryofFood>();
+            //foreach (CategoryofFood not_exist in category_not_exits_in_MyList)
+            //{
+            //    otherlist_notexist_in_MyList = _context.Set<CategoryofFood>().Where(x => x.ID == not_exist.ID).ToList();
+            //}
 
 
-            allList_notexist.Concat(otherlist_notexist_in_MyList).Concat(mydeletedList2);
- 
+
+            //allList_notexist.Concat(mydeletedList2);
+
             return allList_notexist;
         }
 

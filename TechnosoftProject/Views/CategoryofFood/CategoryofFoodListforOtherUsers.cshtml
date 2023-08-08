@@ -41,7 +41,7 @@
 <hr class="loader" />
 
 
-@if (Model.UserCategoryJunctionDTOs.Count == 0)
+@if (Model.CategoryofFoodDTOs.Count == 0)
 {
     <div class="jumbotron" style="padding:20px;  background-color:lightgrey">
         @*<input type="submit" id="btnIslemYap" value="İşlem Yap" />*@
@@ -65,7 +65,7 @@ else
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (UserCategoryJunctionDTO item in Model.UserCategoryJunctionDTOs)
+                    @foreach (CategoryofFoodDTO item in Model.CategoryofFoodDTOs)
                     {
 
                         <tr>
@@ -79,7 +79,7 @@ else
 
                             <td class="btnposition">
                                 @*<a asp-action="UpdateCategoryofFood" asp-controller="CategoryofFood" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
-                                <button class="btn btn-success" id="addCategoryofFoodtoMyList" value="addCategoryofFoodtoMyListValue" data-categoryID=@item.CategoryofFoodID data-userID=@item.AppUserId>
+                                <button class="btn btn-success" id="addCategoryofFoodtoMyList" value="addCategoryofFoodtoMyListValue" data-categoryID=@item.ID >
                                     Kategori listeme ekle
                                 </button>
 
