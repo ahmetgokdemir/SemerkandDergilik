@@ -77,6 +77,7 @@ namespace Project.DAL.Repositories.Concretes
 
 
 
+
             List<UserCategoryJunction> others = _context.Set<UserCategoryJunction>()
                 .Where(x => (x.AppUser.Id != userID)).ToList();
 
