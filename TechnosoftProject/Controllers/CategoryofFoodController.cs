@@ -47,6 +47,13 @@ namespace Technosoft_Project.Controllers
                 JSpopupPage = null; // pop-up sıfırlanır yoksa sayfayı reflesleyince geliyor
             }
 
+            string msj;
+            if (TempData["messageCategoryofFood_InOtherUsersList"] != null)
+            {
+                msj = TempData["messageCategoryofFood_InOtherUsersList"].ToString();
+                TempData["messageCategoryofFood_InOtherUsersList"] = msj;
+            }
+
             // IEnumerable<CategoryofFood> CategoryofFoodList = await _icm.GetActivesAsync();
 
             IEnumerable<object> UserCategoryJunctionList = await _iucjm.Get_ByUserID_Async(CurrentUser.Id); // IdentityUser'dan gelen Id (Guid tipli)
@@ -813,6 +820,81 @@ namespace Technosoft_Project.Controllers
             // 
             // return PartialView("_CategoryofFoodListforOtherUsers_Partial", cvm);
             return View("CategoryofFoodListforOtherUsers", cvm);
+
+        }
+
+        // 
+        [Route("Add_CategoryofFood_toMyList_Ajax")]
+        public async Task<PartialViewResult> Add_CategoryofFood_toMyList_Ajax(short categoryID)
+        {
+
+            CategoryofFood CategoryofFood_item = await _icm.GetByIdAsync(categoryID);
+            CategoryofFoodDTO cDTO = CategoryofFood_item.Adapt<CategoryofFoodDTO>();
+
+
+            ViewBag.CategoryofFoodName_toMyList = cDTO.CategoryName_of_Foods;
+            ViewBag.CRUD = "add_operation";
+
+            CategoryofFoodVM cVM = new CategoryofFoodVM
+            {
+                CategoryofFoodDTO = cDTO
+            };
+
+            return PartialView("_CrudCategoryofFood_InOtherUsersList_Partial", cVM);
+        }
+
+        [Route("CRUDCategoryofFood_InOtherUsersList")]
+        [HttpPost]
+        public async Task<IActionResult> CRUDCategoryofFood_InOtherUsersList(CategoryofFoodVM cvm_post)
+        {
+            Guid userID = CurrentUser.Id;
+            Guid accessibleID = CurrentUser.AccessibleID;
+            
+
+            if (TempData["Added"] != null)
+            {
+                TempData["_accessibleID"] = accessibleID;
+                string result_Message = await _iucjm.Control_IsExisted_InMyListBefore_Async(userID, cvm_post.CategoryofFoodDTO.ID, accessibleID);
+ 
+                TempData["messageCategoryofFood_InOtherUsersList"] = result_Message;                
+
+                TempData["Added"] = null;
+
+                return RedirectToAction("CategoryofFoodList_forMember", new { onlyOnce = "1" });
+
+            }
+
+            return RedirectToAction("CategoryofFoodList_forMember", new { onlyOnce = "1" });
+
+
+            //IEnumerable<object> ucj = null;
+            //Guid userID = CurrentUser.Id;
+            //List<UserCategoryJunction> ucj_Delete = new List<UserCategoryJunction>();
+
+
+            //ucj_Delete = ucj.Adapt<IEnumerable<UserCategoryJunction>>().ToList();
+
+
+            //ucj = await _iucjm.Get_ByUserID_with_CategoryID_Async(new_userID, cvm_post.CategoryofFoodDTO.ID);
+            //ucj_Delete = ucj.Adapt<IEnumerable<UserCategoryJunction>>().ToList();
+
+            //UserCategoryJunction userCategoryJunction = new UserCategoryJunction();
+
+            //userCategoryJunction.CategoryofFoodID = cvm_post.CategoryofFoodDTO.ID;
+            //userCategoryJunction.DataStatus = DataStatus.Deleted;
+            //userCategoryJunction.DeletedDate = DateTime.Now;
+            //userCategoryJunction.AccessibleID = CurrentUser.AccessibleID;
+            //userCategoryJunction.AppUser = CurrentUser;
+            //userCategoryJunction.CategoryofFood_Status = ExistentStatus.Pasif;
+
+            //_iucjm.Delete_OldCategory_from_User(CurrentUser.AccessibleID, cvm_post.CategoryofFoodDTO.ID, userCategoryJunction);
+
+            // _iucjm.Delete(ucj_Delete[0]);
+            // _iucjm.Delete(ucj_Delete.FirstOrDefault());
+
+
+
+
 
         }
 

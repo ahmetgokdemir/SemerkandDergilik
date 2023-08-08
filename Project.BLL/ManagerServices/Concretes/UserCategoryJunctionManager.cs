@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Project.BLL.ManagerServices.Abstracts;
 using Project.DAL.Repositories.Abstracts;
 using Project.ENTITIES.CoreInterfaces;
+using Project.ENTITIES.Identity_Models;
 using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
@@ -13,12 +16,14 @@ namespace Project.BLL.ManagerServices.Concretes
 {
     public class UserCategoryJunctionManager : BaseManager<UserCategoryJunction>, IUserCategoryJunctionManager
     {
-        IUserCategoryJunctionRepository _iucjrep; 
-
+        IUserCategoryJunctionRepository _iucjrep;
+ 
+ 
         public UserCategoryJunctionManager(IRepository<UserCategoryJunction> irep, IUserCategoryJunctionRepository iucjrep) : base(irep)
         {
             _iucjrep = iucjrep;
-        }
+
+         }
         public async Task<IEnumerable<object>> Get_ByUserID_Async(Guid userID)
         {
             var found_Item = await _iucjrep.Get_ByUserID_Async(userID).ToListAsync();
@@ -75,6 +80,18 @@ namespace Project.BLL.ManagerServices.Concretes
 
         }
 
+        public async Task<string> Control_IsExisted_InMyListBefore_Async(Guid userID, short categoryID, Guid accessibleID)
+        {
+            bool found_Item = await _iucjrep.Control_IsExisted_InMyListBefore_Async_Repo(userID, categoryID);
+
+            // existed
+            if (found_Item == true)
+            {
+                return await _iucjrep.Update_MyList_Async_Repo(accessibleID, categoryID);
+            }
+            // not existed.. will add
+            return "not existed";
+        }
 
     }
 }

@@ -144,5 +144,51 @@ namespace Project.DAL.Repositories.Concretes
             _context.SaveChanges();
 
         }
+
+        public async Task<bool> Control_IsExisted_InMyListBefore_Async_Repo(Guid userID, short categoryID)
+        {
+            // var entity = _context.Set<T>().Find(id).AsQueryable(); --> find one item not for list
+            // return Where(x => x.AppUser.Id == id).AsQueryable(); // AppUser.ID (erişilemiyor) --> short 
+
+            // await --> _context.Set kullanılmaz !!!
+
+            bool control_existing = _context.Set<UserCategoryJunction>()
+                .Any(x => x.AppUser.Id == userID && x.CategoryofFoodID == categoryID && x.DataStatus == ENTITIES.Enums.DataStatus.Deleted);
+
+            return control_existing;
+        }
+
+        public async Task<string> Update_MyList_Async_Repo(Guid accessibleID, short categoryID)
+        {
+            UserCategoryJunction ucj;
+            var toBeUpdated = _context.Set<UserCategoryJunction>().Find(accessibleID, categoryID);
+            ucj = toBeUpdated;
+            ucj.CategoryofFood_Status = ENTITIES.Enums.ExistentStatus.Aktif;
+            // ucj.CategoryofFood_Description = 
+            ucj.ModifiedDate = DateTime.Now;
+
+
+            ucj.DataStatus = ENTITIES.Enums.DataStatus.Updated; // ***
+
+            _context.Entry(toBeUpdated).CurrentValues.SetValues(ucj);
+
+            int success =  _context.SaveChanges();
+
+            string result_Message;
+
+            if (success == 1)
+            {
+                 result_Message = "Oldu";
+            }
+            else
+            {
+                result_Message = "Hata meydana  geldi";
+            }
+
+            return result_Message;
+        }
+
+
+
     }
 }

@@ -193,6 +193,24 @@ else
     TempData["messageCategoryofFood"] = null;
 
 }
+else if (TempData["messageCategoryofFood_InOtherUsersList"] != null)
+{
+    string result_Message = TempData["messageCategoryofFood_InOtherUsersList"].ToString();
+    if (TempData["messageCategoryofFood_InOtherUsersList"].ToString() == "Oldu")
+    {
+        <script>
+            alertify.success("Kategori listenize eklendi");
+        </script>
+    }
+    else
+    {   <script>
+                 alertify.success("Kategori listenize eklenemedi");
+        </script>
+
+    }
+
+    TempData["messageCategoryofFood_InOtherUsersList"] = null;
+}
 
 
 

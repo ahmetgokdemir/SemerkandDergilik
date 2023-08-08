@@ -15,5 +15,7 @@ namespace Project.BLL.ManagerServices.Abstracts
         void Delete_OldCategory_from_User(Guid accessibleID, short old_categoryID, UserCategoryJunction old_ucj);
         void Update_UserCategoryJuncTable(Guid accessibleID, short categoryofFood_ID, UserCategoryJunction ucj);
         Task<IEnumerable<object>> Get_ByAll_exceptUserID_Async(Guid userID);
+        Task<string> Control_IsExisted_InMyListBefore_Async(Guid userID, short categoryID, Guid accessibleID);
+
     }
 }

@@ -14,7 +14,8 @@ namespace Project.DAL.Repositories.Abstracts
         void Delete_OldCategory_from_User_Repo(Guid accessibleID, short old_categoryID, UserCategoryJunction old_ucj);
         void Update_UserCategoryJuncTable_Repo(Guid accessibleID, short categoryofFood_ID, UserCategoryJunction ucj);
         IQueryable<object> Get_ByAll_exceptUserID_Async_Repo(Guid userID);
-
+        Task<bool> Control_IsExisted_InMyListBefore_Async_Repo(Guid userID, short categoryID);
+        Task<string> Update_MyList_Async_Repo(Guid accessibleID, short categoryID);
 
     }
 }

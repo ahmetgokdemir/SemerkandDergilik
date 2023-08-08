@@ -43,15 +43,19 @@
 
 @if (Model.UserCategoryJunctionDTOs.Count == 0)
 {
-    <div>
-        <label class="" for="" id="">BOŞŞŞ</label>
+    <div class="jumbotron" style="padding:20px;  background-color:lightgrey">
+        @*<input type="submit" id="btnIslemYap" value="İşlem Yap" />*@
+
+        <span>
+            Kategori listesi boş.
+        </span>
     </div>
 }
 else
 {
     <div class="panel panel-primary">
         <div class="panel panel-body">
-            <table class="table table-hover table-bordered table-responsive-lg" id="tab2" width="100%" border="0" cellspacing="0" cellpadding="100%">
+            <table class="table table-hover table-bordered table-responsive-lg" id="tab1" width="100%" border="0" cellspacing="0" cellpadding="100%">
                 <thead class="thead-light">
                     <tr>
                         <th>Index</th>
@@ -76,7 +80,7 @@ else
                             <td class="btnposition">
                                 @*<a asp-action="UpdateCategoryofFood" asp-controller="CategoryofFood" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
                                 <button class="btn btn-success" id="addCategoryofFoodtoMyList" value="addCategoryofFoodtoMyListValue" data-categoryID=@item.CategoryofFoodID data-userID=@item.AppUserId>
-                                    Kategori Listeme Ekle
+                                    Kategori listeme ekle
                                 </button>
 
                             </td>
@@ -115,12 +119,28 @@ else
 
 }
 
+<div class="modal fade" id="CRUDCategoryofFoodModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+
+            <div class="modal-body" id="CRUDCategoryofFood">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script>
     $(document).ready(function () {
 
-        var t = $('#tab2').DataTable({
+        var t = $('#tab1').DataTable({
 
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
@@ -164,6 +184,25 @@ else
             $("#CRUDCategoryofFoodModal").modal('show'); // #CRUDCategoryofFoodModal içinde CRUDCategoryofFood var (<div class="modal-body" id="CRUDCategoryofFood">) onun içinde de data var (_CrudCategoryofFoodPartial)
         }
 
+    $(function () {
 
+        $("#tab1").on("click", "[value=addCategoryofFoodtoMyListValue]", function () {
+            $.ajax({
+             
+                url: 'Add_CategoryofFood_toMyList_Ajax',               
+                data: { categoryID: $(this).attr("data-categoryID") },
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $("#CRUDCategoryofFood").html(data);
+                    CRUDCategoryofFoodModalLoaded();
+
+                },
+                error: function () {
+                    alert("Hata alındı.");
+                }
+            });
+        });
+    });
 
 </script>
