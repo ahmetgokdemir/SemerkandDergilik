@@ -24,13 +24,6 @@ namespace Technosoft_Project.Controllers
             _iucjm = iucjm;
         }
 
-        //[Route("CategoryofFoodIndex")]
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
-
-        // CategoryofFoodList
         [Route("CategoryofFoodList")]
         public async Task<IActionResult> CategoryofFoodList(string? JSpopupPage)
         {

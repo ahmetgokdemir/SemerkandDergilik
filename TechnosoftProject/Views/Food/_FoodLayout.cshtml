@@ -83,19 +83,19 @@
         <div class="row">
 
             <div class="form-check form-switch" style=" display: inline;" id="switchClick">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" data-on="Yes" data-off="No">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
                 <label class="form-check-label" for="flexSwitchCheckDefault" id="flexSwitchCheckText"></label>
             </div>
 
             <div class="col-md-9">
                 <br />
 
-                 <div id="MemberModal">
+                <div id="MemberModal">
                     @RenderBody()
                 </div>
             </div>
 
-            <div class="col-md-3"  >
+            <div class="col-md-3">
                 <div class="container p-2 bg-success ">
                     <h3 class="text-md-center text-light">
                         Menü
@@ -117,7 +117,6 @@
                     <a class="btn w-100  mb-2" style="background-color:#e6e2d3;margin:0 auto; display:block;" asp-action="UserEdit" asp-controller="Member">Üyelik bilgileri güncelleme</a>
 
                     <hr />
-@*                    <a class="btn w-100  mb-2" style="background-color:#e6e2d3;margin:0 auto; display:block;" asp-action="CategoryofFoodList_forMember" asp-controller="CategoryofFood" asp-route-onlyOnce="1">Yemek / Kategori Bölümü</a>*@
 
                     <a class="btn w-100  mb-2" style="background-color:#e6e2d3;margin:0 auto; display:block;" asp-action="CategoryofFoodList_forMember" asp-controller="CategoryofFood" asp-route-onlyOnce="1">Yemek Kategorleri Bölümü</a>
 
@@ -157,32 +156,6 @@
 
 <script type="text/javascript">
 
-    //$(document).ready(function () {
-
-    //    $.ajax({
-
-    //        url: 'CategoryofFood_InPool_Ajax',
-    //        data: {
-
-    //            poolID: document.getElementById("flexSwitchCheckDefault").checked
-    //            // poolID2: $("#flexSwitchCheckDefault").checked
-
-    //        },
-    //        type: 'GET',
-    //        dataType: 'html',
-    //        success: function (data) {
-    //            $("#MemberModal").html(data);
-    //            // $("#OtherModal").hide();
-
-    //            // deneme();
-
-    //        }
-
-    //    });
-
-
-    //});
-
 
     $(function () {
         $("#switchClick").on("click", function () {
@@ -193,19 +166,19 @@
                 // alert($("#flexSwitchCheckDefault").value);
 
                 //  alert("True CLICKED");
-                $("#flexSwitchCheckText").text("Kategorilerimi getir");
+                $("#flexSwitchCheckText").text("Yemek Listemi getir");
 
             } else {
 
                 //  alert("False CLICKED");
-                $("#flexSwitchCheckText").text("Havuzdaki diğer kategoriler");
+                $("#flexSwitchCheckText").text("Havuzdaki diğer yiyecekler");
             }
 
             // alert("CLICKED");
 
             $.ajax({
 
-                url: 'CategoryofFood_InPool_Ajax',
+                url: 'Food_InPool_Ajax',
                 data: {
 
                     poolID: document.getElementById("flexSwitchCheckDefault").checked
