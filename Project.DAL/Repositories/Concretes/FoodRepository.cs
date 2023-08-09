@@ -62,5 +62,20 @@ namespace Project.DAL.Repositories.Concretes
         
         }
 
+
+
+        //public IQueryable<string> GetActivesCategoryofFoodNamesAsync()
+        //{
+        //    return _context.Set<CategoryofFood>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).Select(x => x.CategoryName_of_Foods);
+        //}
+
+        //// kullanılmadı
+        //public IQueryable<string> GetCategoryofFoodNameAccordingToFoodAsync(short CategoryofFood_id)
+        //{
+        //    IQueryable<string> CategoryofFoodNameAccordingToFood = _context.Set<CategoryofFood>().Where(x => x.ID == CategoryofFood_id).Select(x => x.CategoryName_of_Foods);
+
+        //    return CategoryofFoodNameAccordingToFood;
+        //}
+
     }
 }
