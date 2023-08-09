@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Project.BLL.ManagerServices.Abstracts;
+using Project.ENTITIES.Enums;
 using Project.ENTITIES.Identity_Models;
+using Project.ENTITIES.Models;
+using Technosoft_Project.CommonTools;
 using Technosoft_Project.ViewModels;
 using Technosoft_Project.VMClasses;
 
@@ -31,13 +34,13 @@ namespace Technosoft_Project.Controllers
             }
 
             string msj;
-            if (TempData["messageCategoryofFood_InOtherUsersList"] != null)
+            if (TempData["messageFood_InOtherUsersList"] != null)
             {
-                msj = TempData["messageCategoryofFood_InOtherUsersList"].ToString();
-                TempData["messageCategoryofFood_InOtherUsersList"] = msj;
+                msj = TempData["messageFood_InOtherUsersList"].ToString();
+                TempData["messageFood_InOtherUsersList"] = msj;
             }
 
-            // IEnumerable<CategoryofFood> CategoryofFoodList = await _icm.GetActivesAsync();
+            // IEnumerable<Food> FoodList = await _icm.GetActivesAsync();
 
             IEnumerable<object> UserFoodJunctionList = await _iufjm.Get_ByUserID_Async(CurrentUser.Id); // IdentityUser'dan gelen Id (Guid tipli)
 
@@ -45,12 +48,546 @@ namespace Technosoft_Project.Controllers
             FoodVM cvm = new FoodVM
             {
                 UserFoodJunctionDTOs = UserFoodJunctionList.Adapt<IEnumerable<UserFoodJunctionDTO>>().ToList(),
-                // CategoryofFoodDTOs = CategoryofFoodList.Adapt<IEnumerable<CategoryofFoodDTO>>().ToList(),
+                // FoodDTOs = FoodList.Adapt<IEnumerable<FoodDTO>>().ToList(),
                 JavascriptToRun = JSpopupPage
             };
 
             return View("FoodListforMember", cvm);
         }
+
+        [Route("AddFoodAjax")]
+        public async Task<PartialViewResult> AddFoodAjax()
+        {           
+            var result = new FoodDTO();
+            FoodDTO fDTO = new FoodDTO();
+
+            var result_2 = new UserFoodJunctionDTO();
+            UserFoodJunctionDTO ufjDTO = new UserFoodJunctionDTO();
+
+
+            if (TempData["ValidError_Name"] != null)
+            {
+                if (TempData["ValidError_Status"] == null)
+                {
+                    result_2 = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_Status");
+                    ufjDTO = result_2;
+                }
+
+
+
+                if (HttpContext.Session.GetObject<FoodDTO>("manipulatedData_Name") != null)
+                {
+                    result = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_Name");
+                    fDTO = result;
+
+                }
+
+
+                if (string.IsNullOrEmpty(fDTO.Food_Name))
+                {
+                    ModelState.AddModelError("FoodDTO.FoodName_of_Foods", "Yemek adı giriniz.");
+                }
+                else if (fDTO.Food_Name.Length >= 128)
+                {
+                    ModelState.AddModelError("FoodDTO.FoodName_of_Foods", "Yemek 128 karakterden fazla olamaz.");
+                }
+
+                TempData["ValidError_Name"] = null;
+
+
+            } // aynı veri db'de varsa !!
+            else if (TempData["ValidError_NameExist"] != null)
+            {
+
+                result = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_NameExist");
+                fDTO = result;
+
+                if (TempData["ValidError_Status"] == null)
+                {
+                    result_2 = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_Status");
+                    ufjDTO = result_2;
+                }
+
+                ModelState.AddModelError("FoodDTO.FoodName_of_Foods", "Yemek listede mevcuttur.");
+                TempData["ValidError_NameExist"] = null;
+            }
+
+
+            if (TempData["ValidError_Status"] != null)
+            {
+                if (HttpContext.Session.GetObject<FoodDTO>("manipulatedData_Name") != null)
+                {
+                    result = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_Name");
+                    fDTO = result;
+
+                }
+
+                ModelState.AddModelError("UserFoodJunctionDTO.Food_Status", "Yemek durumunu giriniz.");
+                TempData["ValidError_Status"] = null;
+            }
+
+            // Price
+            if (TempData["ValidError_Price"] != null)
+            {
+                if (HttpContext.Session.GetObject<FoodDTO>("manipulatedData_Name") != null)
+                {
+                    result = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_Name");
+                    fDTO = result;
+
+                }
+
+                ModelState.AddModelError("UserFoodJunctionDTO.Food_Price", "Yemek durumunu giriniz.");
+                TempData["ValidError_Status"] = null;
+            }
+
+            FoodVM cVM = new FoodVM
+            {
+                UserFoodJunctionDTO = ufjDTO,
+                FoodDTO = fDTO
+            };
+
+            HttpContext.Session.SetObject("manipulatedData_Name", null);
+            HttpContext.Session.SetObject("manipulatedData_Status", null);
+            HttpContext.Session.SetObject("manipulatedData_NameExist", null);
+
+
+            Thread.Sleep(500); // pop-up sayfasını tekrar açmayı tetikleyince bazen gelmiyor o yüzden bu kod eklendi..
+
+            return PartialView("_CrudFood_Partial", cVM);
+        }
+
+        [Route("CRUDFood")]
+        [HttpPost]
+        public async Task<IActionResult> CRUDFood(FoodVM fvm_post, IFormFile _FoodPicture)
+        {
+
+            UserFoodJunctionDTO old_ucj = null;
+            FoodDTO old_cof = null;
+
+
+            if (HttpContext.Session.GetObject<UserFoodJunctionDTO>("willbedeletedUserFoodJuncData") != null && HttpContext.Session.GetObject<FoodDTO>("willbedeletedFoodData") != null)
+            {
+
+                old_ucj = new UserFoodJunctionDTO();
+                old_ucj = HttpContext.Session.GetObject<UserFoodJunctionDTO>("willbedeletedUserFoodJuncData");
+
+                old_cof = new FoodDTO();
+                old_cof = HttpContext.Session.GetObject<FoodDTO>("willbedeletedFoodData");
+
+                HttpContext.Session.SetObject("willbedeletedUserFoodJuncData", null);
+                HttpContext.Session.SetObject("willbedeletedFoodData", null);
+
+            }
+
+            if (TempData["Deleted"] == null)
+            {
+
+                //ModelState.Remove("FoodPicture");
+                //ModelState.Remove("FoodDTOs");
+                //ModelState.Remove("JavascriptToRun");
+                ModelState.Remove("ExistentStatus");
+                ModelState.Remove("_FoodPicture"); // IFormFile _FoodPicture İÇİN
+                ModelState.Remove("FoodDTO.ExistentStatus");
+                ModelState.Remove("UserFoodJunctionDTO.CategoryName_of_Foods");
+
+                if (ModelState.IsValid)
+                {
+                    Food ftg_add = null;
+                    Food ftg_update = null;
+                    short old_categoryID = 0;
+
+                    if (fvm_post.FoodDTO.ID == 0)
+                    {
+                        ftg_add = fvm_post.FoodDTO.Adapt<Food>();
+
+                    }
+                    else
+                    {
+                        old_categoryID = fvm_post.FoodDTO.ID;
+                        ftg_update = new Food();
+                        ftg_update.Food_Name = fvm_post.FoodDTO.Food_Name;
+                    }
+
+                    UserFoodJunction ucj = fvm_post.UserFoodJunctionDTO.Adapt<UserFoodJunction>();
+
+                    /* !!! !!! ctg.Status = (int)fvm_post.FoodDTO.Status; !!! !!!*/
+
+                    if (_FoodPicture != null && _FoodPicture.Length > 0)
+                    {
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(_FoodPicture.FileName); // path oluşturma
+
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/FoodPicture", fileName); // server'a kayıt edilecek path => wwwroot/UserPicture/fileName
+
+                        // kayıt işlemi
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await _FoodPicture.CopyToAsync(stream); // userPicture'ı, stream'e kayıt
+
+                            /* !!! !!! ctg.FoodPicture = "/FoodPicture/" + fileName;   // veritabanına kayıt (wwwroot belirtmeye gerek yok) !!! !!! */
+
+                            ucj.Food_Picture = "/FoodPicture/" + fileName;
+
+                        }
+                    }// *!*
+                    //else // resim yüklenmedi ise...
+                    //{
+                    //    // mevcut da resmi db ' de varsa ... mevcut resmi db den çekip tekrar set etmeye gerek yok gibi ?! --> _icm.Update(ctg); kısmında bir kontrol et !!!
+
+                    //    /*if (ucj.DataStatus == DataStatus.Updated || .Inserted)
+                    //    {*/
+                    //    UserFoodJunctionDTO ucj_controller_2 = null;
+                    //    IEnumerable<object> ucj_controller = await _iufjm.Get_ByUserID_with_CategoryID_Async(CurrentUser.Id, fvm_post.FoodDTO.ID);//await _iucjm.GetByIdAsync(fvm_post.FoodDTO.ID);
+
+                    //    ucj_controller_2 = ucj_controller.FirstOrDefault().Adapt<UserFoodJunctionDTO>();
+
+                    //    if (ucj_controller_2 != null)
+                    //    {
+
+                    //        if (ucj_controller_2.Food_Picture != null)
+                    //        {
+                    //            ucj.Food_Picture = ucj_controller_2.Food_Picture;
+                    //        }
+
+                    //    }
+
+                    //    /*}*/
+                    //}
+
+                    if (fvm_post.FoodDTO.ID == 0) // insert
+                    {
+                        // Aynı isimli kayıt db'de zaten varsa 
+                        if (await _ifm.Any(x => x.Food_Name == ftg_add.Food_Name))
+                        {
+                            HttpContext.Session.SetObject("manipulatedData_NameExist", fvm_post.FoodDTO);
+
+                            TempData["ValidError_NameExist"] = "valid";
+                            TempData["JavascriptToRun"] = "valid";
+
+                            if (fvm_post.UserFoodJunctionDTO.Food_Status != 0)
+                            {
+                                HttpContext.Session.SetObject("manipulatedData_Status", fvm_post.UserFoodJunctionDTO);
+                            }
+                            else
+                            {
+                                TempData["ValidError_Status"] = "valid";
+                            }
+
+                            TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
+
+
+                            return RedirectToAction("FoodList_forMember", new { JSpopupPage = TempData["JSpopupPage"].ToString(), onlyOnce = "1" });
+
+
+                        }
+
+                        await _ifm.AddAsync(ftg_add);
+
+                        ucj.AccessibleID = CurrentUser.AccessibleID;
+                        ucj.FoodID = ftg_add.ID;
+
+                        // short control = CurrentUser.ID; olmadı // AppUser'dan gelen Id olmuyor (short tipli), ignore edilmişti zaten
+                        // Guid control2 = CurrentUser.Id;
+                        ucj.AppUser = CurrentUser; // IdentityUser'ın Id'si de tabloya eklnemiş oldu..
+                        //ucj.AppUser.Id = CurrentUser.Id;
+
+                        await _iufjm.AddAsync(ucj);
+                        TempData["messageFood"] = "Yemek eklendi";
+
+                        return RedirectToAction("FoodList_forMember", new { onlyOnce = "1" });
+
+                    }// !*!
+                    //else // update 
+                    //{
+                    //    // Yeni bir Yemek
+                    //    if (old_cof.CategoryName_of_Foods != ftg_update.CategoryName_of_Foods)
+                    //    {
+
+                    //        // Yeni Yemek eğer havuzda zaten varsa 
+                    //        if (await _icm.Any(x => x.CategoryName_of_Foods == ftg_update.CategoryName_of_Foods))
+                    //        {
+                    //            // eski veri tekrardan set edildi...
+                    //            HttpContext.Session.SetObject("manipulatedData_NameExist", old_cof);
+
+                    //            TempData["existinPool"] = fvm_post.FoodDTO.CategoryName_of_Foods;
+
+                    //            TempData["ValidError_NameExist"] = "valid";
+                    //            TempData["JavascriptToRun"] = "valid";
+
+                    //            old_ucj.Food_Status = fvm_post.UserFoodJunctionDTO.Food_Status;
+
+
+
+                    //            HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
+
+                    //            // ,{CurrentUser.Id}
+                    //            TempData["JSpopupPage"] = $"ShowErrorUpdateOperationPopup({fvm_post.FoodDTO.ID})"; // diğer paramaetre de eklenecek
+
+                    //            return RedirectToAction("FoodList_forMember", new { JSpopupPage = TempData["JSpopupPage"].ToString(), onlyOnce = "1" });
+                    //        }
+
+                    //        // Yeni Yemek eğer havuzda da yoksa 
+                    //        else
+                    //        {
+                    //            // yeni bir Yemek olarak eklenecek ... güncellenmeyecek
+                    //            await _icm.AddAsync(ftg_update);
+                    //            // _icm.Update(ctg);
+
+                    //            // usercategory olarak da eklenecek...
+                    //            ucj.AccessibleID = CurrentUser.AccessibleID;
+                    //            // ucj.AppUser.Id = CurrentUser.Id; erişilemiyor
+                    //            ucj.FoodID = ftg_update.ID;
+                    //            ucj.AppUser = CurrentUser; // IdentityUser'ın Id'si de tabloya eklnemiş oldu..
+
+                    //            await _iucjm.AddAsync(ucj);
+
+                    //            // builder.HasKey(x => new { x.AccessibleID, x.FoodID }); sayesinde 
+                    //            // _iucjm.Update_OldCategory_with_NewOne(CurrentUser.AccessibleID, old_categoryID, ucj); // await yok // IdentityUser'dan gelen Id (Guid tipli)
+
+                    //            // eski usercategory pasife alınacak...
+                    //            // _iucjm.Delete(old_ucj);
+
+
+
+                    //            UserFoodJunction UserFoodJunction = old_ucj.Adapt<UserFoodJunction>();
+
+                    //            UserFoodJunction.DataStatus = DataStatus.Deleted;
+                    //            UserFoodJunction.DeletedDate = DateTime.Now;
+                    //            UserFoodJunction.AccessibleID = CurrentUser.AccessibleID;
+                    //            UserFoodJunction.AppUser = CurrentUser;
+                    //            UserFoodJunction.Food_Status = ExistentStatus.Pasif;
+
+                    //            _iucjm.Delete_OldCategory_from_User(CurrentUser.AccessibleID, old_categoryID, UserFoodJunction);
+
+                    //            TempData["messageFood"] = "Yemek güncellendi";
+
+                    //            return RedirectToAction("FoodList_forMember", new { onlyOnce = "1" });
+
+                    //        }
+
+
+                    //    }
+
+                    //    else // eski Yemek old_cof.CategoryName_of_Foods == ftg_update.CategoryName_of_Foods
+                    //    {
+                    //        //old_ucj.AppUser.Id = CurrentUser.Id;
+
+                    //        //if (await _icm.Any(x => x.CategoryName_of_Foods == ftg_update.CategoryName_of_Foods) && await _iucjm.Any(x => x. == ftg_update.CategoryName_of_Foods))
+                    //        //{
+                    //        //    HttpContext.Session.SetObject("manipulatedData_NameExist", fvm_post.FoodDTO);
+
+                    //        //    TempData["ValidError_NameExist"] = "valid";
+                    //        //    TempData["JavascriptToRun"] = "valid";
+
+                    //        //    HttpContext.Session.SetObject("manipulatedData_Status", fvm_post.UserFoodJunctionDTO);
+
+                    //        //    // ,{CurrentUser.Id}
+                    //        //    TempData["JSpopupPage"] = $"ShowErrorUpdateOperationPopup({fvm_post.FoodDTO.ID})"; // diğer paramaetre de eklenecek
+
+                    //        //    return RedirectToAction("FoodList", new { JSpopupPage = TempData["JSpopupPage"].ToString() });
+                    //        //}
+
+
+                    //        // ucj tablosunda değişiklik var
+                    //        // if (old_ucj.Food_Status != fvm_post.UserFoodJunctionDTO.Food_Status) {
+
+                    //        // _iucjm.Update(ucj);
+                    //        // old_categoryID = fvm_post.FoodDTO.ID;
+
+                    //        ucj.DataStatus = DataStatus.Updated;
+                    //        ucj.ModifiedDate = DateTime.Now;
+                    //        ucj.AccessibleID = CurrentUser.AccessibleID;
+                    //        ucj.AppUser = CurrentUser;
+
+                    //        ucj.Food = fvm_post.FoodDTO.Adapt<Food>();
+                    //        ucj.FoodID = fvm_post.FoodDTO.ID;
+                    //        //  ucj.Food_Picture = "/FoodPicture/" + fileName;
+
+
+
+
+
+                    //        _iucjm.Update_UserCategoryJuncTable(CurrentUser.AccessibleID, fvm_post.FoodDTO.ID, ucj);
+                    //        TempData["messageFood"] = "Yemek güncellendi";
+
+                    //        // else { değişiklik olmadı mesajı }
+
+                    //        return RedirectToAction("FoodList_forMember", new { onlyOnce = "1" });
+
+                    //    }
+
+
+
+                    //}
+
+
+                }
+                // else --> validation olmayan kod kısmı
+                else
+                {
+                    // TempData["mesaj"] = "Yemek adı ve statü giriniz..";
+                    // ModelState.AddModelError("", "Ürün adı ve statü giriniz..");
+
+                    if (fvm_post.FoodDTO.ID == 0)
+                    {
+                        if (fvm_post.UserFoodJunctionDTO.Food_Status == 0)
+                        {
+                            TempData["ValidError_Status"] = "valid";
+
+                            if (!String.IsNullOrEmpty(fvm_post.FoodDTO.Food_Name))
+                            {
+                                HttpContext.Session.SetObject("manipulatedData_Name", fvm_post.FoodDTO);
+                            }
+
+                        }
+
+                        if (String.IsNullOrEmpty(fvm_post.FoodDTO.Food_Name) /* || fvm_post.FoodDTO.CategoryName_of_Foods.Lengt >= 128 */)
+                        {
+                            TempData["ValidError_Name"] = "valid";
+
+                            if (fvm_post.UserFoodJunctionDTO.Food_Status != 0)
+                            {
+                                HttpContext.Session.SetObject("manipulatedData_Status", fvm_post.UserFoodJunctionDTO);
+                            }
+                        }
+                    }
+                    // *!*
+                    //else// update için olan validation error
+                    //{
+                    //    if (fvm_post.UserFoodJunctionDTO.Food_Status == 0)
+                    //    {
+                    //        TempData["ValidError_Status"] = "valid";
+
+                    //        if (!String.IsNullOrEmpty(fvm_post.FoodDTO.CategoryName_of_Foods))
+                    //        {
+                    //            // girdiği isim kayıtlarda yoksa (havuzda) ve girdiği ismi tutmak için
+                    //            if (await _icm.Any(x => x.CategoryName_of_Foods == fvm_post.FoodDTO.CategoryName_of_Foods))
+                    //            {
+                    //                TempData["categoryinPool"] = $"{fvm_post.FoodDTO.CategoryName_of_Foods}" + ", Yemek havuzda mevcuttur. Oradan ekleye bilirsiniz.";
+
+                    //            }
+
+                    //            /*
+                    //            else //  ama girdiği isim havuzda varsa hata döner..
+                    //            // girdiği isim kayıtlarda yoksa (havuzda) ve girdiği ismi tutmak için
+                    //            {
+                    //                old_cof.CategoryName_of_Foods = fvm_post.FoodDTO.CategoryName_of_Foods;
+                    //            }
+                    //            */
+
+                    //            HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
+                    //        }
+                    //        // ... Aşağıda zaten yapıyor bu işlemi 
+                    //        //else 
+                    //        //{
+                    //        //    HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
+                    //        //    TempData["emptyNameData"] = "İsim Boş bırakılamaz";
+
+                    //        //}
+
+                    //        HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
+                    //        TempData["emptyStatusData"] = "Statu Boş bırakılamaz";
+
+
+                    //    }
+
+                    //    if (String.IsNullOrEmpty(fvm_post.FoodDTO.CategoryName_of_Foods) /* || fvm_post.FoodDTO.CategoryName_of_Foods.Lengt >= 128 */)
+                    //    {
+                    //        TempData["ValidError_Name"] = "valid";
+
+                    //        if (fvm_post.UserFoodJunctionDTO.Food_Status != 0)
+                    //        {
+                    //            old_ucj.Food_Status = fvm_post.UserFoodJunctionDTO.Food_Status;
+
+                    //            HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
+                    //        }
+                    //        //else ... Yukarıda zaten yapıyor bu işlemi 
+                    //        //{
+                    //        //    HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
+                    //        //    TempData["emptyStatusData"] = "Statu Boş bırakılamaz";
+
+                    //        //}
+
+
+                    //        //  fvm_post.FoodDTO.CategoryName_of_Foods.Lengt >= 128  ileride bu durumun kontrolü için --> await _icm.Any(x => x.CategoryName_of_Foods != fvm_post.FoodDTO.CategoryName_of_Foods) gerek olmayabilir ama olabilirde 
+
+
+                    //        HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
+                    //        TempData["emptyNameData"] = "İsim Boş bırakılamaz";
+
+                    //    }
+
+                    //}
+
+
+                    FoodVM fVM = new FoodVM();
+
+                    TempData["JavascriptToRun"] = "valid";
+
+                    // !*!
+                    if (fvm_post.FoodDTO.ID != 0) //update
+                    {
+                        // ,{CurrentUser.Id}
+                        fVM.JavascriptToRun = $"ShowErrorUpdateOperationPopup({fvm_post.FoodDTO.ID})";
+                        return RedirectToAction("FoodList_forMember", new { JSpopupPage = fVM.JavascriptToRun, onlyOnce = "1" });
+
+                    }
+                    else // add // (pvm_post.FoodDTO.ID == 0) 
+                    {
+                        // pvm.JavascriptToRun = $"ShowErrorPopup( {pvm_post.FoodDTO} )";
+
+                        // pvm.JavascriptToRun = $"ShowErrorInsertOperationPopup()";
+
+                        TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
+                        return RedirectToAction("FoodList_forMember", new { JSpopupPage = TempData["JSpopupPage"].ToString(), onlyOnce = "1" });
+
+                    }
+
+
+                } //  validation olmayan kod kısmının sonu
+
+            }
+            // *!*
+            else
+            {
+            //    IEnumerable<object> ucj = null;
+            //    Guid new_userID = CurrentUser.Id;
+            //    List<UserFoodJunction> ucj_Delete = new List<UserFoodJunction>();
+
+
+            //    ucj = await _iufjm.Get_ByUserID_with_CategoryID_Async(new_userID, fvm_post.FoodDTO.ID);
+            //    ucj_Delete = ucj.Adapt<IEnumerable<UserFoodJunction>>().ToList();
+
+
+            //    ucj = await _iufjm.Get_ByUserID_with_CategoryID_Async(new_userID, fvm_post.FoodDTO.ID);
+            //    ucj_Delete = ucj.Adapt<IEnumerable<UserFoodJunction>>().ToList();
+
+            //    UserFoodJunction UserFoodJunction = new UserFoodJunction();
+
+            //    UserFoodJunction.FoodID = fvm_post.FoodDTO.ID;
+            //    UserFoodJunction.DataStatus = DataStatus.Deleted;
+            //    UserFoodJunction.DeletedDate = DateTime.Now;
+            //    UserFoodJunction.AccessibleID = CurrentUser.AccessibleID;
+            //    UserFoodJunction.AppUser = CurrentUser;
+            //    UserFoodJunction.Food_Status = ExistentStatus.Pasif;
+
+            //    _iufjm.Delete_OldCategory_from_User(CurrentUser.AccessibleID, fvm_post.FoodDTO.ID, UserFoodJunction);
+
+            //    // _iucjm.Delete(ucj_Delete[0]);
+            //    // _iucjm.Delete(ucj_Delete.FirstOrDefault());
+
+            //    TempData["messageFood"] = "Yemek listenizden silindi";
+            //    TempData["Deleted"] = null;
+
+                //return RedirectToAction("FoodList_forMember", new { onlyOnce = "1" });
+
+            }
+
+
+            // sonra kaldır 
+            return RedirectToAction("FoodList_forMember", new { onlyOnce = "1" });
+
+        }
+
 
 
     }

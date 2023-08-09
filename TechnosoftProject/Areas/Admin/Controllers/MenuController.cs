@@ -160,7 +160,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
             for (int i = 0; i < FoodList.Count; i++)
             {
-                food_items.Add(FoodList[i].ID,FoodList[i].FoodName);
+                food_items.Add(FoodList[i].ID,FoodList[i].Food_Name);
             }
 
             ///////////////////////////////////////////////

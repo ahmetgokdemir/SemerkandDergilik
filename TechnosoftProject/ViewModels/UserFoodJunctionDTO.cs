@@ -7,6 +7,7 @@ namespace Technosoft_Project.ViewModels
     {
         [Display(Name = "Yemek Fiyat")]
         [Required(ErrorMessage = "Yemek fiyat giriniz.")]
+        [Range(1, 1000000000000)]
         public float Food_Price { get; set; }
 
 

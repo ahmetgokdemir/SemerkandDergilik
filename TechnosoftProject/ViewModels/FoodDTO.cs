@@ -9,10 +9,13 @@ namespace Technosoft_Project.ViewModels
         public short ID { get; set; }
 
         [Required(ErrorMessage = "Yemek ismi gereklidir.")]
-        [Display(Name = "Ürün Adı")]
-        public string FoodName { get; set; }
+        [Display(Name = "Yemek Adı")]
+        public string Food_Name { get; set; }
 
 
+        // sonra yoruma al... !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // sonra yoruma al... !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // sonra yoruma al... !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         [Required(ErrorMessage = "Yemek fiyatı giriniz.")]
         [Display(Name = "Ürün Fiyat")]
         [Range(1, 1000000000000)]

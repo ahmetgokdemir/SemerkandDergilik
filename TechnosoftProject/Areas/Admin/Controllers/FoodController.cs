@@ -169,7 +169,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             {
                 TempData["HttpContext"] = null;
 
-                if (string.IsNullOrEmpty(pvm.FoodDTO.FoodName))
+                if (string.IsNullOrEmpty(pvm.FoodDTO.Food_Name))
                 {
                     ModelState.AddModelError("FoodDTO.FoodName", "Ürün adı giriniz.");
                 }
@@ -291,7 +291,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             {
                 TempData["HttpContext"] = null;
 
-                if (string.IsNullOrEmpty(pvm.FoodDTO.FoodName))
+                if (string.IsNullOrEmpty(pvm.FoodDTO.Food_Name))
                 {
                     ModelState.AddModelError("FoodDTO.FoodName", "Ürün adı giriniz.");
                 }
@@ -337,7 +337,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
             };
 
             ViewBag.CRUD = "delete_operation";
-            ViewBag.FoodNameDelete = pvm.FoodDTO.FoodName;
+            ViewBag.FoodNameDelete = pvm.FoodDTO.Food_Name;
 
             return PartialView("_CrudFoodPartial", pvm);
         }

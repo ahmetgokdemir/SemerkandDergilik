@@ -1,7 +1,7 @@
-﻿@model CategoryofFoodVM
+﻿@model FoodVM
 
 @{
-    ViewData["Title"] = "CategoryofFoodListforMember";
+    ViewData["Title"] = "FoodListforMember";
     if (TempData["onlyOnce"] == null)
     {
         Layout = null;
@@ -9,9 +9,9 @@
     else
     {
         TempData["onlyOnce"] = null;
-        Layout = "~/Views/CategoryofFood/_CategoryofFoodLayout.cshtml";
+        Layout = "~/Views/Food/_FoodLayout.cshtml";
     }
-    //Layout = "~/Views/CategoryofFood/_CategoryofFoodLayout.cshtml";
+    //Layout = "~/Views/Food/_FoodLayout.cshtml";
 }
 
 <style>
@@ -49,19 +49,19 @@
 <hr class="loader" />
 
 
-@if (Model.UserCategoryJunctionDTOs.Count == 0)
+@if (Model.UserFoodJunctionDTOs.Count == 0)
 {
     <div class="jumbotron" id="tab1" style="padding:20px;  background-color:lightgrey">
         @*<input type="submit" id="btnIslemYap" value="İşlem Yap" />*@
 
-        <button class="btn btn-outline-success " id="addNewCategoryofFood" value="addNewCategoryofFoodValue">Kategori Eklemek için tıklayınız</button>
+        <button class="btn btn-outline-success " id="addNewFood" value="addNewFoodValue">Yemek Eklemek için tıklayınız</button>
     </div>
 
 }
 else
 {
     <div id="tab1" class="mb-3" style=" display: inline; margin-right: 25px;">
-        <button class="btn btn-outline-success " id="addNewCategoryofFood" value="addNewCategoryofFoodValue">Kategori Eklemek için tıklayınız</button>
+        <button class="btn btn-outline-success " id="addNewFood" value="addNewFoodValue">Yemek Eklemek için tıklayınız</button>
     </div>
 
     <br />
@@ -74,44 +74,52 @@ else
                 <thead class="thead-light">
                     <tr>
                         <th>Index</th>
-                        <th class="position"><p>Kategori İsmi</p></th>
+                        <th class="position"><p>Yemek İsmi</p></th>
+                        <th class="position"><p>Fiyat</p></th>
                         <th class="position"><p>Durum</p></th>
+                        <th class="position"><p>Açıklama</p></th>
                         <th class="position"><p>Resim</p></th>
                         <th></th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (UserCategoryJunctionDTO item in Model.UserCategoryJunctionDTOs)
+                    @foreach (UserFoodJunctionDTO item in Model.UserFoodJunctionDTOs)
                     {
-                        int CategoryofFood_status = (int)item.CategoryofFood_Status;  // asp-route-status="@(int)item.Status" olmuyor...
+                        int Food_status = (int)item.Food_Status;  // asp-route-status="@(int)item.Status" olmuyor...
 
                         <tr>
                             <td></td>
                             <td class="position">
-                                <p>@item.CategoryName_of_Foods</p>
+                                <p>@item.Food_Name</p>
                             </td>
                             <td class="position">
-                                <p>@item.CategoryofFood_Status</p>
+                                <p>@item.Food_Price</p>
                             </td>
-                            @*<td colspan="2" style="padding-left:150px">@item.CategoryofFoodPicture</td>*@
+                            <td class="position">
+                                <p>@item.Food_Status</p>
+                            </td>
+                            <td class="position">
+                                <p>@item.Food_Description</p>
+                            </td>
+                            @*<td colspan="2" style="padding-left:150px">@item.FoodPicture</td>*@
                             <td style="text-align: center;">
-                                @if (item.CategoryofFood_Picture != null)
+                                @if (item.Food_Picture != null)
                                 {
-                                    <img style="width:85px; height:40px" src="@item.CategoryofFood_Picture" />
+                                    <img style="width:85px; height:40px" src="@item.Food_Picture" />
                                 }
                             </td>
                             <td class="btnposition">
-                                @*<a asp-action="UpdateCategoryofFood" asp-controller="CategoryofFood" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
-                                <button class="btn btn-warning" id="updateCategoryofFood" value="updateCategoryofFoodValue" data-categoryID=@item.CategoryofFoodID data-userID=@item.AppUserId>
+                                @*<a asp-action="UpdateFood" asp-controller="Food" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
+                                <button class="btn btn-warning" id="updateFood" value="updateFoodValue" data-FoodID=@item.FoodID data-userID=@item.AppUserId>
                                     Güncelle
                                 </button>
 
                             </td>
                             <td class="btnposition">
-                                @*<a asp-action="DeleteCategoryofFood" asp-controller="CategoryofFood" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
+                                @*<a asp-action="DeleteFood" asp-controller="Food" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
 
-                                <button class="btn btn-danger" id="deleteCategoryofFood" value="deleteCategoryofFoodValue" data-categoryID=@item.CategoryofFoodID>Sil</button>
+                                <button class="btn btn-danger" id="deleteFood" value="deleteFoodValue" data-FoodID=@item.FoodID>Sil</button>
                             </td>
                         </tr>
                     }
@@ -122,7 +130,7 @@ else
 }
 
 
-<div class="modal fade" id="CRUDCategoryofFoodModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="CRUDFoodModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -130,7 +138,7 @@ else
                 <h4 class="modal-title"></h4>
             </div>
 
-            <div class="modal-body" id="CRUDCategoryofFood">
+            <div class="modal-body" id="CRUDFood">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
@@ -140,7 +148,7 @@ else
 </div>
 
 
-<div class="modal fade" id="LoadingCategoryofFoodModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="LoadingFoodModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -148,7 +156,7 @@ else
                 <h4 class="modal-title"></h4>
             </div>
 
-            <div class="modal-body" id="CRUDCategoryofFood">
+            <div class="modal-body" id="CRUDFood">
                 <div class="spinner-border" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
@@ -166,51 +174,51 @@ else
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/alertify.min.css" />
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/themes/default.min.css" />
 
-@if (TempData["messageCategoryofFood"] != null) // konrol yapılmazsa messageCategoryofFood null olduğu zaman .ToString() 'de hata verir..
+@if (TempData["messageFood"] != null) // konrol yapılmazsa messageFood null olduğu zaman .ToString() 'de hata verir..
 {
-    @if (TempData["messageCategoryofFood"].ToString() == "Kategori güncellendi")
+    @if (TempData["messageFood"].ToString() == "Yemek güncellendi")
     {
 
         <script>
-            alertify.warning("Kategori güncellendi");
+            alertify.warning("Yemek güncellendi");
         </script>
     }
-    else if (TempData["messageCategoryofFood"].ToString() == "Kategori silindi")
+    else if (TempData["messageFood"].ToString() == "Yemek silindi")
     {
 
         <script>
-            alertify.error("Kategori silindi");
+            alertify.error("Yemek silindi");
         </script>
     }
-    else if (TempData["messageCategoryofFood"].ToString() == "Kategori eklendi")
+    else if (TempData["messageFood"].ToString() == "Yemek eklendi")
     {
 
         <script>
-            alertify.success("Kategori eklendi");
+            alertify.success("Yemek eklendi");
         </script>
     }
 
-    TempData["messageCategoryofFood"] = null;
+    TempData["messageFood"] = null;
 
 }
-else if (TempData["messageCategoryofFood_InOtherUsersList"] != null)
+else if (TempData["messageFood_InOtherUsersList"] != null)
 {
-    string result_Message = TempData["messageCategoryofFood_InOtherUsersList"].ToString();
-    if (TempData["messageCategoryofFood_InOtherUsersList"].ToString() == "Başarılı")
+    string result_Message = TempData["messageFood_InOtherUsersList"].ToString();
+    if (TempData["messageFood_InOtherUsersList"].ToString() == "Başarılı")
     {
         <script>
-            alertify.success("Kategori listenize eklendi");
+            alertify.success("Yemek listenize eklendi");
         </script>
     }
     else
     {
            <script>
-                    alertify.success("Kategori listenize eklenemedi");
+                    alertify.success("Yemek listenize eklenemedi");
         </script>
 
     }
 
-    TempData["messageCategoryofFood_InOtherUsersList"] = null;
+    TempData["messageFood_InOtherUsersList"] = null;
 }
 
 
@@ -243,7 +251,7 @@ else if (TempData["messageCategoryofFood_InOtherUsersList"] != null)
             });
         }).draw();
 
-        $("#flexSwitchCheckText").text("Giriş...Havuzdaki diğer kategoriler");
+        $("#flexSwitchCheckText").text("Havuzdaki diğer Yemekler");
         document.getElementById("flexSwitchCheckDefault").checked = false;
 
     });
@@ -260,13 +268,13 @@ else if (TempData["messageCategoryofFood_InOtherUsersList"] != null)
 
             $.ajax({
                 //url: '@@Url.Action("AddFoodAjax","Food")',
-                url: 'AddCategoryofFoodAjax',
+                url: 'AddFoodAjax',
                 //data: { pdto_reloaddata: @@Model.FoodDTO },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#CRUDCategoryofFood").html(data);
-                    CRUDCategoryofFoodModalLoaded();
+                    $("#CRUDFood").html(data);
+                    CRUDFoodModalLoaded();
 
                 },
                 beforeSend: function () {
@@ -287,13 +295,13 @@ else if (TempData["messageCategoryofFood_InOtherUsersList"] != null)
 
         $.ajax({
             //url: '@@Url.Action("AddFoodAjax","Food")',
-            url: 'UpdateCategoryofFoodAjax',
-            data: { categoryID: _id },
+            url: 'UpdateFoodAjax',
+            data: { FoodID: _id },
             type: 'GET',
             dataType: 'html',
             success: function (data) {
-                $("#CRUDCategoryofFood").html(data);
-                CRUDCategoryofFoodModalLoaded();
+                $("#CRUDFood").html(data);
+                CRUDFoodModalLoaded();
 
             },
             beforeSend: function () {
@@ -309,22 +317,21 @@ else if (TempData["messageCategoryofFood_InOtherUsersList"] != null)
 
     }
 
-    function CRUDCategoryofFoodModalLoaded() {
-        $("#CRUDCategoryofFoodModal").modal('show'); // #CRUDCategoryofFoodModal içinde CRUDCategoryofFood var (<div class="modal-body" id="CRUDCategoryofFood">) onun içinde de data var (_CrudCategoryofFoodPartial)
+    function CRUDFoodModalLoaded() {
+        $("#CRUDFoodModal").modal('show'); // #CRUDFoodModal içinde CRUDFood var (<div class="modal-body" id="CRUDFood">) onun içinde de data var (_CrudFoodPartial)
     }
 
 
     $(function () {
-        //$("#addNewCategoryofFood").click(function () {
-        $("#tab1").on("click", "[value=addNewCategoryofFoodValue]", function () {
+        $("#tab1").on("click", "[value=addNewFoodValue]", function () {
             $.ajax({
-                //url: '@@Url.Action("AddCategoryofFoodAjax","CategoryofFood")',
-                url: 'AddCategoryofFoodAjax',
+                //url: '@@Url.Action("AddFoodAjax","Food")',
+                url: 'AddFoodAjax',
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#CRUDCategoryofFood").html(data);
-                    CRUDCategoryofFoodModalLoaded();
+                    $("#CRUDFood").html(data);
+                    CRUDFoodModalLoaded();
 
                 },
                 beforeSend: function () {
@@ -341,25 +348,25 @@ else if (TempData["messageCategoryofFood_InOtherUsersList"] != null)
     });
 
     $(function () {
-        //$("#updateCategoryofFood").click(function () {
+        //$("#updateFood").click(function () {
         // , userID: $(this).attr("data-userID")
-        $("#tab2").on("click", "[value=updateCategoryofFoodValue]", function () {
+        $("#tab2").on("click", "[value=updateFoodValue]", function () {
             $.ajax({
-                //url: '@@Url.Action("AddCategoryofFoodAjax","CategoryofFood")',
-                url: 'UpdateCategoryofFoodAjax',
-                data: { categoryID: $(this).attr("data-categoryID") },
+                //url: '@@Url.Action("AddFoodAjax","Food")',
+                url: 'UpdateFoodAjax',
+                data: { FoodID: $(this).attr("data-FoodID") },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#CRUDCategoryofFood").html(data);
-                    CRUDCategoryofFoodModalLoaded();
+                    $("#CRUDFood").html(data);
+                    CRUDFoodModalLoaded();
 
                 },
                 beforeSend: function () {
-                    $("#LoadingCategoryofFoodModal").modal('show');
+                    $("#LoadingFoodModal").modal('show');
                 },
                 complete: function () {
-                    $("#LoadingCategoryofFoodModal").modal('hide');
+                    $("#LoadingFoodModal").modal('hide');
 
                     // $('.loader').hide(); //Hide this loader
                 },
@@ -373,17 +380,17 @@ else if (TempData["messageCategoryofFood_InOtherUsersList"] != null)
 
     $(function () {
 
-        $("#tab2").on("click", "[value=deleteCategoryofFoodValue]", function () {
+        $("#tab2").on("click", "[value=deleteFoodValue]", function () {
             $.ajax({
-                //url: '@@Url.Action("AddCategoryofFoodAjax","CategoryofFood")',
-                url: 'DeleteCategoryofFoodAjax',
-                // data: { categoryID: $(this).attr("data-categoryID") },
-                data: { categoryID: $(this).attr("data-categoryID") },
+                //url: '@@Url.Action("AddFoodAjax","Food")',
+                url: 'DeleteFoodAjax',
+                // data: { FoodID: $(this).attr("data-FoodID") },
+                data: { FoodID: $(this).attr("data-FoodID") },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#CRUDCategoryofFood").html(data);
-                    CRUDCategoryofFoodModalLoaded();
+                    $("#CRUDFood").html(data);
+                    CRUDFoodModalLoaded();
 
                 },
                 error: function () {
