@@ -140,7 +140,7 @@ namespace Technosoft_Project.Controllers
                 TempData["ValidError_Status"] = null;
             }
 
-            FoodVM cVM = new FoodVM
+            FoodVM fVM = new FoodVM
             {
                 UserFoodJunctionDTO = ufjDTO,
                 FoodDTO = fDTO
@@ -153,7 +153,7 @@ namespace Technosoft_Project.Controllers
 
             Thread.Sleep(500); // pop-up sayfasını tekrar açmayı tetikleyince bazen gelmiyor o yüzden bu kod eklendi..
 
-            return PartialView("_CrudFood_Partial", cVM);
+            return PartialView("_CrudFood_Partial", fVM);
         }
 
         [Route("CRUDFood")]
@@ -188,7 +188,13 @@ namespace Technosoft_Project.Controllers
                 ModelState.Remove("ExistentStatus");
                 ModelState.Remove("_FoodPicture"); // IFormFile _FoodPicture İÇİN
                 ModelState.Remove("FoodDTO.ExistentStatus");
-                ModelState.Remove("UserFoodJunctionDTO.CategoryName_of_Foods");
+                // ModelState.Remove("UserFoodJunctionDTO.CategoryName_of_Foods");
+
+                // DÜZENLENMESİ GEREKİYOR  --> FoodDTO.cs 
+                ModelState.Remove("UserFoodJunctionDTO.Food_Name");
+                ModelState.Remove("FoodDTO.Food_Name");
+                ModelState.Remove("FoodDTO.FoodPrice");
+
 
                 if (ModelState.IsValid)
                 {
@@ -196,7 +202,7 @@ namespace Technosoft_Project.Controllers
                     Food ftg_update = null;
                     short old_categoryID = 0;
 
-                    if (fvm_post.FoodDTO.ID == 0)
+                    if (fvm_post.UserFoodJunctionDTO.FoodID == 0)
                     {
                         ftg_add = fvm_post.FoodDTO.Adapt<Food>();
 
