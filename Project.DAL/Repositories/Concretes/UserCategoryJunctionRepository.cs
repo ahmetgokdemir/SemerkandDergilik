@@ -89,29 +89,34 @@ namespace Project.DAL.Repositories.Concretes
                 .Where(x=> x.AppUser.Id == userID && x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).AsQueryable();
 
             List<CategoryofFood> category_not_exits_in_MyList = new List<CategoryofFood>();
-
+            bool ignore_Item = false;
 
             foreach (short othersCategoryofFoodIDs in others.Select(x=> x.CategoryofFoodID))
             {
                 foreach (UserCategoryJunction mine in mines)
                 {
-                    if (mine.CategoryofFoodID == othersCategoryofFoodIDs)
+                    if (othersCategoryofFoodIDs == mine.CategoryofFoodID)
                     {
                         // bende de var demektir çık dönğüden
-                        continue;                
+                        // continue;
+                        ignore_Item = true;
                     }
                     else
                     {
-                        break; 
-
-
+                        // break;
+                        continue;
                     }
                     
-                }
 
+                }
+                if (ignore_Item == false)
+                {
+                    CategoryofFood cof2 = _context.Set<CategoryofFood>().Where(x => x.ID == othersCategoryofFoodIDs).FirstOrDefault();
+                    allList_notexist.Add(cof2);
+                    
+                }
                 // continue buraya gelmneli
-                CategoryofFood cof2 = _context.Set<CategoryofFood>().Where(x => x.ID == othersCategoryofFoodIDs).FirstOrDefault();
-                allList_notexist.Add(cof2);
+                ignore_Item = false;
 
                 /*
                  
