@@ -80,30 +80,29 @@ namespace Project.DAL.Repositories.Concretes
 
 
 
-
+            // diğer kullanıcıların listeleri (1)
             List<UserCategoryJunction> others = _context.Set<UserCategoryJunction>()
                 .Where(x => (x.AppUser.Id != userID)).ToList();
 
-
+            // (1) diğer kullanıclarda olup, userda da olanlar olabilir bunlar (2)de çıkarılmalı
             IQueryable<object> mines = _context.Set<UserCategoryJunction>()
                 .Where(x=> x.AppUser.Id == userID && x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).AsQueryable();
-
-            List<CategoryofFood> category_not_exits_in_MyList = new List<CategoryofFood>();
+            
             bool ignore_Item = false;
 
+            // (2) çıkarma işlemi...
             foreach (short othersCategoryofFoodIDs in others.Select(x=> x.CategoryofFoodID))
             {
                 foreach (UserCategoryJunction mine in mines)
                 {
                     if (othersCategoryofFoodIDs == mine.CategoryofFoodID)
                     {
-                        // bende de var demektir çık dönğüden
-                        // continue;
+                        // kullanıcıda da var demektir çık dönğüden
                         ignore_Item = true;
+                        //break;
                     }
                     else
                     {
-                        // break;
                         continue;
                     }
                     
@@ -112,34 +111,22 @@ namespace Project.DAL.Repositories.Concretes
                 if (ignore_Item == false)
                 {
                     CategoryofFood cof2 = _context.Set<CategoryofFood>().Where(x => x.ID == othersCategoryofFoodIDs).FirstOrDefault();
-                    allList_notexist.Add(cof2);
+
+                    if (cof2 != null)
+                    {
+                        // önceden diğer kullanıcılardan alıp da sildiği varsa user'ın tekrar listeye eklemesin
+                        if (!allList_notexist.Contains(cof2))
+                        {
+                            allList_notexist.Add(cof2);
+                        }
+                    }
                     
                 }
-                // continue buraya gelmneli
+
                 ignore_Item = false;
 
-                /*
-                 
-                    CategoryofFood cof2 = _context.Set<CategoryofFood>().Where(x => x.ID == othersCategoryofFoodIDs).FirstOrDefault();
-                    allList_notexist.Add(cof2);
-                 */
 
-                // bende yok demektir listeye ekle
-                //category_not_exits_in_MyList[sayac].ID = othersCategoryofFoodIDs;
-                //++sayac;
             }
-
-
-            //List<CategoryofFood> otherlist_notexist_in_MyList =  new List<CategoryofFood>();
-
-            //foreach (CategoryofFood not_exist in category_not_exits_in_MyList)
-            //{
-            //    otherlist_notexist_in_MyList = _context.Set<CategoryofFood>().Where(x => x.ID == not_exist.ID).ToList();
-            //}
-
-
-
-            //allList_notexist.Concat(mydeletedList2);
 
             return allList_notexist;
         }
