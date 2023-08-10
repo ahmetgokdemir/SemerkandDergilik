@@ -273,9 +273,9 @@ namespace Technosoft_Project.Controllers
                 old_ufj = HttpContext.Session.GetObject<UserFoodJunctionDTO>("will_be_deleted_UserFoodJuncData");
 
                 old_fd = new FoodDTO();
-                old_fd = HttpContext.Session.GetObject<FoodDTO>("willbedeletedFoodData");
+                old_fd = HttpContext.Session.GetObject<FoodDTO>("will_be_deleted_FoodData");
 
-                HttpContext.Session.SetObject("will_be_deleted_FoodData", null);
+                HttpContext.Session.SetObject("will_be_deleted_UserFoodJuncData", null);
                 HttpContext.Session.SetObject("will_be_deleted_FoodData", null);
 
             }
@@ -303,7 +303,7 @@ namespace Technosoft_Project.Controllers
                     Food fd_update = null;
                     short old_foodID = 0;
 
-                    if (fvm_post.UserFoodJunctionDTO.FoodID == 0)
+                    if (fvm_post.FoodDTO.ID == 0)
                     {
                         fd_add = fvm_post.FoodDTO.Adapt<Food>();
                     }
