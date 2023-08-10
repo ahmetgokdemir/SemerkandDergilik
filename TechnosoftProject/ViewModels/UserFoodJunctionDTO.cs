@@ -30,8 +30,9 @@ namespace Technosoft_Project.ViewModels
         public Guid AppUserId { get; set; }
 
 
-        [Required(ErrorMessage = "Yemek ismi giriniz.")]
         [Display(Name = "Yemek Adı")]
+        [MaxLength(128, ErrorMessage = "Yemek en fazla 128 karakterli olmalıdır.")]
+        [Required(ErrorMessage = "Yemek ismi giriniz.")]
         public string Food_Name { get; set; }
     }
 }

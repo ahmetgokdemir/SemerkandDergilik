@@ -8,8 +8,9 @@ namespace Technosoft_Project.ViewModels
     {
         public short ID { get; set; }
 
-        [Required(ErrorMessage = "Yemek ismi gereklidir.")]
         [Display(Name = "Yemek Adı")]
+        [Required(ErrorMessage = "Yemek ismi gereklidir.")]
+        [MaxLength(128, ErrorMessage = "Yemek en fazla 128 karakterli olmalıdır.")]
         public string Food_Name { get; set; }
 
 
@@ -18,7 +19,7 @@ namespace Technosoft_Project.ViewModels
         // sonra yoruma al... !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         [Required(ErrorMessage = "Yemek fiyatı giriniz.")]
         [Display(Name = "Ürün Fiyat")]
-        [Range(1, 1000000000000)]
+        [Range(1, 1000)]
         public decimal FoodPrice { get; set; } // FoodConfiguration.cs'de money'e çevrilmeli.. 
 
         
@@ -44,7 +45,7 @@ namespace Technosoft_Project.ViewModels
 
 
         [Display(Name = "Durum")]
-        [Required(ErrorMessage = "Yemek durumunu giriniz.")]
+        [Required(ErrorMessage = "Yemek durumunu gereklidir.")]
         public ExistentStatus _ExistentStatus { get; set; } // Aktif, Pasif
 
 

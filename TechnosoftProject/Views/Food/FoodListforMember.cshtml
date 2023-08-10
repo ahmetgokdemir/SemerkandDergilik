@@ -76,9 +76,9 @@ else
                         <th>Index</th>
                         <th class="position"><p>Yemek İsmi</p></th>
                         <th class="position"><p>Fiyat</p></th>
+                        <th class="position"><p>Resim</p></th>
                         <th class="position"><p>Durum</p></th>
                         <th class="position"><p>Açıklama</p></th>
-                        <th class="position"><p>Resim</p></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -99,16 +99,17 @@ else
                             <td class="position">
                                 <p>@item.Food_Status</p>
                             </td>
-                            <td class="position">
-                                <p>@item.Food_Description</p>
-                            </td>
-                            @*<td colspan="2" style="padding-left:150px">@item.FoodPicture</td>*@
                             <td style="text-align: center;">
                                 @if (item.Food_Picture != null)
                                 {
                                     <img style="width:85px; height:40px" src="@item.Food_Picture" />
                                 }
                             </td>
+                            <td class="position">
+                                <p>@item.Food_Description</p>
+                            </td>
+                            @*<td colspan="2" style="padding-left:150px">@item.FoodPicture</td>*@
+
                             <td class="btnposition">
                                 @*<a asp-action="UpdateFood" asp-controller="Food" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
                                 <button class="btn btn-warning" id="updateFood" value="updateFoodValue" data-FoodID=@item.FoodID data-userID=@item.AppUserId>

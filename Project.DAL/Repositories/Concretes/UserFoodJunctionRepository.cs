@@ -31,9 +31,11 @@ namespace Project.DAL.Repositories.Concretes
                 .Select(x => new
                 {
                     Food_Name = x.Food.Food_Name,
-                    Food_Picture = x.Food_Picture,
+                    Food_Price = x.Food_Price,
                     Food_Status = x.Food_Status,
-                    AppUserId = x.AppUser.Id, // ID (IdentityUser'den gelir ve erişilemez onun yerine AppUser dan id e erişilir)
+                    Food_Picture = x.Food_Picture,
+                    Food_Description = x.Food_Description,
+                    // AppUserId = x.AppUser.Id, // ID (IdentityUser'den gelir ve erişilemez onun yerine AppUser dan id e erişilir)
                     FoodID = x.FoodID
 
 
