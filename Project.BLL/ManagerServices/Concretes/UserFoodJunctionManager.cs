@@ -43,6 +43,23 @@ namespace Project.BLL.ManagerServices.Concretes
             return getfoodItem_byUserID;
         }
 
+        public async void Delete_OldFood_from_User(Guid accessibleID, short old_foodID, UserFoodJunction passive_UserFoodJunction)
+        {
+            _iufjrep.Delete_OldFood_from_User_Repo(accessibleID, old_foodID, passive_UserFoodJunction);
+
+            //if (found_Item == null)
+            //{
+            //    return null;
+            //}
+
+            //return found_Item;
+        }
+
+        public async void Update_UserFoodJuncTable(Guid accessibleID, short food_ID, UserFoodJunction ufj)
+        {
+            _iufjrep.Update_UserFoodJuncTable_Repo(accessibleID, food_ID, ufj);
+
+        }
 
         /* 
          
@@ -60,25 +77,8 @@ namespace Project.BLL.ManagerServices.Concretes
 
 
 
-        
-        public async void Delete_OldCategory_from_User(Guid accessibleID, short old_categoryID, UserCategoryJunction old_ucj)
-        {
-            _iucjrep.Delete_OldCategory_from_User_Repo(accessibleID, old_categoryID, old_ucj);
-
-            //if (found_Item == null)
-            //{
-            //    return null;
-            //}
-
-            //return found_Item;
-        }
-
-        public async void Update_UserCategoryJuncTable(Guid accessibleID, short categoryofFood_ID, UserCategoryJunction ucj)
-        {
-            _iucjrep.Update_UserCategoryJuncTable_Repo(accessibleID, categoryofFood_ID, ucj);
 
 
-        }
 
         public async Task<string> Control_IsExisted_InMyListBefore_Async(Guid userID, short categoryID, AppUser _userInfo)
         {

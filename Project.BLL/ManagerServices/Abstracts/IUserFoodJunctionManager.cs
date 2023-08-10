@@ -9,16 +9,16 @@ namespace Project.BLL.ManagerServices.Abstracts
 {
     public interface IUserFoodJunctionManager : IManager<UserFoodJunction>
     {
-        Task<IEnumerable<object>> Get_ByUserID_Async(Guid userID);
-
-            
+        Task<IEnumerable<object>> Get_ByUserID_Async(Guid userID);            
                 
         Task<IEnumerable<object>> Get_ByUserID_with_FoodID_Async(Guid userID, short foodID);
+
+        void Delete_OldFood_from_User(Guid accessibleID, short old_foodID, UserFoodJunction passive_UserFoodJunction);
+
+        void Update_UserFoodJuncTable(Guid accessibleID, short food_ID, UserFoodJunction ufj);
+
         /*
-        void Delete_OldCategory_from_User(Guid accessibleID, short old_categoryID, UserCategoryJunction old_ucj);
-
-        void Update_UserCategoryJuncTable(Guid accessibleID, short categoryofFood_ID, UserCategoryJunction ucj);
-
+         * 
         Task<List<CategoryofFood>> Get_ByAll_exceptUserID_Async(Guid userID);
 
         Task<string> Control_IsExisted_InMyListBefore_Async(Guid userID, short categoryID, AppUser _userInfo);       

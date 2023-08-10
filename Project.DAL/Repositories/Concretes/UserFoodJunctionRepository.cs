@@ -71,6 +71,59 @@ namespace Project.DAL.Repositories.Concretes
             return getfoodItem_byUserID;
         }
 
+        public async void Delete_OldFood_from_User_Repo(Guid accessibleID, short old_foodID, UserFoodJunction passive_UserFoodJunction)
+        {
+            /*ucj.DataStatus = ENTITIES.Enums.DataStatus.Updated;
+            ucj.ModifiedDate = DateTime.Now;*/
+
+
+            // T toBeUpdated = Find(entity.ID);
+
+            // builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID }); sayesinde 
+            var toBeUpdated = _context.Set<UserFoodJunction>().Find(accessibleID, old_foodID);
+            // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
+
+            //if (toBeUpdated is CategoryofFood /* || entity is Food*/ )
+            //{
+            //    CategoryofFood c = toBeUpdated as CategoryofFood;
+
+
+            //}
+
+            // become passive 
+            _context.Entry(toBeUpdated).CurrentValues.SetValues(passive_UserFoodJunction);
+
+            // _context.Save();
+            _context.SaveChanges();
+
+        }
+
+        public async void Update_UserFoodJuncTable_Repo(Guid accessibleID, short categoryofFood_ID, UserFoodJunction ufj)
+        {
+            /*ucj.DataStatus = ENTITIES.Enums.DataStatus.Updated;
+            ucj.ModifiedDate = DateTime.Now;*/
+
+
+            // T toBeUpdated = Find(entity.ID);
+
+            // builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID }); sayesinde 
+            var toBeUpdated = _context.Set<UserCategoryJunction>().Find(accessibleID, categoryofFood_ID);
+            // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
+
+            //if (toBeUpdated is CategoryofFood /* || entity is Food*/ )
+            //{
+            //    CategoryofFood c = toBeUpdated as CategoryofFood;
+
+
+            //}
+
+            _context.Entry(toBeUpdated).CurrentValues.SetValues(ufj);
+
+            // _context.Save();
+            _context.SaveChanges();
+
+        }
+
 
 
         //public async Task<List<CategoryofFood>> Get_ByAll_exceptUserID_Async_Repo(Guid userID)
@@ -162,57 +215,9 @@ namespace Project.DAL.Repositories.Concretes
 
 
 
-        //public async void Delete_OldCategory_from_User_Repo(Guid accessibleID, short old_categoryID, UserCategoryJunction old_ucj)
-        //{
-        //    /*ucj.DataStatus = ENTITIES.Enums.DataStatus.Updated;
-        //    ucj.ModifiedDate = DateTime.Now;*/
 
 
-        //    // T toBeUpdated = Find(entity.ID);
 
-        //    // builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID }); sayesinde 
-        //    var toBeUpdated = _context.Set<UserCategoryJunction>().Find(accessibleID, old_categoryID);
-        //    // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
-
-        //    //if (toBeUpdated is CategoryofFood /* || entity is Food*/ )
-        //    //{
-        //    //    CategoryofFood c = toBeUpdated as CategoryofFood;
-
-
-        //    //}
-
-        //    _context.Entry(toBeUpdated).CurrentValues.SetValues(old_ucj);
-
-        //    // _context.Save();
-        //    _context.SaveChanges();
-
-        //}
-
-        //public async void Update_UserCategoryJuncTable_Repo(Guid accessibleID, short categoryofFood_ID, UserCategoryJunction ucj)
-        //{
-        //    /*ucj.DataStatus = ENTITIES.Enums.DataStatus.Updated;
-        //    ucj.ModifiedDate = DateTime.Now;*/
-
-
-        //    // T toBeUpdated = Find(entity.ID);
-
-        //    // builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID }); sayesinde 
-        //    var toBeUpdated = _context.Set<UserCategoryJunction>().Find(accessibleID, categoryofFood_ID);
-        //    // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
-
-        //    //if (toBeUpdated is CategoryofFood /* || entity is Food*/ )
-        //    //{
-        //    //    CategoryofFood c = toBeUpdated as CategoryofFood;
-
-
-        //    //}
-
-        //    _context.Entry(toBeUpdated).CurrentValues.SetValues(ucj);
-
-        //    // _context.Save();
-        //    _context.SaveChanges();
-
-        //}
 
         //public async Task<bool> Control_IsExisted_InMyListBefore_Async_Repo(Guid userID, short categoryID)
         //{
