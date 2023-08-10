@@ -8,7 +8,7 @@ namespace Technosoft_Project.ViewModels
         [Display(Name = "Yemek Fiyat")]
         [Required(ErrorMessage = "Yemek fiyat giriniz.")]
         [Range(1, 1001)]
-        public float Food_Price { get; set; }
+        public short Food_Price { get; set; }
         // public short Food_Price { get; set; } 'short' tipi sayasdinde up ve down butonları çıkıyor 
 
         [Display(Name = "Yemek Mevcudiyet Durum")]

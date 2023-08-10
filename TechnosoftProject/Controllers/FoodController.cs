@@ -262,10 +262,11 @@ namespace Technosoft_Project.Controllers
                             HttpContext.Session.SetObject("manipulatedData_NameExist", fvm_post.FoodDTO);
 
                             TempData["ValidError_NameExist"] = "valid";
-                            TempData["JavascriptToRun"] = "valid";                  
-                            
-                                HttpContext.Session.SetObject("manipulatedData_Status", fvm_post.UserFoodJunctionDTO);
-                            
+                            TempData["JavascriptToRun"] = "valid";
+
+                            HttpContext.Session.SetObject("manipulatedData_fd", fvm_post.FoodDTO);
+                            HttpContext.Session.SetObject("manipulatedData_ufdj", fvm_post.UserFoodJunctionDTO);
+
 
 
                             TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
@@ -435,12 +436,19 @@ namespace Technosoft_Project.Controllers
                             TempData["ValidError_Name"] = "valid";
                         }
 
-                        if (String.IsNullOrEmpty(fvm_post.UserFoodJunctionDTO.Food_Description) || fvm_post.UserFoodJunctionDTO.Food_Description.Length >= 256)
+                        if (fvm_post.UserFoodJunctionDTO.Food_Description == null)
                         {
+                            fvm_post.UserFoodJunctionDTO.Food_Description = "";
+
+                        }
+
+                        if (fvm_post.UserFoodJunctionDTO.Food_Description.Length >= 256)
+                        {
+                            fvm_post.UserFoodJunctionDTO.Food_Description = "";
                             TempData["ValidError_Description"] = "valid";
                         }
 
-                        if (fvm_post.UserFoodJunctionDTO.Food_Price == null || fvm_post.UserFoodJunctionDTO.Food_Price == 0 /*1000 tl*/)
+                        if (fvm_post.UserFoodJunctionDTO.Food_Price == null || fvm_post.UserFoodJunctionDTO.Food_Price == 0 || fvm_post.UserFoodJunctionDTO.Food_Price <= 1000)
                         {
                             TempData["ValidError_Price"] = "valid";
                         }
