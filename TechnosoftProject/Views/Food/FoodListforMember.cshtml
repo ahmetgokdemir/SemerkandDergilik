@@ -382,10 +382,9 @@ else if (TempData["messageFood_InOtherUsersList"] != null)
 
         $("#tab2").on("click", "[value=deleteFoodValue]", function () {
             $.ajax({
-                //url: '@@Url.Action("AddFoodAjax","Food")',
+
                 url: 'DeleteFoodAjax',
-                // data: { FoodID: $(this).attr("data-FoodID") },
-                data: { FoodID: $(this).attr("data-FoodID") },
+                data: { foodID: $(this).attr("data-FoodID") },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {

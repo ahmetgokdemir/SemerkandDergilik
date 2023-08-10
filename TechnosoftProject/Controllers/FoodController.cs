@@ -255,6 +255,34 @@ namespace Technosoft_Project.Controllers
             return PartialView("_CrudFood_Partial", cVM);
         }
 
+        [Route("DeleteFoodAjax")]
+        public async Task<PartialViewResult> DeleteFoodAjax(short foodID)
+        {
+
+            Food CategoryofFood_item = await _ifm.GetByIdAsync(foodID);
+            FoodDTO fDTO = CategoryofFood_item.Adapt<FoodDTO>();
+
+
+            //IEnumerable<object> ucj = null;
+            //Guid new_userID = CurrentUser.Id;
+            //List<UserCategoryJunctionDTO> ucjDTO = new List<UserCategoryJunctionDTO>();
+
+
+            //ucj = await _iucjm.Get_ByUserID_with_CategoryID_Async(new_userID, categoryID);
+            //ucjDTO = ucj.Adapt<IEnumerable<UserCategoryJunctionDTO>>().ToList();
+
+
+
+            ViewBag.FoodNameDelete = fDTO.Food_Name;
+            ViewBag.CRUD = "delete_operation";
+
+            FoodVM fVM = new FoodVM
+            {
+                FoodDTO = fDTO
+            };
+
+            return PartialView("_CrudFood_Partial", fVM);
+        }
 
 
         [Route("CRUDFood")]
@@ -605,36 +633,38 @@ namespace Technosoft_Project.Controllers
             // *!* DELETE 
             else
             {
-            //    IEnumerable<object> ucj = null;
-            //    Guid new_userID = CurrentUser.Id;
-            //    List<UserFoodJunction> ucj_Delete = new List<UserFoodJunction>();
+                IEnumerable<object> ufj = null;
+                Guid new_userID = CurrentUser.Id;
+                List<UserFoodJunction> ucj_Delete = new List<UserFoodJunction>();
 
 
-            //    ucj = await _iufjm.Get_ByUserID_with_CategoryID_Async(new_userID, fvm_post.FoodDTO.ID);
-            //    ucj_Delete = ucj.Adapt<IEnumerable<UserFoodJunction>>().ToList();
+                ufj = await _iufjm.Get_ByUserID_with_CategoryID_Async(new_userID, fvm_post.FoodDTO.ID);
+                ucj_Delete = ufj.Adapt<IEnumerable<UserFoodJunction>>().ToList();
+
+                // FAZLA GİBİ // FAZLA GİBİ // FAZLA GİBİ 
+                ufj = await _iufjm.Get_ByUserID_with_CategoryID_Async(new_userID, fvm_post.FoodDTO.ID);
+                ucj_Delete = ufj.Adapt<IEnumerable<UserFoodJunction>>().ToList();
+                // FAZLA GİBİ // FAZLA GİBİ // FAZLA GİBİ 
 
 
-            //    ucj = await _iufjm.Get_ByUserID_with_CategoryID_Async(new_userID, fvm_post.FoodDTO.ID);
-            //    ucj_Delete = ucj.Adapt<IEnumerable<UserFoodJunction>>().ToList();
+                UserFoodJunction UserFoodJunction = new UserFoodJunction();
 
-            //    UserFoodJunction UserFoodJunction = new UserFoodJunction();
+                UserFoodJunction.FoodID = fvm_post.FoodDTO.ID;
+                UserFoodJunction.DataStatus = DataStatus.Deleted;
+                UserFoodJunction.DeletedDate = DateTime.Now;
+                UserFoodJunction.AccessibleID = CurrentUser.AccessibleID;
+                UserFoodJunction.AppUser = CurrentUser;
+                UserFoodJunction.Food_Status = ExistentStatus.Pasif;
 
-            //    UserFoodJunction.FoodID = fvm_post.FoodDTO.ID;
-            //    UserFoodJunction.DataStatus = DataStatus.Deleted;
-            //    UserFoodJunction.DeletedDate = DateTime.Now;
-            //    UserFoodJunction.AccessibleID = CurrentUser.AccessibleID;
-            //    UserFoodJunction.AppUser = CurrentUser;
-            //    UserFoodJunction.Food_Status = ExistentStatus.Pasif;
+                _iufjm.Delete_OldCategory_from_User(CurrentUser.AccessibleID, fvm_post.FoodDTO.ID, UserFoodJunction);
 
-            //    _iufjm.Delete_OldCategory_from_User(CurrentUser.AccessibleID, fvm_post.FoodDTO.ID, UserFoodJunction);
+                // _iucjm.Delete(ucj_Delete[0]);
+                // _iucjm.Delete(ucj_Delete.FirstOrDefault());
 
-            //    // _iucjm.Delete(ucj_Delete[0]);
-            //    // _iucjm.Delete(ucj_Delete.FirstOrDefault());
+                TempData["messageFood"] = "Yemek listenizden silindi";
+                TempData["Deleted"] = null;
 
-            //    TempData["messageFood"] = "Yemek listenizden silindi";
-            //    TempData["Deleted"] = null;
-
-                //return RedirectToAction("FoodList_forMember", new { onlyOnce = "1" });
+                return RedirectToAction("FoodList_forMember", new { onlyOnce = "1" });
 
             }
 
