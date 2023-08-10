@@ -10,10 +10,11 @@ namespace Project.DAL.Repositories.Abstracts
     public interface IUserFoodJunctionRepository : IRepository<UserFoodJunction>
     {
         IQueryable<object> Get_ByUserID_Async_Repo(Guid userID);
+        Task<IEnumerable<object>> Get_ByUserID_with_FoodID_Async_Repo(Guid userID, short categoryID);
 
         /*
           
-         Task<IEnumerable<object>> Get_ByUserID_with_CategoryID_Async(Guid userID, short categoryID);
+
                   
         void Delete_OldCategory_from_User_Repo(Guid accessibleID, short old_categoryID, UserCategoryJunction old_ucj);
 

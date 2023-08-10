@@ -31,6 +31,19 @@ namespace Project.BLL.ManagerServices.Concretes
             return found_Item;
         }
 
+        public async Task<IEnumerable<object>> Get_ByUserID_with_FoodID_Async(Guid userID, short foodID)
+        {
+            var getfoodItem_byUserID = await _iufjrep.Get_ByUserID_with_FoodID_Async_Repo(userID, foodID);
+
+            if (getfoodItem_byUserID == null)
+            {
+                return null;
+            }
+
+            return getfoodItem_byUserID;
+        }
+
+
         /* 
          
                 public async Task<List<CategoryofFood>> Get_ByAll_exceptUserID_Async(Guid userID)
@@ -45,17 +58,7 @@ namespace Project.BLL.ManagerServices.Concretes
             return found_Items;
         }
 
-        public async Task<IEnumerable<object>> Get_ByUserID_with_CategoryID_Async(Guid userID, short categoryID)
-        {
-            var found_Item = await _iucjrep.Get_ByUserID_with_CategoryID_Async(userID, categoryID);
 
-            if (found_Item == null)
-            {
-                return null;
-            }
-
-            return found_Item;
-        }
 
         
         public async void Delete_OldCategory_from_User(Guid accessibleID, short old_categoryID, UserCategoryJunction old_ucj)

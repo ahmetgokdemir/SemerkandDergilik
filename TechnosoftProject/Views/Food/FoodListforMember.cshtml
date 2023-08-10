@@ -349,13 +349,12 @@ else if (TempData["messageFood_InOtherUsersList"] != null)
     });
 
     $(function () {
-        //$("#updateFood").click(function () {
-        // , userID: $(this).attr("data-userID")
+
         $("#tab2").on("click", "[value=updateFoodValue]", function () {
             $.ajax({
-                //url: '@@Url.Action("AddFoodAjax","Food")',
+
                 url: 'UpdateFoodAjax',
-                data: { FoodID: $(this).attr("data-FoodID") },
+                data: { foodID: $(this).attr("data-FoodID") },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {

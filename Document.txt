@@ -1,6 +1,7 @@
 
 Havuzda mevcuttur oradan ekleyin lütfen 
 short --> float
+text area custimeze etmek
 /* !!! !!! 
 
 !!! !!! */

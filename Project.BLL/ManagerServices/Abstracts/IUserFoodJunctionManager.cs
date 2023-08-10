@@ -11,10 +11,10 @@ namespace Project.BLL.ManagerServices.Abstracts
     {
         Task<IEnumerable<object>> Get_ByUserID_Async(Guid userID);
 
-        /*    
+            
                 
-        Task<IEnumerable<object>> Get_ByUserID_with_CategoryID_Async(Guid userID, short categoryID );
-
+        Task<IEnumerable<object>> Get_ByUserID_with_FoodID_Async(Guid userID, short foodID);
+        /*
         void Delete_OldCategory_from_User(Guid accessibleID, short old_categoryID, UserCategoryJunction old_ucj);
 
         void Update_UserCategoryJuncTable(Guid accessibleID, short categoryofFood_ID, UserCategoryJunction ucj);

@@ -151,6 +151,112 @@ namespace Technosoft_Project.Controllers
 
         }
 
+        [Route("UpdateFoodAjax")]
+        public async Task<PartialViewResult> UpdateFoodAjax(short foodID/*, Guid userID*/)
+        {
+
+            Guid new_userID = CurrentUser.Id; // userID ÇEVİR
+
+            FoodDTO fDTO = new FoodDTO();
+            List<UserFoodJunctionDTO> ufjDTO = new List<UserFoodJunctionDTO>();
+
+            IEnumerable<object> ucj = null;
+            Food Food_item = null;
+
+            //if (TempData["HttpContext"] != null)
+            //{
+            //    result = HttpContext.Session.GetObject<FoodDTO>("manipulatedData");
+            //    cDTO = result;
+
+            //    // HttpContext.Session.SetObject("manipulatedData", null);
+            //}
+
+            var result_2 = new UserFoodJunctionDTO();
+
+            if (TempData["ValidError_NameExist"] != null) // 1.validasyon kontrolü 
+            {
+                List<object> ucj2 = new List<object>();
+
+                fDTO = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_NameExist");
+
+
+                result_2 = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData");
+                ufjDTO.Add(result_2);
+                // ucjDTO[0] = result_2;
+
+                ModelState.AddModelError("FoodDTO.CategoryName_of_Foods", $"{TempData["existinPool"]}" + " " + "kategorisi Havuzda mevcuttur. Oradan ekleyebilirsiniz.");
+                TempData["ValidError_NameExist"] = null;
+                TempData["existinPool"] = null;
+                // TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()"; $"{TempData["existinPool"}" 
+
+                HttpContext.Session.SetObject("willbedeletedUserCategoryJuncData", ufjDTO[0]);
+                HttpContext.Session.SetObject("willbedeletedFoodData", fDTO);
+            }
+            else if (TempData["ValidError_Name"] != null || TempData["ValidError_Status"] != null) // 2.validasyon kontrolü 
+            {
+                if (TempData["ValidError_Name"] != null)
+                {
+                    ModelState.AddModelError("FoodDTO.CategoryName_of_Foods", $"{TempData["emptyNameData"]}");
+
+                }
+
+                if (TempData["ValidError_Status"] != null)
+                {
+                    ModelState.AddModelError("UserCategoryJunctionDTO.Food_Status", $"{TempData["emptyStatusData"]}");
+
+                    if (TempData["categoryinPool"] != null)
+                    {
+                        ModelState.AddModelError("FoodDTO.CategoryName_of_Foods", $"{TempData["categoryinPool"]}");
+
+                    }
+                }// "UserCategoryJunctionDTO.Food_Status", "Kategori durumunu giriniz."
+
+                result_2 = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_Status");
+                ufjDTO.Add(result_2);
+
+
+                fDTO = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_Name");
+
+
+                TempData["ValidError_Name"] = null;
+                TempData["ValidError_Status"] = null;
+
+
+                HttpContext.Session.SetObject("willbedeletedUserFoodJuncData", ufjDTO[0]);
+                HttpContext.Session.SetObject("willbedeletedFoodData", fDTO);
+
+            }
+            
+            else // ilk güncelleme denemesi ise
+            {
+                Food_item = await _ifm.GetByIdAsync(foodID);
+                fDTO = Food_item.Adapt<FoodDTO>();
+
+                ucj = await _iufjm.Get_ByUserID_with_FoodID_Async(new_userID, foodID);
+                ufjDTO = ucj.Adapt<IEnumerable<UserFoodJunctionDTO>>().ToList();
+                //UserCategoryJunctionDTOs = UserCategoryJunctionList.Adapt<IEnumerable<UserCategoryJunctionDTO>>().ToList(),
+                //                 UserCategoryJunctionDTOs = UserCategoryJunctionList.Adapt<IEnumerable<UserCategoryJunctionDTO>>().ToList(),
+
+
+                // GetByIdAsync (Repository) int --> short 
+
+                HttpContext.Session.SetObject("will_be_deleted_UserFoodJuncData", ufjDTO[0]);
+                HttpContext.Session.SetObject("will_be_deleted_FoodData", fDTO);
+
+            }
+
+            FoodVM cVM = new FoodVM
+            {
+                UserFoodJunctionDTO = ufjDTO[0],
+                FoodDTO = fDTO
+            };
+
+            Thread.Sleep(500);
+            return PartialView("_CrudFood_Partial", cVM);
+        }
+
+
+
         [Route("CRUDFood")]
         [HttpPost]
         public async Task<IActionResult> CRUDFood(FoodVM fvm_post, IFormFile _FoodPicture)

@@ -45,6 +45,33 @@ namespace Project.DAL.Repositories.Concretes
             // return control_deneme;
         }
 
+        public async Task<IEnumerable<object>> Get_ByUserID_with_FoodID_Async_Repo(Guid userID, short foodID)
+        {
+            // var entity = _context.Set<T>().Find(id).AsQueryable(); --> find one item not for list
+            // return Where(x => x.AppUser.Id == id).AsQueryable(); // AppUser.ID (erişilemiyor) --> short 
+
+            // await --> _context.Set kullanılmaz !!!
+
+            IEnumerable<object> getfoodItem_byUserID = _context.Set<UserFoodJunction>()
+                .Where(x => x.AppUser.Id == userID && x.FoodID == foodID && x.DataStatus != ENTITIES.Enums.DataStatus.Deleted)
+                .Include(x => x.Food)
+                .Include(x => x.AppUser)
+                .Select(x => new
+                {
+                    Food_Name = x.Food.Food_Name, // include
+                    Food_Price = x.Food_Price,
+                    Food_Status = x.Food_Status,
+                    Food_Picture = x.Food_Picture,
+                    Food_Description = x.Food_Description,
+                    AppUserId = x.AppUser.Id, // ID (IdentityUser'den gelir ve erişilemez onun yerine AppUser dan id'e erişilir)
+                    FoodID = x.FoodID
+                }
+            ).ToList();
+
+            return getfoodItem_byUserID;
+        }
+
+
 
         //public async Task<List<CategoryofFood>> Get_ByAll_exceptUserID_Async_Repo(Guid userID)
         //{
@@ -133,31 +160,7 @@ namespace Project.DAL.Repositories.Concretes
         //}
 
 
-        //public async Task<IEnumerable<object>> Get_ByUserID_with_CategoryID_Async(Guid userID, short categoryID)
-        //{
-        //    // var entity = _context.Set<T>().Find(id).AsQueryable(); --> find one item not for list
-        //    // return Where(x => x.AppUser.Id == id).AsQueryable(); // AppUser.ID (erişilemiyor) --> short 
 
-        //    // await --> _context.Set kullanılmaz !!!
-
-        //    IEnumerable<object> control_deneme = _context.Set<UserCategoryJunction>()
-        //        .Where(x => x.AppUser.Id == userID && x.CategoryofFoodID == categoryID && x.DataStatus != ENTITIES.Enums.DataStatus.Deleted)
-        //        .Include(x => x.CategoryofFood)
-        //        .Include(x => x.AppUser)
-        //        .Select(x => new
-        //        {
-        //            CategoryName_of_Foods = x.CategoryofFood.CategoryName_of_Foods, // include
-        //            CategoryofFood_Picture = x.CategoryofFood_Picture,
-        //            CategoryofFood_Status = x.CategoryofFood_Status,
-        //            AppUserId = x.AppUser.Id, // ID (IdentityUser'den gelir ve erişilemez onun yerine AppUser dan id e erişilir)
-        //            CategoryofFoodID = x.CategoryofFoodID
-
-
-        //        }
-        //    ).ToList();
-
-        //    return control_deneme;
-        //}
 
         //public async void Delete_OldCategory_from_User_Repo(Guid accessibleID, short old_categoryID, UserCategoryJunction old_ucj)
         //{
@@ -268,13 +271,13 @@ namespace Project.DAL.Repositories.Concretes
 
         //    /*
         //        EntityBase.cs
-                
+
         //        public EntityBase()
         //        {
         //            CreatedDate = DateTime.Now;
         //            DataStatus = Enums.DataStatus.Inserted;
         //        }            
-             
+
         //     */
         //    // ucj.CreatedDate = DateTime.Now;
         //    // ucj.DataStatus = ENTITIES.Enums.DataStatus.Inserted; // ***           
