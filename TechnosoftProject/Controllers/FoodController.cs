@@ -65,82 +65,7 @@ namespace Technosoft_Project.Controllers
             UserFoodJunctionDTO ufjDTO = new UserFoodJunctionDTO();
 
 
-            if (TempData["ValidError_Name"] != null)
-            {
-                //if (TempData["ValidError_Status"] == null)
-                //{
-                //    result_2 = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_Status");
-                //    ufjDTO = result_2;
-                //}
-
-
-
-                //if (HttpContext.Session.GetObject<FoodDTO>("manipulatedData_Name") != null)
-                //{
-                //    result_fd = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_Name");
-                //    fDTO = result_fd;
-
-                //}
-
-
-                if (string.IsNullOrEmpty(fDTO.Food_Name))
-                {
-                    ModelState.AddModelError("FoodDTO.Food_Name", "Yemek adı giriniz.");
-                }
-                else if (fDTO.Food_Name.Length >= 128)
-                {
-                    ModelState.AddModelError("FoodDTO.Food_Name", "Yemek 128 karakterden fazla olamaz.");
-                }
-
-                TempData["ValidError_Name"] = null;
-
-
-            } // aynı veri db'de varsa !!
-            else if (TempData["ValidError_NameExist"] != null)
-            {
-
-                result_fd = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_NameExist");
-                fDTO = result_fd;
-
-
-                    //result_2 = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_Status");
-                    //ufjDTO = result_2;
-                
-
-                ModelState.AddModelError("FoodDTO.Food_Name", "Yemek listede mevcuttur.");
-                TempData["ValidError_NameExist"] = null;
-            }
-
-
-            if (TempData["ValidError_Status"] != null)
-            {
-                //if (HttpContext.Session.GetObject<FoodDTO>("manipulatedData_Name") != null)
-                //{
-                //    result = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_Name");
-                //    fDTO = result;
-
-                //}
-
-                ModelState.AddModelError("UserFoodJunctionDTO.Food_Status", "Yemek durumunu giriniz.");
-                TempData["ValidError_Status"] = null;
-            }
-
-            // Price
-            if (TempData["ValidError_Price"] != null)
-            {
-                //if (HttpContext.Session.GetObject<FoodDTO>("manipulatedData_Name") != null)
-                //{
-                //    result = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_Name");
-                //    fDTO = result;
-
-                //}
-
-                ModelState.AddModelError("UserFoodJunctionDTO.Food_Price", "Yemek ücreti geçersiz.");
-                TempData["ValidError_Price"] = null;
-            }
-
-
-
+            // kullacının girdiği verileri tekrar girmemesi için
             if (HttpContext.Session.GetObject<FoodDTO>("manipulatedData_fd") != null)
             {
                 result_fd = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_fd");
@@ -153,20 +78,77 @@ namespace Technosoft_Project.Controllers
                 ufjDTO = result_ufdj;
             }
 
+
+            // validationdan geçti ama aynı veri db'de varsa !!
+            if (TempData["ValidError_NameExist"] != null)
+            {
+
+                result_fd = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_NameExist");
+                fDTO = result_fd;
+
+                ModelState.AddModelError("FoodDTO.Food_Name", "Yemek listenizde mevcut ya da Havuz listesinde bulunmaktadır. Listenizde bulunmamaktaysa havuz listesinden kendi listenize de ekleyebilirsiniz.");
+
+                TempData["ValidError_NameExist"] = null;
+            }
+            else // validationdan geçemedi
+            {
+                if (TempData["ValidError_Name"] != null)
+                {
+
+                    if (string.IsNullOrEmpty(fDTO.Food_Name))
+                    {
+                        ModelState.AddModelError("FoodDTO.Food_Name", "Yemek adı giriniz.");
+                    }
+                    else if (fDTO.Food_Name.Length >= 30)
+                    {
+                        ModelState.AddModelError("FoodDTO.Food_Name", "Yemek 30 karakterden fazla olamaz.");
+                    }
+
+                    TempData["ValidError_Name"] = null;
+                }
+
+                if (TempData["ValidError_Status"] != null)
+                {
+                    ModelState.AddModelError("UserFoodJunctionDTO.Food_Status", "Yemek durumunu giriniz.");
+
+                    TempData["ValidError_Status"] = null;
+                }
+
+                // Price 1000 tl
+                if (TempData["ValidError_Price"] != null)
+                {
+                    ModelState.AddModelError("UserFoodJunctionDTO.Food_Price", "Yemek ücreti geçersiz.");
+
+                    TempData["ValidError_Price"] = null;
+
+                }
+
+                if (TempData["ValidError_Description"] != null)
+                {
+                    if (ufjDTO.Food_Description.Length >= 256)
+                    {
+                        ModelState.AddModelError("UserFoodJunctionDTO.Food_Description", "Açıklama 256 karakterden fazla olmamalı.");
+                    }
+
+                    TempData["ValidError_Description"] = null;
+                }
+            }
+
+
+
             FoodVM fVM = new FoodVM
             {
                 UserFoodJunctionDTO = ufjDTO,
                 FoodDTO = fDTO
             };
 
-            HttpContext.Session.SetObject("manipulatedData_Name", null);
-            HttpContext.Session.SetObject("manipulatedData_Status", null);
-            HttpContext.Session.SetObject("manipulatedData_NameExist", null);
-
+            HttpContext.Session.SetObject("manipulatedData_fd", null);
+            HttpContext.Session.SetObject("manipulatedData_ufdj", null);
 
             Thread.Sleep(500); // pop-up sayfasını tekrar açmayı tetikleyince bazen gelmiyor o yüzden bu kod eklendi..
 
             return PartialView("_CrudFood_Partial", fVM);
+
         }
 
         [Route("CRUDFood")]
@@ -446,42 +428,21 @@ namespace Technosoft_Project.Controllers
                         if (fvm_post.UserFoodJunctionDTO.Food_Status == 0)
                         {
                             TempData["ValidError_Status"] = "valid";
-
-                            //if (!String.IsNullOrEmpty(fvm_post.FoodDTO.Food_Name))
-                            //{
-                            //    HttpContext.Session.SetObject("manipulatedData_Name", fvm_post.FoodDTO);
-                            //}
-
                         }
 
-                        if (String.IsNullOrEmpty(fvm_post.FoodDTO.Food_Name) /* || fvm_post.FoodDTO.CategoryName_of_Foods.Lengt >= 128 */)
+                        if (String.IsNullOrEmpty(fvm_post.FoodDTO.Food_Name) || fvm_post.FoodDTO.Food_Name.Length >= 30 )
                         {
                             TempData["ValidError_Name"] = "valid";
-
-                            //if (fvm_post.UserFoodJunctionDTO.Food_Status != 0)
-                            //{
-                            //    HttpContext.Session.SetObject("manipulatedData_Status", fvm_post.UserFoodJunctionDTO);
-                            //}
                         }
 
-                        if (String.IsNullOrEmpty(fvm_post.UserFoodJunctionDTO.Food_Description) /* || fvm_post.FoodDTO.CategoryName_of_Foods.Lengt >= 128 */)
+                        if (String.IsNullOrEmpty(fvm_post.UserFoodJunctionDTO.Food_Description) || fvm_post.UserFoodJunctionDTO.Food_Description.Length >= 256)
                         {
                             TempData["ValidError_Description"] = "valid";
-
-                            //if (fvm_post.UserFoodJunctionDTO.Food_Status != 0)
-                            //{
-                            //    HttpContext.Session.SetObject("manipulatedData_Status", fvm_post.UserFoodJunctionDTO);
-                            //}
                         }
 
-                        if (fvm_post.UserFoodJunctionDTO.Food_Price == null || fvm_post.UserFoodJunctionDTO.Food_Price == 0)
+                        if (fvm_post.UserFoodJunctionDTO.Food_Price == null || fvm_post.UserFoodJunctionDTO.Food_Price == 0 /*1000 tl*/)
                         {
                             TempData["ValidError_Price"] = "valid";
-
-                            //if (fvm_post.UserFoodJunctionDTO.Food_Status != 0)
-                            //{
-                            //    HttpContext.Session.SetObject("manipulatedData_Status", fvm_post.UserFoodJunctionDTO);
-                            //}
                         }
 
                         if (fvm_post.FoodDTO != null)
@@ -500,68 +461,7 @@ namespace Technosoft_Project.Controllers
                     //{
                     //    if (fvm_post.UserFoodJunctionDTO.Food_Status == 0)
                     //    {
-                    //        TempData["ValidError_Status"] = "valid";
-
-                    //        if (!String.IsNullOrEmpty(fvm_post.FoodDTO.CategoryName_of_Foods))
-                    //        {
-                    //            // girdiği isim kayıtlarda yoksa (havuzda) ve girdiği ismi tutmak için
-                    //            if (await _icm.Any(x => x.CategoryName_of_Foods == fvm_post.FoodDTO.CategoryName_of_Foods))
-                    //            {
-                    //                TempData["categoryinPool"] = $"{fvm_post.FoodDTO.CategoryName_of_Foods}" + ", Yemek havuzda mevcuttur. Oradan ekleye bilirsiniz.";
-
-                    //            }
-
-                    //            /*
-                    //            else //  ama girdiği isim havuzda varsa hata döner..
-                    //            // girdiği isim kayıtlarda yoksa (havuzda) ve girdiği ismi tutmak için
-                    //            {
-                    //                old_cof.CategoryName_of_Foods = fvm_post.FoodDTO.CategoryName_of_Foods;
-                    //            }
-                    //            */
-
-                    //            HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
-                    //        }
-                    //        // ... Aşağıda zaten yapıyor bu işlemi 
-                    //        //else 
-                    //        //{
-                    //        //    HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
-                    //        //    TempData["emptyNameData"] = "İsim Boş bırakılamaz";
-
-                    //        //}
-
-                    //        HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
-                    //        TempData["emptyStatusData"] = "Statu Boş bırakılamaz";
-
-
-                    //    }
-
-                    //    if (String.IsNullOrEmpty(fvm_post.FoodDTO.CategoryName_of_Foods) /* || fvm_post.FoodDTO.CategoryName_of_Foods.Lengt >= 128 */)
-                    //    {
-                    //        TempData["ValidError_Name"] = "valid";
-
-                    //        if (fvm_post.UserFoodJunctionDTO.Food_Status != 0)
-                    //        {
-                    //            old_ucj.Food_Status = fvm_post.UserFoodJunctionDTO.Food_Status;
-
-                    //            HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
-                    //        }
-                    //        //else ... Yukarıda zaten yapıyor bu işlemi 
-                    //        //{
-                    //        //    HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
-                    //        //    TempData["emptyStatusData"] = "Statu Boş bırakılamaz";
-
-                    //        //}
-
-
-                    //        //  fvm_post.FoodDTO.CategoryName_of_Foods.Lengt >= 128  ileride bu durumun kontrolü için --> await _icm.Any(x => x.CategoryName_of_Foods != fvm_post.FoodDTO.CategoryName_of_Foods) gerek olmayabilir ama olabilirde 
-
-
-                    //        HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
-                    //        TempData["emptyNameData"] = "İsim Boş bırakılamaz";
-
-                    //    }
-
-                    //}
+                    //        TempData["ValidError_Status"] = "valid";.....                    
 
 
                     FoodVM fVM = new FoodVM();
