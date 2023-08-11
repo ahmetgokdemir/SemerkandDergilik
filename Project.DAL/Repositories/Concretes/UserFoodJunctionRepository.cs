@@ -112,186 +112,165 @@ namespace Project.DAL.Repositories.Concretes
         }
 
 
+        public async Task<List<Food>> Get_ByAll_exceptUserID_Async_Repo(Guid userID)
+        {
+            // x.AppUser.Id == userID && x.DataStatus == ENTITIES.Enums.DataStatus.Deleted : önceden ekleyip sildiklerim
+            List<Food> allList_notexist = new List<Food>();
 
-        //public async Task<List<CategoryofFood>> Get_ByAll_exceptUserID_Async_Repo(Guid userID)
-        //{
-        //    // x.AppUser.Id == userID && x.DataStatus == ENTITIES.Enums.DataStatus.Deleted : önceden ekleyip sildiklerim
-        //    List<CategoryofFood> allList_notexist = new List<CategoryofFood>();
-
-        //    List<UserCategoryJunction> mydeletedList = new List<UserCategoryJunction>();
-
-
-        //    mydeletedList = _context.Set<UserCategoryJunction>().Where(x => x.AppUser.Id == userID && x.DataStatus == ENTITIES.Enums.DataStatus.Deleted).ToList();
-
-        //    //.Include(x => x.CategoryofFood)
-        //    //.Include(x => x.AppUser)
-        //    //.Select(x => //new
-
-        //    //x.CategoryofFood.CategoryName_of_Foods).ToString()
-        //    //CategoryofFood_Picture = x.CategoryofFood_Picture,
-        //    //CategoryofFood_Status = x.CategoryofFood_Status,
-        //    // AppUserId = x.AppUser.Id, // ID (IdentityUser'den gelir ve erişilemez onun yerine AppUser dan id e erişilir)
-        //    // CategoryofFoodID = x.CategoryofFoodID
+            List<UserFoodJunction> mydeletedList = new List<UserFoodJunction>();
 
 
-        //    List<CategoryofFood> mydeletedList2 = new List<CategoryofFood>();
-
-        //    foreach (UserCategoryJunction not_exist in mydeletedList)
-        //    {
-        //        //mydeletedList2.Add( (CategoryofFood)_context.Set<CategoryofFood>().Where(x => x.ID == not_exist.CategoryofFoodID));
-
-        //        CategoryofFood cof = _context.Set<CategoryofFood>().Where(x => x.ID == not_exist.CategoryofFoodID).FirstOrDefault();
-        //        allList_notexist.Add(cof);
-        //    }
+            mydeletedList = _context.Set<UserFoodJunction>().Where(x => x.AppUser.Id == userID && x.DataStatus == ENTITIES.Enums.DataStatus.Deleted).ToList();
 
 
+            List<Food> mydeletedList2 = new List<Food>();
+
+            foreach (UserFoodJunction not_exist in mydeletedList)
+            {
+                Food fd = _context.Set<Food>().Where(x => x.ID == not_exist.FoodID).FirstOrDefault();
+                allList_notexist.Add(fd);
+            }
+
+            // diğer kullanıcıların listeleri (1)
+            List<UserFoodJunction> others = _context.Set<UserFoodJunction>()
+                .Where(x => (x.AppUser.Id != userID)).ToList();
+
+            // (1) diğer kullanıclarda olup, userda da olanlar olabilir bunlar (2)de çıkarılmalı
+            IQueryable<object> mines = _context.Set<UserFoodJunction>()
+                .Where(x => x.AppUser.Id == userID && x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).AsQueryable();
+
+            bool ignore_Item = false;
+
+            // (2) çıkarma işlemi...
+            foreach (short othersCategoryofFoodIDs in others.Select(x => x.FoodID))
+            {
+                foreach (UserFoodJunction mine in mines)
+                {
+                    if (othersCategoryofFoodIDs == mine.FoodID)
+                    {
+                        // kullanıcıda da var demektir çık dönğüden
+                        ignore_Item = true;
+                        //break;
+                    }
+                    else
+                    {
+                        continue;
+                    }
 
 
+                }
+                if (ignore_Item == false)
+                {
+                    Food fd2 = _context.Set<Food>().Where(x => x.ID == othersCategoryofFoodIDs).FirstOrDefault();
 
-        //    // diğer kullanıcıların listeleri (1)
-        //    List<UserCategoryJunction> others = _context.Set<UserCategoryJunction>()
-        //        .Where(x => (x.AppUser.Id != userID)).ToList();
+                    if (fd2 != null)
+                    {
+                        // önceden diğer kullanıcılardan alıp da sildiği varsa user'ın tekrar listeye eklemesin
+                        if (!allList_notexist.Contains(fd2))
+                        {
+                            allList_notexist.Add(fd2);
+                        }
+                    }
 
-        //    // (1) diğer kullanıclarda olup, userda da olanlar olabilir bunlar (2)de çıkarılmalı
-        //    IQueryable<object> mines = _context.Set<UserCategoryJunction>()
-        //        .Where(x => x.AppUser.Id == userID && x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).AsQueryable();
+                }
 
-        //    bool ignore_Item = false;
-
-        //    // (2) çıkarma işlemi...
-        //    foreach (short othersCategoryofFoodIDs in others.Select(x => x.CategoryofFoodID))
-        //    {
-        //        foreach (UserCategoryJunction mine in mines)
-        //        {
-        //            if (othersCategoryofFoodIDs == mine.CategoryofFoodID)
-        //            {
-        //                // kullanıcıda da var demektir çık dönğüden
-        //                ignore_Item = true;
-        //                //break;
-        //            }
-        //            else
-        //            {
-        //                continue;
-        //            }
+                ignore_Item = false;
 
 
-        //        }
-        //        if (ignore_Item == false)
-        //        {
-        //            CategoryofFood cof2 = _context.Set<CategoryofFood>().Where(x => x.ID == othersCategoryofFoodIDs).FirstOrDefault();
+            }
 
-        //            if (cof2 != null)
-        //            {
-        //                // önceden diğer kullanıcılardan alıp da sildiği varsa user'ın tekrar listeye eklemesin
-        //                if (!allList_notexist.Contains(cof2))
-        //                {
-        //                    allList_notexist.Add(cof2);
-        //                }
-        //            }
+            return allList_notexist;
+        }
 
-        //        }
+        public async Task<bool> Control_IsExisted_InMyListBefore_Async_Repo(AppUser _userInfo, short foodID)
+        {
+            // var entity = _context.Set<T>().Find(id).AsQueryable(); --> find one item not for list
+            // return Where(x => x.AppUser.Id == id).AsQueryable(); // AppUser.ID (erişilemiyor) --> short 
 
-        //        ignore_Item = false;
+            // await --> _context.Set kullanılmaz !!!
 
+            bool control_existing = _context.Set<UserFoodJunction>()
+                .Any(x => x.AppUser.Id == _userInfo.Id && x.FoodID == foodID && x.DataStatus == ENTITIES.Enums.DataStatus.Deleted);
 
-        //    }
+            return control_existing;
+        }
 
-        //    return allList_notexist;
-        //}
+        public async Task<string> Update_MyList_Async_Repo(AppUser _userInfo, short foodID)
+        {
+            UserFoodJunction ufj;
 
+            var toBeUpdated = _context.Set<UserFoodJunction>().Find(_userInfo.AccessibleID, foodID);
 
+            ufj = toBeUpdated;
 
-
-
-
-
-
-        //public async Task<bool> Control_IsExisted_InMyListBefore_Async_Repo(Guid userID, short categoryID)
-        //{
-        //    // var entity = _context.Set<T>().Find(id).AsQueryable(); --> find one item not for list
-        //    // return Where(x => x.AppUser.Id == id).AsQueryable(); // AppUser.ID (erişilemiyor) --> short 
-
-        //    // await --> _context.Set kullanılmaz !!!
-
-        //    bool control_existing = _context.Set<UserCategoryJunction>()
-        //        .Any(x => x.AppUser.Id == userID && x.CategoryofFoodID == categoryID && x.DataStatus == ENTITIES.Enums.DataStatus.Deleted);
-
-        //    return control_existing;
-        //}
-
-        //public async Task<string> Update_MyList_Async_Repo(Guid accessibleID, short categoryID)
-        //{
-        //    UserCategoryJunction ucj;
-        //    var toBeUpdated = _context.Set<UserCategoryJunction>().Find(accessibleID, categoryID);
-        //    ucj = toBeUpdated;
-        //    ucj.CategoryofFood_Status = ENTITIES.Enums.ExistentStatus.Aktif;
-        //    // ucj.CategoryofFood_Description = 
-        //    ucj.ModifiedDate = DateTime.Now;
+            ufj.Food_Status = ENTITIES.Enums.ExistentStatus.Aktif;
+            // ucj.CategoryofFood_Description = 
+            ufj.ModifiedDate = DateTime.Now;
 
 
-        //    ucj.DataStatus = ENTITIES.Enums.DataStatus.Updated; // ***
+            ufj.DataStatus = ENTITIES.Enums.DataStatus.Updated; // ***
 
-        //    _context.Entry(toBeUpdated).CurrentValues.SetValues(ucj);
+            _context.Entry(toBeUpdated).CurrentValues.SetValues(ufj);
 
-        //    int success = _context.SaveChanges();
+            int success = _context.SaveChanges();
 
-        //    string result_Message;
+            string result_Message;
 
-        //    if (success == 1)
-        //    {
-        //        result_Message = "Başarılı";
-        //    }
-        //    else
-        //    {
-        //        result_Message = "Hata";
-        //    }
+            if (success == 1)
+            {
+                result_Message = "Başarılı";
+            }
+            else
+            {
+                result_Message = "Hata";
+            }
 
-        //    return result_Message;
-        //}
+            return result_Message;
+        }
 
-        //public async Task<string> Add_CategoryItem_toMyList_Async_Repo(Guid accessibleID, short categoryID, AppUser _userInfo)
-        //{
-        //    UserCategoryJunction ucj = new UserCategoryJunction();
-        //    ucj.AppUser = _userInfo;
+        public async Task<string> Add_CategoryItem_toMyList_Async_Repo(AppUser _userInfo, short foodID)
+        {
+            UserFoodJunction ufj = new UserFoodJunction();
+            ufj.AppUser = _userInfo;
 
-        //    ucj.CategoryofFoodID = categoryID;
-        //    ucj.CategoryofFood_Status = ENTITIES.Enums.ExistentStatus.Aktif;
-        //    // ucj.CategoryofFood_Description = 
-        //    // ucj.CategoryofFood_Picture
-        //    ucj.AccessibleID = accessibleID;
+            ufj.FoodID = foodID;
+            ufj.Food_Status = ENTITIES.Enums.ExistentStatus.Aktif;
+            // ucj.CategoryofFood_Description = 
+            // ucj.CategoryofFood_Picture
+            ufj.AccessibleID = _userInfo.AccessibleID;
 
 
-        //    /*
-        //        EntityBase.cs
+            /*
+                EntityBase.cs
 
-        //        public EntityBase()
-        //        {
-        //            CreatedDate = DateTime.Now;
-        //            DataStatus = Enums.DataStatus.Inserted;
-        //        }            
+                public EntityBase()
+                {
+                    CreatedDate = DateTime.Now;
+                    DataStatus = Enums.DataStatus.Inserted;
+                }            
 
-        //     */
-        //    // ucj.CreatedDate = DateTime.Now;
-        //    // ucj.DataStatus = ENTITIES.Enums.DataStatus.Inserted; // ***           
+             */
+            // ucj.CreatedDate = DateTime.Now;
+            // ucj.DataStatus = ENTITIES.Enums.DataStatus.Inserted; // ***           
 
-        //    // _context.Set<UserCategoryJunction>().AddAsync(ucj);
-        //    _context.AddAsync(ucj);
+            // _context.Set<UserFoodJunction>().AddAsync(ucj);
+            _context.AddAsync(ufj);
 
-        //    int success = _context.SaveChanges();
+            int success = _context.SaveChanges();
 
-        //    string result_Message;
+            string result_Message;
 
-        //    if (success == 1)
-        //    {
-        //        result_Message = "Başarılı";
-        //    }
-        //    else
-        //    {
-        //        result_Message = "Hata";
-        //    }
+            if (success == 1)
+            {
+                result_Message = "Başarılı";
+            }
+            else
+            {
+                result_Message = "Hata";
+            }
 
-        //    return result_Message;
-        //}
+            return result_Message;
+        }
 
     }
 }

@@ -1,9 +1,8 @@
-﻿@model CategoryofFoodVM
+﻿@model FoodVM
 
 @{
-    ViewData["Title"] = "CategoryofFoodListforOtherUsers";
+    ViewData["Title"] = "FoodListforOtherUsers";
     Layout = null;
-    // Layout = "~/Views/CategoryofFood/_CategoryofFoodLayout.cshtml";
 }
 
 <style>
@@ -41,13 +40,13 @@
 <hr class="loader" />
 
 
-@if (Model.CategoryofFoodDTOs.Count == 0)
+@if (Model.FoodDTOs.Count == 0)
 {
     <div class="jumbotron" style="padding:20px;  background-color:lightgrey">
         @*<input type="submit" id="btnIslemYap" value="İşlem Yap" />*@
 
         <span>
-            Kategori listesi boş.
+            Yemek listesi boş.
         </span>
     </div>
 }
@@ -65,22 +64,22 @@ else
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (CategoryofFoodDTO item in Model.CategoryofFoodDTOs)
+                    @foreach (FoodDTO item in Model.FoodDTOs)
                     {
 
                         <tr>
                             <td></td>
 
                             <td class="position">
-                                <p>@item.CategoryName_of_Foods</p>
+                                <p>@item.Food_Name</p>
                             </td>
 
                             <td class="position"></td>
 
                             <td class="btnposition">
-                                @*<a asp-action="UpdateCategoryofFood" asp-controller="CategoryofFood" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
-                                <button class="btn btn-primary" id="addCategoryofFoodtoMyList" value="addCategoryofFoodtoMyListValue" data-categoryID=@item.ID>
-                                    Kategori listeme ekle
+                                @*<a asp-action="UpdateFood" asp-controller="Food" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
+                                <button class="btn btn-primary" id="addFoodtoMyList" value="addFoodtoMyListValue" data-categoryID=@item.ID>
+                                    Yemek listeme eklensin
                                 </button>
 
                             </td>
@@ -98,16 +97,16 @@ else
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/alertify.min.css" />
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/themes/default.min.css" />
 
-@if (TempData["messageCategoryofFood"] != null) // konrol yapılmazsa messageCategoryofFood null olduğu zaman .ToString() 'de hata verir..
+@if (TempData["messageFood"] != null) // konrol yapılmazsa messageFood null olduğu zaman .ToString() 'de hata verir..
 {
-    @if (TempData["messageCategoryofFood"].ToString() == "İptal edildi")
+    @if (TempData["messageFood"].ToString() == "İptal edildi.")
     {
 
         <script>
             alertify.warning("İptal edildi");
         </script>
     }
-    else if (TempData["messageCategoryofFood"].ToString() == "Kategori listenize eklendi")
+    else if (TempData["messageFood"].ToString() == "Yemek listenize eklendi.")
     {
 
         <script>
@@ -115,11 +114,11 @@ else
         </script>
     }
 
-    TempData["messageCategoryofFood"] = null;
+    TempData["messageFood"] = null;
 
 }
 
-<div class="modal fade" id="CRUDCategoryofFoodModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="CRUDFoodModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -127,7 +126,7 @@ else
                 <h4 class="modal-title"></h4>
             </div>
 
-            <div class="modal-body" id="CRUDCategoryofFood">
+            <div class="modal-body" id="CRUDFood">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
@@ -166,8 +165,6 @@ else
             });
         }).draw();
 
-        $("#flexSwitchCheckText").text("Kategorilerime geri dön.");
-        document.getElementById("flexSwitchCheckDefault").checked = true;
 
     });
 </script>
@@ -180,22 +177,22 @@ else
 
 
 
-        function CRUDCategoryofFoodModalLoaded() {
-            $("#CRUDCategoryofFoodModal").modal('show'); // #CRUDCategoryofFoodModal içinde CRUDCategoryofFood var (<div class="modal-body" id="CRUDCategoryofFood">) onun içinde de data var (_CrudCategoryofFoodPartial)
+        function CRUDFoodModalLoaded() {
+            $("#CRUDFoodModal").modal('show'); // #CRUDFoodModal içinde CRUDFood var (<div class="modal-body" id="CRUDFood">) onun içinde de data var (_CrudFoodPartial)
         }
 
     $(function () {
 
-        $("#tab1").on("click", "[value=addCategoryofFoodtoMyListValue]", function () {
+        $("#tab1").on("click", "[value=addFoodtoMyListValue]", function () {
             $.ajax({
-             
-                url: 'Add_CategoryofFood_toMyList_Ajax',               
-                data: { categoryID: $(this).attr("data-categoryID") },
+
+                url: 'Add_Food_toMyList_Ajax',
+                data: { foodID: $(this).attr("data-categoryID") },
                 type: 'GET',
                 dataType: 'html',
                 success: function (data) {
-                    $("#CRUDCategoryofFood").html(data);
-                    CRUDCategoryofFoodModalLoaded();
+                    $("#CRUDFood").html(data);
+                    CRUDFoodModalLoaded();
 
                 },
                 error: function () {

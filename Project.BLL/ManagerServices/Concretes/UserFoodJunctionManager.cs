@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project.BLL.ManagerServices.Abstracts;
 using Project.DAL.Repositories.Abstracts;
+using Project.ENTITIES.Identity_Models;
 using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
@@ -61,11 +62,9 @@ namespace Project.BLL.ManagerServices.Concretes
 
         }
 
-        /* 
-         
-                public async Task<List<CategoryofFood>> Get_ByAll_exceptUserID_Async(Guid userID)
+        public async Task<List<Food>> Get_ByAll_exceptUserID_Async(Guid userID)
         {
-            List<CategoryofFood> found_Items = await _iucjrep.Get_ByAll_exceptUserID_Async_Repo(userID);
+            List<Food> found_Items = await _iufjrep.Get_ByAll_exceptUserID_Async_Repo(userID);
 
             if (found_Items == null)
             {
@@ -73,27 +72,20 @@ namespace Project.BLL.ManagerServices.Concretes
             }
 
             return found_Items;
-        }
+        }     
 
-
-
-
-
-
-        public async Task<string> Control_IsExisted_InMyListBefore_Async(Guid userID, short categoryID, AppUser _userInfo)
+        public async Task<string> Control_IsExisted_InMyListBefore_Async(AppUser _userInfo, short foodID)
         {
-            bool found_Item = await _iucjrep.Control_IsExisted_InMyListBefore_Async_Repo(userID, categoryID);
+            bool found_Item = await _iufjrep.Control_IsExisted_InMyListBefore_Async_Repo(_userInfo, foodID);
 
             // existed
             if (found_Item == true)
             {
-                return await _iucjrep.Update_MyList_Async_Repo(_userInfo.AccessibleID, categoryID);
+                return await _iufjrep.Update_MyList_Async_Repo(_userInfo, foodID);
             }
             // not existed.. will add
-            return await _iucjrep.Add_CategoryItem_toMyList_Async_Repo(_userInfo.AccessibleID, categoryID, _userInfo);
+            return await _iufjrep.Add_CategoryItem_toMyList_Async_Repo(_userInfo, foodID);
         }
-
-          
-         */
+         
     }
 }

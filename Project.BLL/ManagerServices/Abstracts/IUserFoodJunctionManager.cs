@@ -1,4 +1,5 @@
-﻿using Project.ENTITIES.Models;
+﻿using Project.ENTITIES.Identity_Models;
+using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +18,8 @@ namespace Project.BLL.ManagerServices.Abstracts
 
         void Update_UserFoodJuncTable(Guid accessibleID, short food_ID, UserFoodJunction ufj);
 
-        /*
-         * 
-        Task<List<CategoryofFood>> Get_ByAll_exceptUserID_Async(Guid userID);
+        Task<List<Food>> Get_ByAll_exceptUserID_Async(Guid userID);
+        Task<string> Control_IsExisted_InMyListBefore_Async( AppUser _userInfo, short foodID);
 
-        Task<string> Control_IsExisted_InMyListBefore_Async(Guid userID, short categoryID, AppUser _userInfo);       
-         
-         */
     }
 }

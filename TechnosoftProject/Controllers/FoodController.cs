@@ -746,6 +746,111 @@ namespace Technosoft_Project.Controllers
 
         }
 
+        //CategoryofFood_InPool_Ajax
+        [Route("Food_InPool_Ajax")]
+        public async Task<IActionResult> Food_InPool_Ajax(string poolID, string? JSpopupPage)
+        {
+            if (poolID.ToLower() == "false")
+            {
+                return RedirectToAction("FoodList_forMember");
+
+            }
+
+            else // poolID.ToLower() == "true"
+            {
+                return RedirectToAction("FoodList_forOtherUsers");
+            }
+        }
+
+        [Route("FoodList_forOtherUsers")]
+        public async Task<IActionResult> FoodList_forOtherUsers(string poolID, string? JSpopupPage)
+        {
+            if (TempData["JavascriptToRun"] == null)
+            {
+                JSpopupPage = null; // pop-up sıfırlanır yoksa sayfayı reflesleyince geliyor
+            }
+
+            List<Food> UserFoodJunctionList = await _iufjm.Get_ByAll_exceptUserID_Async(CurrentUser.Id); // IdentityUser'dan gelen Id (Guid tipli)
+
+            FoodVM fvm = new FoodVM
+            {
+                FoodDTOs = UserFoodJunctionList.Adapt<List<FoodDTO>>(),
+                JavascriptToRun = JSpopupPage
+            };
+
+            return View("FoodListforOtherUsers", fvm);
+
+        }
+
+        // 
+        [Route("Add_Food_toMyList_Ajax")]
+        public async Task<PartialViewResult> Add_Food_toMyList_Ajax(short foodID)
+        {
+
+            Food food_Item = await _ifm.GetByIdAsync(foodID);
+            FoodDTO fDTO = food_Item.Adapt<FoodDTO>();
+
+            ViewBag.FoodName_toMyList = fDTO.Food_Name;
+            ViewBag.CRUD = "add_operation";
+
+            FoodVM fVM = new FoodVM
+            {
+                FoodDTO = fDTO
+            };
+
+            return PartialView("_CrudFood_InOtherUsersList_Partial", fVM);
+        }
+
+        [Route("CRUDFood_InOtherUsersList")]
+        [HttpPost]
+        public async Task<IActionResult> CRUDFood_InOtherUsersList(FoodVM fvm_post)
+        {
+            // Guid userID = CurrentUser.Id;
+            // Guid accessibleID = CurrentUser.AccessibleID;
+            AppUser _userInfo = CurrentUser;
+
+            if (TempData["Added"] != null)
+            {
+                // TempData["_accessibleID"] = accessibleID;
+                string result_Message = await _iufjm.Control_IsExisted_InMyListBefore_Async(_userInfo, fvm_post.FoodDTO.ID);
+                // _userInfo.Id, fvm_post.CategoryofFoodDTO.ID, _userInfo
+                TempData["messageFood_InOtherUsersList"] = result_Message;
+
+                TempData["Added"] = null;
+
+                return RedirectToAction("FoodList_forMember", new { onlyOnce = "1" });
+
+            }
+
+            return RedirectToAction("FoodList_forMember", new { onlyOnce = "1" });
+
+
+            //IEnumerable<object> ucj = null;
+            //Guid userID = CurrentUser.Id;
+            //List<UserCategoryJunction> ucj_Delete = new List<UserCategoryJunction>();
+
+
+            //ucj_Delete = ucj.Adapt<IEnumerable<UserCategoryJunction>>().ToList();
+
+
+            //ucj = await _iucjm.Get_ByUserID_with_CategoryID_Async(new_userID, cvm_post.CategoryofFoodDTO.ID);
+            //ucj_Delete = ucj.Adapt<IEnumerable<UserCategoryJunction>>().ToList();
+
+            //UserCategoryJunction userCategoryJunction = new UserCategoryJunction();
+
+            //userCategoryJunction.CategoryofFoodID = cvm_post.CategoryofFoodDTO.ID;
+            //userCategoryJunction.DataStatus = DataStatus.Deleted;
+            //userCategoryJunction.DeletedDate = DateTime.Now;
+            //userCategoryJunction.AccessibleID = CurrentUser.AccessibleID;
+            //userCategoryJunction.AppUser = CurrentUser;
+            //userCategoryJunction.CategoryofFood_Status = ExistentStatus.Pasif;
+
+            //_iucjm.Delete_OldCategory_from_User(CurrentUser.AccessibleID, cvm_post.CategoryofFoodDTO.ID, userCategoryJunction);
+
+            // _iucjm.Delete(ucj_Delete[0]);
+            // _iucjm.Delete(ucj_Delete.FirstOrDefault());
+
+        }
 
 
     }
