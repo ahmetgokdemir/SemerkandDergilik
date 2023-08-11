@@ -684,17 +684,19 @@ namespace Technosoft_Project.Controllers
 
                         TempData["ValidError_General"] = "valid";
 
+                        if (fvm_post.FoodDTO != null)
+                        {
+                            HttpContext.Session.SetObject("manipulatedData_fd", old_fd);
+                        }
+
+                        if (fvm_post.UserFoodJunctionDTO != null)
+                        {
+                            HttpContext.Session.SetObject("manipulatedData_ufdj", old_ufj);
+                        }
+
                     }
 
-                    if (fvm_post.FoodDTO != null)
-                    {
-                        HttpContext.Session.SetObject("manipulatedData_fd", old_fd);
-                    }
 
-                    if (fvm_post.UserFoodJunctionDTO != null)
-                    {
-                        HttpContext.Session.SetObject("manipulatedData_ufdj", old_ufj);
-                    }
 
 
                     // FoodVM fVM = new FoodVM();
