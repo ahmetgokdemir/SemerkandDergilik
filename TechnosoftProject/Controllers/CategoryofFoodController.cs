@@ -546,7 +546,7 @@ namespace Technosoft_Project.Controllers
                                 userCategoryJunction.AppUser = CurrentUser;
                                 userCategoryJunction.CategoryofFood_Status = ExistentStatus.Pasif;
 
-                                _iucjm.Delete_OldCategory_from_User(CurrentUser.AccessibleID, old_categoryID, userCategoryJunction);
+                                _iucjm.Delete_OldCategory_from_User(CurrentUser.AccessibleID, userCategoryJunction);
 
                                 TempData["messageCategoryofFood"] = "Kategori güncellendi";
 
@@ -735,19 +735,9 @@ namespace Technosoft_Project.Controllers
                 }
 
             }
-            else
-            {
-                IEnumerable<object> ucj = null;
-                Guid new_userID = CurrentUser.Id;
-                List<UserCategoryJunction> ucj_Delete = new List<UserCategoryJunction>();
-
-
-                ucj = await _iucjm.Get_ByUserID_with_CategoryID_Async(new_userID, cvm_post.CategoryofFoodDTO.ID);
-                ucj_Delete = ucj.Adapt<IEnumerable<UserCategoryJunction>>().ToList();
-
-
-                ucj = await _iucjm.Get_ByUserID_with_CategoryID_Async(new_userID, cvm_post.CategoryofFoodDTO.ID);
-                ucj_Delete = ucj.Adapt<IEnumerable<UserCategoryJunction>>().ToList();
+            else // DELETE CRUD 
+            {                 
+                Guid new_userID = CurrentUser.Id;               
 
                 UserCategoryJunction userCategoryJunction = new UserCategoryJunction();
 
@@ -758,10 +748,7 @@ namespace Technosoft_Project.Controllers
                 userCategoryJunction.AppUser = CurrentUser;
                 userCategoryJunction.CategoryofFood_Status = ExistentStatus.Pasif;
 
-                _iucjm.Delete_OldCategory_from_User(CurrentUser.AccessibleID, cvm_post.CategoryofFoodDTO.ID, userCategoryJunction);
-
-                // _iucjm.Delete(ucj_Delete[0]);
-                // _iucjm.Delete(ucj_Delete.FirstOrDefault());
+                _iucjm.Delete_OldCategory_from_User(CurrentUser.AccessibleID, userCategoryJunction);
 
                 TempData["messageCategoryofFood"] = "Kategori silindi";
                 TempData["Deleted"] = null;

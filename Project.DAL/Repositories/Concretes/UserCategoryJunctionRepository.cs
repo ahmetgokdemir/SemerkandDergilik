@@ -158,7 +158,7 @@ namespace Project.DAL.Repositories.Concretes
             return control_deneme;
         }
 
-        public async void Delete_OldCategory_from_User_Repo(Guid accessibleID, short old_categoryID, UserCategoryJunction old_ucj)
+        public async void Delete_OldCategory_from_User_Repo(Guid accessibleID, UserCategoryJunction old_ucj)
         {
             /*ucj.DataStatus = ENTITIES.Enums.DataStatus.Updated;
             ucj.ModifiedDate = DateTime.Now;*/
@@ -167,7 +167,7 @@ namespace Project.DAL.Repositories.Concretes
             // T toBeUpdated = Find(entity.ID);
 
             // builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID }); sayesinde 
-            var toBeUpdated = _context.Set<UserCategoryJunction>().Find(accessibleID, old_categoryID);
+            var toBeUpdated = _context.Set<UserCategoryJunction>().Find(accessibleID, old_ucj.CategoryofFoodID);
             // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
 
             //if (toBeUpdated is CategoryofFood /* || entity is Food*/ )
