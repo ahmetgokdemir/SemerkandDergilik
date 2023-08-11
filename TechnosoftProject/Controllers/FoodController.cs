@@ -314,15 +314,17 @@ namespace Technosoft_Project.Controllers
                 //ModelState.Remove("FoodPicture");
                 //ModelState.Remove("FoodDTOs");
                 //ModelState.Remove("JavascriptToRun");
+
                 ModelState.Remove("ExistentStatus");
                 ModelState.Remove("_FoodPicture"); // IFormFile _FoodPicture İÇİN
-                ModelState.Remove("FoodDTO.ExistentStatus");
+
                 // ModelState.Remove("UserFoodJunctionDTO.CategoryName_of_Foods");
+                ModelState.Remove("UserFoodJunctionDTO.Food_Name");
 
                 // DÜZENLENMESİ GEREKİYOR  --> FoodDTO.cs 
-                ModelState.Remove("UserFoodJunctionDTO.Food_Name");
-                ModelState.Remove("FoodDTO.Food_Name");
+                // ModelState.Remove("FoodDTO.Food_Name");
                 ModelState.Remove("FoodDTO.FoodPrice");
+                ModelState.Remove("FoodDTO.ExistentStatus");
 
 
                 if (ModelState.IsValid)
@@ -429,7 +431,7 @@ namespace Technosoft_Project.Controllers
                     
                     else // update 
                     {
-                        // Yeni bir Yemek
+                        // Yeni bir Yemek iSMİ
                         if (old_fd.Food_Name != fd_update.Food_Name)
                         {
 
@@ -456,7 +458,7 @@ namespace Technosoft_Project.Controllers
                                 return RedirectToAction("FoodList_forMember", new { JSpopupPage = TempData["JSpopupPage"].ToString(), onlyOnce = "1" });
                             }
 
-                            // Yeni Yemek eğer havuzda da yoksa 
+                            // Yeni Yemek iSMİ eğer havuzda da yoksa 
                             else
                             {
                                 // yeni bir Yemek olarak eklenecek ... güncellenmeyecek... güncelleme olmayacak
@@ -478,7 +480,7 @@ namespace Technosoft_Project.Controllers
                                 // _iucjm.Delete(old_ufj);
 
 
-                    // become passive food
+                                //  OLD food become passive FOR THİS USER
                                 UserFoodJunction passive_UserFoodJunction = old_ufj.Adapt<UserFoodJunction>();
 
                                 passive_UserFoodJunction.DataStatus = DataStatus.Deleted;
@@ -487,7 +489,7 @@ namespace Technosoft_Project.Controllers
                                 passive_UserFoodJunction.AppUser = CurrentUser;
                                 passive_UserFoodJunction.Food_Status = ExistentStatus.Pasif;
 
-                                _iufjm.Delete_OldFood_from_User(CurrentUser.AccessibleID, old_foodID, passive_UserFoodJunction);
+                                _iufjm.Delete_OldFood_from_User(CurrentUser.AccessibleID, passive_UserFoodJunction);
 
                                 TempData["messageFood"] = "Yemek güncellendi";
 
@@ -498,7 +500,8 @@ namespace Technosoft_Project.Controllers
 
                         }
 
-                        else // eski Yemek old_fd.CategoryName_of_Foods == fd_update.CategoryName_of_Foods
+                        else // eski Yemek İSMİ / SADECE diğer veriler update olunacak ...
+                             // old_fd.CategoryName_of_Foods == fd_update.CategoryName_of_Foods
                         {
                             //old_ufj.AppUser.Id = CurrentUser.Id;
 
@@ -579,7 +582,7 @@ namespace Technosoft_Project.Controllers
                             TempData["ValidError_Description"] = "valid";
                         }
 
-                        if (fvm_post.UserFoodJunctionDTO.Food_Price == null || fvm_post.UserFoodJunctionDTO.Food_Price == 0 || fvm_post.UserFoodJunctionDTO.Food_Price <= 1000)
+                        if (fvm_post.UserFoodJunctionDTO.Food_Price == null || fvm_post.UserFoodJunctionDTO.Food_Price == 0 || fvm_post.UserFoodJunctionDTO.Food_Price >= 1000)
                         {
                             TempData["ValidError_Price"] = "valid";
                         }
@@ -638,11 +641,11 @@ namespace Technosoft_Project.Controllers
                 List<UserFoodJunction> ucj_Delete = new List<UserFoodJunction>();
 
 
-                ufj = await _iufjm.Get_ByUserID_with_CategoryID_Async(new_userID, fvm_post.FoodDTO.ID);
+                ufj = await _iufjm.Get_ByUserID_with_FoodID_Async(new_userID, fvm_post.FoodDTO.ID);
                 ucj_Delete = ufj.Adapt<IEnumerable<UserFoodJunction>>().ToList();
 
                 // FAZLA GİBİ // FAZLA GİBİ // FAZLA GİBİ 
-                ufj = await _iufjm.Get_ByUserID_with_CategoryID_Async(new_userID, fvm_post.FoodDTO.ID);
+                ufj = await _iufjm.Get_ByUserID_with_FoodID_Async(new_userID, fvm_post.FoodDTO.ID);
                 ucj_Delete = ufj.Adapt<IEnumerable<UserFoodJunction>>().ToList();
                 // FAZLA GİBİ // FAZLA GİBİ // FAZLA GİBİ 
 
@@ -656,7 +659,7 @@ namespace Technosoft_Project.Controllers
                 UserFoodJunction.AppUser = CurrentUser;
                 UserFoodJunction.Food_Status = ExistentStatus.Pasif;
 
-                _iufjm.Delete_OldCategory_from_User(CurrentUser.AccessibleID, fvm_post.FoodDTO.ID, UserFoodJunction);
+                _iufjm.Delete_OldFood_from_User(CurrentUser.AccessibleID, UserFoodJunction);
 
                 // _iucjm.Delete(ucj_Delete[0]);
                 // _iucjm.Delete(ucj_Delete.FirstOrDefault());

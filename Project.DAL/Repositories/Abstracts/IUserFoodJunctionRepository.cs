@@ -17,7 +17,7 @@ namespace Project.DAL.Repositories.Abstracts
         // update güncelleme de kullanılanlar...
         Task<IEnumerable<object>> Get_ByUserID_with_FoodID_Async_Repo(Guid userID, short categoryID);
 
-        void Delete_OldFood_from_User_Repo(Guid accessibleID, short old_foodID, UserFoodJunction passive_UserFoodJunction);
+        void Delete_OldFood_from_User_Repo(Guid accessibleID, UserFoodJunction passive_UserFoodJunction);
 
         void Update_UserFoodJuncTable_Repo(Guid accessibleID, short categoryofFood_ID, UserFoodJunction ufj);
         // update güncelleme de kullanılanlar...

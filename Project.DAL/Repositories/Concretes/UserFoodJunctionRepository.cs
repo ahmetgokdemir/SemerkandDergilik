@@ -71,24 +71,11 @@ namespace Project.DAL.Repositories.Concretes
             return getfoodItem_byUserID;
         }
 
-        public async void Delete_OldFood_from_User_Repo(Guid accessibleID, short old_foodID, UserFoodJunction passive_UserFoodJunction)
+        public async void Delete_OldFood_from_User_Repo(Guid accessibleID, UserFoodJunction passive_UserFoodJunction)
         {
-            /*ucj.DataStatus = ENTITIES.Enums.DataStatus.Updated;
-            ucj.ModifiedDate = DateTime.Now;*/
-
-
-            // T toBeUpdated = Find(entity.ID);
-
             // builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID }); sayesinde 
-            var toBeUpdated = _context.Set<UserFoodJunction>().Find(accessibleID, old_foodID);
-            // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
+            var toBeUpdated = _context.Set<UserFoodJunction>().Find(accessibleID, passive_UserFoodJunction.FoodID);
 
-            //if (toBeUpdated is CategoryofFood /* || entity is Food*/ )
-            //{
-            //    CategoryofFood c = toBeUpdated as CategoryofFood;
-
-
-            //}
 
             // become passive 
             _context.Entry(toBeUpdated).CurrentValues.SetValues(passive_UserFoodJunction);
