@@ -1,7 +1,6 @@
 
-Havuzda mevcuttur oradan ekleyin lütfen 
-short --> float
-text area custimeze etmek
+** delete tempdata when modal bootstrap  closed
+** text area custimeze etmek (yapay zeka  ile )
 update delete ve insert'lerde business codelar yerklerinde olmalý BLL'de
 ve de hata mesajlarýný da barýndýrmalarý gerekiyor
 
@@ -11,7 +10,8 @@ ve de hata mesajlarýný da barýndýrmalarý gerekiyor
 !!! !!! */
 
 
-Havuzdaki ürünlerde ekleme olmayacak
+
+
 Kullanýcý üyelik oluþturunca ve de random þifre oluþturulunca Þifre deðiþtirmesi için (kolaylýk olmasý için)  link  ver
 
 Tablolara göre hareket et

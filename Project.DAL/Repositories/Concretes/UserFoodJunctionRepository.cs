@@ -123,8 +123,6 @@ namespace Project.DAL.Repositories.Concretes
             mydeletedList = _context.Set<UserFoodJunction>().Where(x => x.AppUser.Id == userID && x.DataStatus == ENTITIES.Enums.DataStatus.Deleted).ToList();
 
 
-            List<Food> mydeletedList2 = new List<Food>();
-
             foreach (UserFoodJunction not_exist in mydeletedList)
             {
                 Food fd = _context.Set<Food>().Where(x => x.ID == not_exist.FoodID).FirstOrDefault();
@@ -195,7 +193,7 @@ namespace Project.DAL.Repositories.Concretes
             return control_existing;
         }
 
-        public async Task<string> Update_MyList_Async_Repo(AppUser _userInfo, short foodID)
+        public async Task<int> Update_MyList_Async_Repo(AppUser _userInfo, short foodID)
         {
             UserFoodJunction ufj;
 
@@ -212,23 +210,11 @@ namespace Project.DAL.Repositories.Concretes
 
             _context.Entry(toBeUpdated).CurrentValues.SetValues(ufj);
 
-            int success = _context.SaveChanges();
+            return _context.SaveChanges();
 
-            string result_Message;
-
-            if (success == 1)
-            {
-                result_Message = "Başarılı";
-            }
-            else
-            {
-                result_Message = "Hata";
-            }
-
-            return result_Message;
         }
 
-        public async Task<string> Add_CategoryItem_toMyList_Async_Repo(AppUser _userInfo, short foodID)
+        public async Task<int> Add_CategoryItem_toMyList_Async_Repo(AppUser _userInfo, short foodID)
         {
             UserFoodJunction ufj = new UserFoodJunction();
             ufj.AppUser = _userInfo;
@@ -240,36 +226,12 @@ namespace Project.DAL.Repositories.Concretes
             ufj.AccessibleID = _userInfo.AccessibleID;
 
 
-            /*
-                EntityBase.cs
-
-                public EntityBase()
-                {
-                    CreatedDate = DateTime.Now;
-                    DataStatus = Enums.DataStatus.Inserted;
-                }            
-
-             */
-            // ucj.CreatedDate = DateTime.Now;
-            // ucj.DataStatus = ENTITIES.Enums.DataStatus.Inserted; // ***           
-
-            // _context.Set<UserFoodJunction>().AddAsync(ucj);
             _context.AddAsync(ufj);
 
-            int success = _context.SaveChanges();
+            //int result = _context.SaveChanges();
+            return _context.SaveChanges();
 
-            string result_Message;
 
-            if (success == 1)
-            {
-                result_Message = "Başarılı";
-            }
-            else
-            {
-                result_Message = "Hata";
-            }
-
-            return result_Message;
         }
 
     }

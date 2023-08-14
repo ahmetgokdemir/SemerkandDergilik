@@ -78,13 +78,31 @@ namespace Project.BLL.ManagerServices.Concretes
         {
             bool found_Item = await _iufjrep.Control_IsExisted_InMyListBefore_Async_Repo(_userInfo, foodID);
 
+            int result_Code;
+
             // existed
             if (found_Item == true)
             {
-                return await _iufjrep.Update_MyList_Async_Repo(_userInfo, foodID);
+                result_Code =  await _iufjrep.Update_MyList_Async_Repo(_userInfo, foodID);
             }
             // not existed.. will add
-            return await _iufjrep.Add_CategoryItem_toMyList_Async_Repo(_userInfo, foodID);
+            else
+            {
+                result_Code = await _iufjrep.Add_CategoryItem_toMyList_Async_Repo(_userInfo, foodID);
+            }
+
+            string result_Message;
+
+            if (result_Code == 1)
+            {
+                result_Message = "Başarılı";
+            }
+            else
+            {
+                result_Message = "Hata";
+            }
+
+            return result_Message;
         }
          
     }

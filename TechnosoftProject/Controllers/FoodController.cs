@@ -86,12 +86,22 @@ namespace Technosoft_Project.Controllers
                 result_fd = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_fd");
                 fDTO = result_fd;
 
-                ModelState.AddModelError("FoodDTO.Food_Name", "Yemek listenizde mevcut ya da Havuz listesinde bulunmaktadır. Listenizde bulunmamaktaysa havuz listesinden kendi listenize de ekleyebilirsiniz.");
+                ModelState.AddModelError("FoodDTO.Food_Name", $"{TempData["existinPool"]}" + " " + " Yemek listenizde mevcut ya da Havuz listesinde bulunmaktadır. Listenizde bulunmamaktaysa havuz listesinden kendi listenize de ekleyebilirsiniz.");
 
                 TempData["ValidError_NameExist"] = null;
+                TempData["existinPool"] = null;
             }
             else // validationdan geçemedi
             {
+                //if (TempData["ValidError_NameExist"] != null)
+                //{
+                //    ModelState.AddModelError("FoodDTO.Food_Name", $"{TempData["existinPool"]}" + " " + " yemek listenizde mevcut ya da Havuz listesinde bulunmaktadır. Listenizde bulunmamaktaysa havuz listesinden kendi listenize de ekleyebilirsiniz.");
+
+                //    TempData["ValidError_NameExist"] = null; // "FoodDTO.Food_Name", $"{TempData["existinPool"]}"   ***** ***** ***** *
+                //    TempData["existinPool"] = null;
+
+                //}
+
                 if (TempData["ValidError_Name"] != null)
                 {
 
@@ -132,6 +142,9 @@ namespace Technosoft_Project.Controllers
 
                     TempData["ValidError_Description"] = null;
                 }
+
+
+                TempData["ValidError_General"] = null;
             }
 
 
@@ -209,14 +222,14 @@ namespace Technosoft_Project.Controllers
             }
             else if (TempData["ValidError_General"] != null) // 2.validasyon kontrolü 
             {
-                if (TempData["ValidError_NameExist"] != null)
-                {
-                    ModelState.AddModelError("FoodDTO.Food_Name", ", yemek listenizde mevcut ya da Havuz listesinde bulunmaktadır. Listenizde bulunmamaktaysa havuz listesinden kendi listenize de ekleyebilirsiniz.");
+                //if (TempData["ValidError_NameExist"] != null)
+                //{
+                //    ModelState.AddModelError("FoodDTO.Food_Name", $"{TempData["existinPool"]}" + " " + " yemek listenizde mevcut ya da Havuz listesinde bulunmaktadır. Listenizde bulunmamaktaysa havuz listesinden kendi listenize de ekleyebilirsiniz.");
 
-                    TempData["ValidError_NameExist"] = null; // "FoodDTO.Food_Name", $"{TempData["existinPool"]}"   ***** ***** ***** *
-                    TempData["existinPool"] = null;                   
+                //    TempData["ValidError_NameExist"] = null; // "FoodDTO.Food_Name", $"{TempData["existinPool"]}"   ***** ***** ***** *
+                //    TempData["existinPool"] = null;                   
 
-                }
+                //}
 
                 if (TempData["ValidError_Name"] != null)
                 {
@@ -257,9 +270,9 @@ namespace Technosoft_Project.Controllers
                     }
 
                     TempData["ValidError_Description"] = null;
-                }    
-                
-                             
+                }
+
+                TempData["ValidError_General"] = null;
                 //result_2 = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_ufdj");
                 //ufjDTO.Add(result_2);
 
@@ -451,7 +464,7 @@ namespace Technosoft_Project.Controllers
                             HttpContext.Session.SetObject("manipulatedData_fd", fvm_post.FoodDTO);
                             HttpContext.Session.SetObject("manipulatedData_ufdj", fvm_post.UserFoodJunctionDTO);
 
-
+                            TempData["existinPool"] = fvm_post.FoodDTO.Food_Name;
 
                             TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
 
@@ -650,11 +663,12 @@ namespace Technosoft_Project.Controllers
                     else// update için olan validation error
                     {
 
-                        //  ama girdiği isim havuzda varsa  ....
-                        if (await _ifm.Any(x => x.Food_Name == fvm_post.FoodDTO.Food_Name))
-                        {
-                            TempData["ValidError_NameExist"] = "valid";
-                        }
+                        ////  ama girdiği isim havuzda varsa  ....
+                        //if (await _ifm.Any(x => x.Food_Name == fvm_post.FoodDTO.Food_Name))
+                        //{
+                        //    TempData["ValidError_NameExist"] = "valid";
+                        //    TempData["existinPool"] = fvm_post.FoodDTO.Food_Name;
+                        //}
 
                         if (fvm_post.UserFoodJunctionDTO.Food_Status == 0)
                         {

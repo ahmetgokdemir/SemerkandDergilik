@@ -27,9 +27,9 @@ namespace Project.DAL.Repositories.Abstracts
 
         Task<bool> Control_IsExisted_InMyListBefore_Async_Repo(AppUser _userInfo, short foodID);
 
-        Task<string> Update_MyList_Async_Repo(AppUser _userInfo, short foodID);
+        Task<int> Update_MyList_Async_Repo(AppUser _userInfo, short foodID);
 
-        Task<string> Add_CategoryItem_toMyList_Async_Repo(AppUser _userInfo, short foodID);
+        Task<int> Add_CategoryItem_toMyList_Async_Repo(AppUser _userInfo, short foodID);
           
          
     }
