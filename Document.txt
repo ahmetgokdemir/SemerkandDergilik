@@ -4,6 +4,7 @@
 update delete ve insert'lerde business codelar yerklerinde olmalý BLL'de
 ve de hata mesajlarýný da barýndýrmalarý gerekiyor
 
+filter and son giriþ zamaný 
 
 /* !!! !!! 
 
