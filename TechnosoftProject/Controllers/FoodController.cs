@@ -245,6 +245,20 @@ namespace Technosoft_Project.Controllers
 
                 //}
 
+                if (HttpContext.Session.GetObject<FoodDTO>("manipulatedData_fd") != null)
+                {
+                    fDTO = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_fd");
+                    // fDTO = result_fd;
+                }
+
+                if (HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_ufdj") != null)
+                {
+                    result_ufdj = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_ufdj");
+                    ufjDTO.Add(result_ufdj);
+                }
+
+
+
                 if (TempData["ValidError_Name"] != null)
                 {
 
@@ -294,7 +308,8 @@ namespace Technosoft_Project.Controllers
 
                 //HttpContext.Session.SetObject("willbedeletedUserFoodJuncData", ufjDTO[0]);
                 //HttpContext.Session.SetObject("willbedeletedFoodData", fDTO);
-
+                HttpContext.Session.SetObject("manipulatedData_fd", null);
+                HttpContext.Session.SetObject("manipulatedData_ufdj", null);
             }
             
             else // ilk güncelleme denemesi ise
@@ -314,8 +329,8 @@ namespace Technosoft_Project.Controllers
 
             }
              
-            HttpContext.Session.SetObject("manipulatedData_ufdj", null);
-            HttpContext.Session.SetObject("manipulatedData_fd", null);
+            // HttpContext.Session.SetObject("manipulatedData_ufdj", null);
+            // HttpContext.Session.SetObject("manipulatedData_fd", null);
 
 
             HttpContext.Session.SetObject("will_be_deleted_UserFoodJuncData", ufjDTO[0]);
@@ -729,7 +744,7 @@ namespace Technosoft_Project.Controllers
 
                         if (fvm_post.UserFoodJunctionDTO != null)
                         {
-                            HttpContext.Session.SetObject("manipulatedData_ufdj", old_ufj);
+                            HttpContext.Session.SetObject("manipulatedData_ufdj", fvm_post.UserFoodJunctionDTO);
 
                         }
 

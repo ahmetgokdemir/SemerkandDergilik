@@ -101,6 +101,7 @@ else if (Model.FoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
             @if (Model.FoodDTO.ID != 0)
             {
                 <input type="hidden" asp-for="FoodDTO.ID" />
+                <input type="hidden" asp-for="UserFoodJunctionDTO.FoodID" />
             }
 
         }

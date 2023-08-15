@@ -91,6 +91,8 @@ else if (Model.CategoryofFoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
             @if (Model.CategoryofFoodDTO.ID != 0)
             {
                 <input type="hidden" asp-for="CategoryofFoodDTO.ID" />
+                <input type="hidden" asp-for="UserCategoryJunctionDTO.CategoryofFoodID" />
+
             }
 
         }
