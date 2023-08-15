@@ -241,9 +241,9 @@ namespace Technosoft_Project.Controllers
                     // cDTO = result_ctg;
                 }
 
-                if (HttpContext.Session.GetObject<UserCategoryJunctionDTO>("manipulatedData_ufdj") != null)
+                if (HttpContext.Session.GetObject<UserCategoryJunctionDTO>("manipulatedData_ucj") != null)
                 {
-                    result_ucj = HttpContext.Session.GetObject<UserCategoryJunctionDTO>("manipulatedData_ufdj");
+                    result_ucj = HttpContext.Session.GetObject<UserCategoryJunctionDTO>("manipulatedData_ucj");
                     ucjDTO.Add(result_ucj);
                 }
 
@@ -691,8 +691,8 @@ namespace Technosoft_Project.Controllers
                                     old_cof.CategoryName_of_Foods = cvm_post.CategoryofFoodDTO.CategoryName_of_Foods;
                                 }
                                 */
-
-                                HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
+                                
+                                HttpContext.Session.SetObject("manipulatedData_ctg", old_cof);
                             }
                             // ... Aşağıda zaten yapıyor bu işlemi 
                             //else 
@@ -702,13 +702,11 @@ namespace Technosoft_Project.Controllers
 
                             //}
 
-                            HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
-                            TempData["emptyStatusData"] = "Statu Boş bırakılamaz";
-
+                            HttpContext.Session.SetObject("manipulatedData_ucj", old_ucj);                          
 
                         }
 
-                        if (String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods) /* || cvm_post.CategoryofFoodDTO.CategoryName_of_Foods.Lengt >= 128 */)
+                        if (String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods)  || cvm_post.CategoryofFoodDTO.CategoryName_of_Foods.Length >= 30 )
                         {
                             TempData["ValidError_Name"] = "valid";
 
@@ -748,6 +746,8 @@ namespace Technosoft_Project.Controllers
 
 
                         }
+
+                        TempData["ValidError_General"] = "valid";
 
                     }
 
