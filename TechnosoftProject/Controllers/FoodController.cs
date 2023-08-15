@@ -509,19 +509,15 @@ namespace Technosoft_Project.Controllers
                             // Yeni Yemek eğer havuzda zaten varsa 
                             if (await _ifm.Any(x => x.Food_Name == fd_update.Food_Name))
                             {
-                                // eski veri tekrardan set edildi...
-                                HttpContext.Session.SetObject("manipulatedData_fd", old_fd);
 
-                                TempData["existinPool"] = fvm_post.FoodDTO.Food_Name;
 
                                 TempData["ValidError_NameExist"] = "valid";
                                 TempData["JavascriptToRun"] = "valid";
 
-                                // old_ufj.Food_Status = fvm_post.UserFoodJunctionDTO.Food_Status;
-
-
-
+                                TempData["existinPool"] = fvm_post.FoodDTO.Food_Name;
+                                // eski veri tekrardan set edildi...
                                 HttpContext.Session.SetObject("manipulatedData_ufdj", old_ufj);
+                                HttpContext.Session.SetObject("manipulatedData_fd", old_fd);
 
                                 // ,{CurrentUser.Id}
                                 TempData["JSpopupPage"] = $"ShowErrorUpdateOperationPopup({fvm_post.FoodDTO.ID})"; // diğer paramaetre de eklenecek
