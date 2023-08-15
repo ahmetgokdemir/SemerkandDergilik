@@ -40,7 +40,6 @@ namespace Technosoft_Project.Controllers
                 TempData["messageFood_InOtherUsersList"] = msj;
             }
 
-            // IEnumerable<Food> FoodList = await _icm.GetActivesAsync();
 
             IEnumerable<object> UserFoodJunctionList = await _iufjm.Get_ByUserID_Async(CurrentUser.Id); // IdentityUser'dan gelen Id (Guid tipli)
 
@@ -48,7 +47,6 @@ namespace Technosoft_Project.Controllers
             FoodVM cvm = new FoodVM
             {
                 UserFoodJunctionDTOs = UserFoodJunctionList.Adapt<IEnumerable<UserFoodJunctionDTO>>().ToList(),
-                // FoodDTOs = FoodList.Adapt<IEnumerable<FoodDTO>>().ToList(),
                 JavascriptToRun = JSpopupPage
             };
 
@@ -65,33 +63,27 @@ namespace Technosoft_Project.Controllers
             UserFoodJunctionDTO ufjDTO = new UserFoodJunctionDTO();
 
 
-            // kullacının girdiği verileri tekrar girmemesi için
-            if (HttpContext.Session.GetObject<FoodDTO>("manipulatedData_fd") != null)
-            {
-                result_fd = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_fd");
-                fDTO = result_fd;
-            }
-
-            if (HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_ufdj") != null)
-            {
-                result_ufdj = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_ufdj");
-                ufjDTO = result_ufdj;
-            }
-
-
             // validationdan geçti ama aynı veri db'de varsa !!
             if (TempData["ValidError_NameExist"] != null)
             {
 
-                result_fd = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_fd");
-                fDTO = result_fd;
+                //result_fd = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_fd");
+                //fDTO = result_fd;
+
+                result_ufdj = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_ufdj");
+                ufjDTO = result_ufdj;
+
 
                 ModelState.AddModelError("FoodDTO.Food_Name", $"{TempData["existinPool"]}" + " " + " Yemek listenizde mevcut ya da Havuz listesinde bulunmaktadır. Listenizde bulunmamaktaysa havuz listesinden kendi listenize de ekleyebilirsiniz.");
 
                 TempData["ValidError_NameExist"] = null;
                 TempData["existinPool"] = null;
+                HttpContext.Session.SetObject("manipulatedData_ufdj", null);
+
+                // HttpContext.Session.SetObject("manipulatedData_fd", null);
+
             }
-            else // validationdan geçemedi
+            else if (TempData["ValidError_General"] != null) // validationdan geçemedi
             {
                 //if (TempData["ValidError_NameExist"] != null)
                 //{
@@ -102,6 +94,22 @@ namespace Technosoft_Project.Controllers
 
                 //}
 
+                // kullacının girdiği verileri tekrar girmemesi için
+                if (HttpContext.Session.GetObject<FoodDTO>("manipulatedData_fd") != null)
+                {
+                    result_fd = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_fd");
+                    fDTO = result_fd;
+                }
+
+                if (HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_ufdj") != null)
+                {
+                    result_ufdj = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_ufdj");
+                    ufjDTO = result_ufdj;
+                }
+
+
+
+                
                 if (TempData["ValidError_Name"] != null)
                 {
 
@@ -145,6 +153,9 @@ namespace Technosoft_Project.Controllers
 
 
                 TempData["ValidError_General"] = null;
+
+                HttpContext.Session.SetObject("manipulatedData_fd", null);
+                HttpContext.Session.SetObject("manipulatedData_ufdj", null);
             }
 
 
@@ -155,8 +166,7 @@ namespace Technosoft_Project.Controllers
                 FoodDTO = fDTO
             };
 
-            HttpContext.Session.SetObject("manipulatedData_fd", null);
-            HttpContext.Session.SetObject("manipulatedData_ufdj", null);
+
 
             Thread.Sleep(500); // pop-up sayfasını tekrar açmayı tetikleyince bazen gelmiyor o yüzden bu kod eklendi..
 
@@ -213,7 +223,7 @@ namespace Technosoft_Project.Controllers
 
                 ModelState.AddModelError("FoodDTO.Food_Name", $"{TempData["existinPool"]}" + " " + " Yemek listenizde mevcut ya da Havuz listesinde bulunmaktadır. Listenizde bulunmamaktaysa havuz listesinden kendi listenize de ekleyebilirsiniz.");
                 
-                TempData["ValidError_NameExist"] = null; // "FoodDTO.Food_Name", $"{TempData["existinPool"]}"   ***** ***** ***** *
+                TempData["ValidError_NameExist"] = null;
                 TempData["existinPool"] = null;
 
                 //HttpContext.Session.SetObject("will_be_deleted_UserFoodJuncData", ufjDTO[0]);
@@ -459,13 +469,12 @@ namespace Technosoft_Project.Controllers
                             // HttpContext.Session.SetObject("manipulatedData_NameExist", fvm_post.FoodDTO);
 
                             TempData["ValidError_NameExist"] = "valid";
-                            TempData["JavascriptToRun"] = "valid";
 
-                            HttpContext.Session.SetObject("manipulatedData_fd", fvm_post.FoodDTO);
                             HttpContext.Session.SetObject("manipulatedData_ufdj", fvm_post.UserFoodJunctionDTO);
 
                             TempData["existinPool"] = fvm_post.FoodDTO.Food_Name;
 
+                            TempData["JavascriptToRun"] = "valid";
                             TempData["JSpopupPage"] = $"ShowErrorInsertOperationPopup()";
 
 
@@ -658,6 +667,21 @@ namespace Technosoft_Project.Controllers
                             HttpContext.Session.SetObject("manipulatedData_ufdj", fvm_post.UserFoodJunctionDTO);
                         }
 
+
+
+                        TempData["ValidError_General"] = "valid";
+
+                        if (fvm_post.FoodDTO != null)
+                        {
+                            HttpContext.Session.SetObject("manipulatedData_fd", old_fd);
+                        }
+
+                        if (fvm_post.UserFoodJunctionDTO != null)
+                        {
+                            HttpContext.Session.SetObject("manipulatedData_ufdj", old_ufj);
+
+                        }
+
                     }
                     // *!*
                     else// update için olan validation error
@@ -706,6 +730,7 @@ namespace Technosoft_Project.Controllers
                         if (fvm_post.UserFoodJunctionDTO != null)
                         {
                             HttpContext.Session.SetObject("manipulatedData_ufdj", old_ufj);
+
                         }
 
                     }
