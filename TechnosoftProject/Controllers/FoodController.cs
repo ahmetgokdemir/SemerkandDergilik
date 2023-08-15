@@ -53,13 +53,13 @@ namespace Technosoft_Project.Controllers
             return View("FoodListforMember", cvm);
         }
 
-        [Route("AddFoodAjax")]
+        [Route("AddFoodAjax")] // insert
         public async Task<PartialViewResult> AddFoodAjax()
-        {           
-            var result_fd = new FoodDTO();
+        {
+            // FoodDTO result_fd = new FoodDTO();
             FoodDTO fDTO = new FoodDTO();
 
-            var result_ufdj = new UserFoodJunctionDTO();
+            //UserFoodJunctionDTO result_ufdj = new UserFoodJunctionDTO();
             UserFoodJunctionDTO ufjDTO = new UserFoodJunctionDTO();
 
 
@@ -70,8 +70,8 @@ namespace Technosoft_Project.Controllers
                 //result_fd = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_fd");
                 //fDTO = result_fd;
 
-                result_ufdj = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_ufdj");
-                ufjDTO = result_ufdj;
+                ufjDTO = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_ufdj");
+                // ufjDTO = result_ufdj;
 
 
                 ModelState.AddModelError("FoodDTO.Food_Name", $"{TempData["existinPool"]}" + " " + " Yemek listenizde mevcut ya da Havuz listesinde bulunmaktadır. Listenizde bulunmamaktaysa havuz listesinden kendi listenize de ekleyebilirsiniz.");
@@ -97,14 +97,14 @@ namespace Technosoft_Project.Controllers
                 // kullacının girdiği verileri tekrar girmemesi için
                 if (HttpContext.Session.GetObject<FoodDTO>("manipulatedData_fd") != null)
                 {
-                    result_fd = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_fd");
-                    fDTO = result_fd;
+                    fDTO = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_fd");
+                    // fDTO = result_fd;
                 }
 
                 if (HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_ufdj") != null)
                 {
-                    result_ufdj = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_ufdj");
-                    ufjDTO = result_ufdj;
+                    ufjDTO = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_ufdj");
+                    //ufjDTO = result_ufdj;
                 }
 
 
@@ -174,18 +174,18 @@ namespace Technosoft_Project.Controllers
 
         }
 
-        [Route("UpdateFoodAjax")]
+        [Route("UpdateFoodAjax")] // update
         public async Task<PartialViewResult> UpdateFoodAjax(short foodID/*, Guid userID*/)
         {
 
             Guid _userID = CurrentUser.Id; // userID ÇEVİR
 
-            var result_fd = new FoodDTO();
+            FoodDTO result_fd = new FoodDTO();
             FoodDTO fDTO = new FoodDTO();
 
-            var result_ufdj = new List<UserFoodJunctionDTO>();
+            // var result_ufdj = new List<UserFoodJunctionDTO>();
             List<UserFoodJunctionDTO> ufjDTO = new List<UserFoodJunctionDTO>();
-            var result_2 = new UserFoodJunctionDTO();  // ***** ***** ***** *
+            var result_ufdj = new UserFoodJunctionDTO();  // ***** ***** ***** *
 
 
             // kullacının girdiği verileri tekrar girmemesi için
@@ -199,9 +199,9 @@ namespace Technosoft_Project.Controllers
             {
                 // result_ufdj = HttpContext.Session.GetObject<List<UserFoodJunctionDTO>>("manipulatedData_ufdj");
 
-                result_2 = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_ufdj");
-                result_ufdj.Add(result_2);
-                ufjDTO = result_ufdj;
+                result_ufdj = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_ufdj");
+                ufjDTO.Add(result_ufdj);
+                // ufjDTO = result_ufdj;
             }
 
             IEnumerable<object> ucj = null; // ***** ***** ***** *
@@ -212,19 +212,23 @@ namespace Technosoft_Project.Controllers
 
             if (TempData["ValidError_NameExist"] != null) // 1.validasyon kontrolü 
             {
-                // fDTO = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_NameExist");  // ***** ***** ***** *
+                result_ufdj = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_ufdj");
+                ufjDTO.Add(result_ufdj);
+                //ufjDTO = result_ufdj;
 
 
-                // List<object> ucj2 = new List<object>();                             
-
-                // result_2 = HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData");  // ***** ***** ***** *
-                // ufjDTO.Add(result_2);  // ***** ***** ***** *
+                fDTO = HttpContext.Session.GetObject<FoodDTO>("manipulatedData_fd");
 
 
                 ModelState.AddModelError("FoodDTO.Food_Name", $"{TempData["existinPool"]}" + " " + " Yemek listenizde mevcut ya da Havuz listesinde bulunmaktadır. Listenizde bulunmamaktaysa havuz listesinden kendi listenize de ekleyebilirsiniz.");
                 
                 TempData["ValidError_NameExist"] = null;
                 TempData["existinPool"] = null;
+
+
+                HttpContext.Session.SetObject("manipulatedData_fd", null);
+                HttpContext.Session.SetObject("manipulatedData_ufdj", null);
+
 
                 //HttpContext.Session.SetObject("will_be_deleted_UserFoodJuncData", ufjDTO[0]);
                 //HttpContext.Session.SetObject("will_be_deleted_FoodData", fDTO);
@@ -502,7 +506,7 @@ namespace Technosoft_Project.Controllers
                     
                     else // update 
                     {
-                        // Yeni bir Yemek iSMİ
+                        // Yeni bir yemek ismi
                         if (old_fd.Food_Name != fd_update.Food_Name)
                         {
 
@@ -516,7 +520,7 @@ namespace Technosoft_Project.Controllers
 
                                 TempData["existinPool"] = fvm_post.FoodDTO.Food_Name;
                                 // eski veri tekrardan set edildi...
-                                HttpContext.Session.SetObject("manipulatedData_ufdj", old_ufj);
+                                HttpContext.Session.SetObject("manipulatedData_ufdj", fvm_post.UserFoodJunctionDTO);
                                 HttpContext.Session.SetObject("manipulatedData_fd", old_fd);
 
                                 // ,{CurrentUser.Id}
@@ -669,12 +673,12 @@ namespace Technosoft_Project.Controllers
 
                         if (fvm_post.FoodDTO != null)
                         {
-                            HttpContext.Session.SetObject("manipulatedData_fd", old_fd);
+                            HttpContext.Session.SetObject("manipulatedData_fd", fvm_post.FoodDTO);
                         }
 
                         if (fvm_post.UserFoodJunctionDTO != null)
                         {
-                            HttpContext.Session.SetObject("manipulatedData_ufdj", old_ufj);
+                            HttpContext.Session.SetObject("manipulatedData_ufdj", fvm_post.UserFoodJunctionDTO);
 
                         }
 
