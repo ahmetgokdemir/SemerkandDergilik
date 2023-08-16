@@ -718,7 +718,7 @@ namespace Technosoft_Project.Controllers
                                 HttpContext.Session.SetObject("manipulatedData_ctg", old_cof);
 
                                 TempData["ValidError_Name"] = "valid";
-                                }
+                                } // aynı isim kalmış demektir
                                 else
                                 {
                                     HttpContext.Session.SetObject("manipulatedData_ctg", cvm_post.CategoryofFoodDTO);
