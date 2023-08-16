@@ -260,7 +260,11 @@ namespace Technosoft_Project.Controllers
                 if (TempData["ValidError_Name"] != null)
                 {
 
-                    if (string.IsNullOrEmpty(fDTO.Food_Name))
+                    //if (string.IsNullOrEmpty(fDTO.Food_Name))
+                    //{
+                    //    ModelState.AddModelError("FoodDTO.Food_Name", "Yemek adı giriniz.");
+                    //}
+                    if (TempData["NullOrEmpty"] != null)
                     {
                         ModelState.AddModelError("FoodDTO.Food_Name", "Yemek adı giriniz.");
                     }
@@ -576,7 +580,7 @@ namespace Technosoft_Project.Controllers
                                 passive_UserFoodJunction.AccessibleID = CurrentUser.AccessibleID;
                                 passive_UserFoodJunction.AppUser = CurrentUser;
                                 passive_UserFoodJunction.Food_Status = ExistentStatus.Pasif;
-
+                                // passive_UserFoodJunction.FoodID = old_fd.ID;
                                 _iufjm.Delete_OldFood_from_User(CurrentUser.AccessibleID, passive_UserFoodJunction);
 
                                 TempData["messageFood"] = "Yemek güncellendi";
@@ -706,6 +710,7 @@ namespace Technosoft_Project.Controllers
                         FoodDTO _tempF = new FoodDTO();
 
                         _tempF.ID = fvm_post.FoodDTO.ID;
+                        _tempFJ.FoodID = fvm_post.FoodDTO.ID;
                         ////  ama girdiği isim havuzda varsa  ....
                         //if (await _ifm.Any(x => x.Food_Name == fvm_post.FoodDTO.Food_Name))
                         //{
