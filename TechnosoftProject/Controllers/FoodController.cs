@@ -56,10 +56,7 @@ namespace Technosoft_Project.Controllers
         [Route("AddFoodAjax")] // insert
         public async Task<PartialViewResult> AddFoodAjax()
         {
-            // FoodDTO result_fd = new FoodDTO();
             FoodDTO fDTO = new FoodDTO();
-
-            //UserFoodJunctionDTO result_ufdj = new UserFoodJunctionDTO();
             UserFoodJunctionDTO ufjDTO = new UserFoodJunctionDTO();
 
 
@@ -78,6 +75,7 @@ namespace Technosoft_Project.Controllers
 
                 TempData["ValidError_NameExist"] = null;
                 TempData["existinPool"] = null;
+
                 HttpContext.Session.SetObject("manipulatedData_ufdj", null);
 
                 // HttpContext.Session.SetObject("manipulatedData_fd", null);
@@ -697,8 +695,7 @@ namespace Technosoft_Project.Controllers
 
                         }
 
-                    }
-                    // *!*
+                    }                    
                     else// update için olan validation error
                     {
 

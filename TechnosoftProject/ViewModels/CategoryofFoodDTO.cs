@@ -10,6 +10,7 @@ namespace Technosoft_Project.ViewModels
 
         [Required(ErrorMessage = "Kategori ismi gereklidir.")]
         [Display(Name = "Kategori Adı")]
+        [MaxLength(30, ErrorMessage = "Kategori en fazla 30 karakterli olmalıdır.")]
         public string CategoryName_of_Foods { get; set; }
 
 

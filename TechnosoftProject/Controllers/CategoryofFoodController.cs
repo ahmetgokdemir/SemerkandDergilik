@@ -66,31 +66,42 @@ namespace Technosoft_Project.Controllers
         {
             // ViewBag.Status = new SelectList(Enum.GetNames(typeof(Status))); => yerine                                                                 asp-items="Html.GetEnumSelectList<Technosoft_Project.Enums.Status>()" kullanıldı..
 
-            CategoryofFoodDTO result_ctg = new CategoryofFoodDTO();
             CategoryofFoodDTO cDTO = new CategoryofFoodDTO();
-
-            UserCategoryJunctionDTO result_2 = new UserCategoryJunctionDTO();
             UserCategoryJunctionDTO ucjDTO = new UserCategoryJunctionDTO();
 
 
 
-            
-            if (TempData["ValidError_General"] != null) // 2.validasyon kontrolü 
+            if (TempData["ValidError_NameExist"] != null)
             {
-                
+
+                //result = HttpContext.Session.GetObject<CategoryofFoodDTO>("manipulatedData_NameExist");
+                //cDTO = result;
+
+                ucjDTO = HttpContext.Session.GetObject<UserCategoryJunctionDTO>("manipulatedData_ucj");
+                // ucjDTO = result_2;
+
+
+                ModelState.AddModelError("CategoryofFoodDTO.CategoryName_of_Foods", $"{TempData["existinPool"]}" + " " + " Kategori listenizde mevcut ya da Havuz listesinde bulunmaktadır. Listenizde bulunmamaktaysa havuz listesinden kendi listenize de ekleyebilirsiniz.");
+
+                TempData["ValidError_NameExist"] = null;
+                TempData["existinPool"] = null;
+
+                HttpContext.Session.SetObject("manipulatedData_ucj", null);
+
+
+            }
+            else if (TempData["ValidError_General"] != null) // 2.validasyon kontrolü 
+            {
+
                 if (HttpContext.Session.GetObject<CategoryofFoodDTO>("manipulatedData_ctg") != null)
                 {
                     cDTO = HttpContext.Session.GetObject<CategoryofFoodDTO>("manipulatedData_ctg");
-                    // cDTO = result_ctg;
                 }
 
                 if (HttpContext.Session.GetObject<UserFoodJunctionDTO>("manipulatedData_ucj") != null)
                 {
                     ucjDTO = HttpContext.Session.GetObject<UserCategoryJunctionDTO>("manipulatedData_ucj");
-                    // ucjDTO = result_2;
                 }
-
-
 
 
                 if (TempData["ValidError_Name"] != null)
@@ -124,52 +135,13 @@ namespace Technosoft_Project.Controllers
                 HttpContext.Session.SetObject("manipulatedData_ucj", null);
 
             }
-            // aynı veri db'de varsa !!
-            else if (TempData["ValidError_NameExist"] != null)
-            {
-
-                //result = HttpContext.Session.GetObject<CategoryofFoodDTO>("manipulatedData_NameExist");
-                //cDTO = result;
-
-                ucjDTO = HttpContext.Session.GetObject<UserCategoryJunctionDTO>("manipulatedData_ucj");
-                // ucjDTO = result_2;
-
-
-                ModelState.AddModelError("CategoryofFoodDTO.CategoryName_of_Foods", $"{TempData["existinPool"]}" + " " + " Kategori listenizde mevcut ya da Havuz listesinde bulunmaktadır. Listenizde bulunmamaktaysa havuz listesinden kendi listenize de ekleyebilirsiniz.");
-
-                TempData["ValidError_NameExist"] = null;
-                TempData["existinPool"] = null;
-
-                HttpContext.Session.SetObject("manipulatedData_ucj", null);
-
-
-            }
-
-
-            HttpContext.Session.SetObject("manipulatedData_Name", null);
-            HttpContext.Session.SetObject("manipulatedData_Status", null);
-            HttpContext.Session.SetObject("manipulatedData_NameExist", null);
-
+            
 
             CategoryofFoodVM cVM = new CategoryofFoodVM
             {
                 UserCategoryJunctionDTO = ucjDTO,
                 CategoryofFoodDTO = cDTO
             };
-
-
-            //if (TempData["HttpContext2"] != null)
-            //{
-            //    TempData["HttpContext2"] = null;
-
-            //    if (cVM.UserCategoryJunctionDTO.CategoryofFood_Status == 0)
-            //    {
-            //        ModelState.AddModelError("UserCategoryJunctionDTO.CategoryofFood_Status", "Kategori durumunu giriniz.");
-            //    }
-
-            //    HttpContext.Session.SetObject("manipulatedData_Status", null);
-
-            //}
 
 
             Thread.Sleep(500); // pop-up sayfasını tekrar açmayı tetikleyince bazen gelmiyor o yüzden bu kod eklendi..
@@ -219,7 +191,7 @@ namespace Technosoft_Project.Controllers
                 //ucjDTO.Add(result_ufdj);
                 // ucjDTO[0] = result_2;
 
-                ModelState.AddModelError("CategoryofFoodDTO.CategoryName_of_Foods", $"{TempData["existinPool"]}" + " " + "kategorisi Havuzda mevcuttur. Oradan ekleyebilirsiniz.");
+                ModelState.AddModelError("CategoryofFoodDTO.CategoryName_of_Foods", $"{TempData["existinPool"]}" + " " + "kategorisi havuzda mevcuttur. Havuz listesinden kendi listenize de ekleyebilirsiniz.");
 
                 TempData["ValidError_NameExist"] = null;
                 TempData["existinPool"] = null;
@@ -253,13 +225,17 @@ namespace Technosoft_Project.Controllers
                 if (TempData["ValidError_Name"] != null)
                 {
 
-                    if (string.IsNullOrEmpty(cDTO.CategoryName_of_Foods))
+                    if (TempData["NullOrEmpty"] != null)
                     {
-                        ModelState.AddModelError("CategoryofFoodDTO.CategoryName_of_Foods", "Yemek adı giriniz.");
+                        ModelState.AddModelError("CategoryofFoodDTO.CategoryName_of_Foods", "Kategori ismi giriniz.");
                     }
-                    else if (cDTO.CategoryName_of_Foods.Length >= 30)
+                    /*else if (cDTO.CategoryName_of_Foods.Length >= 30)
                     {
-                        ModelState.AddModelError("CategoryofFoodDTO.CategoryName_of_Foods", "Yemek 30 karakterden fazla olamaz.");
+                        ModelState.AddModelError("CategoryofFoodDTO.CategoryName_of_Foods", "Kategori ismi 30 karakterden fazla olamaz.");
+                    }*/
+                    else if (TempData["existinpool"] != null)
+                    {
+                        ModelState.AddModelError("CategoryofFoodDTO.CategoryName_of_Foods", $"{TempData["existinPool"]}" + " " + " kategori listenizde mevcut ya da Havuz listesinde bulunmaktadır. Listenizde bulunmamaktaysa havuz listesinden kendi listenize de ekleyebilirsiniz.");
                     }
 
                     TempData["ValidError_Name"] = null;
@@ -675,50 +651,44 @@ namespace Technosoft_Project.Controllers
                         {
                             TempData["ValidError_Status"] = "valid";
 
-                            if (!String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods))
-                            {
-                                // girdiği isim kayıtlarda yoksa (havuzda) ve girdiği ismi tutmak için
-                                if (await _icm.Any(x => x.CategoryName_of_Foods == cvm_post.CategoryofFoodDTO.CategoryName_of_Foods))
-                                {
-                                    TempData["categoryinPool"] = $"{cvm_post.CategoryofFoodDTO.CategoryName_of_Foods}" + ", Kategori havuzda mevcuttur. Oradan ekleye bilirsiniz.";
-
-                                }
-
-                                /*
-                                else //  ama girdiği isim havuzda varsa hata döner..
-                                // girdiği isim kayıtlarda yoksa (havuzda) ve girdiği ismi tutmak için
-                                {
-                                    old_cof.CategoryName_of_Foods = cvm_post.CategoryofFoodDTO.CategoryName_of_Foods;
-                                }
-                                */
-                                
-                                HttpContext.Session.SetObject("manipulatedData_ctg", old_cof);
-                            }
-                            // ... Aşağıda zaten yapıyor bu işlemi 
-                            //else 
+                            //if (!String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods) || cvm_post.CategoryofFoodDTO.CategoryName_of_Foods.Length < 30)
                             //{
-                            //    HttpContext.Session.SetObject("manipulatedData_Name", old_cof);
-                            //    TempData["emptyNameData"] = "İsim Boş bırakılamaz";
+ 
+                            //    if (await _icm.Any(x => x.CategoryName_of_Foods == cvm_post.CategoryofFoodDTO.CategoryName_of_Foods))
+                            //    {
+                            //        TempData["existinPool"] = $"{cvm_post.CategoryofFoodDTO.CategoryName_of_Foods}" + ", Kategori listenizde mevcut ya da Havuz listesinde bulunmaktadır. Listenizde bulunmamaktaysa havuz listesinden kendi listenize de ekleyebilirsiniz.";
+
+                            //        HttpContext.Session.SetObject("manipulatedData_ctg", old_cof);
+
+                            //    }
+                            //    else
+                            //    {
+                            //        HttpContext.Session.SetObject("manipulatedData_ctg", cvm_post.CategoryofFoodDTO);
+                            //    }
+
+                                
 
                             //}
+
 
                             HttpContext.Session.SetObject("manipulatedData_ucj", old_ucj);                          
 
                         }
 
-                        if (String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods)  || cvm_post.CategoryofFoodDTO.CategoryName_of_Foods.Length >= 30 )
+                        if (String.IsNullOrEmpty(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods) /* || cvm_post.CategoryofFoodDTO.CategoryName_of_Foods.Length >= 30 */)
                         {
                             TempData["ValidError_Name"] = "valid";
+                            TempData["NullOrEmpty"] = "valid";
+                            //if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status != 0)
+                            //{
+                            //    old_ucj.CategoryofFood_Status = cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status;
 
-                            if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status != 0)
-                            {
-                                old_ucj.CategoryofFood_Status = cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status;
-
-                                HttpContext.Session.SetObject("manipulatedData_Status", old_ucj);
-                            }
+                            //    HttpContext.Session.SetObject("manipulatedData_ucj", old_ucj);
+                            //} 
 
 
-                            TempData["ValidError_General"] = "valid";
+
+
 
                             //if (cvm_post.CategoryofFoodDTO != null)
                             //{
@@ -731,21 +701,48 @@ namespace Technosoft_Project.Controllers
 
                             //}
 
-
-                            // eski veri tekrardan set edildi...
-                            if (cvm_post.CategoryofFoodDTO != null)
-                            {
                                 HttpContext.Session.SetObject("manipulatedData_ctg", old_cof);
-                            }
-
-                            if (cvm_post.UserCategoryJunctionDTO != null)
-                            {
-                                HttpContext.Session.SetObject("manipulatedData_ucj", cvm_post.UserCategoryJunctionDTO);
-
-                            }
+                            
 
 
                         }
+                        else
+                        {
+                            if (await _icm.Any(x => x.CategoryName_of_Foods == cvm_post.CategoryofFoodDTO.CategoryName_of_Foods) )
+                            {
+                                if(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods != old_cof.CategoryName_of_Foods) 
+                                {
+
+                                TempData["existinPool"] = cvm_post.CategoryofFoodDTO.CategoryName_of_Foods;
+
+                                HttpContext.Session.SetObject("manipulatedData_ctg", old_cof);
+
+                                TempData["ValidError_Name"] = "valid";
+                                }
+                                else
+                                {
+                                    HttpContext.Session.SetObject("manipulatedData_ctg", cvm_post.CategoryofFoodDTO);
+                                }
+                            }
+                            else // valid durumu
+                            {
+                                HttpContext.Session.SetObject("manipulatedData_ctg", cvm_post.CategoryofFoodDTO);
+
+                                // TempData["ValidError_Name"] = "valid";
+                            }
+
+                        }
+
+                        if (cvm_post.UserCategoryJunctionDTO.CategoryofFood_Status != 0)
+                        {
+                            HttpContext.Session.SetObject("manipulatedData_ucj", cvm_post.UserCategoryJunctionDTO);
+
+                        }
+
+                        //if (cvm_post.CategoryofFoodDTO != null)
+                        //{
+                        //    HttpContext.Session.SetObject("manipulatedData_ctg", cvm_post.CategoryofFoodDTO);
+                        //}
 
                         TempData["ValidError_General"] = "valid";
 

@@ -10,7 +10,7 @@ namespace Technosoft_Project.ViewModels
 
         [Display(Name = "Yemek Adı")]
         [Required(ErrorMessage = "Yemek ismi gereklidir.")]
-        [MaxLength(128, ErrorMessage = "Yemek en fazla 128 karakterli olmalıdır.")]
+        [MaxLength(30, ErrorMessage = "Yemek en fazla 30 karakterli olmalıdır.")]
         public string Food_Name { get; set; }
 
 
