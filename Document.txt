@@ -15,8 +15,7 @@ filter and son giriþ zamaný
 
 
 
-
-Kullanýcý üyelik oluþturunca ve de random þifre oluþturulunca Þifre deðiþtirmesi için (kolaylýk olmasý için)  link  ver
+ 
 
 Tablolara göre hareket et
 Havuuz sayfalarýnda sadece kategorilerime ekle butonu olsun kendisine
