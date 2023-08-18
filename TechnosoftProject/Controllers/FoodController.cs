@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Project.BLL.ManagerServices.Abstracts;
@@ -11,6 +12,8 @@ using Technosoft_Project.VMClasses;
 
 namespace Technosoft_Project.Controllers
 {
+    [Authorize]
+    [Authorize(Policy = "Confirmed_Member_Policy")]
     public class FoodController : BaseController
     {
 
