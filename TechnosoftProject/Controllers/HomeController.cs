@@ -588,8 +588,20 @@ namespace Technosoft_Project.Controllers
                                     ViewBag.status = "Bir hata meydana geldi. lütfen daha sonra tekrar deneyiniz.";
                                 }
 
-                                TempData["passwordFor3rdPartyAuthentication"] = "Şifreniz " + generated + " olarak belirlenmiştir. Şifre Değiştir bölümünden yeni şifre belirleyebilirsiniz.";  
-                               
+
+                                string actionName = "PasswordChange"; // Replace with your action name
+                                string controllerName = "Member"; // Replace with your controller name
+
+                                string generatedLink = Url.Action(actionName, controllerName);
+
+                                //ViewBag.GeneratedLink = generatedLink;
+
+
+                                TempData["passwordFor3rdPartyAuthentication"] = generatedLink;
+
+
+                                //TempData["passwordFor3rdPartyAuthentication"] = "Şifreniz " + generated + " olarak belirlenmiştir. Şifre Değiştir" + generatedLink + "bölümünden yeni şifre belirleyebilirsiniz.";  
+
 
                                 return Redirect(ReturnUrl);
                             }
