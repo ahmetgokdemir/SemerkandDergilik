@@ -594,11 +594,9 @@ namespace Technosoft_Project.Controllers
 
                                 string generatedLink = Url.Action(actionName, controllerName);
 
-                                //ViewBag.GeneratedLink = generatedLink;
-
 
                                 TempData["passwordFor3rdPartyAuthentication"] = generatedLink;
-
+                                TempData["generatedPass"] = generated;
 
                                 //TempData["passwordFor3rdPartyAuthentication"] = "Şifreniz " + generated + " olarak belirlenmiştir. Şifre Değiştir" + generatedLink + "bölümünden yeni şifre belirleyebilirsiniz.";  
 
