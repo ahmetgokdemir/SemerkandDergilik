@@ -1,4 +1,9 @@
 
+
+** Resimler
+** filter and son giriþ zamaný 
+
+
 ** test yap ve kodlardan hangisi kaldý...
 ** trim
 ** update'de null name durumunda  kontrol etmiyor ...
@@ -7,7 +12,7 @@
 update delete ve insert'lerde business codelar yerklerinde olmalý BLL'de
 ve de hata mesajlarýný da barýndýrmalarý gerekiyor
 
-filter and son giriþ zamaný 
+
 
 /* !!! !!! 
 
@@ -39,10 +44,9 @@ Admin için Onay durumu olmasýn
 
 
 Sonra:
-* þifre deðiþtirmede show password'ü koy...
+* kiþi register olunca onaylama yapma :TAMAM
 * jquery ekleme (wwwroot)...
-* kiþi register olunca onaylama yapma
-* ientity.cs ve identity_models tablaloarýnda status (aktif pasif) olacak mý?
+
 
 
 -----------------------------------------------------------------------------------
