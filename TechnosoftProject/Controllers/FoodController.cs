@@ -29,6 +29,13 @@ namespace Technosoft_Project.Controllers
         [Route("FoodList_forMember")]
         public async Task<IActionResult> FoodList_forMember(string? JSpopupPage, string? onlyOnce)
         {
+            
+            if (HttpContext.Session.GetObject<string>("hold_new_valid_food_name") != null)
+            {
+                HttpContext.Session.SetObject("hold_new_valid_food_name", null);
+            }
+
+
             TempData["onlyOnce"] = onlyOnce;
 
             if (TempData["JavascriptToRun"] == null)
@@ -345,6 +352,14 @@ namespace Technosoft_Project.Controllers
             HttpContext.Session.SetObject("will_be_deleted_UserFoodJuncData", ufjDTO[0]);
             HttpContext.Session.SetObject("will_be_deleted_FoodData", fDTO);
 
+            // validation'Dan geliyorsa 
+            if (HttpContext.Session.GetObject<string>("hold_new_valid_food_name") != null)
+            {
+                //  HttpContext.Session.SetObject("old_ctg_name_for_comparison", old_cof.CategoryName_of_Foods);
+
+                fDTO.Food_Name = HttpContext.Session.GetObject<string>("hold_new_valid_food_name");
+            }
+
             FoodVM fVM = new FoodVM
             {
                 UserFoodJunctionDTO = ufjDTO[0],
@@ -586,6 +601,11 @@ namespace Technosoft_Project.Controllers
                                 // passive_UserFoodJunction.FoodID = old_fd.ID;
                                 _iufjm.Delete_OldFood_from_User(CurrentUser.AccessibleID, passive_UserFoodJunction);
 
+                                if (HttpContext.Session.GetObject<string>("hold_new_valid_food_name") != null)
+                                {
+                                    HttpContext.Session.SetObject("hold_new_valid_food_name", null);
+                                }
+
                                 TempData["messageFood"] = "Yemek güncellendi";
 
                                 return RedirectToAction("FoodList_forMember", new { onlyOnce = "1" });
@@ -633,6 +653,12 @@ namespace Technosoft_Project.Controllers
 
 
                             _iufjm.Update_UserFoodJuncTable(CurrentUser.AccessibleID, fvm_post.FoodDTO.ID, ufj);
+
+                            if (HttpContext.Session.GetObject<string>("hold_new_valid_food_name") != null)
+                            {
+                                HttpContext.Session.SetObject("hold_new_valid_food_name", null);
+                            }
+
                             TempData["messageFood"] = "Yemek güncellendi";
 
                             // else { değişiklik olmadı mesajı }
@@ -760,7 +786,13 @@ namespace Technosoft_Project.Controllers
 
                             else // valid durumu
                             {
-                                _tempF.Food_Name = fvm_post.FoodDTO.Food_Name;
+                                // _tempF.Food_Name = fvm_post.FoodDTO.Food_Name;
+                                _tempF.Food_Name = old_fd.Food_Name;
+
+
+                                HttpContext.Session.SetObject("hold_new_valid_food_name", fvm_post.FoodDTO.Food_Name);
+                                // HttpContext.Session.SetObject("manipulatedData_ctg", old_cof);
+
 
                                 // TempData["ValidError_Name"] = "valid";
                             } 
