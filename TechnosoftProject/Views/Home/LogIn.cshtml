@@ -6,14 +6,41 @@
 }
 
 <!-- link password'u hide/show için gerekli-->
-<link rel="stylesheet"
+@* <link rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
       integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
-      crossorigin="anonymous">
+      crossorigin="anonymous"> *@
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 @*<link rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
       integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
       crossorigin="anonymous">*@
+<style>
+
+ 
+
+     input {
+        /*box-sizing: border-box;
+        width: 100%;
+        font-size: 18px;
+        border: none;
+        padding: 10px 10px;
+ 
+        font-family: 'Poppins',sans-serif;
+        color: #4a4a4a;
+        letter-spacing: 0.5px;*/
+        box-shadow: 0 5px 30px rgba(22,89,233,0.4);
+    } 
+
+ 
+    .fa {
+        font-size: 22px;
+        color: #7a797e;
+    }
+
+</style>
 
 <div class="row">
 
@@ -48,6 +75,9 @@
                 </div>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
+
+ 
+
             <div class="form-group">
 
                 <input type="checkbox" asp-for="RememberMe" /> Beni Hatırla
@@ -91,5 +121,21 @@
                 $('#show_hide_password i').addClass("fa-eye");
             }
         });
-    });
+
+         var state = false;
+        function toggle() {
+            if (state) {
+                document.getElementById("password").setAttribute("type", "password");
+                document.getElementById("eye").style.color = '#7a797e';
+                state = false;
+            }
+            else {
+                document.getElementById("password").setAttribute("type", "text");
+                document.getElementById("eye").style.color = '#5887ef';
+                state = true;
+            }
+        }
+
+
+     });
 </script>
