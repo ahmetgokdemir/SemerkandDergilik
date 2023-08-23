@@ -493,6 +493,14 @@ namespace Technosoft_Project.Controllers
                     }
                     else // update 
                     {
+                        // validation'Dan geliyorsa 
+                        if (HttpContext.Session.GetObject<string>("old_ctg_name_for_comparison") != null)
+                        {
+                            //  HttpContext.Session.SetObject("old_ctg_name_for_comparison", old_cof.CategoryName_of_Foods);
+
+                            old_cof.CategoryName_of_Foods = HttpContext.Session.GetObject<string>("old_ctg_name_for_comparison");
+                        }
+
                         // Yeni bir kategori
                         if (old_cof.CategoryName_of_Foods != ctg_update.CategoryName_of_Foods)
                         {
@@ -711,8 +719,10 @@ namespace Technosoft_Project.Controllers
                         }
                         else
                         {
+                            // db'de zaten varsa
                             if (await _icm.Any(x => x.CategoryName_of_Foods == cvm_post.CategoryofFoodDTO.CategoryName_of_Foods) )
                             {
+                                // güncelleyeceği isim ile forma girdiği isim farklı ise havuzda mevcut hatası 
                                 if(cvm_post.CategoryofFoodDTO.CategoryName_of_Foods != old_cof.CategoryName_of_Foods) 
                                 {
 
@@ -721,7 +731,7 @@ namespace Technosoft_Project.Controllers
                                 HttpContext.Session.SetObject("manipulatedData_ctg", old_cof);
 
                                 TempData["ValidError_Name"] = "valid";
-                                } // aynı isim kalmış demektir
+                                } // aynı isim kalmış demektir (ismi güncellememiş)
                                 else
                                 {
                                     HttpContext.Session.SetObject("manipulatedData_ctg", cvm_post.CategoryofFoodDTO);
@@ -729,7 +739,19 @@ namespace Technosoft_Project.Controllers
                             }
                             else // valid durumu
                             {
-                                HttpContext.Session.SetObject("manipulatedData_ctg", cvm_post.CategoryofFoodDTO);
+
+                                // update'de  if (old_cof.CategoryName_of_Foods != ctg_update.CategoryName_of_Foods) --> bu koda girebilmesi için bu koşul eklendi...
+                                // yoksa yeni ctg ismi old_cof.CategoryName_of_Foods oluyor ve Yeni bir kategori olarak db'ye eklenmiyor eskisi kalıyor
+                                if (cvm_post.CategoryofFoodDTO.CategoryName_of_Foods != old_cof.CategoryName_of_Foods)
+                                {
+                                    HttpContext.Session.SetObject("old_ctg_name_for_comparison", old_cof.CategoryName_of_Foods);
+                                    HttpContext.Session.SetObject("manipulatedData_ctg", cvm_post.CategoryofFoodDTO);
+
+                                }
+                                else
+                                {
+                                    HttpContext.Session.SetObject("manipulatedData_ctg", cvm_post.CategoryofFoodDTO);
+                                }
 
                                 // TempData["ValidError_Name"] = "valid";
                             }
