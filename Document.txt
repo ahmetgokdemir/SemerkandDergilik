@@ -2,7 +2,7 @@
 images tqblosu...
 
 
-
+** qr code -- https://ironsoftware.com/csharp/barcode/blog/using-ironbarcode/how-to-generate-qr-code-in-csharp-windows-application/
 ** Resimler
 ** filter and son giriþ zamaný 
 
