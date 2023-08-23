@@ -31,6 +31,11 @@ namespace Technosoft_Project.Controllers
         [Route("CategoryofFoodList_forMember")]
         public async Task<IActionResult> CategoryofFoodList_forMember(string? JSpopupPage, string? onlyOnce)
         {
+            if (HttpContext.Session.GetObject<string>("hold_new_valid_category_name") != null)
+            {
+                HttpContext.Session.SetObject("hold_new_valid_category_name", null);
+            }
+
             TempData["onlyOnce"] = onlyOnce;
 
             if (TempData["JavascriptToRun"] == null)
@@ -292,6 +297,16 @@ namespace Technosoft_Project.Controllers
             HttpContext.Session.SetObject("will_be_deleted_UserCategoryJuncData", ucjDTO[0]);
             HttpContext.Session.SetObject("will_be_deleted_CategoryofFoodData", cDTO);
 
+            // validation'Dan geliyorsa 
+            if (HttpContext.Session.GetObject<string>("hold_new_valid_category_name") != null)
+            {
+                //  HttpContext.Session.SetObject("old_ctg_name_for_comparison", old_cof.CategoryName_of_Foods);
+
+                cDTO.CategoryName_of_Foods = HttpContext.Session.GetObject<string>("hold_new_valid_category_name");
+            }
+
+              ///////////HttpContext.Session.SetObject("old_ctg_name_for_comparison", cvm_post.CategoryofFoodDTO.CategoryName_of_Foods);
+
             CategoryofFoodVM cVM = new CategoryofFoodVM
             {
                 UserCategoryJunctionDTO = ucjDTO[0],
@@ -493,13 +508,13 @@ namespace Technosoft_Project.Controllers
                     }
                     else // update 
                     {
-                        // validation'Dan geliyorsa 
-                        if (HttpContext.Session.GetObject<string>("old_ctg_name_for_comparison") != null)
-                        {
-                            //  HttpContext.Session.SetObject("old_ctg_name_for_comparison", old_cof.CategoryName_of_Foods);
+                        //// validation'Dan geliyorsa 
+                        //if (HttpContext.Session.GetObject<string>("old_ctg_name_for_comparison") != null)
+                        //{
+                        //    //  HttpContext.Session.SetObject("old_ctg_name_for_comparison", old_cof.CategoryName_of_Foods);
 
-                            old_cof.CategoryName_of_Foods = HttpContext.Session.GetObject<string>("old_ctg_name_for_comparison");
-                        }
+                        //    old_cof.CategoryName_of_Foods = HttpContext.Session.GetObject<string>("old_ctg_name_for_comparison");
+                        //}
 
                         // Yeni bir kategori
                         if (old_cof.CategoryName_of_Foods != ctg_update.CategoryName_of_Foods)
@@ -559,6 +574,11 @@ namespace Technosoft_Project.Controllers
 
                                 _iucjm.Delete_OldCategory_from_User(CurrentUser.AccessibleID, userCategoryJunction);
 
+                                if (HttpContext.Session.GetObject<string>("hold_new_valid_category_name") != null)
+                                {
+                                    HttpContext.Session.SetObject("hold_new_valid_category_name", null);
+                                }
+
                                 TempData["messageCategoryofFood"] = "Kategori güncellendi";
 
                                 return RedirectToAction("CategoryofFoodList_forMember", new { onlyOnce = "1" });
@@ -604,10 +624,15 @@ namespace Technosoft_Project.Controllers
                             //  ucj.CategoryofFood_Picture = "/CategoryofFoodPicture/" + fileName;
 
 
-
-
-
                             _iucjm.Update_UserCategoryJuncTable(CurrentUser.AccessibleID, cvm_post.CategoryofFoodDTO.ID, ucj);
+
+
+                            if (HttpContext.Session.GetObject<string>("hold_new_valid_category_name") != null)
+                            {
+                                HttpContext.Session.SetObject("hold_new_valid_category_name", null);
+                            }
+
+
                             TempData["messageCategoryofFood"] = "Kategori güncellendi";
 
                             // else { değişiklik olmadı mesajı }
@@ -731,7 +756,7 @@ namespace Technosoft_Project.Controllers
                                 HttpContext.Session.SetObject("manipulatedData_ctg", old_cof);
 
                                 TempData["ValidError_Name"] = "valid";
-                                } // aynı isim kalmış demektir (ismi güncellememiş)
+                                } // valid durumu: aynı isim kalmış demektir (ismi güncellememiş)
                                 else
                                 {
                                     HttpContext.Session.SetObject("manipulatedData_ctg", cvm_post.CategoryofFoodDTO);
@@ -740,18 +765,10 @@ namespace Technosoft_Project.Controllers
                             else // valid durumu
                             {
 
-                                // update'de  if (old_cof.CategoryName_of_Foods != ctg_update.CategoryName_of_Foods) --> bu koda girebilmesi için bu koşul eklendi...
-                                // yoksa yeni ctg ismi old_cof.CategoryName_of_Foods oluyor ve Yeni bir kategori olarak db'ye eklenmiyor eskisi kalıyor
-                                if (cvm_post.CategoryofFoodDTO.CategoryName_of_Foods != old_cof.CategoryName_of_Foods)
-                                {
-                                    HttpContext.Session.SetObject("old_ctg_name_for_comparison", old_cof.CategoryName_of_Foods);
-                                    HttpContext.Session.SetObject("manipulatedData_ctg", cvm_post.CategoryofFoodDTO);
 
-                                }
-                                else
-                                {
-                                    HttpContext.Session.SetObject("manipulatedData_ctg", cvm_post.CategoryofFoodDTO);
-                                }
+                                    HttpContext.Session.SetObject("hold_new_valid_category_name", cvm_post.CategoryofFoodDTO.CategoryName_of_Foods);
+                                    HttpContext.Session.SetObject("manipulatedData_ctg", old_cof);
+
 
                                 // TempData["ValidError_Name"] = "valid";
                             }
