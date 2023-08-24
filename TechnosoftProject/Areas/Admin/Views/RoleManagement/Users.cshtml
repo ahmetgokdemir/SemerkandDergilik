@@ -45,19 +45,61 @@
                     string selectforApproval = user.Id.ToString();
                 }*@
 
+                @{
+                    UserManager<AppUser> usermanager_Data;
+                    usermanager_Data = (UserManager<AppUser>)TempData["userManager"];
+
+                    // string[] roles = usermanager_Data.GetRolesAsync(user);
+                    // List<string> roles = await usermanager_Data.GetRolesAsync(user);
+                    IList<string> roles_Data = await usermanager_Data.GetRolesAsync(user);
+
+                    TempData["admin_approval"] = null;
+        }
+
                     <td>
-                       
-                        <select class="form-control selectforApprovalv" id="@user.Id" value="@user.ID" asp-for="@user.IsConfirmedAccount">
+                       @{
+                        foreach (var _role in roles_Data)
+                        {
+                            if (_role.ToLower() == "admin")
+                            {
+                                <select class="form-control selectforApprovalv" id="@user.Id" value="@user.ID" asp-for="@user.IsConfirmedAccount" disabled>
 
-                            <!-- Project.ENTITIES.Enums.IsConfirmedAccount>() yerine SelectListItem -->
-                        @foreach (SelectListItem item in Html.GetEnumSelectList<Project.ENTITIES.Enums.IsConfirmedAccount>())
-                            { 
-                                // data: { id: $(this).attr("data-id") }, // this, value=formaintenance'ı (button) temsil eder..
-                                // <button id="unnecessary" class="btn btn-danger" data-id=@item.ID value="formaintenance">Bakıma Al</button>
+                                    <!-- Project.ENTITIES.Enums.IsConfirmedAccount>() yerine SelectListItem -->
+                                    @foreach (SelectListItem item in Html.GetEnumSelectList<Project.ENTITIES.Enums.IsConfirmedAccount>())
+                                    {
+                                        // data: { id: $(this).attr("data-id") }, // this, value=formaintenance'ı (button) temsil eder..
+                                        // <button id="unnecessary" class="btn btn-danger" data-id=@item.ID value="formaintenance">Bakıma Al</button>
 
-                                <option id="@user.Id">@item.Text</option>
+                                        <option id="@user.Id">@item.Text</option>
+                                    }
+                                </select>
+
+                                TempData["admin_approval"] = true;
+                                break;
                             }
-                        </select>
+                        }
+
+                       }
+
+                       @{
+
+                        if (TempData["admin_approval"] == null)
+                        {
+                            <select class="form-control selectforApprovalv" id="@user.Id" value="@user.ID" asp-for="@user.IsConfirmedAccount">
+
+                                <!-- Project.ENTITIES.Enums.IsConfirmedAccount>() yerine SelectListItem -->
+                                @foreach (SelectListItem item in Html.GetEnumSelectList<Project.ENTITIES.Enums.IsConfirmedAccount>())
+                                {
+                                    // data: { id: $(this).attr("data-id") }, // this, value=formaintenance'ı (button) temsil eder..
+                                    // <button id="unnecessary" class="btn btn-danger" data-id=@item.ID value="formaintenance">Bakıma Al</button>
+
+                                    <option id="@user.Id">@item.Text</option>
+                                }
+                            </select>
+                        }
+
+                       }
+
                     
                     </td>
 

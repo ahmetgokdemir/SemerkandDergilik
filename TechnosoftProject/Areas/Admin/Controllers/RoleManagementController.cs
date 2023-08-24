@@ -40,6 +40,8 @@ namespace Technosoft_Project.Areas.Admin.Controllers
         [Route("Users")]
         public IActionResult Users()
         {
+            TempData["userManager"] = userManager;
+            // return View(userManager.Users.Where(x=> x.UserName != HttpContext.User.Identity.Name).ToList());
             return View(userManager.Users.ToList());
         }
 
