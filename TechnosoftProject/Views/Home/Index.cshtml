@@ -17,11 +17,13 @@
         {
 
             <div class="alert alert-info">
-                <span>Şifreniz @TempData["generatedPass"] 
-               olarak belirlenmiştir. </span>
+                <p>
+                    Şifreniz: <u id="content-pass" class="copy-pass">@TempData["generatedPass"]</u>
+               olarak belirlenmiştir. </p>
                 <span><a href="@TempData["passwordFor3rdPartyAuthentication"].ToString()">Şifre Değiştir Kısmından</a>
                     </span>
                 <span> yeni şifre belirleyebilirsiniz</span>
+                <p id="aftercopied"></p>
             </div>
 
             @* <a href="@ViewBag.email">Tıkla</a>*@
@@ -29,4 +31,22 @@
 
     </div>
 </div>
+
+<script>
+    let contentPass = document.querySelector('#content-pass');
+    let handleCopyClick = document.querySelector('.copy-pass');
+
+
+    handleCopyClick.addEventListener('click', () => {
+
+        let pass = contentPass.textContent;
+        navigator.clipboard.writeText(`${pass}`);
+
+        document.getElementById("aftercopied")
+            .innerHTML = "Şifre kopyalandı: "
+            + pass;
+
+
+    });
+</script>
 

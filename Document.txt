@@ -1,8 +1,7 @@
 
-
-** Resimler images tablosu... 62. Resim Galerisi ders
-
-
+** Session.Abandon()
+** trim 
+** create database if not exist 
 
 ** trim
 ** update'de null name durumunda  kontrol etmiyor ...
