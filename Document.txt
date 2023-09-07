@@ -1,5 +1,9 @@
 
 
+** Resimler images tablosu... 62. Resim Galerisi ders
+
+
+
 ** trim
 ** update'de null name durumunda  kontrol etmiyor ...
 ** update delete ve insert'lerde business codelar yerklerinde olmalý BLL'de ve de hata mesajlarýný da barýndýrmalarý gerekiyor / repository kontrol et
@@ -7,7 +11,7 @@
 ** test yap ve kodlardan hangisi kaldý...
 ** update other client-side library in wwwroot (datatables, )
 
-** Resimler images tablosu...
+
 ** qr code -- https://ironsoftware.com/csharp/barcode/blog/using-ironbarcode/how-to-generate-qr-code-in-csharp-windows-application/
 ** filter and son giriþ zamaný 
 ** text area custimeze etmek (yapay zeka  ile )
