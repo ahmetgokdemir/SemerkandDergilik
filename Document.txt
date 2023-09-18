@@ -1,28 +1,30 @@
+ï»¿
 
+** Ä°mage â†’ 50. Veri TabanÄ±nÄ±n GÃ¼ncellenmesi / 61. Profil SayfasÄ±nÄ±n HazÄ±rlanmasÄ±
 ** Session.Abandon()
 ** trim 
 ** create database if not exist 
 
 ** trim
 ** update'de null name durumunda  kontrol etmiyor ...
-** update delete ve insert'lerde business codelar yerklerinde olmalı BLL'de ve de hata mesajlarını da barındırmaları gerekiyor / repository kontrol et
+** update delete ve insert'lerde business codelar yerklerinde olmalÄ± BLL'de ve de hata mesajlarÄ±nÄ± da barÄ±ndÄ±rmalarÄ± gerekiyor / repository kontrol et
 ** isimlere standart getir...
-** test yap ve kodlardan hangisi kaldı...
+** test yap ve kodlardan hangisi kaldÄ±...
 ** update other client-side library in wwwroot (datatables, )
 
 
 ** qr code -- https://ironsoftware.com/csharp/barcode/blog/using-ironbarcode/how-to-generate-qr-code-in-csharp-windows-application/
-** filter and son giriş zamanı 
+** filter and son giriÅŸ zamanÄ± 
 ** text area custimeze etmek (yapay zeka  ile )
 
  
 
-Tablolara göre hareket et
+Tablolara gÃ¶re hareket et
 
 ddlFoods.append($("<option></option>").val(index).html(foods));
 jquery ekleme (wwwroot)...
 
-// <select class="form-control" id="foodsofcategory" asp-for="_foodList_ID"> içindeki foreach gerek yok galiba 
+// <select class="form-control" id="foodsofcategory" asp-for="_foodList_ID"> iÃ§indeki foreach gerek yok galiba 
 // *** IsConfirmedAccount= ENTITIES.Enums.IsConfirmedAccount.Aktif --> seedroles.cs (DAL)
 
 
@@ -31,20 +33,20 @@ jquery ekleme (wwwroot)...
 -----------------------------------------------------------------------------------
 
 
-iş server name: NB-230301\\MSSQLSERVER22  ve ctz*9913
+iÅŸ server name: NB-230301\\MSSQLSERVER22  ve ctz*9913
 ev server name: ahmet_gokdemir ve LAPTOP-PEF0Q19Q  ve Ms....s..._3...2...
  
 username: sa
 password: / ctz*9913
 
 
-Data Source=NB-230301\\MSSQLSERVER22 ---> sql kısmından farklı 1 tane yerine 2 tane \  
+Data Source=NB-230301\\MSSQLSERVER22 ---> sql kÄ±smÄ±ndan farklÄ± 1 tane yerine 2 tane \  
 
 ahmet_gokdemir\MSSQLSERVER22 --> ahmet_gokdemir\\MSSQLSERVER22 Ms....s..._3...2...
 -----------------------------------------------------------------------------------
 
 
-mamage user secrets'i eklemeyi unutma (secret.json dosyasına) ----> FacebookOptions Facebook Google Microsoft
+mamage user secrets'i eklemeyi unutma (secret.json dosyasÄ±na) ----> FacebookOptions Facebook Google Microsoft
 {
   "Authentication:Facebook:AppId": "588387496267633",
   "Authentication:Facebook:AppSecret": "73c40dd7d1e6b50927a369da27d83cf4",
@@ -58,12 +60,12 @@ mamage user secrets'i eklemeyi unutma (secret.json dosyasına) ----> FacebookOpti
 }
 
 -----------------------------------------------------------------------------------
-migration yaptım ifnotexistdb yapmamışım
+migration yaptÄ±m ifnotexistdb yapmamÄ±ÅŸÄ±m
 
 
-Existing/mevcut bir database'e yeni bir tablo veya tablo için property eklersek 
-yapılması gereken önceki migration'lar yorum satırına alınmalı 
-örneğin migration klasöründeki şu class'lar --> firstmigration ve add_blog_table.cs 'ler yorum satırına alınmalı...
+Existing/mevcut bir database'e yeni bir tablo veya tablo iÃ§in property eklersek 
+yapÄ±lmasÄ± gereken Ã¶nceki migration'lar yorum satÄ±rÄ±na alÄ±nmalÄ± 
+Ã¶rneÄŸin migration klasÃ¶rÃ¼ndeki ÅŸu class'lar --> firstmigration ve add_blog_table.cs 'ler yorum satÄ±rÄ±na alÄ±nmalÄ±...
 BU ARADA add_blog_table.cs YORUMA ALINMADI!!!!
 
 
@@ -92,12 +94,12 @@ Project References: yok.
 NuGet Packages: Microsoft.AspNetCore.Identity, Microsoft.EntityFrameworkCore, Microsoft.Extensions.Identity.Stores
 
 
-IdentityAPI kendisi, Identity sınıfları arasında navigationları kuruyor.. Ayrıyeten bir ilişki belirtmene gerekmiyor..
+IdentityAPI kendisi, Identity sÄ±nÄ±flarÄ± arasÄ±nda navigationlarÄ± kuruyor.. AyrÄ±yeten bir iliÅŸki belirtmene gerekmiyor..
         //public virtual ICollection<AppUserRole> AppUserRoles { get; set; }
         //public virtual ICollection<AppRoleClaim> AppRoleClaims { get; set; } gibi...
 
-Identity sınıfları sadece IEnitityden miras aldığı için property'leri implement edilmeli ve constructor tanımlanlamlı.. ama diğer sınıflar
-(CategoryofFood,Food vs.) ayrıca Entity'den miras aldığı için ve Entity class da bu propertyleri implement ettiğinden bu sınıflarda ayrıyeten 
+Identity sÄ±nÄ±flarÄ± sadece IEnitityden miras aldÄ±ÄŸÄ± iÃ§in property'leri implement edilmeli ve constructor tanÄ±mlanlamlÄ±.. ama diÄŸer sÄ±nÄ±flar
+(CategoryofFood,Food vs.) ayrÄ±ca Entity'den miras aldÄ±ÄŸÄ± iÃ§in ve Entity class da bu propertyleri implement ettiÄŸinden bu sÄ±nÄ±flarda ayrÄ±yeten 
 implementasyona gerek yok..
 
 ---
@@ -106,10 +108,10 @@ dipnot:
         {
             Name = roleName;
         }
-this IdentityRole sınıfının empty olan constructor'ını çağrır..
+this IdentityRole sÄ±nÄ±fÄ±nÄ±n empty olan constructor'Ä±nÄ± Ã§aÄŸrÄ±r..
 ---
 
-Model klasöründeki class'lar EntityBase dışında ayrıca IEntity'den miras alır zira MAP'da Base sınıfı IEntity'yi referans alır (EntityBase'den alırsa Identity'ler patlar) ve böylece tüm sınıflar (IEntity'den miras almasıyla) MAP edilebilir.. 
+Model klasÃ¶rÃ¼ndeki class'lar EntityBase dÄ±ÅŸÄ±nda ayrÄ±ca IEntity'den miras alÄ±r zira MAP'da Base sÄ±nÄ±fÄ± IEntity'yi referans alÄ±r (EntityBase'den alÄ±rsa Identity'ler patlar) ve bÃ¶ylece tÃ¼m sÄ±nÄ±flar (IEntity'den miras almasÄ±yla) MAP edilebilir.. 
 
  
 
@@ -121,15 +123,15 @@ Project References: Entities.
 NuGet Packages: Microsoft.AspNetCore.Identity.EntityFrameworkCore.., Microsoft.EntityFrameworkCore, Microsoft.EntityFrameworkCore.Proxies, 
 Microsoft.EntityFrameworkCore.SqlServer, Microsoft.EntityFrameworkCore.Tools
 
-virtual -- override ilişki..
+virtual -- override iliÅŸki..
 
 
 
 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-CreateAsync, UpdateAsync, ChangePasswordAsync, ResetPasswordAsync, AddLoginAsync, ConfirmEmailAsync --> dönüş tipleri IdentityResult'dir..
+CreateAsync, UpdateAsync, ChangePasswordAsync, ResetPasswordAsync, AddLoginAsync, ConfirmEmailAsync --> dÃ¶nÃ¼ÅŸ tipleri IdentityResult'dir..
 
-IsLockedOutAsync, IsEmailConfirmedAsync, CheckPasswordAsync --> dönüş tipleri bool
+IsLockedOutAsync, IsEmailConfirmedAsync, CheckPasswordAsync --> dÃ¶nÃ¼ÅŸ tipleri bool
 
 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -148,10 +150,10 @@ app.MapAreaControllerRoute(
 
 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-Adminde (Member, Home kısmından farklı olarak) RoleManager kullanıldı..
+Adminde (Member, Home kÄ±smÄ±ndan farklÄ± olarak) RoleManager kullanÄ±ldÄ±..
 
 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-Session kullanımı:
+Session kullanÄ±mÄ±:
 
 Program.cs --> 
 builder.Services.AddSession();
@@ -170,12 +172,12 @@ result = HttpContext.Session.GetObject<FoodDTO>("manipulatedData");
 
  --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-  colspan="2" --> DataTable.js'i çalıştırmıyor table kısmında
+  colspan="2" --> DataTable.js'i Ã§alÄ±ÅŸtÄ±rmÄ±yor table kÄ±smÄ±nda
   <td colspan="2" style="padding-left:75px"><img style="width:75%; height:75%" src="@item.FoodPicture" /></td>
 
   --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-  AppUser user = CurrentUser; çalışması için connectionString'e eklendi.. --> MultipleActiveResultSets=true;
+  AppUser user = CurrentUser; Ã§alÄ±ÅŸmasÄ± iÃ§in connectionString'e eklendi.. --> MultipleActiveResultSets=true;
 
 
 
@@ -196,18 +198,18 @@ claimprovider --> claim'ler --> AddPolicy (Program.cs)
 SessionExtension
 CustomValidation
 
-BaseController --> den türedi diğerleri
-Areas --> admin kısmı
+BaseController --> den tÃ¼redi diÄŸerleri
+Areas --> admin kÄ±smÄ±
 TagHelper --> property yakalamak..
-ViewModel --> göstermek istediğim property'ler
+ViewModel --> gÃ¶stermek istediÄŸim property'ler
 
 VMClasses
 
 ---------------------------------------------------------
 Program.cs'de 
-custimize edilmiş validator
+custimize edilmiÅŸ validator
 
-CookieBuilder -> api olmayacağı için jw token yerine
+CookieBuilder -> api olmayacaÄŸÄ± iÃ§in jw token yerine
  
 // create database if not exist
 var app = builder.Build();
