@@ -6,6 +6,7 @@ using Project.BLL.ManagerServices.Abstracts;
 using Project.ENTITIES.Enums;
 using Project.ENTITIES.Identity_Models;
 using Project.ENTITIES.Models;
+using System;
 using Technosoft_Project.CommonTools;
 using Technosoft_Project.ViewModels;
 using Technosoft_Project.VMClasses;
@@ -53,6 +54,14 @@ namespace Technosoft_Project.Controllers
 
             IEnumerable<object> UserFoodJunctionList = await _iufjm.Get_ByUserID_Async(CurrentUser.Id); // IdentityUser'dan gelen Id (Guid tipli)
 
+
+            /*
+             * 
+             TypeAdapterConfig<object, UserFoodJunctionDTO>
+            .NewConfig()
+            .Map(dest => dest.ImageofFoodDTO, src => src.); 
+
+            */
 
             FoodVM cvm = new FoodVM
             {

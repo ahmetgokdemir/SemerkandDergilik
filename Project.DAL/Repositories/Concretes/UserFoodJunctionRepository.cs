@@ -24,16 +24,19 @@ namespace Project.DAL.Repositories.Concretes
 
             // return Where(x => x.AppUser.Id == id).AsQueryable(); // AppUser.ID (erişilemiyor) --> short 
 
-            return _context.Set<UserFoodJunction>()
+            var entity =  _context.Set<UserFoodJunction>()
                 .Where(x => x.AppUser.Id == userID && x.DataStatus != ENTITIES.Enums.DataStatus.Deleted)
                 .Include(x => x.Food)
                 .Include(x => x.AppUser)
+                //.//Join(x=> x.ImageofFoods)
+                //.Join(x => x.ImageofFoods).Where(u => u.FoodID == u.);//Foreign key dene...
                 .Select(x => new
                 {
                     Food_Name = x.Food.Food_Name,
                     Food_Price = x.Food_Price,
                     Food_Status = x.Food_Status,
-                    Food_Picture = x.Food_Picture,
+                    // Food_Picture = x.Food_Picture,
+                    Food_Image = x.ImageofFoods.FirstOrDefault(i => i.IsProfile).Food_Image,
                     Food_Description = x.Food_Description,
                     // AppUserId = x.AppUser.Id, // ID (IdentityUser'den gelir ve erişilemez onun yerine AppUser dan id e erişilir)
                     FoodID = x.FoodID
@@ -42,7 +45,10 @@ namespace Project.DAL.Repositories.Concretes
                 }
             ).AsQueryable();
 
-            // return control_deneme;
+            return entity;
+
+             // entity.GroupJoin(_context.Set<ImageofFood>()).Where(u => u.FoodID == u.);
+            ;
         }
 
         public async Task<IEnumerable<object>> Get_ByUserID_with_FoodID_Async_Repo(Guid userID, short foodID)

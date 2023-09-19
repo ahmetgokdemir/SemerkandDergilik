@@ -15,7 +15,11 @@ namespace Project.ENTITIES.Models
         public float Food_Price { get; set; } // UserFoodJunctionConfiguration.cs'de money'e çevrilmeli.. 
         public ExistentStatus Food_Status { get; set; } = (ExistentStatus) 1; // Aktif, Pasif (Yemek Durumu)  
         public string? Food_Description { get; set; }
-        public string? Food_Picture { get; set; } // çoklu resim
+
+
+        public string? Food_Picture { get; set; } // çoklu resim - sonra command al -
+        public virtual List<ImageofFood> ImageofFoods { get; set; }
+        // public string ProfilImageUrl { get; set; }
 
         // public int Status { get; set; } // Aktif, Pasif... EntityBase'de ki gibi DataStatus verilebilir idi int yerine... ve casting işlemlerine gerek kalmaz idi..
 
