@@ -5,10 +5,22 @@
 namespace Project.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class UserFoodJunctionIDActivated : Migration
+    public partial class DropUserFoodJunctionIDActivated : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "UserFoodJunctionID",
+                table: "Yemek Resimleri");
+
+            migrationBuilder.DropColumn(
+                name: "ID",
+                table: "Restoran Yemek Detay");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<short>(
                 name: "UserFoodJunctionID",
@@ -23,18 +35,6 @@ namespace Project.DAL.Migrations
                 type: "smallint",
                 nullable: false,
                 defaultValue: (short)0);
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "UserFoodJunctionID",
-                table: "Yemek Resimleri");
-
-            migrationBuilder.DropColumn(
-                name: "ID",
-                table: "Restoran Yemek Detay");
         }
     }
 }

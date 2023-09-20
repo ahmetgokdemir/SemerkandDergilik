@@ -539,9 +539,6 @@ namespace Project.DAL.Migrations
                     b.Property<short>("UserFoodJunctionFoodID")
                         .HasColumnType("smallint");
 
-                    b.Property<short>("UserFoodJunctionID")
-                        .HasColumnType("smallint");
-
                     b.HasKey("ID");
 
                     b.HasIndex("UserFoodJunctionAccessibleID", "UserFoodJunctionFoodID");
@@ -718,9 +715,6 @@ namespace Project.DAL.Migrations
                     b.Property<short>("Food_Status")
                         .HasColumnType("smallint")
                         .HasColumnName("Yemek Mevcudiyet Durum");
-
-                    b.Property<short>("ID")
-                        .HasColumnType("smallint");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2")

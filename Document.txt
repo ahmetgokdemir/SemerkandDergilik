@@ -1,7 +1,7 @@
 ﻿
 
 
-
+image sayacı
 
 
 
@@ -88,6 +88,8 @@ migration:	add-migration FirstMigration ,,,, PM> add-migration Menu_and_MenuDeta
             add-migration Add-ImageofFood-class
             add-migration UserFoodJunctionID-Activated
 
+
+            update-database Add-ImageofFood-Class
 ------------------------------------------
 
 Sendgrid

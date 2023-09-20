@@ -154,6 +154,8 @@ namespace Project.DAL.Repositories.Concretes
 
             mydeletedList = _context.Set<UserFoodJunction>().Where(x => x.AppUser.Id == userID && x.DataStatus == ENTITIES.Enums.DataStatus.Deleted).ToList();
 
+            int control = 0;
+
 
             foreach (UserFoodJunction not_exist in mydeletedList)
             {

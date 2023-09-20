@@ -19,8 +19,7 @@ namespace Project.MAP.Custom_Configurations
 
             builder.ToTable("Restoran Yemek Detay");
 
-            // builder.Ignore(x => x.ID); Yemek Resimleri tablosu içim yorum satırına alındı...
-
+            builder.Ignore(x => x.ID);
             // builder.Ignore(x => x.AppUser.Id);
 
             // builder.HasKey(x => new { x.AppUser.Id, x.FoodID }); // ... is not a valid member access expression. The expression should represent a simple property or field acces HATASI VERİYOR

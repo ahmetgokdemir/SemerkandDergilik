@@ -19,8 +19,7 @@ namespace Project.MAP.Custom_Configurations
             builder.ToTable("Yemek Resimleri");
 
             // builder.Ignore(x => x.ID);
-
-            // builder.Ignore(x => x.UserFoodJunctionID); // ignore etmezsek çalışır mı? zira UserFoodJunction'in ID'si ignore edilmişti
+            builder.Ignore(x => x.UserFoodJunctionID); // ignore etmezsek çalışır mı? zira UserFoodJunction'in ID'si ignore edilmişti
 
             // builder.Ignore(x => x.UserFoodJunction);
             // builder.Ignore(x => x.UserFoodJunction.AccessibleID);

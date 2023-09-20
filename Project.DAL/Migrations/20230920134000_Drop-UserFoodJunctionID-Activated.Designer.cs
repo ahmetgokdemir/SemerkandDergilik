@@ -12,8 +12,8 @@ using Project.DAL.Context;
 namespace Project.DAL.Migrations
 {
     [DbContext(typeof(TechnosoftProjectContext))]
-    [Migration("20230920100827_UserFoodJunctionID-Activated")]
-    partial class UserFoodJunctionIDActivated
+    [Migration("20230920134000_Drop-UserFoodJunctionID-Activated")]
+    partial class DropUserFoodJunctionIDActivated
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -542,9 +542,6 @@ namespace Project.DAL.Migrations
                     b.Property<short>("UserFoodJunctionFoodID")
                         .HasColumnType("smallint");
 
-                    b.Property<short>("UserFoodJunctionID")
-                        .HasColumnType("smallint");
-
                     b.HasKey("ID");
 
                     b.HasIndex("UserFoodJunctionAccessibleID", "UserFoodJunctionFoodID");
@@ -721,9 +718,6 @@ namespace Project.DAL.Migrations
                     b.Property<short>("Food_Status")
                         .HasColumnType("smallint")
                         .HasColumnName("Yemek Mevcudiyet Durum");
-
-                    b.Property<short>("ID")
-                        .HasColumnType("smallint");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2")
