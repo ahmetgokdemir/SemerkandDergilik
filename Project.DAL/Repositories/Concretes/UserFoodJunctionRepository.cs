@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Project.DAL.Context;
 using Project.DAL.Repositories.Abstracts;
+using Project.ENTITIES.CoreInterfaces;
 using Project.ENTITIES.Identity_Models;
 using Project.ENTITIES.Models;
 using System;
@@ -24,10 +26,34 @@ namespace Project.DAL.Repositories.Concretes
 
             // return Where(x => x.AppUser.Id == id).AsQueryable(); // AppUser.ID (erişilemiyor) --> short 
 
-            var entity =  _context.Set<UserFoodJunction>()
+            //var _entity = _context.Set<UserFoodJunction>()
+            // .LeftJoin(_context.Set<ImageofFood>(),
+            //     ufj => ufj.ID,
+            //     iof => iof.UserFoodJunctionID,
+            //     (ufj, iof) => new                  {
+
+
+            //         ufj = ufj,
+            //         iof = iof
+
+            //     }).Where(a => a.iof.IsProfile == true);
+
+ 
+                //var _entityFinal2 = _context.Set<UserFoodJunction>()
+                //.Include(x => x.ImageofFoods).Include(x => x.Food)
+                //.Select(x => new
+                //{
+                //    Food_Image = x.ImageofFoods.FirstOrDefault(y => y.IsProfile).Food_Image,
+                //    Food_Name = x.Food.Food_Name,
+                //}
+                //).ToList();
+
+                //  _context.Set<UserFoodJunction>() yerine _entity
+                var _entityFinal = _context.Set<UserFoodJunction>()
                 .Where(x => x.AppUser.Id == userID && x.DataStatus != ENTITIES.Enums.DataStatus.Deleted)
                 .Include(x => x.Food)
                 .Include(x => x.AppUser)
+                .Include(x => x.ImageofFoods)
                 //.//Join(x=> x.ImageofFoods)
                 //.Join(x => x.ImageofFoods).Where(u => u.FoodID == u.);//Foreign key dene...
                 .Select(x => new
@@ -35,8 +61,8 @@ namespace Project.DAL.Repositories.Concretes
                     Food_Name = x.Food.Food_Name,
                     Food_Price = x.Food_Price,
                     Food_Status = x.Food_Status,
-                    // Food_Picture = x.Food_Picture,
-                    Food_Image = x.ImageofFoods.FirstOrDefault(i => i.IsProfile).Food_Image,
+                    Food_Picture = x.ImageofFoods.FirstOrDefault(y => y.IsProfile).Food_Image,
+                    //Food_Picture = x.ImageofFoods.FirstOrDefault(i => i.IsProfile).Food_Image,
                     Food_Description = x.Food_Description,
                     // AppUserId = x.AppUser.Id, // ID (IdentityUser'den gelir ve erişilemez onun yerine AppUser dan id e erişilir)
                     FoodID = x.FoodID
@@ -45,7 +71,7 @@ namespace Project.DAL.Repositories.Concretes
                 }
             ).AsQueryable();
 
-            return entity;
+            return _entityFinal;
 
              // entity.GroupJoin(_context.Set<ImageofFood>()).Where(u => u.FoodID == u.);
             ;

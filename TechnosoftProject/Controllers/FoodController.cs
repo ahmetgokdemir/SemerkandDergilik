@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Project.BLL.ManagerServices.Abstracts;
 using Project.ENTITIES.Enums;
 using Project.ENTITIES.Identity_Models;
@@ -449,7 +450,8 @@ namespace Technosoft_Project.Controllers
                 // ModelState.Remove("FoodDTO.Food_Name");
                 ModelState.Remove("FoodDTO.FoodPrice");
                 ModelState.Remove("FoodDTO.ExistentStatus");
-
+                ModelState.Remove("UserFoodJunctionDTO.ImageofFoodDTO");
+                
 
                 if (ModelState.IsValid)
                 {
