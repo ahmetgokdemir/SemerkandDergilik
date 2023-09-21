@@ -205,6 +205,13 @@ HttpContext.Session.SetObject("manipulatedData", cvm_post.CategoryofFoodDTO); //
 HttpContext.Session.SetObject("manipulatedData", null); // resetlemek
 
 
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+FoodController.cs
+
+_FoodLayout.cshtml --> Food_InPool_Ajax --> FoodListforOtherUsers --> Add_Food_toMyList_Ajax --> _CrudFood_InOtherUsersList_Partial (pop-up) --> CRUDFood_InOtherUsersList --> Control_IsExisted_InMyListBefore_Async
+                                        --> FoodList_forMember
 
 
 ----------------------------------------- 0*********-----------------------------------------------

@@ -905,7 +905,7 @@ namespace Technosoft_Project.Controllers
 
         }
 
-        //CategoryofFood_InPool_Ajax
+        // Food_InPool_Ajax --> _FoodLayout.cshtml
         [Route("Food_InPool_Ajax")]
         public async Task<IActionResult> Food_InPool_Ajax(string poolID, string? JSpopupPage)
         {
