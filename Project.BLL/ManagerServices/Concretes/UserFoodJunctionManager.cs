@@ -44,9 +44,9 @@ namespace Project.BLL.ManagerServices.Concretes
             return getfoodItem_byUserID;
         }
 
-        public async void Delete_OldFood_from_User(Guid accessibleID, UserFoodJunction passive_UserFoodJunction)
+        public async void Delete_OldFood_from_User(short foodID, AppUser _currentUser)
         {
-            _iufjrep.Delete_OldFood_from_User_Repo(accessibleID, passive_UserFoodJunction);
+            _iufjrep.Delete_OldFood_from_User_Repo(foodID, _currentUser);
 
             //if (found_Item == null)
             //{

@@ -602,15 +602,17 @@ namespace Technosoft_Project.Controllers
 
 
                                 //  OLD food become passive FOR THİS USER
-                                UserFoodJunction passive_UserFoodJunction = old_ufj.Adapt<UserFoodJunction>();
+                                /* UserFoodJunction passive_UserFoodJunction = old_ufj.Adapt<UserFoodJunction>();
 
                                 passive_UserFoodJunction.DataStatus = DataStatus.Deleted;
                                 passive_UserFoodJunction.DeletedDate = DateTime.Now;
                                 passive_UserFoodJunction.AccessibleID = CurrentUser.AccessibleID;
                                 passive_UserFoodJunction.AppUser = CurrentUser;
                                 passive_UserFoodJunction.Food_Status = ExistentStatus.Pasif;
+                                */
+
                                 // passive_UserFoodJunction.FoodID = old_fd.ID;
-                                _iufjm.Delete_OldFood_from_User(CurrentUser.AccessibleID, passive_UserFoodJunction);
+                                _iufjm.Delete_OldFood_from_User(old_ufj.FoodID, CurrentUser);
 
                                 if (HttpContext.Session.GetObject<string>("hold_new_valid_food_name") != null)
                                 {
@@ -881,18 +883,18 @@ namespace Technosoft_Project.Controllers
             // *!* DELETE 
             else
             {
-                Guid new_userID = CurrentUser.Id;
+                //Guid new_userID = CurrentUser.Id;
 
-                UserFoodJunction UserFoodJunction = new UserFoodJunction();
+               // UserFoodJunction UserFoodJunction = new UserFoodJunction();
 
-                UserFoodJunction.FoodID = fvm_post.FoodDTO.ID;
-                UserFoodJunction.DataStatus = DataStatus.Deleted;
-                UserFoodJunction.DeletedDate = DateTime.Now;
-                UserFoodJunction.AccessibleID = CurrentUser.AccessibleID;
-                UserFoodJunction.AppUser = CurrentUser;
-                UserFoodJunction.Food_Status = ExistentStatus.Pasif;
+                //UserFoodJunction.FoodID = fvm_post.FoodDTO.ID;
+                //UserFoodJunction.DataStatus = DataStatus.Deleted;
+                //UserFoodJunction.DeletedDate = DateTime.Now;
+                //UserFoodJunction.AccessibleID = CurrentUser.AccessibleID;
+                //UserFoodJunction.AppUser = CurrentUser;
+                //UserFoodJunction.Food_Status = ExistentStatus.Pasif;
 
-                _iufjm.Delete_OldFood_from_User(CurrentUser.AccessibleID, UserFoodJunction);
+                _iufjm.Delete_OldFood_from_User(fvm_post.FoodDTO.ID, CurrentUser);
 
 
                 TempData["messageFood"] = "Yemek listenizden silindi";

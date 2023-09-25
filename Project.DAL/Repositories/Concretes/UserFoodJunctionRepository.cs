@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Project.DAL.Context;
 using Project.DAL.Repositories.Abstracts;
 using Project.ENTITIES.CoreInterfaces;
+using Project.ENTITIES.Enums;
 using Project.ENTITIES.Identity_Models;
 using Project.ENTITIES.Models;
 using System;
@@ -103,14 +104,21 @@ namespace Project.DAL.Repositories.Concretes
             return getfoodItem_byUserID;
         }
 
-        public async void Delete_OldFood_from_User_Repo(Guid accessibleID, UserFoodJunction passive_UserFoodJunction)
+        public async void Delete_OldFood_from_User_Repo(short foodID, AppUser _currentUser)
         {
             // builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID }); sayesinde 
-            var toBeUpdated = _context.Set<UserFoodJunction>().Find(accessibleID, passive_UserFoodJunction.FoodID);
+            var toBeUpdated = _context.Set<UserFoodJunction>().Find(_currentUser.AccessibleID, foodID);
 
+            toBeUpdated.FoodID = foodID;
+            toBeUpdated.DataStatus = DataStatus.Deleted;
+            toBeUpdated.DeletedDate = DateTime.Now;
+            // UserFoodJunction.AccessibleID = CurrentUser.AccessibleID;
+            //toBeUpdated.AppUser = CurrentUser;
+            toBeUpdated.AppUser = _currentUser;            
+            toBeUpdated.Food_Status = ExistentStatus.Pasif;
 
             // become passive 
-            _context.Entry(toBeUpdated).CurrentValues.SetValues(passive_UserFoodJunction);
+            // _context.Entry(toBeUpdated).CurrentValues.SetValues(passive_UserFoodJunction);
 
             // _context.Save();
             _context.SaveChanges();
