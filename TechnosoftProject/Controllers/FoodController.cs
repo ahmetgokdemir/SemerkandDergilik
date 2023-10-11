@@ -476,7 +476,9 @@ namespace Technosoft_Project.Controllers
 
                     if (_FoodPicture != null && _FoodPicture.Length > 0)
                     {
-                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(_FoodPicture.FileName); // path oluşturma
+                        var fileName = $"{Guid.NewGuid().ToString()} {Path.GetExtension(_FoodPicture.FileName)}"; // path oluşturma
+
+                        /* var fileName = Guid.NewGuid().ToString() + Path.GetExtension(_FoodPicture.FileName); */
 
                         var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/FoodPicture", fileName); // server'a kayıt edilecek path => wwwroot/UserPicture/fileName
 

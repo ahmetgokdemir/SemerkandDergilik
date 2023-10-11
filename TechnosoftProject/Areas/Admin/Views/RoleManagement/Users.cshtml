@@ -54,7 +54,7 @@
                     IList<string> roles_Data = await usermanager_Data.GetRolesAsync(user);
 
                     TempData["admin_approval"] = null;
-        }
+                }
 
                     <td>
                        @{
@@ -83,7 +83,7 @@
                                 </select>
 
                                 TempData["admin_approval"] = true;
-                                break;
+                                break;// döngü biter (foreach)
                             }
                         }
 
