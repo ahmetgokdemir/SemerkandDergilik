@@ -38,12 +38,12 @@
 
     <div class="col-md-8 offset-md-2">
         <table class="table table-hover table-bordered table-striped" id="tab2">
-            <tr>
-            @*<th>Id</th>*@
+            <tr id="newth">
+            
                 <th class="position"><p>Rol ismi</p></th>
-                <th class="position"><p>Silme</p></th>
                 <th class="position"><p>Güncelleme</p></th>
-            </tr>
+@*              <th class="position"><p>Silme</p></th>
+ *@            </tr>
 
         @foreach (var item in Model)
         {
@@ -52,8 +52,9 @@
                 @* <td>@item.Id</td>*@
                     <td class="position"><p>@item.Name</p></td>
                     <td class="btnposition"><a class="btn btn-warning" asp-action="RoleUpdate" asp-route-id="@item.Id">Güncelle</a></td>
-                    <td class="btnposition">
-
+@*                     <td class="btnposition">
+                        <button class="btn btn-danger " id="deleteRole" value="deleteRoleValue" data-id=@item.Id>Sil</button>
+                    </td> *@
                         <!-- aşağıdaki yorum satırına alınan kod view kullanmadan direkt olarak post metoduna yönlendirilir ve delete işlemi gerçekleştirip ana sayfaya/roles yönlendirilir.. -->
                     @*                    <form asp-action="RoleDelete" asp-route-id="@item.Id" method="post">
                     Delete işleminde direkt post metodu çalışacağından form(submit) içine alındı, update de ise önce get metod çalışacak o yüzden update klasik şekilde yazıldı.... a tag helper bu işlemi yapamazdı o yüzden form/button kullanıldı. Çünkü a taghelper get metodunu çalıştırabilir.. post metodu değil.... burada da olduğu gibi mvc ve mvc core'da birden fazla form tanımlanabilir..
@@ -69,8 +70,7 @@
 
                     </form>*@
 
-                        <button class="btn btn-danger " id="deleteRole" value="deleteRoleValue" data-id=@item.Id>Sil</button>
-                    </td>
+
                 @*                     <td type="hidden" class="deletecatch"></td>
                 *@
                 </tr>
@@ -160,6 +160,8 @@
                     console.log(arrayofitems[k]);
                 }
 
+ 
+                $("#newth").append($("<th class='position'><p>Silme</p></th>"));
                 for (let i = 0; i < @counterofitems; i++) {
 
                     //  $("#" + i).empty($("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'>Sil</button></td>"));
@@ -171,7 +173,7 @@
                     // $('tr')[i].append($("<button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'></button>").val('').html('Sil'));
 
                     // $("#"+i).append($("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'>Sil</button></td>"));
-                    $("#" + i).append($("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue' data-id='" + arrayofitems[i] + "'>Sil</button></td>"));
+                    $("#" + i).append($("<td class='btnposition'><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue' data-id='" + arrayofitems[i] + "'>Sil</button></td>"));
 
                     // children[0]
                     //$("#" + i).children[]
