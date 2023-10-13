@@ -105,5 +105,17 @@ namespace Project.BLL.ManagerServices.Concretes
             return result_Message;
         }
          
+        public async Task<IEnumerable<object>> GetFoodDetails_of_Member_Async(AppUser _currentUser, short foodID)
+        {
+            var found_Item = await _iufjrep.GetFoodDetails_of_Member_Async_Repo(_currentUser,foodID);
+
+            if (found_Item == null)
+            {
+                return null;
+            }
+
+            return found_Item;
+        }
+
     }
 }

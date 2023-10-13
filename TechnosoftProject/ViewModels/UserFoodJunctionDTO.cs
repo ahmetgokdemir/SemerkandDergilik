@@ -36,7 +36,14 @@ namespace Technosoft_Project.ViewModels
         [Required(ErrorMessage = "Yemek ismi giriniz.")]
         public string Food_Name { get; set; }
 
-        public ImageofFoodDTO ImageofFoodDTO { get; set; }
+        // public ImageofFoodDTO ImageofFoodDTO { get; set; }
+
+        public List<ImageofFoodDTO> ImageofFoods { get; set; }
+
+        //public UserFoodJunctionDTO()
+        //{
+        //    ImageofFoods = new List<ImageofFoodDTO>();
+        //}
 
     }
 }

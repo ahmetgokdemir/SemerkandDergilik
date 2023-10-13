@@ -62,8 +62,9 @@ namespace Project.DAL.Repositories.Concretes
                     Food_Name = x.Food.Food_Name,
                     Food_Price = x.Food_Price,
                     Food_Status = x.Food_Status,
-                    Food_Picture = x.ImageofFoods.FirstOrDefault(y => y.IsProfile).Food_Image,
-                    //Food_Picture = x.ImageofFoods.FirstOrDefault(i => i.IsProfile).Food_Image,
+
+                    //Food_Picture = x.ImageofFoods.FirstOrDefault(y => y.IsProfile).Food_Image,
+                    Food_Picture = x.Food_Picture,
                     Food_Description = x.Food_Description,
                     // AppUserId = x.AppUser.Id, // ID (IdentityUser'den gelir ve erişilemez onun yerine AppUser dan id e erişilir)
                     FoodID = x.FoodID
@@ -271,6 +272,28 @@ namespace Project.DAL.Repositories.Concretes
             return _context.SaveChanges();
 
         }
+
+        public async Task<IEnumerable<object>> GetFoodDetails_of_Member_Async_Repo(AppUser _userInfo, short foodID)
+        {
+            IEnumerable<object> foodItemDetail = _context.Set<UserFoodJunction>()
+                .Where(x => x.AppUser.Id == _userInfo.Id && x.FoodID == foodID && x.DataStatus != ENTITIES.Enums.DataStatus.Deleted)
+                .Include(x => x.ImageofFoods)               
+                .Select(x => new
+                {
+                    Food_Name = x.Food.Food_Name, // include
+                    Food_Price = x.Food_Price,
+                    Food_Status = x.Food_Status,
+                    Food_Picture = x.Food_Picture,
+                    Food_Description = x.Food_Description,
+                    ImageofFoods = x.ImageofFoods
+                    // AppUserId = x.AppUser.Id, // ID (IdentityUser'den gelir ve erişilemez onun yerine AppUser dan id'e erişilir)
+                    // FoodID = x.FoodID
+                }
+            );
+
+            return foodItemDetail;
+        }
+
 
     }
 }

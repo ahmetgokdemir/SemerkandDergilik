@@ -19,7 +19,11 @@ namespace Project.BLL.ManagerServices.Abstracts
         void Update_UserFoodJuncTable(Guid accessibleID, short food_ID, UserFoodJunction ufj);
 
         Task<List<Food>> Get_ByAll_exceptUserID_Async(Guid userID);
+
         Task<string> Control_IsExisted_InMyListBefore_Async( AppUser _userInfo, short foodID);
+
+        Task<IEnumerable<object>> GetFoodDetails_of_Member_Async(AppUser _currentUser, short foodID);
+
 
     }
 }

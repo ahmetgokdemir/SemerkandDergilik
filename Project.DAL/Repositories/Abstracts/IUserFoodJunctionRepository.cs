@@ -30,7 +30,10 @@ namespace Project.DAL.Repositories.Abstracts
         Task<int> Update_MyList_Async_Repo(AppUser _userInfo, short foodID);
 
         Task<int> Add_CategoryItem_toMyList_Async_Repo(AppUser _userInfo, short foodID);
-          
-         
+
+        Task<IEnumerable<object>> GetFoodDetails_of_Member_Async_Repo(AppUser _userInfo, short foodID);
+
+
+
     }
 }

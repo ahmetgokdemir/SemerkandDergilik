@@ -451,7 +451,9 @@ namespace Technosoft_Project.Controllers
                 ModelState.Remove("FoodDTO.FoodPrice");
                 ModelState.Remove("FoodDTO.ExistentStatus");
                 ModelState.Remove("UserFoodJunctionDTO.ImageofFoodDTO");
-                
+                ModelState.Remove("UserFoodJunctionDTO.ImageofFoods");
+
+
 
                 if (ModelState.IsValid)
                 {
@@ -1015,6 +1017,19 @@ namespace Technosoft_Project.Controllers
 
         }
 
+        [Route("FoodDetails")]
+        public async Task<IActionResult> FoodDetails(short foodID)
+        {
+            IEnumerable<object> UserFoodJunctionList = await _iufjm.GetFoodDetails_of_Member_Async(CurrentUser, foodID); // IdentityUser'dan gelen Id (Guid tipli)
+
+            FoodVM fvm = new FoodVM
+            {
+                UserFoodJunctionDTO = UserFoodJunctionList.FirstOrDefault().Adapt<UserFoodJunctionDTO>()
+            };
+
+            return View("FoodDetails", fvm);
+
+         }
 
     }
 }

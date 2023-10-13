@@ -1,0 +1,94 @@
+﻿@model FoodVM
+
+@{
+    ViewData["Title"] = "FoodListforOtherUsers";
+ }
+
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="img-container">
+@*                     <img *ngIf="user.profileImageUrl" src="{{ user?.profileImageUrl }}" class="card-img-top img-thumbnail" alt="{{ user?.name }}">
+                    <img *ngIf="!user.profileImageUrl" src="{{ 'assets/user.png'  }}" class="card-img-top img-thumbnail" alt="{{ user?.name }}"> *@
+                    @if (Model.UserFoodJunctionDTO.Food_Picture != null)
+                    {
+                        <img class="card-img-top img-thumbnail"  src="@Model.UserFoodJunctionDTO.Food_Picture" />
+                    }
+                </div>
+                <div class="card-body">
+                    <div>
+                        <strong>Yemek Adı:</strong>
+                        <p>@Model.UserFoodJunctionDTO.Food_Name</p>
+                    </div>
+                    <div>
+                        <strong>Yemek Fiyatı:</strong>
+                        <p>@Model.UserFoodJunctionDTO.Food_Price</p>
+                    </div>
+                    <div>
+                        <strong>Mevcudiyet</strong>
+                        <p>@Model.UserFoodJunctionDTO.Food_Status</p>
+                    </div>
+ 
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="float-left">
+                        <h3>@Model.UserFoodJunctionDTO.Food_Name's Profile</h3>
+                    </div>
+@*                     <div class="btn-group float-right" role="group">
+                        <!-- <button type="button" class="btn btn-danger">Add Friend</button> -->
+                        <button type="button" class="btn btn-danger" (click)="followUser()">
+                            <!-- followUser(user.id) yerine -->
+                            {{followText}}
+                        </button>
+                        <button type="button" class="btn btn-success">Message</button>
+                    </div> *@
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">About Me</h5>
+                    <p>
+                        @Model.UserFoodJunctionDTO.Food_Description
+                    </p>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Hobbies</h5>
+                    <p>
+                        @Model.UserFoodJunctionDTO.Food_Description
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Photo Gallery</h5>
+
+                    <div class="card-columns">
+                        <div class="card">
+                            @foreach(var item in Model.UserFoodJunctionDTO.ImageofFoods)
+                            {
+                                
+                                <img class="card-img-top" src="@item.Food_Image" alt="@item.IsProfile" />
+
+                                <div class="card-body">
+                                    <p class="card-text">@item.IsProfile</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <!--  user.ts => images : image[]; //  UserForDetailsDTO -->
+
+        </div>
+    </div>
+</div>

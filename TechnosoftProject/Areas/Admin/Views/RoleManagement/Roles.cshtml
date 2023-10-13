@@ -153,6 +153,8 @@
 
                 // }
 
+                // razor (list) to javascript (var)... Razor MVC Populating Javascript array with Model Array
+                // @@https://syntaxfix.com/question/9068/razor-mvc-populating-javascript-array-with-model-array 
                 arrayofitems = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(listofItemsID));
 
                 for (let k = 0; k < arrayofitems.length; k++) {
