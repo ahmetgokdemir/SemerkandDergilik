@@ -28,8 +28,10 @@
 
 @{
     int counter = 0;
-    List<string> index = new List<string>();
+    string[] arrayofelements = { "1", "2", "3", "4"};
+    List<string> listofelements = new List<string>();
 }
+ 
 
 
     <h3>Roller</h3>
@@ -73,7 +75,8 @@
 @*                     <td type="hidden" class="deletecatch"></td>
  *@                </tr>
 
-            index.Add(item.Id);
+            arrayofelements[counter] = item.Id;
+            listofelements.Add(item.Id);
             ++counter;
             
 
@@ -81,8 +84,14 @@
         </table>
         <a asp-action="RoleCreate" class="btn btn-info">Role Oluştur</a>
         <a class="btn btn-info" id="createdeletebutton">Rol Sil</a>
+@*         <label> @arrayofelements[0]</label>
+        <label> @arrayofelements[1]</label>
 
+        <label> @listofelements[0]</label>
+        <label> @listofelements[1]</label>
+        <select>
 
+        </select> *@
 
     </div>
 
@@ -141,20 +150,48 @@
                 //     ddlFoods.append($("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'>Sil</button></td>").val('').html('Sil'));
                 // });
 
+                const indarry = [];
+                // cars = @@index;
+                //alert("List: " + @listofelements.Count());
+                //alert("Array: " + @arrayofelements.Count());
+                //  let car = "1";
                 const cars = [];
-                cars = @index;
+                //cars[0] = @arrayofelements[0];
+                console.log("List: " + @listofelements.Count());
+                console.log("Array: " + @arrayofelements.Count());
+                // console.log("Array" + @arrayofelements.Select(x=> x).ToList());
+                //console.log("Array" + @listofelements.ToString());
+                // console.log("Array" + @listofelements.Select(x=> x).ToList());
+                //indarry = '@arrayofelements';
 
-                alert(@counter);
-                
+                //alert(@@counter);
+                //@@foreach (var d in @@listofelements)
+                // for (let y = 0; y < @@listofelements.Count(); y++) {
+                // @@foreach (var d in @listofelements)
+                //    @@:indarry.push("@listofelements");
+
+                // }
+                var da;
+                da = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(listofelements));
+
+                for (let k = 0; k < da.length; k++) {
+
+                    console.log(da[k]);
+
+                }
+
+                // var casc = cars[0];
+                //alert(casc);
+
+
+
+
+
                 for (let i = 0; i < @counter; i++) {                
  
 
-
-                    for (let k = 0; k < 2; k++) {
-
-                        alert(cars[k]);
-
-                    }   
+                  //  $("#" + i).empty($("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'>Sil</button></td>"));
+ 
                     
                     
                     //alert(indexjs[0]);
