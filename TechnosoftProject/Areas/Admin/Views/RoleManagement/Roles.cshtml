@@ -27,11 +27,10 @@
     </style>
 
 @{
-    int counter = 0;
-    string[] arrayofelements = { "1", "2", "3", "4"};
-    List<string> listofelements = new List<string>();
+    int counterofitems = 0;
+    List<string> listofItemsID = new List<string>();
 }
- 
+
 
 
     <h3>Roller</h3>
@@ -48,7 +47,7 @@
 
         @foreach (var item in Model)
         {
-                <tr id="@counter">
+                <tr id="@counterofitems">
 
                 @* <td>@item.Id</td>*@
                     <td class="position"><p>@item.Name</p></td>
@@ -72,26 +71,19 @@
 
                         <button class="btn btn-danger " id="deleteRole" value="deleteRoleValue" data-id=@item.Id>Sil</button>
                     </td>
-@*                     <td type="hidden" class="deletecatch"></td>
- *@                </tr>
+                @*                     <td type="hidden" class="deletecatch"></td>
+                *@
+                </tr>
 
-            arrayofelements[counter] = item.Id;
-            listofelements.Add(item.Id);
-            ++counter;
-            
+            listofItemsID.Add(item.Id);
+            ++counterofitems;
+
 
         }
         </table>
         <a asp-action="RoleCreate" class="btn btn-info">Role Oluştur</a>
-        <a class="btn btn-info" id="createdeletebutton">Rol Sil</a>
-@*         <label> @arrayofelements[0]</label>
-        <label> @arrayofelements[1]</label>
+        <button class="btn btn-danger" id="createdeletebutton">Rol Sil</button>
 
-        <label> @listofelements[0]</label>
-        <label> @listofelements[1]</label>
-        <select>
-
-        </select> *@
 
     </div>
 
@@ -119,7 +111,7 @@
         }
 
         $(function () {
-            //$("#deleteFood").click(function () {
+            
             $("#tab2").on("click", "[value=deleteRoleValue]", function () {
                 $.ajax({
                     //url: '@@Url.Action("DeleteFoodAjax","Food")',
@@ -140,8 +132,6 @@
 
             $("#createdeletebutton").on("click", function () {
 
-                // ddlFoods.empty();
-                
 
                 // $(this).attr("data-id")
                 //  ddlFoods.append($("<option></option>").val('').html('Lütfen yemek seçiniz.'));
@@ -150,68 +140,45 @@
                 //     ddlFoods.append($("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'>Sil</button></td>").val('').html('Sil'));
                 // });
 
-                const indarry = [];
-                // cars = @@index;
-                //alert("List: " + @listofelements.Count());
-                //alert("Array: " + @arrayofelements.Count());
-                //  let car = "1";
-                const cars = [];
-                //cars[0] = @arrayofelements[0];
-                console.log("List: " + @listofelements.Count());
-                console.log("Array: " + @arrayofelements.Count());
-                // console.log("Array" + @arrayofelements.Select(x=> x).ToList());
-                //console.log("Array" + @listofelements.ToString());
-                // console.log("Array" + @listofelements.Select(x=> x).ToList());
-                //indarry = '@arrayofelements';
 
-                //alert(@@counter);
-                //@@foreach (var d in @@listofelements)
-                // for (let y = 0; y < @@listofelements.Count(); y++) {
-                // @@foreach (var d in @listofelements)
-                //    @@:indarry.push("@listofelements");
+                // alert("List: " + @@listofItemsID.Count());
+                // console.log("List: " + @@listofItemsID.Count());
+                // alert(@@counterofitems);
+
+                var arrayofitems;
+
+                // for (let y = 0; y < @@listofItemsID.Count(); y++) {
+                // @@foreach (var item in listofItemsID)
+                //     @@:arrayofitems.push("@@item");
 
                 // }
-                var da;
-                da = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(listofelements));
 
-                for (let k = 0; k < da.length; k++) {
+                arrayofitems = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(listofItemsID));
 
-                    console.log(da[k]);
+                for (let k = 0; k < arrayofitems.length; k++) {
+
+                    console.log(arrayofitems[k]);
+                }
+
+                for (let i = 0; i < @counterofitems; i++) {
+
+                    //  $("#" + i).empty($("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'>Sil</button></td>"));
+
+                    //console.log(i);
+                    //var column = $("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue' data-id='" + @@index[0] + "'>Sil</button></td >");
+                    //$("#"+ i).append(column);
+
+                    // $('tr')[i].append($("<button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'></button>").val('').html('Sil'));
+
+                    // $("#"+i).append($("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'>Sil</button></td>"));
+                    $("#" + i).append($("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue' data-id='" + arrayofitems[i] + "'>Sil</button></td>"));
+
+                    // children[0]
+                    //$("#" + i).children[]
 
                 }
 
-                // var casc = cars[0];
-                //alert(casc);
-
-
-
-
-
-                for (let i = 0; i < @counter; i++) {                
- 
-
-                  //  $("#" + i).empty($("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'>Sil</button></td>"));
- 
-                    
-                    
-                    //alert(indexjs[0]);
-
-                    //alert(i);
-                    //var column = $("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue' data-id='" + @@index[0] + "'>Sil</button></td >");
-                    //$("#"+ i).append(column);
-                    
-                    // $('tr')[i].append($("<button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'></button>").val('').html('Sil'));
-                    
-                    // $("#" + i).append($("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue' data-id='" + @@index[] + "' > Sil < /button></td > "));
-
-                    $("#"+i).append($("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'>Sil</button></td>"));
-                    $("#"+i).append($("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue' data-id='" + 1 + "'>Sil</button></td>"));
-
-                 }
-
-                // var col = $('.deletecatch').append($("<button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'  data-id='deleteRoleValue'>Sil</button>"));
-
-
+                document.getElementById("createdeletebutton").remove();
 
             });
 
