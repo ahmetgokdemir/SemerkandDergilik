@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "FoodListforOtherUsers";
- }
+}
 
 
 <div class="container mt-3">
@@ -10,27 +10,24 @@
         <div class="col-sm-4">
             <div class="card">
                 <div class="img-container">
-@*                     <img *ngIf="user.profileImageUrl" src="{{ user?.profileImageUrl }}" class="card-img-top img-thumbnail" alt="{{ user?.name }}">
+                    @*                     <img *ngIf="user.profileImageUrl" src="{{ user?.profileImageUrl }}" class="card-img-top img-thumbnail" alt="{{ user?.name }}">
                     <img *ngIf="!user.profileImageUrl" src="{{ 'assets/user.png'  }}" class="card-img-top img-thumbnail" alt="{{ user?.name }}"> *@
                     @if (Model.UserFoodJunctionDTO.Food_Picture != null)
                     {
-                        <img class="card-img-top img-thumbnail"  src="@Model.UserFoodJunctionDTO.Food_Picture" />
+                        <img class="card-img-top img-thumbnail" src="@Model.UserFoodJunctionDTO.Food_Picture" />
                     }
                 </div>
                 <div class="card-body">
                     <div>
-                        <strong>Yemek Adı:</strong>
-                        <p>@Model.UserFoodJunctionDTO.Food_Name</p>
+                        <strong>Yemek Adı: </strong><span>@Model.UserFoodJunctionDTO.Food_Name</span>
                     </div>
                     <div>
-                        <strong>Yemek Fiyatı:</strong>
-                        <p>@Model.UserFoodJunctionDTO.Food_Price</p>
+                        <strong>Yemek Fiyatı: </strong><span>@Model.UserFoodJunctionDTO.Food_Price TL</span>
                     </div>
                     <div>
-                        <strong>Mevcudiyet</strong>
-                        <p>@Model.UserFoodJunctionDTO.Food_Status</p>
+                        <strong>Mevcudiyet: </strong><span>@Model.UserFoodJunctionDTO.Food_Status</span>
                     </div>
- 
+
                 </div>
             </div>
         </div>
@@ -40,13 +37,13 @@
                     <div class="float-left">
                         <h3>@Model.UserFoodJunctionDTO.Food_Name's Profile</h3>
                     </div>
-@*                     <div class="btn-group float-right" role="group">
-                        <!-- <button type="button" class="btn btn-danger">Add Friend</button> -->
-                        <button type="button" class="btn btn-danger" (click)="followUser()">
-                            <!-- followUser(user.id) yerine -->
-                            {{followText}}
-                        </button>
-                        <button type="button" class="btn btn-success">Message</button>
+                    @*                     <div class="btn-group float-right" role="group">
+                    <!-- <button type="button" class="btn btn-danger">Add Friend</button> -->
+                    <button type="button" class="btn btn-danger" (click)="followUser()">
+                    <!-- followUser(user.id) yerine -->
+                    {{followText}}
+                    </button>
+                    <button type="button" class="btn btn-success">Message</button>
                     </div> *@
                 </div>
             </div>
@@ -68,26 +65,49 @@
             </div>
 
 
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Photo Gallery</h5>
+            <div class="mb-3">
+                <h5>Fotoğraflar</h5>
 
-                    <div class="card-columns">
-                        <div class="card">
-                            @foreach(var item in Model.UserFoodJunctionDTO.ImageofFoods)
-                            {
-                                
-                                <img class="card-img-top" src="@item.Food_Image" alt="@item.IsProfile" />
 
-                                <div class="card-body">
-                                    <p class="card-text">@item.IsProfile</p>
+
+                <div id="carouselImage" class="carousel slide carousel-fade">
+
+                    <div class="carousel-indicators">
+                        @for (var i = 0; i < Model.UserFoodJunctionDTO.ImageofFoods.Count(); i++)
+                        {
+                             <button type="button" data-bs-target="#carouselImage" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")"  aria-label="Slide @i"></button>
+                        }
+                    </div> 
+
+@*                     aria-current="true"
+ *@
+                    <div class="carousel-inner">
+                        @foreach (var item in Model.UserFoodJunctionDTO.ImageofFoods)
+                        {
+
+                            <div class="carousel-item @(item == Model.UserFoodJunctionDTO.ImageofFoods.First() ? "active" : "")">
+                                <img style="height:250px;" src="@item.Food_Image" class="d-block w-100" alt="@item.IsProfile">
+                                <div class="carousel-caption d-none d-md-block">
                                 </div>
-                            }
-                        </div>
+                            </div>
+
+
+                        }
                     </div>
-                </div> 
+
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselImage" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselImage" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+
+                </div>
+
+
             </div>
-            <!--  user.ts => images : image[]; //  UserForDetailsDTO -->
 
         </div>
     </div>
