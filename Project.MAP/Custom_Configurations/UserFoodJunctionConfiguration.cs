@@ -17,7 +17,7 @@ namespace Project.MAP.Custom_Configurations
         {
             base.Configure(builder);
 
-            builder.ToTable("Restoran Yemek Detay");
+            builder.ToTable("Kullanici_Yemek_Detayi");
 
             builder.Ignore(x => x.ID);
             // builder.Ignore(x => x.AppUser.Id);
@@ -37,6 +37,8 @@ namespace Project.MAP.Custom_Configurations
             builder.Property(x => x.Food_Description).HasMaxLength(256);
             // builder.Property(x => x.Food_Picture).HasMaxLength(256);
 
+            builder.Property(x => x.AccessibleID).HasColumnName("Kullanici_ID").IsRequired();
+            builder.Property(x => x.FoodID).HasColumnName("Yemek_ID").IsRequired();
         }
     }
 }

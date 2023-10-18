@@ -16,7 +16,7 @@ namespace Project.MAP.Custom_Configurations
         {
             base.Configure(builder);
 
-            builder.ToTable("Yemek Resimleri");
+            builder.ToTable("Yemek_Resimleri");
 
             // builder.Ignore(x => x.ID);
             builder.Ignore(x => x.UserFoodJunctionID); // ignore etmezsek çalışır mı? zira UserFoodJunction'in ID'si ignore edilmişti

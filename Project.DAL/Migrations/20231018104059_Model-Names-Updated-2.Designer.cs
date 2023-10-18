@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project.DAL.Context;
 
@@ -11,9 +12,11 @@ using Project.DAL.Context;
 namespace Project.DAL.Migrations
 {
     [DbContext(typeof(TechnosoftProjectContext))]
-    partial class TechnosoftProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20231018104059_Model-Names-Updated-2")]
+    partial class ModelNamesUpdated2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -439,13 +442,11 @@ namespace Project.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CouponExpireDay")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("Son Kullanım Tarihi");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CouponName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("KuponID");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2")
@@ -465,7 +466,7 @@ namespace Project.DAL.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Kuponlar", (string)null);
+                    b.ToTable("Coupons");
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.Food", b =>
@@ -545,7 +546,7 @@ namespace Project.DAL.Migrations
 
                     b.HasIndex("UserFoodJunctionAccessibleID", "UserFoodJunctionFoodID");
 
-                    b.ToTable("Yemek_Resimleri", (string)null);
+                    b.ToTable("Yemek Resimleri", (string)null);
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.Menu", b =>
@@ -589,7 +590,7 @@ namespace Project.DAL.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("Menuler", (string)null);
+                    b.ToTable("Menus");
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.MenuDetail", b =>
@@ -626,7 +627,7 @@ namespace Project.DAL.Migrations
 
                     b.HasIndex("FoodID");
 
-                    b.ToTable("Kullanici_Menu_Detayi", (string)null);
+                    b.ToTable("Menu Detay", (string)null);
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.UserCategoryJunction", b =>

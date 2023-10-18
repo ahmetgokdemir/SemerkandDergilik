@@ -16,7 +16,7 @@ namespace Project.MAP.Custom_Configurations
         {
             base.Configure(builder);
 
-            builder.ToTable("Menu Detay");
+            builder.ToTable("Kullanici_Menu_Detayi");
 
             builder.Ignore(x => x.ID); 
             builder.HasKey(x => new { x.MenuID, x.FoodID });
