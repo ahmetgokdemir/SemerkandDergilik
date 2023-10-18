@@ -338,7 +338,6 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 AddModelError(result);
             }
 
-
             return RedirectToAction("Users");
         }
 

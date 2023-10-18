@@ -24,9 +24,24 @@
         position: relative;
     }
 
-        .position a, p {
+        /*
+            .position p {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+        }*/
+
+        .position p {
             position: absolute;
-            top: 50%;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .position div {
+            position: absolute;
+            top: 75%;
             left: 50%;
             transform: translate(-50%, -50%);
         }
@@ -91,7 +106,13 @@ else
                         <tr>
                             <td></td>
                             <td class="position">
+
                                 <p>@item.Food_Name</p>
+
+
+                                <div><a asp-controller="Food" asp-action="FoodDetails" asp-route-foodID="@item.FoodID">Detay...</a></div>
+                                
+                                 
                             </td>
                             <td class="position">
                                 <p>@item.Food_Price</p>
@@ -105,9 +126,19 @@ else
                                     <img style="width:85px; height:40px" src="@item.Food_Picture" />
                                 }
                             </td>
-                            <td class="position">
-                                <p>@item.Food_Description</p>
-                            </td>
+                            @if (!string.IsNullOrEmpty(@item.Food_Description))
+                            {
+                                <td class="position">
+                                    <p>@item.Food_Description.Substring(0,1)...</p>
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="position">
+                                    <p>Açıklama girebilirsiniz.</p>
+                                </td>
+                            }
+
                             @*<td colspan="2" style="padding-left:150px">@item.FoodPicture</td>*@
 
                             <td class="btnposition">

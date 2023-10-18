@@ -1,6 +1,19 @@
 ﻿
 
+
+image sayacı
+
+
+
 ** İmage → 50. Veri Tabanının Güncellenmesi / 61. Profil Sayfasının Hazırlanması
+** user food junction için food image sayacı
+** 4:09 * 56. AutoMapper Ayarları --  yemekleri gösterirken kullanılacak
+    public string? Food_Picture { get; set; } // - sonra command al -
+    builder.Ignore(x => x.UserFoodJunctionID); // ignore etmezsek çalışır mı? çalışırsa diğer ikisine gerek var mı?
+
+     **   public List<ImageofFoodDTO> ImageofFoodDTOs { get; set; } --> 56. AutoMapper Ayarları
+  
+
 ** Session.Abandon()
 ** trim 
 ** create database if not exist 
@@ -72,8 +85,11 @@ BU ARADA add_blog_table.cs YORUMA ALINMADI!!!!
 migration:	add-migration FirstMigration ,,,, PM> add-migration Menu_and_MenuDetail_Entities_added
 			update-database
 
+            add-migration Add-ImageofFood-class
+            add-migration UserFoodJunctionID-Activated
 
 
+            update-database Add-ImageofFood-Class
 ------------------------------------------
 
 Sendgrid
@@ -189,6 +205,13 @@ HttpContext.Session.SetObject("manipulatedData", cvm_post.CategoryofFoodDTO); //
 HttpContext.Session.SetObject("manipulatedData", null); // resetlemek
 
 
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+FoodController.cs
+
+_FoodLayout.cshtml --> Food_InPool_Ajax --> FoodListforOtherUsers --> Add_Food_toMyList_Ajax --> _CrudFood_InOtherUsersList_Partial (pop-up) --> CRUDFood_InOtherUsersList --> Control_IsExisted_InMyListBefore_Async
+                                        --> FoodList_forMember
 
 
 ----------------------------------------- 0*********-----------------------------------------------

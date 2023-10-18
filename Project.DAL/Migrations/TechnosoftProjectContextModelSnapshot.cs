@@ -17,7 +17,7 @@ namespace Project.DAL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.9")
+                .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -439,11 +439,13 @@ namespace Project.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CouponExpireDay")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Son Kullanım Tarihi");
 
                     b.Property<string>("CouponName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("KuponID");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2")
@@ -463,7 +465,7 @@ namespace Project.DAL.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Coupons");
+                    b.ToTable("Kuponlar", (string)null);
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.Food", b =>
@@ -499,6 +501,51 @@ namespace Project.DAL.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Yemekler", (string)null);
+                });
+
+            modelBuilder.Entity("Project.ENTITIES.Models.ImageofFood", b =>
+                {
+                    b.Property<short>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("ID"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Oluşturulma Tarihi");
+
+                    b.Property<short>("DataStatus")
+                        .HasColumnType("smallint")
+                        .HasColumnName("Crud Durum");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Silinme Tarihi");
+
+                    b.Property<string>("Food_Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Yemek Resim");
+
+                    b.Property<bool>("IsProfile")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Güncelleme Tarihi");
+
+                    b.Property<Guid>("UserFoodJunctionAccessibleID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<short>("UserFoodJunctionFoodID")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserFoodJunctionAccessibleID", "UserFoodJunctionFoodID");
+
+                    b.ToTable("Yemek_Resimleri", (string)null);
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.Menu", b =>
@@ -542,7 +589,7 @@ namespace Project.DAL.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("Menus");
+                    b.ToTable("Menuler", (string)null);
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.MenuDetail", b =>
@@ -579,16 +626,18 @@ namespace Project.DAL.Migrations
 
                     b.HasIndex("FoodID");
 
-                    b.ToTable("Menu Detay", (string)null);
+                    b.ToTable("Kullanici_Menu_Detayi", (string)null);
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.UserCategoryJunction", b =>
                 {
                     b.Property<Guid>("AccessibleID")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Kullanici_ID");
 
                     b.Property<short>("CategoryofFoodID")
-                        .HasColumnType("smallint");
+                        .HasColumnType("smallint")
+                        .HasColumnName("Kategori_ID");
 
                     b.Property<Guid>("AppUserId")
                         .HasColumnType("uniqueidentifier");
@@ -628,16 +677,18 @@ namespace Project.DAL.Migrations
 
                     b.HasIndex("CategoryofFoodID");
 
-                    b.ToTable("Restoran Kategori Detay", (string)null);
+                    b.ToTable("Kullanici_Kategori_Detayi", (string)null);
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.UserFoodJunction", b =>
                 {
                     b.Property<Guid>("AccessibleID")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Kullanici_ID");
 
                     b.Property<short>("FoodID")
-                        .HasColumnType("smallint");
+                        .HasColumnType("smallint")
+                        .HasColumnName("Yemek_ID");
 
                     b.Property<Guid>("AppUserId")
                         .HasColumnType("uniqueidentifier");
@@ -681,7 +732,7 @@ namespace Project.DAL.Migrations
 
                     b.HasIndex("FoodID");
 
-                    b.ToTable("Restoran Yemek Detay", (string)null);
+                    b.ToTable("Kullanici_Yemek_Detayi", (string)null);
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Identity_Models.AppRoleClaim", b =>
@@ -733,6 +784,17 @@ namespace Project.DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Project.ENTITIES.Models.ImageofFood", b =>
+                {
+                    b.HasOne("Project.ENTITIES.Models.UserFoodJunction", "UserFoodJunction")
+                        .WithMany("ImageofFoods")
+                        .HasForeignKey("UserFoodJunctionAccessibleID", "UserFoodJunctionFoodID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserFoodJunction");
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.Menu", b =>
@@ -827,6 +889,11 @@ namespace Project.DAL.Migrations
             modelBuilder.Entity("Project.ENTITIES.Models.Menu", b =>
                 {
                     b.Navigation("MenuDetails");
+                });
+
+            modelBuilder.Entity("Project.ENTITIES.Models.UserFoodJunction", b =>
+                {
+                    b.Navigation("ImageofFoods");
                 });
 #pragma warning restore 612, 618
         }

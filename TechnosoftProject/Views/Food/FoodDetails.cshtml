@@ -1,0 +1,114 @@
+﻿@model FoodVM
+
+@{
+    ViewData["Title"] = "FoodListforOtherUsers";
+}
+
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="img-container">
+                    @*                     <img *ngIf="user.profileImageUrl" src="{{ user?.profileImageUrl }}" class="card-img-top img-thumbnail" alt="{{ user?.name }}">
+                    <img *ngIf="!user.profileImageUrl" src="{{ 'assets/user.png'  }}" class="card-img-top img-thumbnail" alt="{{ user?.name }}"> *@
+                    @if (Model.UserFoodJunctionDTO.Food_Picture != null)
+                    {
+                        <img class="card-img-top img-thumbnail" src="@Model.UserFoodJunctionDTO.Food_Picture" />
+                    }
+                </div>
+                <div class="card-body">
+                    <div>
+                        <strong>Yemek Adı: </strong><span>@Model.UserFoodJunctionDTO.Food_Name</span>
+                    </div>
+                    <div>
+                        <strong>Yemek Fiyatı: </strong><span>@Model.UserFoodJunctionDTO.Food_Price TL</span>
+                    </div>
+                    <div>
+                        <strong>Mevcudiyet: </strong><span>@Model.UserFoodJunctionDTO.Food_Status</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="float-left">
+                        <h3>@Model.UserFoodJunctionDTO.Food_Name's Profile</h3>
+                    </div>
+                    @*                     <div class="btn-group float-right" role="group">
+                    <!-- <button type="button" class="btn btn-danger">Add Friend</button> -->
+                    <button type="button" class="btn btn-danger" (click)="followUser()">
+                    <!-- followUser(user.id) yerine -->
+                    {{followText}}
+                    </button>
+                    <button type="button" class="btn btn-success">Message</button>
+                    </div> *@
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">About Me</h5>
+                    <p>
+                        @Model.UserFoodJunctionDTO.Food_Description
+                    </p>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Hobbies</h5>
+                    <p>
+                        @Model.UserFoodJunctionDTO.Food_Description
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="mb-3">
+                <h5>Fotoğraflar</h5>
+
+
+
+                <div id="carouselImage" class="carousel slide carousel-fade">
+
+                    <div class="carousel-indicators">
+                        @for (var i = 0; i < Model.UserFoodJunctionDTO.ImageofFoods.Count(); i++)
+                        {
+                             <button type="button" data-bs-target="#carouselImage" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")"  aria-label="Slide @i"></button>
+                        }
+                    </div> 
+
+@*                     aria-current="true"
+ *@
+                    <div class="carousel-inner">
+                        @foreach (var item in Model.UserFoodJunctionDTO.ImageofFoods)
+                        {
+
+                            <div class="carousel-item @(item == Model.UserFoodJunctionDTO.ImageofFoods.First() ? "active" : "")">
+                                <img style="height:250px;" src="@item.Food_Image" class="d-block w-100" alt="@item.IsProfile">
+                                <div class="carousel-caption d-none d-md-block">
+                                </div>
+                            </div>
+
+
+                        }
+                    </div>
+
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselImage" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselImage" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

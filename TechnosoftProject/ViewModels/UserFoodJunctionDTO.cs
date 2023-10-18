@@ -1,4 +1,5 @@
 ﻿using Project.ENTITIES.Enums;
+using Project.ENTITIES.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Technosoft_Project.ViewModels
@@ -34,5 +35,15 @@ namespace Technosoft_Project.ViewModels
         [MaxLength(128, ErrorMessage = "Yemek en fazla 128 karakterli olmalıdır.")]
         [Required(ErrorMessage = "Yemek ismi giriniz.")]
         public string Food_Name { get; set; }
+
+        // public ImageofFoodDTO ImageofFoodDTO { get; set; }
+
+        public List<ImageofFoodDTO> ImageofFoods { get; set; }
+
+        //public UserFoodJunctionDTO()
+        //{
+        //    ImageofFoods = new List<ImageofFoodDTO>();
+        //}
+
     }
 }

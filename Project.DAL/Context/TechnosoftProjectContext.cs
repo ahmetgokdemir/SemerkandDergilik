@@ -39,6 +39,8 @@ namespace Project.DAL.Context
             builder.ApplyConfiguration(new UserCategoryJunctionConfiguration());
             builder.ApplyConfiguration(new UserFoodJunctionConfiguration());
 
+            builder.ApplyConfiguration(new ImageofFoodConfiguration());
+
             builder.ApplyConfiguration(new MenuConfiguration());
             builder.ApplyConfiguration(new MenuDetailConfiguration());
 
@@ -123,6 +125,8 @@ namespace Project.DAL.Context
         public DbSet<Food> Foods { get; set; }
         public DbSet<UserCategoryJunction> UserCategoryJunctions { get; set; }
         public DbSet<UserFoodJunction> UserFoodJunctions { get; set; }
+        public DbSet<ImageofFood> ImageofFoods { get; set; }
+
         public DbSet<Menu> Menus { get; set; }
         public DbSet<MenuDetail> MenuDetails { get; set; }
 

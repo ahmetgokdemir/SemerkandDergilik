@@ -17,6 +17,8 @@ namespace Project.MAP.Custom_Configurations
         {
             base.Configure(builder);
 
+            builder.ToTable("Menuler");
+
             builder.Ignore(x => x.AppUserID);
 
             builder.Property(x => x.Menu_Name).HasColumnName("Menu Ad").IsRequired();

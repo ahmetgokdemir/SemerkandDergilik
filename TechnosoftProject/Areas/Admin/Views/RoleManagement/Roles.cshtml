@@ -5,73 +5,87 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<style>
+    <style>
 
-    .position {
-        width: 25%;
-        position: relative;
-    }
+        .position {
+            width: 25%;
+            position: relative;
+        }
 
-    .position p {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+            .position p {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
 
-    .btnposition{
-    vertical-align: middle;
-    text-align: center;
-    }
+        .btnposition {
+            vertical-align: middle;
+            text-align: center;
+        }
 
-</style>
+    </style>
+
+@{
+    int counterofitems = 0;
+    List<string> listofItemsID = new List<string>();
+}
 
 
-<h3>Roller</h3>
-<hr />
 
-<div class="col-md-8 offset-md-2">
-    <table class="table table-hover table-bordered table-striped" id="tab2">
-    <tr>
-        @*<th>Id</th>*@
-        <th class="position"><p>Rol ismi</p></th>
-        <th class="position"><p>Silme</p></th>
-        <th class="position"><p>Güncelleme</p></th>
-    </tr>
+    <h3>Roller</h3>
+    <hr />
 
-    @foreach (var item in Model)
-    {
-        <tr>
+    <div class="col-md-8 offset-md-2">
+        <table class="table table-hover table-bordered table-striped" id="tab2">
+            <tr id="newth">
+            
+                <th class="position"><p>Rol ismi</p></th>
+                <th class="position"><p>Güncelleme</p></th>
+@*              <th class="position"><p>Silme</p></th>
+ *@            </tr>
 
-           @* <td>@item.Id</td>*@
-                <td class="position"><p>@item.Name</p></td>
-                <td class="btnposition"><a class="btn btn-warning" asp-action="RoleUpdate" asp-route-id="@item.Id">Güncelle</a></td>
-                <td class="btnposition">
+        @foreach (var item in Model)
+        {
+                <tr id="@counterofitems">
 
-                    <!-- aşağıdaki yorum satırına alınan kod view kullanmadan direkt olarak post metoduna yönlendirilir ve delete işlemi gerçekleştirip ana sayfaya/roles yönlendirilir.. -->
-@*                    <form asp-action="RoleDelete" asp-route-id="@item.Id" method="post">
-                     Delete işleminde direkt post metodu çalışacağından form(submit) içine alındı, update de ise önce get metod çalışacak o yüzden update klasik şekilde yazıldı.... a tag helper bu işlemi yapamazdı o yüzden form/button kullanıldı. Çünkü a taghelper get metodunu çalıştırabilir.. post metodu değil.... burada da olduğu gibi mvc ve mvc core'da birden fazla form tanımlanabilir..
+                @* <td>@item.Id</td>*@
+                    <td class="position"><p>@item.Name</p></td>
+                    <td class="btnposition"><a class="btn btn-warning" asp-action="RoleUpdate" asp-route-id="@item.Id">Güncelle</a></td>
+@*                     <td class="btnposition">
+                        <button class="btn btn-danger " id="deleteRole" value="deleteRoleValue" data-id=@item.Id>Sil</button>
+                    </td> *@
+                        <!-- aşağıdaki yorum satırına alınan kod view kullanmadan direkt olarak post metoduna yönlendirilir ve delete işlemi gerçekleştirip ana sayfaya/roles yönlendirilir.. -->
+                    @*                    <form asp-action="RoleDelete" asp-route-id="@item.Id" method="post">
+                    Delete işleminde direkt post metodu çalışacağından form(submit) içine alındı, update de ise önce get metod çalışacak o yüzden update klasik şekilde yazıldı.... a tag helper bu işlemi yapamazdı o yüzden form/button kullanıldı. Çünkü a taghelper get metodunu çalıştırabilir.. post metodu değil.... burada da olduğu gibi mvc ve mvc core'da birden fazla form tanımlanabilir..
 
                     form action içerisinde asp-route-id="@item.Id" YERİNE input hidden denedim olmadı!!!
 
                     <input type="hidden" asp-for="@item.Id" /> OLMADI!!!
 
-                     
- 
+
+
                     <button class="btn btn-danger" type="submit">Sil</button>
 
 
                     </form>*@
 
-                        <button class="btn btn-danger " id="deleteRole" value="deleteRoleValue" data-id=@item.Id>Sil</button>
-            </td>
-            
-        </tr>
 
-    }
-</table>
-<a asp-action="RoleCreate" class="btn btn-info">Role Oluştur</a>
-</div>
+                @*                     <td type="hidden" class="deletecatch"></td>
+                *@
+                </tr>
+
+            listofItemsID.Add(item.Id);
+            ++counterofitems;
+
+
+        }
+        </table>
+        <a asp-action="RoleCreate" class="btn btn-info">Role Oluştur</a>
+        <button class="btn btn-danger" id="createdeletebutton">Rol Sil</button>
+
+
+    </div>
 
     <div class="modal fade" id="DeleteRoleModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -90,14 +104,14 @@
     </div>
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
         function DeleteRoleModalLoaded() {
             $("#DeleteRoleModal").modal('show'); // #DeleteRoleModal içinde DeleteRole var (<div class="modal-body" id="DeleteRole">) onun içinde de data var (_DeleteRolePartial)
         }
 
         $(function () {
-            //$("#deleteFood").click(function () {
+            
             $("#tab2").on("click", "[value=deleteRoleValue]", function () {
                 $.ajax({
                     //url: '@@Url.Action("DeleteFoodAjax","Food")',
@@ -115,6 +129,66 @@
                     }
                 });
             });
+
+            $("#createdeletebutton").on("click", function () {
+
+
+                // $(this).attr("data-id")
+                //  ddlFoods.append($("<option></option>").val('').html('Lütfen yemek seçiniz.'));
+
+                // $('tr').each(function () {
+                //     ddlFoods.append($("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'>Sil</button></td>").val('').html('Sil'));
+                // });
+
+
+                // alert("List: " + @@listofItemsID.Count());
+                // console.log("List: " + @@listofItemsID.Count());
+                // alert(@@counterofitems);
+
+                var arrayofitems;
+
+                // for (let y = 0; y < @@listofItemsID.Count(); y++) {
+                // @@foreach (var item in listofItemsID)
+                //     @@:arrayofitems.push("@@item");
+
+                // }
+
+                // razor (list) to javascript (var)... Razor MVC Populating Javascript array with Model Array
+                // @@https://syntaxfix.com/question/9068/razor-mvc-populating-javascript-array-with-model-array 
+                arrayofitems = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(listofItemsID));
+
+                for (let k = 0; k < arrayofitems.length; k++) {
+
+                    console.log(arrayofitems[k]);
+                }
+
+ 
+                $("#newth").append($("<th class='position'><p>Silme</p></th>"));
+                for (let i = 0; i < @counterofitems; i++) {
+
+                    //  $("#" + i).empty($("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'>Sil</button></td>"));
+
+                    //console.log(i);
+                    //var column = $("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue' data-id='" + @@index[0] + "'>Sil</button></td >");
+                    //$("#"+ i).append(column);
+
+                    // $('tr')[i].append($("<button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'></button>").val('').html('Sil'));
+
+                    // $("#"+i).append($("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'>Sil</button></td>"));
+                    $("#" + i).append($("<td class='btnposition'><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue' data-id='" + arrayofitems[i] + "'>Sil</button></td>"));
+
+                    // children[0]
+                    //$("#" + i).children[]
+
+                }
+
+                document.getElementById("createdeletebutton").remove();
+
+            });
+
+
+
+
         });
 
-</script>
+    </script>

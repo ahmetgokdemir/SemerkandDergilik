@@ -14,12 +14,16 @@ namespace Project.BLL.ManagerServices.Abstracts
                 
         Task<IEnumerable<object>> Get_ByUserID_with_FoodID_Async(Guid userID, short foodID);
 
-        void Delete_OldFood_from_User(Guid accessibleID, UserFoodJunction passive_UserFoodJunction);
+        void Delete_OldFood_from_User(short foodID, AppUser _currentUser);
 
         void Update_UserFoodJuncTable(Guid accessibleID, short food_ID, UserFoodJunction ufj);
 
         Task<List<Food>> Get_ByAll_exceptUserID_Async(Guid userID);
+
         Task<string> Control_IsExisted_InMyListBefore_Async( AppUser _userInfo, short foodID);
+
+        Task<IEnumerable<object>> GetFoodDetails_of_Member_Async(AppUser _currentUser, short foodID);
+
 
     }
 }

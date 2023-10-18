@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Project.DAL.Context;
 using Project.DAL.Repositories.Abstracts;
+using Project.ENTITIES.CoreInterfaces;
+using Project.ENTITIES.Enums;
 using Project.ENTITIES.Identity_Models;
 using Project.ENTITIES.Models;
 using System;
@@ -24,15 +27,43 @@ namespace Project.DAL.Repositories.Concretes
 
             // return Where(x => x.AppUser.Id == id).AsQueryable(); // AppUser.ID (erişilemiyor) --> short 
 
-            return _context.Set<UserFoodJunction>()
+            //var _entity = _context.Set<UserFoodJunction>()
+            // .LeftJoin(_context.Set<ImageofFood>(),
+            //     ufj => ufj.ID,
+            //     iof => iof.UserFoodJunctionID,
+            //     (ufj, iof) => new                  {
+
+
+            //         ufj = ufj,
+            //         iof = iof
+
+            //     }).Where(a => a.iof.IsProfile == true);
+
+ 
+                //var _entityFinal2 = _context.Set<UserFoodJunction>()
+                //.Include(x => x.ImageofFoods).Include(x => x.Food)
+                //.Select(x => new
+                //{
+                //    Food_Image = x.ImageofFoods.FirstOrDefault(y => y.IsProfile).Food_Image,
+                //    Food_Name = x.Food.Food_Name,
+                //}
+                //).ToList();
+
+                //  _context.Set<UserFoodJunction>() yerine _entity
+                var _entityFinal = _context.Set<UserFoodJunction>()
                 .Where(x => x.AppUser.Id == userID && x.DataStatus != ENTITIES.Enums.DataStatus.Deleted)
                 .Include(x => x.Food)
                 .Include(x => x.AppUser)
+                .Include(x => x.ImageofFoods)
+                //.//Join(x=> x.ImageofFoods)
+                //.Join(x => x.ImageofFoods).Where(u => u.FoodID == u.);//Foreign key dene...
                 .Select(x => new
                 {
                     Food_Name = x.Food.Food_Name,
                     Food_Price = x.Food_Price,
                     Food_Status = x.Food_Status,
+
+                    //Food_Picture = x.ImageofFoods.FirstOrDefault(y => y.IsProfile).Food_Image,
                     Food_Picture = x.Food_Picture,
                     Food_Description = x.Food_Description,
                     // AppUserId = x.AppUser.Id, // ID (IdentityUser'den gelir ve erişilemez onun yerine AppUser dan id e erişilir)
@@ -42,7 +73,10 @@ namespace Project.DAL.Repositories.Concretes
                 }
             ).AsQueryable();
 
-            // return control_deneme;
+            return _entityFinal;
+
+             // entity.GroupJoin(_context.Set<ImageofFood>()).Where(u => u.FoodID == u.);
+            ;
         }
 
         public async Task<IEnumerable<object>> Get_ByUserID_with_FoodID_Async_Repo(Guid userID, short foodID)
@@ -71,14 +105,21 @@ namespace Project.DAL.Repositories.Concretes
             return getfoodItem_byUserID;
         }
 
-        public async void Delete_OldFood_from_User_Repo(Guid accessibleID, UserFoodJunction passive_UserFoodJunction)
+        public async void Delete_OldFood_from_User_Repo(short foodID, AppUser _currentUser)
         {
             // builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID }); sayesinde 
-            var toBeUpdated = _context.Set<UserFoodJunction>().Find(accessibleID, passive_UserFoodJunction.FoodID);
+            var toBeUpdated = _context.Set<UserFoodJunction>().Find(_currentUser.AccessibleID, foodID);
 
+            toBeUpdated.FoodID = foodID;
+            toBeUpdated.DataStatus = DataStatus.Deleted;
+            toBeUpdated.DeletedDate = DateTime.Now;
+            // UserFoodJunction.AccessibleID = CurrentUser.AccessibleID;
+            //toBeUpdated.AppUser = CurrentUser;
+            toBeUpdated.AppUser = _currentUser;            
+            toBeUpdated.Food_Status = ExistentStatus.Pasif;
 
             // become passive 
-            _context.Entry(toBeUpdated).CurrentValues.SetValues(passive_UserFoodJunction);
+            // _context.Entry(toBeUpdated).CurrentValues.SetValues(passive_UserFoodJunction);
 
             // _context.Save();
             _context.SaveChanges();
@@ -121,7 +162,6 @@ namespace Project.DAL.Repositories.Concretes
 
 
             mydeletedList = _context.Set<UserFoodJunction>().Where(x => x.AppUser.Id == userID && x.DataStatus == ENTITIES.Enums.DataStatus.Deleted).ToList();
-
 
             foreach (UserFoodJunction not_exist in mydeletedList)
             {
@@ -231,8 +271,29 @@ namespace Project.DAL.Repositories.Concretes
             //int result = _context.SaveChanges();
             return _context.SaveChanges();
 
-
         }
+
+        public async Task<IEnumerable<object>> GetFoodDetails_of_Member_Async_Repo(AppUser _userInfo, short foodID)
+        {
+            IEnumerable<object> foodItemDetail = _context.Set<UserFoodJunction>()
+                .Where(x => x.AppUser.Id == _userInfo.Id && x.FoodID == foodID && x.DataStatus != ENTITIES.Enums.DataStatus.Deleted)
+                .Include(x => x.ImageofFoods)               
+                .Select(x => new
+                {
+                    Food_Name = x.Food.Food_Name, // include
+                    Food_Price = x.Food_Price,
+                    Food_Status = x.Food_Status,
+                    Food_Picture = x.Food_Picture,
+                    Food_Description = x.Food_Description,
+                    ImageofFoods = x.ImageofFoods
+                    // AppUserId = x.AppUser.Id, // ID (IdentityUser'den gelir ve erişilemez onun yerine AppUser dan id'e erişilir)
+                    // FoodID = x.FoodID
+                }
+            );
+
+            return foodItemDetail;
+        }
+
 
     }
 }

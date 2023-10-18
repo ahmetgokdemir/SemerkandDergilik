@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Project.BLL.ManagerServices.Abstracts;
 using Project.ENTITIES.Enums;
 using Project.ENTITIES.Identity_Models;
 using Project.ENTITIES.Models;
+using System;
 using Technosoft_Project.CommonTools;
 using Technosoft_Project.ViewModels;
 using Technosoft_Project.VMClasses;
@@ -53,6 +55,14 @@ namespace Technosoft_Project.Controllers
 
             IEnumerable<object> UserFoodJunctionList = await _iufjm.Get_ByUserID_Async(CurrentUser.Id); // IdentityUser'dan gelen Id (Guid tipli)
 
+
+            /*
+             * 
+             TypeAdapterConfig<object, UserFoodJunctionDTO>
+            .NewConfig()
+            .Map(dest => dest.ImageofFoodDTO, src => src.); 
+
+            */
 
             FoodVM cvm = new FoodVM
             {
@@ -440,6 +450,9 @@ namespace Technosoft_Project.Controllers
                 // ModelState.Remove("FoodDTO.Food_Name");
                 ModelState.Remove("FoodDTO.FoodPrice");
                 ModelState.Remove("FoodDTO.ExistentStatus");
+                ModelState.Remove("UserFoodJunctionDTO.ImageofFoodDTO");
+                ModelState.Remove("UserFoodJunctionDTO.ImageofFoods");
+
 
 
                 if (ModelState.IsValid)
@@ -465,7 +478,9 @@ namespace Technosoft_Project.Controllers
 
                     if (_FoodPicture != null && _FoodPicture.Length > 0)
                     {
-                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(_FoodPicture.FileName); // path oluşturma
+                        var fileName = $"{Guid.NewGuid().ToString()} {Path.GetExtension(_FoodPicture.FileName)}"; // path oluşturma
+
+                        /* var fileName = Guid.NewGuid().ToString() + Path.GetExtension(_FoodPicture.FileName); */
 
                         var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/FoodPicture", fileName); // server'a kayıt edilecek path => wwwroot/UserPicture/fileName
 
@@ -591,15 +606,17 @@ namespace Technosoft_Project.Controllers
 
 
                                 //  OLD food become passive FOR THİS USER
-                                UserFoodJunction passive_UserFoodJunction = old_ufj.Adapt<UserFoodJunction>();
+                                /* UserFoodJunction passive_UserFoodJunction = old_ufj.Adapt<UserFoodJunction>();
 
                                 passive_UserFoodJunction.DataStatus = DataStatus.Deleted;
                                 passive_UserFoodJunction.DeletedDate = DateTime.Now;
                                 passive_UserFoodJunction.AccessibleID = CurrentUser.AccessibleID;
                                 passive_UserFoodJunction.AppUser = CurrentUser;
                                 passive_UserFoodJunction.Food_Status = ExistentStatus.Pasif;
+                                */
+
                                 // passive_UserFoodJunction.FoodID = old_fd.ID;
-                                _iufjm.Delete_OldFood_from_User(CurrentUser.AccessibleID, passive_UserFoodJunction);
+                                _iufjm.Delete_OldFood_from_User(old_ufj.FoodID, CurrentUser);
 
                                 if (HttpContext.Session.GetObject<string>("hold_new_valid_food_name") != null)
                                 {
@@ -870,18 +887,18 @@ namespace Technosoft_Project.Controllers
             // *!* DELETE 
             else
             {
-                Guid new_userID = CurrentUser.Id;
+                //Guid new_userID = CurrentUser.Id;
 
-                UserFoodJunction UserFoodJunction = new UserFoodJunction();
+               // UserFoodJunction UserFoodJunction = new UserFoodJunction();
 
-                UserFoodJunction.FoodID = fvm_post.FoodDTO.ID;
-                UserFoodJunction.DataStatus = DataStatus.Deleted;
-                UserFoodJunction.DeletedDate = DateTime.Now;
-                UserFoodJunction.AccessibleID = CurrentUser.AccessibleID;
-                UserFoodJunction.AppUser = CurrentUser;
-                UserFoodJunction.Food_Status = ExistentStatus.Pasif;
+                //UserFoodJunction.FoodID = fvm_post.FoodDTO.ID;
+                //UserFoodJunction.DataStatus = DataStatus.Deleted;
+                //UserFoodJunction.DeletedDate = DateTime.Now;
+                //UserFoodJunction.AccessibleID = CurrentUser.AccessibleID;
+                //UserFoodJunction.AppUser = CurrentUser;
+                //UserFoodJunction.Food_Status = ExistentStatus.Pasif;
 
-                _iufjm.Delete_OldFood_from_User(CurrentUser.AccessibleID, UserFoodJunction);
+                _iufjm.Delete_OldFood_from_User(fvm_post.FoodDTO.ID, CurrentUser);
 
 
                 TempData["messageFood"] = "Yemek listenizden silindi";
@@ -894,7 +911,7 @@ namespace Technosoft_Project.Controllers
 
         }
 
-        //CategoryofFood_InPool_Ajax
+        // Food_InPool_Ajax --> _FoodLayout.cshtml
         [Route("Food_InPool_Ajax")]
         public async Task<IActionResult> Food_InPool_Ajax(string poolID, string? JSpopupPage)
         {
@@ -1000,6 +1017,19 @@ namespace Technosoft_Project.Controllers
 
         }
 
+        [Route("FoodDetails")]
+        public async Task<IActionResult> FoodDetails(short foodID)
+        {
+            IEnumerable<object> UserFoodJunctionList = await _iufjm.GetFoodDetails_of_Member_Async(CurrentUser, foodID); // IdentityUser'dan gelen Id (Guid tipli)
+
+            FoodVM fvm = new FoodVM
+            {
+                UserFoodJunctionDTO = UserFoodJunctionList.FirstOrDefault().Adapt<UserFoodJunctionDTO>()
+            };
+
+            return View("FoodDetails", fvm);
+
+         }
 
     }
 }
