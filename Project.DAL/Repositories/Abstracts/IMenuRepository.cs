@@ -9,5 +9,6 @@ namespace Project.DAL.Repositories.Abstracts
 {
     public interface IMenuRepository : IRepository<Menu>
     {
+        IQueryable<object> Get_ByUserID_Async_Repo(Guid userID);
     }
 }

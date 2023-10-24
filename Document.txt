@@ -8,6 +8,9 @@ menu and details
 
 superadmin
 
+ViewModels ve  VMClasses --> BLL'e taşı...
+
+
 
 ** İmage → 50. Veri Tabanının Güncellenmesi / 61. Profil Sayfasının Hazırlanması
 ** user food junction için food image sayacı
