@@ -1,8 +1,12 @@
 ﻿
 
-comment
-image sayacı
 
+image sayacı
+upload images
+
+menu and details
+
+superadmin
 
 
 ** İmage → 50. Veri Tabanının Güncellenmesi / 61. Profil Sayfasının Hazırlanması
