@@ -2,6 +2,13 @@
 
 
 image sayacı
+upload images
+
+menu and details
+
+superadmin
+
+ViewModels ve  VMClasses --> BLL'e taşı...
 
 
 

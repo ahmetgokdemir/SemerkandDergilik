@@ -9,5 +9,6 @@ namespace Project.BLL.ManagerServices.Abstracts
 {
     public interface IMenuManager : IManager<Menu>
     {
+        Task<IEnumerable<object>> Get_ByUserID_Async(Guid userID);
     }
 }

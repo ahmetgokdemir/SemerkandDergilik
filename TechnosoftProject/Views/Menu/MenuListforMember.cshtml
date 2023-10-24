@@ -1,0 +1,90 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+@model MenuVM
+
+@{
+    ViewData["Title"] = "MenuListforMember";
+
+    if (TempData["onlyOnce"] == null)
+    {
+        Layout = null;
+    }
+    else
+    {
+        TempData["onlyOnce"] = null;
+        Layout = "~/Views/Menu/_MenuLayout.cshtml";
+    }
+ }
+
+ <style>
+
+     .loader{
+         display:none;
+     }
+
+     .position{
+         width:25%;
+         position: relative;
+     }
+
+        .position a, p {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+    .btnposition {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+ </style>
+
+
+<div class="spinner-border loader" role="status">
+    <span class="sr-only">Loading...</span>
+</div>
+<hr class="loader" />
+
+@if(Model.MenuDTOs.Count == 0)
+{
+    <div class="jumbotron" id="tab1" stye="padding:20px; background-color:lightgrey"></div>
+
+    <button class="btn btn-outline-success" id="addNewdMenu" value="addNewValue">Menü Eklemek için tıklayınız</button>
+}
+else
+{
+    <div id="tab1" class="mb-3">
+        <button class="btn btn-outline-success " id="addNewMenu" value="addNewMenuValue">Menü Eklemek için tıklayınız</button>
+    </div>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
