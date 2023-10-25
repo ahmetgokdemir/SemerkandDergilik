@@ -16,6 +16,7 @@ namespace Technosoft_Project.Controllers
 {
     [Authorize]
     [Authorize(Policy = "Confirmed_Member_Policy")]
+    [Route("Food")]
     public class FoodController : BaseController
     {
 

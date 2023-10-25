@@ -1,6 +1,8 @@
 ﻿
 
 
+Menu Dropdown listesi... (şifre, üyelik bilgileri , yemek, kategori, menu, çıkış)
+
 image sayacı
 upload images
 

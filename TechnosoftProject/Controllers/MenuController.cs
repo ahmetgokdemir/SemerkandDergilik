@@ -14,6 +14,7 @@ namespace Technosoft_Project.Controllers
 
     [Authorize]
     [Authorize(Policy ="Confirmed_Member_Policy")]
+    [Route("Menu")]
     public class MenuController : BaseController
     {
         [Route("MenuIndex")]
