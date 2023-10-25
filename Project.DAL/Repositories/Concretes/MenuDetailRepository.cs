@@ -76,9 +76,9 @@ namespace Project.DAL.Repositories.Concretes
 
         public async Task<bool> IsExist_FoodinMenu_Repo_Async(short selected_foodID, short menu_ID)
         {
-            bool food_exists = _context.Set<MenuDetail>().Any(x => x.MenuID == menu_ID && x.FoodID == selected_foodID);//.ToListAsync();
+            //bool food_exists = _context.Set<MenuDetail>().Any(x => x.MenuID == menu_ID && x.FoodID == selected_foodID);//.ToListAsync();
 
-            return food_exists;
+            return false;
         }
 
         public void Insert_FoodonMenu_Repo_Async(short selected_foodID, string category_Name, short menu_ID)
@@ -86,7 +86,9 @@ namespace Project.DAL.Repositories.Concretes
 
             MenuDetail menuDetail = new MenuDetail();
             menuDetail.MenuID = menu_ID;
-            menuDetail.FoodID = selected_foodID;
+            
+            //menuDetail.FoodID = selected_foodID;
+
             /* !!! !!!  menuDetail.CategoryName_of_Food = category_Name; !!! !!! */
 
             // _context.Set<MenuDetail>().AddAsync(menuDetail);

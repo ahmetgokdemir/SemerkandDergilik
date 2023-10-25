@@ -16,6 +16,7 @@ namespace Technosoft_Project.Controllers
 {
     [Authorize]
     [Authorize(Policy = "Confirmed_Member_Policy")]
+    [Route("Member")]
     public class MemberController : BaseController
     {
         // kod tekrarı önlendi..
@@ -31,6 +32,7 @@ namespace Technosoft_Project.Controllers
             _ibm = ibm;
         }
 
+        [Route("Index")]
         public async Task<IActionResult> Index()
         {
 
@@ -53,6 +55,7 @@ namespace Technosoft_Project.Controllers
             return View(userViewModel);
         }
 
+        [Route("PasswordChange")]
         // PasswordChange actiom metot ->MemberLayouttan geliyor
         [AllowAnonymous]
         public IActionResult PasswordChange()
@@ -62,6 +65,7 @@ namespace Technosoft_Project.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [Route("PasswordChange")]
         public async Task<IActionResult> PasswordChange(PasswordChangeViewModel passwordChangeViewModel)
         {
             if (ModelState.IsValid)
@@ -138,6 +142,7 @@ namespace Technosoft_Project.Controllers
         }
 
         // Üye bilgilerini güncelleme 
+        [Route("UserEdit")]
         public IActionResult UserEdit()
         {
             // kod tekrarı önlendi..
@@ -167,6 +172,7 @@ namespace Technosoft_Project.Controllers
         }
 
         [HttpPost]
+        [Route("UserEdit")]
         public async Task<IActionResult> UserEdit(UserViewModel userViewModel, IFormFile userPicture)
         {
             ModelState.Remove("Password");
@@ -304,6 +310,7 @@ namespace Technosoft_Project.Controllers
             Eğer kullanıcın yetkisi yoksa --> opts.AccessDeniedPath = new PathString("/Member/AccessDenied"); devreye girer ve yetki hatası verir         
          */
         // // // erişim yetkisi olmayan kullanıcıyı sayfadan Access Denied etme 
+        [Route("AccessDenied")]
         [AllowAnonymous]
         public IActionResult AccessDenied(string ReturnUrl)
         {
@@ -336,6 +343,7 @@ namespace Technosoft_Project.Controllers
 
         // // // rollerin ulaşabileceği sayfalar, case sensitive  
         [Authorize(Roles = "Manager,Admin")]
+        [Route("Manager")]
         public IActionResult Manager()
         {
             return View();
@@ -344,6 +352,7 @@ namespace Technosoft_Project.Controllers
 
         // // // rollerin ulaşabileceği sayfalar, case sensitive  
         [Authorize(Roles = "Editor,Admin")]
+        [Route("Editor")]
         public IActionResult Editor()
         {
             return View();
@@ -407,6 +416,7 @@ namespace Technosoft_Project.Controllers
             return View();
         }
 
+        [Route("Blog")]
         public IActionResult Blog()
         {
             ViewBag.BlogStatus = new SelectList(Enum.GetNames(typeof(BlogStatus)));
@@ -423,6 +433,7 @@ namespace Technosoft_Project.Controllers
         }
 
         [HttpPost]
+        [Route("Blog")]
         public async Task<IActionResult> Blog(BlogVM bvm_post)
         {
             ModelState.Remove("BlogDTOs");

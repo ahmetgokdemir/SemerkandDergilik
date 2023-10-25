@@ -3,14 +3,11 @@
 
 Menu Dropdown listesi... (şifre, üyelik bilgileri , yemek, kategori, menu, çıkış)
 
-image sayacı
-upload images
-
-menu and details
-
-superadmin
-
-ViewModels ve  VMClasses --> BLL'e taşı...
+** menu and details
+** image sayacı
+** upload images
+** superadmin ekle
+** ViewModels ve  VMClasses --> BLL'e taşı...
 
 
 
@@ -96,9 +93,11 @@ migration:	add-migration FirstMigration ,,,, PM> add-migration Menu_and_MenuDeta
 
             add-migration Add-ImageofFood-class
             add-migration UserFoodJunctionID-Activated
+            add-migration Update-MenuClass-MenuMAP
 
+            update-database
 
-            update-database Add-ImageofFood-Class
+            update-database Add-ImageofFood-Class --> GERİ ALMAK İÇİN
 ------------------------------------------
 
 Sendgrid

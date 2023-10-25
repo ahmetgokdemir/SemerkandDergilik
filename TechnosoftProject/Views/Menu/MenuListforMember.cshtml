@@ -1,11 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
-
-@model MenuVM
+﻿@model MenuVM
 
 @{
     ViewData["Title"] = "MenuListforMember";
@@ -54,16 +47,318 @@
 
 @if(Model.MenuDTOs.Count == 0)
 {
-    <div class="jumbotron" id="tab1" stye="padding:20px; background-color:lightgrey"></div>
-
-    <button class="btn btn-outline-success" id="addNewdMenu" value="addNewValue">Menü Eklemek için tıklayınız</button>
+    <div class="jumbotron" id="tab1" style="padding:20px;  background-color:lightgrey">
+ 
+        <button class="btn btn-outline-success " id="addNewMenu" value="addNewMenuValue">Menü Eklemek için tıklayınız</button>
+    </div>
 }
 else
 {
     <div id="tab1" class="mb-3">
         <button class="btn btn-outline-success " id="addNewMenu" value="addNewMenuValue">Menü Eklemek için tıklayınız</button>
     </div>
+
+
+    <div class="panel panel-primary">
+        <div class="panel panel-body">
+            <table class="table table-hover table-bordered table-responsive-lg" id="tab2" width="100%" border="0" cellspacing="0" cellpadding="100%">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Index</th>
+                        <th class="position"><p>Menü İsmi</p></th>
+                        <th class="position"><p>Durum</p></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (MenuDTO item in Model.MenuDTOs)
+                    {
+
+
+                        <tr>
+                            <td></td>
+                            <td class="position">
+                                <a class="" asp-area="Admin" asp-controller="Menu" asp-action="MenuDetailList" asp-route-id="@item.ID" asp-route-menuName="@item.Menu_Name">@item.Menu_Name</a>
+                            </td>
+                            <td class="position">
+                                <p>@item._ExistentStatus</p>
+                            </td>
+                            @*<td colspan="2" style="padding-left:150px">@item.MenuPicture</td>*@
+
+                            <td class="btnposition">
+                                @*<a asp-action="UpdateMenu" asp-controller="Menu" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
+                                <button class="btn btn-warning" id="updateMenu" value="updateMenuValue" data-id=@item.ID>
+                                    Güncelle
+                                </button>
+
+                            </td>
+                            <td class="btnposition">
+                                @*<a asp-action="DeleteMenu" asp-controller="Menu" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
+
+                                <button class="btn btn-danger" id="deleteMenu" value="deleteMenuValue" data-id=@item.ID>Sil</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }
+
+<div class="modal fade" id="CRUDMenuModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+
+            <div class="modal-body" id="CRUDMenu">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="LoadingMenuModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+
+            <div class="modal-body" id="CRUDMenu">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div style="display:inline">Loading...</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/alertify.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/alertify.min.css" />
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/themes/default.min.css" />
+
+@if (TempData["messageMenu"] != null) // konrol yapılmazsa messageMenu null olduğu zaman .ToString() 'de hata verir..
+{
+    @if (TempData["messageMenu"].ToString() == "Menü güncellendi")
+    {
+
+        <script>
+            alertify.warning("Menü güncellendi");
+        </script>
+    }
+    else if (TempData["messageMenu"].ToString() == "Menü silindi")
+    {
+
+        <script>
+            alertify.error("Menü silindi");
+        </script>
+    }
+    else if (TempData["messageMenu"].ToString() == "Menü eklendi")
+    {
+
+        <script>
+            alertify.success("Menü eklendi");
+        </script>
+    }
+
+    TempData["messageMenu"] = null;
+
+}
+
+
+
+<script>
+    $(document).ready(function () {
+        var t = $('#tab2').DataTable({
+
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+            },
+            columnDefs: [  // indexleme
+                {
+                    searchable: false,
+                    orderable: false,
+                    targets: 0,
+                },
+            ],
+            order: [[1, 'asc']],
+            pagingType: 'full_numbers' // ilk ve son butonları eklendi..
+
+        });
+
+        // indexleme
+        t.on('order.dt search.dt', function () {
+            let i = 1;
+
+            t.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
+                this.data(i++);
+            });
+        }).draw();
+
+
+
+    });
+</script>
+
+<script type="text/javascript">
+
+
+
+    @Model.JavascriptToRun // yaptığı iş, içinde barındırdığı ShowErrorInsertOperationPopup veya ShowErrorUpdateOperationPopup fonksiyonu sayesinde, bu fonksiyonları çağırmak
+
+        function ShowErrorInsertOperationPopup() {
+            // alert('Sorry, we could not process your order.');
+
+            $.ajax({
+                //url: '@@Url.Action("AddFoodAjax","Food")',
+                url: 'AddMenuAjax',
+                //data: { pdto_reloaddata: @@Model.FoodDTO },
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $("#CRUDMenu").html(data);
+                    CRUDMenuModalLoaded();
+
+                },
+                beforeSend: function () {
+                    $('.loader').show(); // Assuming that you have some loader defined
+                },
+                complete: function () {
+                    $('.loader').hide(); //Hide this loader
+                },
+                error: function () {
+                    alert("Hata alındı.");
+                }
+            });
+
+        }
+
+    function ShowErrorUpdateOperationPopup(_id) {
+        // alert('Sorry, we could not process your order.');
+
+        $.ajax({
+            //url: '@@Url.Action("AddFoodAjax","Food")',
+            url: 'UpdateMenuAjax',
+            data: { id: _id },
+            type: 'GET',
+            dataType: 'html',
+            success: function (data) {
+                $("#CRUDMenu").html(data);
+                CRUDMenuModalLoaded();
+
+            },
+            beforeSend: function () {
+                $('.loader').show(); // Assuming that you have some loader defined
+            },
+            complete: function () {
+                $('.loader').hide(); //Hide this loader
+            },
+            error: function () {
+                alert("Hata alındı.");
+            }
+        });
+
+    }
+
+
+
+    function CRUDMenuModalLoaded() {
+        $("#CRUDMenuModal").modal('show'); // #CRUDMenuModal içinde CRUDMenu var (<div class="modal-body" id="CRUDMenu">) onun içinde de data var (_CrudMenuPartial)
+    }
+
+    $(function () {
+        //$("#addNewMenu").click(function () {
+        $("#tab1").on("click", "[value=addNewMenuValue]", function () {
+            $.ajax({
+                //url: '@@Url.Action("AddMenuAjax","Menu")',
+                url: 'AddMenuAjax',
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $("#CRUDMenu").html(data);
+                    CRUDMenuModalLoaded();
+
+                },
+                beforeSend: function () {
+                    $('.loader').show(); // Assuming that you have some loader defined
+                },
+                complete: function () {
+                    $('.loader').hide(); //Hide this loader
+                },
+                error: function () {
+                    alert("Hata alındı.");
+                }
+            });
+        });
+    });
+
+    $(function () {
+        //$("#updateMenu").click(function () {
+        $("#tab2").on("click", "[value=updateMenuValue]", function () {
+            $.ajax({
+                //url: '@@Url.Action("AddMenuAjax","Menu")',
+                url: 'UpdateMenuAjax',
+                data: { id: $(this).attr("data-id") },
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $("#CRUDMenu").html(data);
+                    CRUDMenuModalLoaded();
+
+                },
+                beforeSend: function () {
+                    $("#LoadingMenuModal").modal('show');
+                },
+                complete: function () {
+                    $("#LoadingMenuModal").modal('hide');
+
+                    // $('.loader').hide(); //Hide this loader
+                },
+                error: function () {
+                    alert("Hata alındı.");
+                }
+            });
+        });
+    });
+
+
+    $(function () {
+        //$("#addNewMenu").click(function () {
+        $("#tab2").on("click", "[value=deleteMenuValue]", function () {
+            $.ajax({
+                //url: '@@Url.Action("AddMenuAjax","Menu")',
+                url: 'DeleteMenuAjax',
+                data: { id: $(this).attr("data-id") },
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $("#CRUDMenu").html(data);
+                    CRUDMenuModalLoaded();
+
+                },
+                error: function () {
+                    alert("Hata alındı.");
+                }
+            });
+        });
+    });
+
+
+</script>
+
 
 
 

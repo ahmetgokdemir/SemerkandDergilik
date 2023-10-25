@@ -594,7 +594,7 @@ namespace Technosoft_Project.Controllers
                                 // usercategory olarak da eklenecek...
                                 ufj.AccessibleID = CurrentUser.AccessibleID;
                                 // ucj.AppUser.Id = CurrentUser.Id; erişilemiyor
-                                ufj.FoodID = fd_update.ID;
+                                ufj.FoodID = fd_update.ID; //*** 
                                 ufj.AppUser = CurrentUser; // IdentityUser'ın Id'si de tabloya eklnemiş oldu..
 
                                 await _iufjm.AddAsync(ufj);

@@ -203,7 +203,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 {
                     MenuDetail menuDetail = new MenuDetail();
                     menuDetail.MenuID = menu_ID;
-                    menuDetail.FoodID = selected_foodID;
+                    // menuDetail.FoodID = selected_foodID;
                     menuDetail.CategoryName_of_Foods = category_Name;
 
                     await _imdm.AddAsync(menuDetail);
@@ -415,7 +415,7 @@ namespace Technosoft_Project.Areas.Admin.Controllers
 
             /* PasswordReset.cs'de SendGridClient --> Task Execute(string link, string emailAdress) kısmında yapılmış...*/
 
-
+            //_75921573 12
             if (TempData["Deleted"] == null)
             {
                 ModelState.Remove("MenuDTOs");
