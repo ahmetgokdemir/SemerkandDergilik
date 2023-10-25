@@ -250,5 +250,14 @@ Mapster --> Adapt metodu...
 DataTable
 ---------------------------------------------------------
 
+AppUser.Id --> GUID (Identity'den gelen)
+AppUser.ID --> short
 
+_iufjm.Get_ByAll_exceptUserID_Async(CurrentUser.Id); // IdentityUser'dan gelen Id (Guid tipli)
+
+   
+   AccessibleID: kullanılmasının sebebi
+
+    // builder.HasKey(x => new { x.AppUser.Id, x.CategoryofFoodID });
+    // ... is not a valid member access expression. The expression should represent a simple property or field acces HATASI VERİYOR
 
