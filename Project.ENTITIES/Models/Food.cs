@@ -11,7 +11,8 @@ namespace Project.ENTITIES.Models
     {
         public string Food_Name { get; set; }
         public virtual List<UserFoodJunction> UserFoodJunctions { get; set; }
-        public virtual List<MenuDetail> MenuDetails { get; set; }
+        
+        // public virtual List<MenuDetail> MenuDetails { get; set; }
 
         // ** public decimal UnitPrice { get; set; } // FoodConfiguration.cs'de money'e çevrilmeli.. 
         // ** public string? FoodPicture { get; set; }

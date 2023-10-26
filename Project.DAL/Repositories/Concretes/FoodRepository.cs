@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Project.DAL.Repositories.Concretes.MenuDetailRepository;
+//using static Project.DAL.Repositories.Concretes.MenuDetailRepository;
 
 namespace Project.DAL.Repositories.Concretes
 {

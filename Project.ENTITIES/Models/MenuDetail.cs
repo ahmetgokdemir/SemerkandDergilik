@@ -16,10 +16,13 @@ namespace Project.ENTITIES.Models
 
         //public ExistentStatus Status_MenuDetail { get; set; } // Aktif, Pasif --> UserFoodJunction.cs deki ExistentStatus kullaılabilir bunun yerine
 
+        // Menu.cs'de AccessableUserID olduğu için burada tekrarlanmadı...
+
+
         public short MenuID { get; set; }
         public virtual Menu Menu { get; set; }
-        public short FoodID { get; set; }
-        public virtual Food Food { get; set; }
+        public short UserFoodJunctionID { get; set; } //***
+        public virtual UserFoodJunction UserFoodJunction { get; set; }
 
         // ?
         // public int AppUserID { get; set; }
