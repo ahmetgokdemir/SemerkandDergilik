@@ -19,7 +19,7 @@ namespace Project.MAP.Custom_Configurations
             builder.ToTable("Yemek_Resimleri");
 
             // builder.Ignore(x => x.ID);
-            builder.Ignore(x => x.UserFoodJunctionID); // ignore etmezsek çalışır mı? zira UserFoodJunction'in ID'si ignore edilmişti
+            // builder.Ignore(x => x.UserFoodJunctionID); // ignore etmezsek çalışır mı? zira UserFoodJunction'in ID'si ignore edilmişti
 
             // builder.Ignore(x => x.UserFoodJunction);
             // builder.Ignore(x => x.UserFoodJunction.AccessibleID);
@@ -32,7 +32,8 @@ namespace Project.MAP.Custom_Configurations
 
             //bool IsProfile
             builder.Property(x => x.Food_Image).HasColumnName("Yemek Resim").IsRequired();
-  
+            builder.Property(x => x.UserFoodJunctionID).HasColumnName("Kullanici_Yemek_ID").IsRequired();
+
             // builder.Property(x => x.Food_Image).HasMaxLength(256);
 
         }

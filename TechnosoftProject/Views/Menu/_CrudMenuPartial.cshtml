@@ -1,0 +1,101 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model MenuVM
+
+
+@*@@if ((Model == null) && ViewBag.CRUD != "delete_operation") // _CruFoodion'da Model null değil çünkü AddFoodAjax()'da geriye değer dönüyor ama AddMenuAjax()'da dönmüyor Model null o yüzden..
+{
+    <h3>Menü Oluşturma Formu</h3>
+}*@
+@if (Model.MenuDTO.ID == 0 && ViewBag.CRUD != "delete_operation")
+{
+    <h3>Menü Oluşturma Formu</h3>
+}
+else if (Model.MenuDTO.ID != 0 && ViewBag.CRUD != "delete_operation")
+{
+    <h3>Menü Güncelleme Formu</h3>
+}
+else if (Model.MenuDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
+{
+    <h3>Menü Silme Formu</h3>
+}
+
+<hr />
+<div class="row">
+
+    <form asp-action="CRUDMenu" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        @if (ViewBag.CRUD != "delete_operation")
+        {
+            TempData["Deleted"] = null;  // delete pop-up sayfasını açıp sonra kapatıp sonra da update/add pop'ı seçilirse TempData["Deleted"] sıfırlanmadığından CRUDFood action kısmında delete operation çalışır bu yüzden bunu sıfırlamak lazım
+
+            // asp-for="" kullanımında içerisine Model.MenuDTO.MenuName tanımlanamaz (Model olmamalı) yani MenuDTO.MenuName şeklinde olacak.. ViewBag de tanımlanamaz.. ama TempData kullanılabilir sanırım..
+
+            <div class="form-group">
+                <label asp-for="MenuDTO.Menu_Name" class="control-label"></label>
+                <input asp-for="MenuDTO.Menu_Name" class="form-control" />
+                <span asp-validation-for="MenuDTO.Menu_Name" class="text-danger"></span>
+            </div>
+
+
+
+
+            @*            <div class="form-group">
+        <label asp-for="MenuDTO.Status" class="control-label"></label>
+        <select class="form-control" asp-for="MenuDTO.Status" asp-items="@ViewBag.Status"></select>
+        <span asp-validation-for="MenuDTO.Status" class="text-danger"></span>
+        </div>*@
+
+
+            <div class="form-group">
+                <label asp-for="MenuDTO._ExistentStatus" class="control-label"></label>
+                <select class="form-control" asp-for="MenuDTO._ExistentStatus" asp-items="Html.GetEnumSelectList<Project.ENTITIES.Enums.ExistentStatus>()"></select>
+                <span asp-validation-for="MenuDTO._ExistentStatus" class="text-danger"></span>
+            </div>
+
+
+
+            @if (Model.MenuDTO.ID == 0)
+            {
+                <div class="form-group">
+                    <input type="submit" value="Menü Ekle" class="btn btn-primary mt-2" />
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <input type="submit" value="Menü Güncelle" class="btn btn-primary mt-2" />
+                </div>
+            }
+
+            @if (Model.MenuDTO.ID != 0)
+            {
+                <input type="hidden" asp-for="MenuDTO.ID" />
+            }
+
+        }
+
+        else
+        {
+            <input type="hidden" asp-for="MenuDTO.ID" />
+
+            <div class="form-group">
+                <span asp-validation-for="MenuDTO.Menu_Name"></span> <label style="width:100%; height:100%">@ViewBag.MenuNameDelete silmek istediğinizden emin misiniz ?</label>
+
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Menü Sil" class="btn btn-primary mt-2" />
+            </div>
+
+            TempData["Deleted"] = "true";
+        }
+
+    </form>
+
+</div>

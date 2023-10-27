@@ -1,14 +1,13 @@
 ﻿
 
 
-image sayacı
-upload images
+Menu Dropdown listesi... (şifre, üyelik bilgileri , yemek, kategori, menu, çıkış)
 
-menu and details
-
-superadmin
-
-ViewModels ve  VMClasses --> BLL'e taşı...
+** menu and details
+** image sayacı
+** upload images
+** superadmin ekle
+** ViewModels ve  VMClasses --> BLL'e taşı...
 
 
 
@@ -94,9 +93,18 @@ migration:	add-migration FirstMigration ,,,, PM> add-migration Menu_and_MenuDeta
 
             add-migration Add-ImageofFood-class
             add-migration UserFoodJunctionID-Activated
+            add-migration Update-MenuClass-MenuMAP
+
+            update-database
+
+            update-database Add-ImageofFood-Class --> GERİ ALMAK İÇİN
 
 
-            update-database Add-ImageofFood-Class
+            add-migration Relation-with-MenuDetail-and-UserFoodJunction-Instead-FoodClass
+
+
+            Instead 
+
 ------------------------------------------
 
 Sendgrid
@@ -248,6 +256,22 @@ Mapster --> Adapt metodu...
 
 DataTable
 ---------------------------------------------------------
+
+AppUser.Id --> GUID (Identity'den gelen)
+AppUser.ID --> short
+
+_iufjm.Get_ByAll_exceptUserID_Async(CurrentUser.Id); // IdentityUser'dan gelen Id (Guid tipli)
+
+   
+   AccessibleID: kullanılmasının sebebi
+
+    // builder.HasKey(x => new { x.AppUser.Id, x.CategoryofFoodID });
+    // ... is not a valid member access expression. The expression should represent a simple property or field acces HATASI VERİYOR
+
+
+Kullanici_ID --> AccessibleID AccessibleID
+
+
 
 
 

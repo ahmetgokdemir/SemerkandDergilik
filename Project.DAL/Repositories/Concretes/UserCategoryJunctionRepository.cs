@@ -167,7 +167,12 @@ namespace Project.DAL.Repositories.Concretes
             // T toBeUpdated = Find(entity.ID);
 
             // builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID }); sayesinde 
-            var toBeUpdated = _context.Set<UserCategoryJunction>().Find(accessibleID, old_ucj.CategoryofFoodID);
+
+            //var toBeUpdated = _context.Set<UserCategoryJunction>().Find(accessibleID, old_ucj.CategoryofFoodID);
+
+            var toBeUpdated = _context.Set<UserCategoryJunction>().Where(x => x.AccessibleID == accessibleID && x.CategoryofFoodID == old_ucj.CategoryofFoodID).FirstOrDefault();
+
+
             // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
 
             //if (toBeUpdated is CategoryofFood /* || entity is Food*/ )
@@ -176,6 +181,9 @@ namespace Project.DAL.Repositories.Concretes
 
 
             //}
+
+            old_ucj.ID = toBeUpdated.ID; //Key update edilemez. tekrar aynı
+
 
             _context.Entry(toBeUpdated).CurrentValues.SetValues(old_ucj);
 
@@ -193,7 +201,10 @@ namespace Project.DAL.Repositories.Concretes
             // T toBeUpdated = Find(entity.ID);
 
             // builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID }); sayesinde 
-            var toBeUpdated = _context.Set<UserCategoryJunction>().Find(accessibleID, categoryofFood_ID);
+
+            // var toBeUpdated = _context.Set<UserCategoryJunction>().Find(accessibleID, categoryofFood_ID);
+            var toBeUpdated = _context.Set<UserCategoryJunction>().Where(x => x.AccessibleID == accessibleID && x.CategoryofFoodID == categoryofFood_ID).FirstOrDefault();
+
             // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
 
             //if (toBeUpdated is CategoryofFood /* || entity is Food*/ )
@@ -202,6 +213,8 @@ namespace Project.DAL.Repositories.Concretes
 
 
             //}
+
+            ucj.ID = toBeUpdated.ID;
 
             _context.Entry(toBeUpdated).CurrentValues.SetValues(ucj);
 
@@ -226,7 +239,11 @@ namespace Project.DAL.Repositories.Concretes
         public async Task<string> Update_MyList_Async_Repo(Guid accessibleID, short categoryID)
         {
             UserCategoryJunction ucj;
-            var toBeUpdated = _context.Set<UserCategoryJunction>().Find(accessibleID, categoryID);
+            /*var toBeUpdated = _context.Set<UserCategoryJunction>().Find(accessibleID, categoryID);*/
+
+            var toBeUpdated = _context.Set<UserCategoryJunction>().Where(x => x.AccessibleID == accessibleID && x.CategoryofFoodID == categoryID).FirstOrDefault();
+
+
             ucj = toBeUpdated;
             ucj.CategoryofFood_Status = ENTITIES.Enums.ExistentStatus.Aktif;
             // ucj.CategoryofFood_Description = 

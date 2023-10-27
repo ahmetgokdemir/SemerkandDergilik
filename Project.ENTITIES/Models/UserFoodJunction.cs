@@ -27,5 +27,7 @@ namespace Project.ENTITIES.Models
         public virtual AppUser AppUser { get; set; }
         public short FoodID { get; set; }
         public virtual Food Food { get; set; }
+
+        public virtual List<Menu_UserFoodJunction> Menu_UserFoodJunctions { get; set; }
     }
 }

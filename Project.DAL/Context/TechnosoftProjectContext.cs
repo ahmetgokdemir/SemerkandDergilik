@@ -42,7 +42,7 @@ namespace Project.DAL.Context
             builder.ApplyConfiguration(new ImageofFoodConfiguration());
 
             builder.ApplyConfiguration(new MenuConfiguration());
-            builder.ApplyConfiguration(new MenuDetailConfiguration());
+            builder.ApplyConfiguration(new Menu_UserFoodJunctionConfiguration());
 
 
             builder.ApplyConfiguration(new CouponConfiguration());
@@ -128,7 +128,7 @@ namespace Project.DAL.Context
         public DbSet<ImageofFood> ImageofFoods { get; set; }
 
         public DbSet<Menu> Menus { get; set; }
-        public DbSet<MenuDetail> MenuDetails { get; set; }
+        public DbSet<Menu_UserFoodJunction> Menu_UserFoodJunctions { get; set; }
 
         public DbSet<Coupon> Coupons { get; set; }
         public DbSet<Blog> Blogs { get; set; }

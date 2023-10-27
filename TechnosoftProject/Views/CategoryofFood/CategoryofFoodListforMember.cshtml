@@ -1,7 +1,9 @@
 ﻿@model CategoryofFoodVM
 
 @{
-    ViewData["Title"] = "CategoryofFoodListforMember";
+    
+    ViewData["Title"] = "Kategori Listesi";
+
     if (TempData["onlyOnce"] == null)
     {
         Layout = null;
@@ -9,6 +11,8 @@
     else
     {
         TempData["onlyOnce"] = null;
+        <script>$("#flexSwitchCheckText").text("Havuzdaki diğer kategoriler listesine git");</script>
+
         Layout = "~/Views/CategoryofFood/_CategoryofFoodLayout.cshtml";
     }
     //Layout = "~/Views/CategoryofFood/_CategoryofFoodLayout.cshtml";
@@ -242,8 +246,8 @@ else if (TempData["messageCategoryofFood_InOtherUsersList"] != null)
             });
         }).draw();
 
-        $("#flexSwitchCheckText").text("Havuzdaki diğer kategoriler");
-        document.getElementById("flexSwitchCheckDefault").checked = false;
+/*         $("#flexSwitchCheckText").text("Havuzdaki diğer kategoriler");
+        document.getElementById("flexSwitchCheckDefault").checked = false; */
 
     });
 </script>

@@ -146,7 +146,7 @@
                     <a class="btn w-100  mb-2" style="background-color:#e6e2d3;margin:0 auto; display:block;" asp-action="CategoryofFoodList_forMember" asp-controller="CategoryofFood" asp-route-onlyOnce="1">Yemek Kategorleri Bölümü</a>
 
                     <a class="btn w-100  mb-2" style="background-color:#e6e2d3;margin:0 auto; display:block;" asp-action="FoodList_forMember" asp-controller="Food" asp-route-onlyOnce="1">Yemek Bölümü</a>
-                                                            
+
                     <a class="btn w-100  mb-2" style="background-color:#e6e2d3;margin:0 auto; display:block;" asp-controller="Menu" asp-action="MenuList_forMember" asp-route-onlyOnce="1">Menu Oluştur</a>
 
                     <hr />
@@ -208,19 +208,19 @@ eski
                 // alert($("#flexSwitchCheckDefault").value);
 
                 //  alert("True CLICKED");
-                $("#flexSwitchCheckText").text("Yemek listeme git");
+                $("#flexSwitchCheckText").text("Menu listeme git");
 
             } else {
 
                 //  alert("False CLICKED");
-                $("#flexSwitchCheckText").text("Havuzdaki diğer yemek listesine git!");
+                $("#flexSwitchCheckText").text("Havuzdaki diğer menu listesine git!");
             }
 
             // alert("CLICKED");
 
             $.ajax({
 
-                url: 'Food_InPool_Ajax',
+                url: 'Menu_InPool_Ajax',
                 data: {
 
                     poolID: document.getElementById("flexSwitchCheckDefault").checked
@@ -257,4 +257,5 @@ eski
     });
 
 </script>
+
 

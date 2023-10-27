@@ -180,8 +180,8 @@ builder.Services.AddScoped<PasswordReset>();
 //Repositories
 builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 
-builder.Services.AddScoped<IMenuRepository, MenuRepository>();
-builder.Services.AddScoped<IMenuDetailRepository, MenuDetailRepository>();
+//builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+//builder.Services.AddScoped<IMenuDetailRepository, MenuDetailRepository>();
 
 builder.Services.AddScoped<ICategoryofFoodRepository, CategoryofFoodRepository>();
 builder.Services.AddScoped<IUserCategoryJunctionRepository, UserCategoryJunctionRepository>();
@@ -192,8 +192,8 @@ builder.Services.AddScoped<IUserFoodJunctionRepository, UserFoodJunctionReposito
 //Managers
 builder.Services.AddScoped(typeof(IManager<>), typeof(BaseManager<>));
 
-builder.Services.AddScoped<IMenuManager, MenuManager>();
-builder.Services.AddScoped<IMenuDetailManager, MenuDetailManager>();
+//builder.Services.AddScoped<IMenuManager, MenuManager>();
+//builder.Services.AddScoped<IMenuDetailManager, MenuDetailManager>();
 
 builder.Services.AddScoped<ICategoryofFoodManager, CategoryofFoodManager>();
 builder.Services.AddScoped<IUserCategoryJunctionManager, UserCategoryJunctionManager>();

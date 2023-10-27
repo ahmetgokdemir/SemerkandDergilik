@@ -16,6 +16,7 @@ namespace Technosoft_Project.Controllers
 {
     [Authorize]
     [Authorize(Policy = "Confirmed_Member_Policy")]
+    [Route("CategoryofFood")]
     public class CategoryofFoodController : BaseController
     {
         readonly ICategoryofFoodManager _icm;

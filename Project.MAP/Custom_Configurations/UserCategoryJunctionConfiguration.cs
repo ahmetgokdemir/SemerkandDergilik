@@ -20,7 +20,7 @@ namespace Project.MAP.Custom_Configurations
 
             builder.ToTable("Kullanici_Kategori_Detayi");
 
-            builder.Ignore(x => x.ID);
+            //builder.Ignore(x => x.ID);
             // builder.Ignore(x => x.AppUser.Id);
 
             //IdentityUser iu = new IdentityUser();
@@ -29,7 +29,7 @@ namespace Project.MAP.Custom_Configurations
             // builder.HasKey(x => new { x.AppUser.Id, x.CategoryofFoodID });
             // ... is not a valid member access expression. The expression should represent a simple property or field acces HATASI VERİYOR
 
-            builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID });
+            //builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID });
 
             builder.Property(x => x.CategoryofFood_Status).HasColumnName("Kategori Mevcudiyet Durum").IsRequired();
             builder.Property(x => x.CategoryofFood_Description).HasColumnName("Kategori Açıklama");

@@ -88,7 +88,7 @@ namespace Project.BLL.ManagerServices.Concretes
             // not existed.. will add
             else
             {
-                result_Code = await _iufjrep.Add_CategoryItem_toMyList_Async_Repo(_userInfo, foodID);
+                result_Code = await _iufjrep.Add_Foodtem_toMyList_Async_Repo(_userInfo, foodID);
             }
 
             string result_Message;

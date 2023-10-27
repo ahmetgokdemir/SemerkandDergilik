@@ -108,7 +108,9 @@ namespace Project.DAL.Repositories.Concretes
         public async void Delete_OldFood_from_User_Repo(short foodID, AppUser _currentUser)
         {
             // builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID }); sayesinde 
-            var toBeUpdated = _context.Set<UserFoodJunction>().Find(_currentUser.AccessibleID, foodID);
+            //var toBeUpdated = _context.Set<UserFoodJunction>().Find(_currentUser.AccessibleID, foodID);
+
+            var toBeUpdated = _context.Set<UserFoodJunction>().Where(x => x.AccessibleID == _currentUser.AccessibleID && x.FoodID == foodID).FirstOrDefault();
 
             toBeUpdated.FoodID = foodID;
             toBeUpdated.DataStatus = DataStatus.Deleted;
@@ -118,6 +120,7 @@ namespace Project.DAL.Repositories.Concretes
             toBeUpdated.AppUser = _currentUser;            
             toBeUpdated.Food_Status = ExistentStatus.Pasif;
 
+
             // become passive 
             // _context.Entry(toBeUpdated).CurrentValues.SetValues(passive_UserFoodJunction);
 
@@ -126,7 +129,7 @@ namespace Project.DAL.Repositories.Concretes
 
         }
 
-        public async void Update_UserFoodJuncTable_Repo(Guid accessibleID, short categoryofFood_ID, UserFoodJunction ufj)
+        public async void Update_UserFoodJuncTable_Repo(Guid accessibleID, short food_ID, UserFoodJunction ufj)
         {
             /*ucj.DataStatus = ENTITIES.Enums.DataStatus.Updated;
             ucj.ModifiedDate = DateTime.Now;*/
@@ -135,7 +138,7 @@ namespace Project.DAL.Repositories.Concretes
             // T toBeUpdated = Find(entity.ID);
 
             // builder.HasKey(x => new { x.AccessibleID, x.CategoryofFoodID }); sayesinde 
-            var toBeUpdated = _context.Set<UserFoodJunction>().Find(accessibleID, categoryofFood_ID);
+            var toBeUpdated = _context.Set<UserFoodJunction>().Where(x => x.AccessibleID == accessibleID && x.FoodID == food_ID).FirstOrDefault();
             // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
 
             //if (toBeUpdated is CategoryofFood /* || entity is Food*/ )
@@ -144,6 +147,8 @@ namespace Project.DAL.Repositories.Concretes
 
 
             //}
+
+            ufj.ID = toBeUpdated.ID; //Key update edilemez. tekrar aynı id değeri ile set edildi
 
             _context.Entry(toBeUpdated).CurrentValues.SetValues(ufj);
 
@@ -276,7 +281,9 @@ namespace Project.DAL.Repositories.Concretes
         {
             UserFoodJunction ufj;
 
-            var toBeUpdated = _context.Set<UserFoodJunction>().Find(_userInfo.AccessibleID, foodID);
+            /*var toBeUpdated = _context.Set<UserFoodJunction>().Find(_userInfo.AccessibleID, foodID);*/
+
+            var toBeUpdated = _context.Set<UserFoodJunction>().Where(x => x.AccessibleID == _userInfo.AccessibleID && x.FoodID == foodID).FirstOrDefault();
 
             ufj = toBeUpdated;
 
@@ -293,7 +300,7 @@ namespace Project.DAL.Repositories.Concretes
 
         }
 
-        public async Task<int> Add_CategoryItem_toMyList_Async_Repo(AppUser _userInfo, short foodID)
+        public async Task<int> Add_Foodtem_toMyList_Async_Repo(AppUser _userInfo, short foodID)
         {
             UserFoodJunction ufj = new UserFoodJunction();
             ufj.AppUser = _userInfo;

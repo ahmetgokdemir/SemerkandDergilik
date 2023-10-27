@@ -19,11 +19,13 @@ namespace Project.MAP.Custom_Configurations
 
             builder.ToTable("Kullanici_Yemek_Detayi");
 
-            builder.Ignore(x => x.ID);
+            // builder.Ignore(x => x.ID);
+            
             // builder.Ignore(x => x.AppUser.Id);
 
             // builder.HasKey(x => new { x.AppUser.Id, x.FoodID }); // ... is not a valid member access expression. The expression should represent a simple property or field acces HATASI VERİYOR
-            builder.HasKey(x => new { x.AccessibleID, x.FoodID });
+            
+            // builder.HasKey(x => new { x.AccessibleID, x.FoodID });
 
  
             builder.Property(x => x.Food_Price).HasColumnName("Yemek Fiyat").IsRequired(); 
