@@ -50,7 +50,7 @@ namespace Project.ENTITIES.Identity_Models
         }
 
 
-        // *** public virtual List<Menu> Menus { get; set; }
+        public virtual List<Menu> Menus { get; set; }
 
         // Junction Table (Çoka çok)
         // public virtual List<MenuDetail> MenuDetails { get; set; } ??? 

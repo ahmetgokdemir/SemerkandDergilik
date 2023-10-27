@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Project.ENTITIES.Models
 {
-    public class MenuDetail : EntityBase, IEntity
+    public class Menu_UserFoodJunction : EntityBase, IEntity
     {
         public string CategoryName_of_Foods { get; set; } // join ile uğraşmamak için CategoryofFood.cs'deki ismi CategoryName_of_Foods
 

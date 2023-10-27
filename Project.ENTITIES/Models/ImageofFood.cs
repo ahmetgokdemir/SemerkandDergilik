@@ -17,6 +17,7 @@ namespace Project.ENTITIES.Models
 
         // public Guid UserFoodJunctionAccessibleID { get; set; }
         // public short UserFoodJunctionFoodID { get; set; }
+        
         public short UserFoodJunctionID { get; set; }
         public virtual UserFoodJunction UserFoodJunction { get; set; }
 

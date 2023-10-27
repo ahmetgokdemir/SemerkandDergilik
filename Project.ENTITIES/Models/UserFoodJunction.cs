@@ -28,6 +28,6 @@ namespace Project.ENTITIES.Models
         public short FoodID { get; set; }
         public virtual Food Food { get; set; }
 
-        public virtual List<MenuDetail> MenuDetails { get; set; }
+        public virtual List<Menu_UserFoodJunction> Menu_UserFoodJunctions { get; set; }
     }
 }
