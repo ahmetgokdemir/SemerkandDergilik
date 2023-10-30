@@ -37,7 +37,7 @@ namespace Technosoft_Project.CustomTagHelpers
             // x : herbir rol
             roles.ToList().ForEach(x =>
             {
-                html += $"<div style='color:white' class='badge badge-dark'>  {x}  </div>";  // {x} kullanabilmek için $ eklendi..
+                html += $"<span style='color:black' class='badge bg-warning'> {x} </span> ";  // {x} kullanabilmek için $ eklendi..
                 // html += $"<span style='color:white' class='badge badge-dark'>  {x}  </span>";
 
                 // class='boldCell'
