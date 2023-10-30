@@ -300,6 +300,7 @@ namespace Technosoft_Project.Controllers
         */
 
         [AllowAnonymous]
+        [Route("LogOut")]
         public void LogOut()
         {
             signInManager.SignOutAsync(); // opts.LogoutPath = new PathString("/Member/LogOut"); çalışır..
