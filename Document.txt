@@ -272,6 +272,10 @@ _iufjm.Get_ByAll_exceptUserID_Async(CurrentUser.Id); // IdentityUser'dan gelen I
 Kullanici_ID --> AccessibleID AccessibleID
 
 
+The ALTER TABLE statement conflicted with the FOREIGN KEY constraint "FK_Yemek_Resimleri_Kullanici_Yemek_Detayi_Kullanici_Yemek_ID". The conflict occurred in database "TechnosoftProjectDB", table "dbo.Kullanici_Yemek_Detayi", column 'ID'.
 
 
+FK_Yemek_Resimleri veriler silinmeli zira  dbo.Kullanici_Yemek_Detayi daha eklenmedi.
+eklenmesi için oradaki datalar silinmeli yoksa FK_Yemek_Resimleri içerisndeki Kullanici_Yemek_ID'i
+bulamıyor zira bu (Kullanici_Yemek_ID) dbo.Kullanici_Yemek_Detayi tablosuna ait ve bu daha eklenmedi.
 
