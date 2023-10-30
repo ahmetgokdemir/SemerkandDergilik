@@ -238,7 +238,10 @@ CustomValidation
 
 BaseController --> den türedi diğerleri
 Areas --> admin kısmı
+
 TagHelper --> property yakalamak..
+badge bg-warning çalıştı...
+
 ViewModel --> göstermek istediğim property'ler
 
 VMClasses
