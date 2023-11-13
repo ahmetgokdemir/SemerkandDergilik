@@ -624,6 +624,7 @@ namespace Technosoft_Project.Controllers
                 }
             }
 
+            // ******* SelectMany: List içinde List varsa.. Demek ki Values içerisinde Liste halinde Errors'ler mevcut.
             List<string> errors = ModelState.Values.SelectMany(x => x.Errors).Select(y => y.ErrorMessage).ToList();
 
             return View("Error", errors);
