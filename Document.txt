@@ -7,6 +7,25 @@ Sql server --> Hepsi ama Entities hariç
 Web.CodeGener --> Web Project
 Configuration.ConfigurationManage --> BLL
 
+ClaimProvider.cs --> .. devam --> ..net documanları ...
+Users.cshtml --> event.target.value
+
+??!! <select class="form-control" id="@user.Id" value="@user.ID" asp-for="@user.IsConfirmedAccount">
+
+
+                <select class="form-select" asp-for="UserFoodJunctionDTO.Food_Status">
+                    <option value="0" selected>Yemek Durumunu seçiniz.</option>
+                    @foreach (SelectListItem es in Html.GetEnumSelectList<Project.ENTITIES.Enums.ExistentStatus>())
+                    {
+                        <option value="@es.Value">@es.Text</option>
+
+                    }
+                </select>
+
+
+
+
+
 
 Menu Dropdown listesi... (şifre, üyelik bilgileri , yemek, kategori, menu, çıkış)
 
