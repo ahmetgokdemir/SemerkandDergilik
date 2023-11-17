@@ -1,4 +1,11 @@
 ﻿
+Identity.Stores --> Entities
+Design --> entites , web project
+Proxies --> DAL, MAP
+Tools --> DAL, MAP
+Sql server --> Hepsi ama Entities hariç
+Web.CodeGener --> Web Project
+Configuration.ConfigurationManage --> BLL
 
 
 Menu Dropdown listesi... (şifre, üyelik bilgileri , yemek, kategori, menu, çıkış)
