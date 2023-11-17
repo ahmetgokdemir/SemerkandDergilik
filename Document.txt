@@ -10,17 +10,15 @@ Configuration.ConfigurationManage --> BLL
 ClaimProvider.cs --> .. devam --> ..net documanları ...
 Users.cshtml --> event.target.value
 
-??!! <select class="form-control" id="@user.Id" value="@user.ID" asp-for="@user.IsConfirmedAccount">
+İçerikler:
+
+# Microsoft.AspNetCore.Identity:
+# Javascript
+# Enum 
+# Tag Helper
 
 
-                <select class="form-select" asp-for="UserFoodJunctionDTO.Food_Status">
-                    <option value="0" selected>Yemek Durumunu seçiniz.</option>
-                    @foreach (SelectListItem es in Html.GetEnumSelectList<Project.ENTITIES.Enums.ExistentStatus>())
-                    {
-                        <option value="@es.Value">@es.Text</option>
 
-                    }
-                </select>
 
 
 
@@ -186,6 +184,13 @@ virtual -- override ilişki..
 
 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
+# Microsoft.AspNetCore.Identity:
+
+Users.cshtml'da -->
+** Html'de UserManager<AppUser> kullanmak...
+
+
+
 CreateAsync, UpdateAsync, ChangePasswordAsync, ResetPasswordAsync, AddLoginAsync, ConfirmEmailAsync --> dönüş tipleri IdentityResult'dir..
 
 IsLockedOutAsync, IsEmailConfirmedAsync, CheckPasswordAsync --> dönüş tipleri bool
@@ -265,7 +270,7 @@ CustomValidation
 BaseController --> den türedi diğerleri
 Areas --> admin kısmı
 
-TagHelper --> property yakalamak..
+
 badge bg-warning çalıştı...
 
 ViewModel --> göstermek istediğim property'ler
@@ -307,4 +312,54 @@ The ALTER TABLE statement conflicted with the FOREIGN KEY constraint "FK_Yemek_R
 FK_Yemek_Resimleri veriler silinmeli zira  dbo.Kullanici_Yemek_Detayi daha eklenmedi.
 eklenmesi için oradaki datalar silinmeli yoksa FK_Yemek_Resimleri içerisndeki Kullanici_Yemek_ID'i
 bulamıyor zira bu (Kullanici_Yemek_ID) dbo.Kullanici_Yemek_Detayi tablosuna ait ve bu daha eklenmedi.
+
+
+
+# Javascript
+
+querySelectorAll --> var allselects = document.querySelectorAll('select');
+addEventListener --> allselects[i].addEventListener('change', changeFunc);
+
+event.target --> data: { member_ID: event.target.id, activation_Status: event.target.value }
+
+
+# Enum                     
+
+** user.IsConfirmedAccount = (IsConfirmedAccount)1; --> type of int to type of IsConfirmedAccount
+
+
+# Tag Helper
+
+** TagHelper --> property yakalamak..
+
+<select class="form-control" id="@user.Id" value="@user.ID" asp-for="@user.IsConfirmedAccount">
+
+    <!-- Project.ENTITIES.Enums.IsConfirmedAccount>() yerine SelectListItem -->
+    @foreach (SelectListItem item in Html.GetEnumSelectList<Project.ENTITIES.Enums.IsConfirmedAccount>())
+    {
+        // data: { id: $(this).attr("data-id") }, // this, value=formaintenance'ı (button) temsil eder..
+        // <button id="unnecessary" class="btn btn-danger" data-id=@item.ID value="formaintenance">Bakıma Al</button>
+
+        <option id="@user.Id">@item.Text</option>
+    }
+</select>
+
+- asp-for="@user.IsConfirmedAccount" --> ilgili user için database'de IsConfirmedAccount ne olarak kayıtlı ise o seçili gelir  ...
+- id="@user.Id" --> post işlemi ile bu veri gider.
+- value="@user.ID" --> gerek yok
+- option id="@user.Id" --> id="@user.Id" gerek yok  
+
+
+2.yol (select'lerde özellikler default value girmek için --> option value="0" selected gibi...)
+
+<select class="form-select" asp-for="UserFoodJunctionDTO.Food_Status">
+    <option value="0" selected>Yemek Durumunu seçiniz.</option>
+    @foreach (SelectListItem es in Html.GetEnumSelectList<Project.ENTITIES.Enums.ExistentStatus>())
+    {
+        <option value="@es.Value">@es.Text</option>
+
+    }
+</select>
+
+-- value="0" --> bunu kullanabilmek için ilk örnekteki select içindeki id="@user.Id" yerine option içindeki value="@es.Value" kulllanılıd
 
