@@ -105,7 +105,9 @@ namespace Technosoft_Project.Controllers
                     // create token
                     string confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
 
+                    // *** E-mail ile login ...
                     // create link, ResetPasswordConfirm action metot'da querystring olarak kullanılacak
+                    /*
                     string link = Url.Action("ConfirmEmail", "Home", new
                     {
                         userId = user.Id,
@@ -113,12 +115,15 @@ namespace Technosoft_Project.Controllers
                     }, protocol: HttpContext.Request.Scheme
 
                     ); // Action bir aşağıda
+                    */
 
                     // link in SendEmail
                     //Helper.EmailConfirmation.SendEmail(link, user.Email);
-                    _emailConfirmation.Send(link, user.Email);
 
-                    TempData["EmailConfirmMessage"] = "Giriş yapabilmek için Email'inize gelen linki tıklayınız.";
+                    // _emailConfirmation.Send(link, user.Email);
+
+                    // TempData["EmailConfirmMessage"] = "Giriş yapabilmek için Email'inize gelen linki tıklayınız.";
+                    TempData["EmailConfirmMessage"] = "Üyeliğiniz onaylandıktan sonra giriş yapabilirsiniz.";
 
                     await userManager.AddToRoleAsync(user, "Member"); // register olan otomatik olarak member...
 
@@ -186,13 +191,13 @@ namespace Technosoft_Project.Controllers
                         return View(userlogin);
                     }
 
-                    
+                    // *** E-mail ile login ...
                     // user email'ini doğrularsa, ConfirmEmail action çalışır, ve sonra user, login olunca buradan geçebilir..
-                    if (userManager.IsEmailConfirmedAsync(user).Result == false)//**
-                    {
-                        ModelState.AddModelError("", "Email adresiniz onaylanmamıştır. Lütfen  epostanızı kontrol ediniz.");
-                        return View(userlogin);
-                    }
+                    //if (userManager.IsEmailConfirmedAsync(user).Result == false)//**
+                    //{
+                    //    ModelState.AddModelError("", "Email adresiniz onaylanmamıştır. Lütfen  epostanızı kontrol ediniz.");
+                    //    return View(userlogin);
+                    //}
                     
 
                     await signInManager.SignOutAsync(); // login işleminden önce çıkış yapılıdı amaç sistemdeki eski cookie'i silmek..

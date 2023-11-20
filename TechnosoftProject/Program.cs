@@ -93,30 +93,31 @@ builder.Services.AddAuthorization(opts =>
 // install Microsoft.AspNetCore.Authentication.Facebook from NugET
 // install Microsoft.AspNetCore.Authentication.Google from NugET
 // kaynak: https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/social-without-identity?view=aspnetcore-6.0
-builder.Services
-    .AddAuthentication(options =>
-    {
-        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
-        options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
-        options.DefaultAuthenticateScheme = MicrosoftAccountDefaults.AuthenticationScheme;
+
+//builder.Services
+//    .AddAuthentication(options =>
+//    {
+//        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+//        options.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
+//        options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+//        options.DefaultAuthenticateScheme = MicrosoftAccountDefaults.AuthenticationScheme;
 
 
-    })
-    .AddCookie()
-    .AddFacebook(options =>
-    {
-        options.AppId = builder.Configuration["Authentication:Facebook:AppId"];
-        options.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
-    }).AddGoogle(options =>
-    {
-        options.ClientId = builder.Configuration["Authentication:Google:ClientID"];
-        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-    }).AddMicrosoftAccount(options =>
-    {
-        options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"];
-        options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"]; 
-    });
+//    })
+//    .AddCookie()
+//    .AddFacebook(options =>
+//    {
+//        options.AppId = builder.Configuration["Authentication:Facebook:AppId"];
+//        options.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+//    }).AddGoogle(options =>
+//    {
+//        options.ClientId = builder.Configuration["Authentication:Google:ClientID"];
+//        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+//    }).AddMicrosoftAccount(options =>
+//    {
+//        options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"];
+//        options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"]; 
+//    });
 
 builder.Services.AddRazorPages();
 
