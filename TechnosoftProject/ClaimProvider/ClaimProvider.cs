@@ -41,6 +41,7 @@ namespace Technosoft_Project.ClaimProvider
 
                     //        if (age > 15)
                     //        {
+                                    // 15'den büyükse, true.ToString() olduğundan Claim (yani Confirmed_Member_Policy) Controller/Action'larda çalışır.
                     //            Claim ViolenceClaim = new Claim("violence", true.ToString(), ClaimValueTypes.String, "Internal");
 
                     //            identity.AddClaim(ViolenceClaim);
@@ -54,6 +55,7 @@ namespace Technosoft_Project.ClaimProvider
                         if (!principal.HasClaim(c => c.Type == "city")) // not exits then create it..
                         {
                             // type, value, value type, issuer(dağıtıcı):Internal(iç mekanizma)
+                            // user.City --> "İstanbul" ise Claim (yani Confirmed_Member_Policy) Controller/Action'larda çalışır.
                             Claim CityClaim = new Claim("city", user.City, ClaimValueTypes.String, "Internal");
 
                             identity.AddClaim(CityClaim);
@@ -64,6 +66,8 @@ namespace Technosoft_Project.ClaimProvider
                     {
                         if (!principal.HasClaim(c => c.Type == "member")) // not exits then create it..
                         {
+                            // user.IsConfirmedAccount.ToString() --> "Aktif" ise Claim (yani Confirmed_Member_Policy) Controller/Action'larda çalışır.
+                            // policy.RequireClaim("member","Aktif"); -->  
                             Claim ConfirmedAccountClaim = new Claim("member", user.IsConfirmedAccount.ToString(), ClaimValueTypes.String, "Internal");
 
                             identity.AddClaim(ConfirmedAccountClaim);

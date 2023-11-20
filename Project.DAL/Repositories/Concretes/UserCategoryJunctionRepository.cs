@@ -128,6 +128,45 @@ namespace Project.DAL.Repositories.Concretes
 
             }
 
+            // CategoryofFood listesini son kez kontrol (HİÇ BİR USERDA OLMAYIP LİSTEDE VARSA )
+            List<short> not_exist_AllforUsers = _context.Set<CategoryofFood>().Select(x => x.ID).ToList();
+            List<short> user_items = _context.Set<UserCategoryJunction>().Select(x => x.CategoryofFoodID).ToList();
+
+            bool ignore_Item_2 = false;
+
+            foreach (short general_item in not_exist_AllforUsers)
+            {
+                foreach (short user_item in user_items)
+                {
+                    if (general_item == user_item)
+                    {
+                        ignore_Item_2 = true;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                if (ignore_Item_2 == false)
+                {
+                    CategoryofFood cof2 = _context.Set<CategoryofFood>().Where(x => x.ID == general_item).FirstOrDefault();
+
+                    if (cof2 != null)
+                    {
+                        // önceden diğer kullanıcılardan alıp da sildiği varsa user'ın tekrar listeye eklemesin
+                        if (!allList_notexist.Contains(cof2))
+                        {
+                            allList_notexist.Add(cof2);
+
+                        }
+                    }
+
+                }
+
+                ignore_Item_2 = false;
+
+            }
+
             return allList_notexist;
         }
 
