@@ -89,6 +89,7 @@ builder.Services.AddAuthorization(opts =>
 
 });
 
+// Third Part Authentication...
 
 // install Microsoft.AspNetCore.Authentication.Facebook from NugET
 // install Microsoft.AspNetCore.Authentication.Google from NugET
