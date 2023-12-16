@@ -83,6 +83,8 @@ namespace Project.DAL.Repositories.Concretes
             //return (IEnumerable<T>)await _dbSet.ToListAsync();
             //throw new NotImplementedException();
 
+            //  // mongoDB: var categories = await _categoryCollection.Find(category => true).ToListAsync();  
+
         }
 
         public async Task<T> GetByIdAsync(short id)
