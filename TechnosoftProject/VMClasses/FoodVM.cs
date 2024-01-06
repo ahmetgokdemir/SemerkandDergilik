@@ -10,5 +10,7 @@ namespace Technosoft_Project.VMClasses
         public List<UserFoodJunctionDTO>? UserFoodJunctionDTOs { get; set; }
         public CategoryofFoodDTO? CategoryofFoodDTO { get; set; }
         public string? JavascriptToRun { get; set; }
+        public int[]? diziler { get; set; }
+        
     }
 }

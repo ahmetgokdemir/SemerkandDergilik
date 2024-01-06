@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Project.BLL.ManagerServices.Abstracts;
+using Project.DAL.Strategy;
 using Project.ENTITIES.Enums;
 using Project.ENTITIES.Identity_Models;
 using Project.ENTITIES.Models;
@@ -32,6 +33,7 @@ namespace Technosoft_Project.Controllers
         [Route("FoodList_forMember")]
         public async Task<IActionResult> FoodList_forMember(string? JSpopupPage, string? onlyOnce)
         {
+            //SeedRoles.Seedv2();
             
             if (HttpContext.Session.GetObject<string>("hold_new_valid_food_name") != null)
             {
@@ -56,6 +58,7 @@ namespace Technosoft_Project.Controllers
 
             IEnumerable<object> UserFoodJunctionList = await _iufjm.Get_ByUserID_Async(CurrentUser.Id); // IdentityUser'dan gelen Id (Guid tipli)
 
+            //IEnumerable<int> _diziler = await _iufjm.diziler(); // IdentityUser'dan gelen Id (Guid tipli)
 
             /*
              * 
@@ -68,6 +71,7 @@ namespace Technosoft_Project.Controllers
             FoodVM cvm = new FoodVM
             {
                 UserFoodJunctionDTOs = UserFoodJunctionList.Adapt<IEnumerable<UserFoodJunctionDTO>>().ToList(),
+                //diziler = _diziler.ToArray(),
                 JavascriptToRun = JSpopupPage
             };
 
@@ -409,6 +413,7 @@ namespace Technosoft_Project.Controllers
 
             return PartialView("_CrudFood_Partial", fVM);
         }
+
 
 
         [Route("CRUDFood")]

@@ -85,17 +85,42 @@ else if (Model.FoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
 
             @if (Model.FoodDTO.ID == 0)
             {
+@*                 <div class="form-group">
+                    <input type="submit" value="Yemek Ekle" class="btn btn-primary mt-2"   />
+                </div> *@
+
                 <div class="form-group">
-                    <input type="submit" value="Yemek Ekle" class="btn btn-primary mt-2" />
+
+
+                    <button id="loadingButtonorjin" class="btn btn-primary mt-2" onclick="foo()">
+                        <span id="spinnerorjin" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                        <span id="buttonTextorjin">Yemek Ekle</span>
+                    </button>
+
+
+
                 </div>
             }
             else
             {
                 <div class="form-group">
-                    <input type="submit" value="Yemek Güncelle" class="btn btn-primary mt-2" />
-                </div>
-            }
+ 
 
+                     <button id="loadingButtonorjin"  class="btn btn-primary mt-2" onclick="foo()">
+                        <span id="spinnerorjin" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                        <span id="buttonTextorjin">Yemek Güncelle</span>
+                    </button> 
+
+
+
+                </div>
+
+ 
+
+ 
+            }
+            @*                     <input type="submit" value="Yemek Güncelle" class="btn btn-primary mt-2 btnloading" onclick="startLoading()" />
+        *@
             @*
         Güncellemelerde artık ürün güncellemesi yerine yeni bir ürün gibi ekleme olacak .. yani yeni bir ID olacak..*@
             @if (Model.FoodDTO.ID != 0)
@@ -125,3 +150,29 @@ else if (Model.FoodDTO.ID != 0 && ViewBag.CRUD == "delete_operation")
     </form>
 
 </div>
+
+
+
+<script>
+ 
+
+    function foo() {
+
+        console.log("orjin");
+
+        var loadingButtonorjin = $("#loadingButtonorjin");
+        var buttonTextorjin = $("#buttonTextorjin");
+        var spinnerorjin = $("#spinnerorjin");
+
+        //loadingButton2.prop("disabled", true);
+        buttonTextorjin.text("İşleniyor...");
+
+        //spinner.show();
+        spinnerorjin.css("display", "inline-block");
+
+
+
+    }
+
+ 
+</script>

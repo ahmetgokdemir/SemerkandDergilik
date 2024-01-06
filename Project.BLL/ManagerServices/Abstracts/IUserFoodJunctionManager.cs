@@ -25,5 +25,11 @@ namespace Project.BLL.ManagerServices.Abstracts
         Task<IEnumerable<object>> GetFoodDetails_of_Member_Async(AppUser _currentUser, short foodID);
 
 
+        internal async Task<int[]> diziler()
+        {
+            return new int[]{ 1, 2 };        
+        }
+
+
     }
 }

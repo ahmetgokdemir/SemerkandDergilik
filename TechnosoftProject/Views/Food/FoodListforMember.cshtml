@@ -59,8 +59,12 @@
 @*<h4 style="color:red;">@TempData["mesaj"] </h4>*@
 
 
+ 
+
+
+
 <!-- loader class'ın; display'i none olarak set edildi! -->
-<div class="spinner-border loader" role="status">
+<div class="spinner-border loader" id="spnr" role="status">
     <span class="sr-only">Loading...</span>
 </div>
 <hr class="loader" />
@@ -84,6 +88,10 @@ else
     <br />
     <br />
 
+/*     foreach (int item in Model.diziler)
+    {
+        <div>@item</div>
+    } */
 
     <div class="panel panel-primary">
         <div class="panel panel-body">
@@ -378,12 +386,12 @@ else if (TempData["messageFood_InOtherUsersList"] != null)
                     CRUDFoodModalLoaded();
 
                 },
-                beforeSend: function () {
+/*                 beforeSend: function () {
                     $('.loader').show(); // Assuming that you have some loader defined
                 },
                 complete: function () {
                     $('.loader').hide(); //Hide this loader
-                },
+                }, */
                 error: function () {
                     alert("Hata alındı.");
                 }

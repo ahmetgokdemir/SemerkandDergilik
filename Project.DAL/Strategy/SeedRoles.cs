@@ -82,6 +82,16 @@ namespace Project.DAL.Strategy
             }
         }
 
+        public static int Seedv2()
+        {
+            return 5;
+        }
+
+        //public static async Task Seedv3(IServiceProvider serviceProvider)
+        //{
+
+        //}
+
     }
 }
 

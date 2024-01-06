@@ -19,6 +19,10 @@ namespace Project.DAL.Repositories.Concretes
 
         public IQueryable<string> GetActivesCategoryofFoodNamesAsync()
         {
+            //_context.Set<CategoryofFood>().Where(a => EF.Functions.FreeText(a.CategoryName_of_Foods,"sad")).ToList();
+            //_context.Set<CategoryofFood>().Where(a => EF.Functions.Contains(a.CategoryName_of_Foods, "sad")).ToList();
+            //_context.Set<CategoryofFood>().Where(a => a.CategoryName_of_Foods.Contains("sad")).ToList();
+
             return _context.Set<CategoryofFood>().Where(x => x.DataStatus != ENTITIES.Enums.DataStatus.Deleted).Select(x=> x.CategoryName_of_Foods);
         }
 
