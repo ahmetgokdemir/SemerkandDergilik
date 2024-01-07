@@ -560,6 +560,8 @@ namespace Technosoft_Project.Controllers
                         await _iufjm.AddAsync(ufj);
                         TempData["messageFood"] = "Yemek eklendi";
 
+
+
                         return RedirectToAction("FoodList_forMember", new { onlyOnce = "1" });
 
                     }
@@ -585,6 +587,7 @@ namespace Technosoft_Project.Controllers
 
                                 // ,{CurrentUser.Id}
                                 TempData["JSpopupPage"] = $"ShowErrorUpdateOperationPopup({fvm_post.FoodDTO.ID})"; // diğer paramaetre de eklenecek
+
 
                                 return RedirectToAction("FoodList_forMember", new { JSpopupPage = TempData["JSpopupPage"].ToString(), onlyOnce = "1" });
                             }
@@ -685,6 +688,7 @@ namespace Technosoft_Project.Controllers
                             TempData["messageFood"] = "Yemek güncellendi";
 
                             // else { değişiklik olmadı mesajı }
+                            Thread.Sleep(3800);
 
                             return RedirectToAction("FoodList_forMember", new { onlyOnce = "1" });
 
@@ -914,7 +918,7 @@ namespace Technosoft_Project.Controllers
 
             }
 
-
+           
         }
 
         // Food_InPool_Ajax --> _FoodLayout.cshtml
