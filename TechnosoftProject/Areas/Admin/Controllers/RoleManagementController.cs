@@ -13,8 +13,8 @@ using Project.ENTITIES.Enums;
 namespace Technosoft_Project.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    // [Route("Admin/RoleManagement")]
-    [Route("Admin/[controller]")]
+    [Route("Admin/RoleManagement")]
+    //[Route("Admin/[controller]")]
     [Authorize(Roles = "Admin")] // case sensitive  
     public class RoleManagementController : BaseController
     {

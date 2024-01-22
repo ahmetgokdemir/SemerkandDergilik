@@ -58,14 +58,19 @@
     <div class="jumbotron" id="tab1" style="padding:20px;  background-color:lightgrey">
         @*<input type="submit" id="btnIslemYap" value="İşlem Yap" />*@
 
-        <button class="btn btn-outline-success " id="addNewCategoryofFood" value="addNewCategoryofFoodValue">Kategori Eklemek için tıklayınız</button>
+        <!-- value: addNewCategoryofFoodValue   -->
+        <!-- id:    addNewCategoryofFoodID      -->
+        <!--                                    -->
+
+
+        <button class="btn btn-outline-success " id="addNewCategoryofFoodID" value="addNewCategoryofFoodValue">Kategori Eklemek için tıklayınız</button>
     </div>
 
 }
 else
 {
     <div id="tab1" class="mb-3" style=" display: inline; margin-right: 25px;">
-        <button class="btn btn-outline-success " id="addNewCategoryofFood" value="addNewCategoryofFoodValue">Kategori Eklemek için tıklayınız</button>
+        <button class="btn btn-outline-success " id="addNewCategoryofFoodID" value="addNewCategoryofFoodValue">Kategori Eklemek için tıklayınız</button>
     </div>
 
     <br />
@@ -107,7 +112,9 @@ else
                             </td>
                             <td class="btnposition">
                                 @*<a asp-action="UpdateCategoryofFood" asp-controller="CategoryofFood" asp-route-id="@item.ID" class="btn btn-warning">Güncelle</a>*@
-                                <button class="btn btn-warning" id="updateCategoryofFood" value="updateCategoryofFoodValue" data-categoryID=@item.CategoryofFoodID data-userID=@item.AppUserId>
+
+                                @* id="updateCategoryofFood" *@
+                                <button class="btn btn-warning"  value="updateCategoryofFoodValue" data-categoryID=@item.CategoryofFoodID data-userID=@item.AppUserId>
                                     Güncelle
                                 </button>
 
@@ -115,7 +122,8 @@ else
                             <td class="btnposition">
                                 @*<a asp-action="DeleteCategoryofFood" asp-controller="CategoryofFood" asp-route-id="@item.ID" class="btn btn-danger">Sil</a>*@
 
-                                <button class="btn btn-danger" id="deleteCategoryofFood" value="deleteCategoryofFoodValue" data-categoryID=@item.CategoryofFoodID>Sil</button>
+                                @* id="deleteCategoryofFood" *@
+                                <button class="btn btn-danger" value="deleteCategoryofFoodValue" data-categoryID=@item.CategoryofFoodID>Sil</button>
                             </td>
                         </tr>
                     }
@@ -318,7 +326,7 @@ else if (TempData["messageCategoryofFood_InOtherUsersList"] != null)
 
 
     $(function () {
-        //$("#addNewCategoryofFood").click(function () {
+        //$("#addNewCategoryofFoodID").click(function () {
         $("#tab1").on("click", "[value=addNewCategoryofFoodValue]", function () {
             $.ajax({
                 //url: '@@Url.Action("AddCategoryofFoodAjax","CategoryofFood")',

@@ -1,17 +1,9 @@
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Facebook;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Project.BLL.ManagerServices.Abstracts;
 using Project.BLL.ManagerServices.Concretes;
-using Project.BLL.ServiceExtensions;
 using Project.DAL.Context;
 using Project.DAL.Repositories.Abstracts;
 using Project.DAL.Repositories.Concretes;
@@ -20,7 +12,7 @@ using Project.ENTITIES.Identity_Models;
 using Technosoft_Project.ClaimProvider;
 using Technosoft_Project.CustomValidation;
 using Technosoft_Project.Helper;
-using System.Configuration;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
