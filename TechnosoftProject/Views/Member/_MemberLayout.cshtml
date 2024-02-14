@@ -21,7 +21,11 @@
     <link rel="stylesheet" href="~/Technosoft_Project.styles.css" asp-append-version="true" /> *@
     <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
  
-
+    <style>
+        #menulist {
+            display: none;
+        }
+    </style>
 
 </head>
 <body>
@@ -96,10 +100,13 @@
                 @RenderBody()
             </div>
             <div class="col-md-3">
-                <div class="container p-2 bg-success ">
-                    <h3 class="text-md-center text-light">
-                        Menü
-                    </h3>
+                <div class="container p-2 bg-success " style="border-radius: 10px;">
+                    <a class="btn w-100  mb-2 buttonmenu" style="background-color:#e6e2d3;margin:0 auto; display:block;">
+                        @* <h3 class="text-md-center text-light"> *@
+                            Menü
+                        @* </h3> *@
+                        
+                    </a>
 
                     @*
                     <a class="btn btn-danger btn-block" style="width:%100" asp-action="IstanbulPage" asp-controller="Member">Istanbul sayfa</a>
@@ -112,6 +119,7 @@
                     <br />
                     <br />
                     *@
+                    <div id="menulist">
                     <a class="btn w-100  mb-2" style="background-color:#e6e2d3;margin:0 auto; display:block;" asp-action="PasswordChange" asp-controller="Member">Şifre Değiştirme</a>
 
                     <a class="btn w-100  mb-2" style="background-color:#e6e2d3;margin:0 auto; display:block;" asp-action="UserEdit" asp-controller="Member">Üyelik bilgileri Güncelleme</a>
@@ -122,7 +130,7 @@
                     <a class="btn w-100  mb-2" style="background-color:#e6e2d3;margin:0 auto; display:block;" asp-controller="Food" asp-action="FoodList_forMember" asp-route-onlyOnce="1">Yemek Bölümü</a>
 
                     <a class="btn w-100  mb-2" style="background-color:#e6e2d3;margin:0 auto; display:block;" asp-controller="Menu" asp-action="MenuList_forMember" asp-route-onlyOnce="1">Menü Oluşturma</a>
-
+                    </div>
 @*                     <hr />
                     <a class="btn w-100  mb-2" style="background-color:#e6e2d3" asp-action="Logout" asp-controller="Member" asp-route-returnUrl="/Home/Index">Çıkış yap</a> *@
 
@@ -146,3 +154,26 @@
 
 </body>
 </html>
+
+<script>
+    $(document).ready(
+
+        
+
+        function () 
+        {
+            $(".buttonmenu").click(
+                function () 
+                {
+                    $("#menulist").animate(
+                        {
+                            height: 'toggle'
+                        }
+                    );
+                }
+            );
+        }
+    );
+
+
+</script> 

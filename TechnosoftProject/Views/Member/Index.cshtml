@@ -4,6 +4,30 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Member/_MemberLayout.cshtml";
 }
+
+<style>
+
+    th, td 
+    {
+       /*  border: 1px solid green; */
+        border-radius: 10px;
+        /* //border-color: red; */
+        border-style: groove;
+        background-color: midnightblue;
+    }
+    table
+    {
+        /* border-style: groove; */
+        border-color: darkgreen;
+        /* border-radius: 10px; */
+    }
+
+    tr:nth-child(even) {
+        background-color: red;
+    }
+</style>
+
+
 <h3 class="text-md-start">Kullanıcı Bilgileri</h3>
 <div class="row">
   <div class="col-sm-3">
@@ -21,7 +45,8 @@
     </div>
     <div class="col-sm-9">
 
-        <table class="table table-bordered table-striped">
+        <table class="table   ">
+            @* table-bordered table-striped *@
             <tr>
                 <th>Kullanıcı ismi</th>
                 <td>@Model.UserName</td>

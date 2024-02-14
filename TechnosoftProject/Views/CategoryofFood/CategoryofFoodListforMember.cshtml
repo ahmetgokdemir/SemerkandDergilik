@@ -325,31 +325,35 @@ else if (TempData["messageCategoryofFood_InOtherUsersList"] != null)
     }
 
 
-    $(function () {
-        //$("#addNewCategoryofFoodID").click(function () {
-        $("#tab1").on("click", "[value=addNewCategoryofFoodValue]", function () {
-            $.ajax({
-                //url: '@@Url.Action("AddCategoryofFoodAjax","CategoryofFood")',
-                url: 'AddCategoryofFoodAjax',
-                type: 'GET',
-                dataType: 'html',
-                success: function (data) {
-                    $("#CRUDCategoryofFood").html(data);
-                    CRUDCategoryofFoodModalLoaded();
+    $(
+        function () {
 
-                },
-                beforeSend: function () {
-                    $('.loader').show(); // Assuming that you have some loader defined
-                },
-                complete: function () {
-                    $('.loader').hide(); //Hide this loader
-                },
-                error: function () {
-                    alert("Hata alındı.");
-                }
+            //$("#addNewCategoryofFoodID").click(function () {
+            $("#tab1").on("click", "[value=addNewCategoryofFoodValue]", function () {
+                $.ajax({
+                    //url: '@@Url.Action("AddCategoryofFoodAjax","CategoryofFood")',
+                    url: 'AddCategoryofFoodAjax',
+                    type: 'GET',
+                    dataType: 'html',
+                    success: function (data) {
+                        $("#CRUDCategoryofFood").html(data);
+                        CRUDCategoryofFoodModalLoaded();
+
+                    },
+                    beforeSend: function () {
+                        $('.loader').show(); // Assuming that you have some loader defined
+                    },
+                    complete: function () {
+                        $('.loader').hide(); //Hide this loader
+                    },
+                    error: function () {
+                        alert("Hata alındı.");
+                    }
+                });
             });
-        });
-    });
+        }
+    
+    );
 
     $(function () {
         //$("#updateCategoryofFood").click(function () {

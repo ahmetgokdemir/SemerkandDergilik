@@ -18,12 +18,17 @@
 
             <div class="alert alert-info">
                 <p>
-                    Şifreniz: <u id="content-pass" class="copy-pass">@TempData["generatedPass"]</u>
-               olarak belirlenmiştir. </p>
-                <span><a href="@TempData["passwordFor3rdPartyAuthentication"].ToString()">Şifre Değiştir Kısmından</a>
-                    </span>
+                    Şifreniz: 
+                    <u id="content-pass" class="copy-pass">@TempData["generatedPass"]</u>
+                    olarak belirlenmiştir.
+                </p>
+                <span>
+                    <a href="@TempData["passwordFor3rdPartyAuthentication"].ToString()">Şifre Değiştir Kısmından</a>
+                </span>
                 <span> yeni şifre belirleyebilirsiniz</span>
                 <p id="aftercopied"></p>
+                <p id="aftercopied2"></p>
+
             </div>
 
             @* <a href="@ViewBag.email">Tıkla</a>*@
@@ -43,10 +48,10 @@
         navigator.clipboard.writeText(`${pass}`);
 
         document.getElementById("aftercopied")
-            .innerHTML = "Şifre kopyalandı: "
+            .innerHTML = "1.Şifre kopyalandı: "
             + pass;
 
-
+        document.getElementById("aftercopied2").textContent = "2.Şifre kopyalandı: " + pass;
     });
 </script>
 

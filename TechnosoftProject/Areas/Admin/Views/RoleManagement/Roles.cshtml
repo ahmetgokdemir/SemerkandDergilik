@@ -47,7 +47,7 @@
 
         @foreach (var item in Model)
         {
-                <tr id="@counterofitems">
+                <tr id="@counterofitems" class="trcounter">
 
                 @* <td>@item.Id</td>*@
                     <td class="position"><p>@item.Name</p></td>
@@ -147,6 +147,13 @@
 
                 var arrayofitems;
 
+                var ctr = document.querySelectorAll('.trcounter').length;
+                console.log("querySelectorAll sayac: " + ctr);
+
+                console.log("Gerek kalmadı! : " + @counterofitems);
+
+    
+
                 // for (let y = 0; y < @@listofItemsID.Count(); y++) {
                 // @@foreach (var item in listofItemsID)
                 //     @@:arrayofitems.push("@@item");
@@ -164,7 +171,7 @@
 
  
                 $("#newth").append($("<th class='position'><p>Silme</p></th>"));
-                for (let i = 0; i < @counterofitems; i++) {
+                for (let i = 0; i < ctr; i++) {
 
                     //  $("#" + i).empty($("<td><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'>Sil</button></td>"));
 
@@ -174,7 +181,7 @@
 
                     // $('tr')[i].append($("<button class='btn btn-danger' id='deleteRole' value='deleteRoleValue'></button>").val('').html('Sil'));
 
-                    // $("#" + i) --> <tr id="@counterofitems">
+                    // $("#" + i) --> <tr id="@@counterofitems">
                     $("#" + i).append($("<td class='btnposition'><button class='btn btn-danger' id='deleteRole' value='deleteRoleValue' data-id='" + arrayofitems[i] + "'>Sil</button></td>"));
 
                     // children[0]
