@@ -1,14 +1,11 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Project.BLL.ManagerServices.Abstracts;
-using Project.DAL.Strategy;
+using Microsoft.AspNetCore.Mvc; 
+using Project.BLL.ManagerServices.Abstracts; 
 using Project.ENTITIES.Enums;
 using Project.ENTITIES.Identity_Models;
-using Project.ENTITIES.Models;
-using System;
+using Project.ENTITIES.Models; 
 using Technosoft_Project.CommonTools;
 using Technosoft_Project.ViewModels;
 using Technosoft_Project.VMClasses;
@@ -459,7 +456,7 @@ namespace Technosoft_Project.Controllers
                 ModelState.Remove("UserFoodJunctionDTO.ImageofFoodDTO");
                 ModelState.Remove("UserFoodJunctionDTO.ImageofFoods");
 
-
+                
 
                 if (ModelState.IsValid)
                 {

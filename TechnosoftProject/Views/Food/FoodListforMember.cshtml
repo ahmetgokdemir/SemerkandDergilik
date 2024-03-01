@@ -17,50 +17,29 @@
 }
 
 <style>
+
     .loader {
         display: none;
     }
 
-    .position {
-        width: 25%;
-        position: relative;
+    table{
+        
+        table-layout: fixed;
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
     }
 
-        /*
-            .position p {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-        }*/
-
-        .position p {
-            position: absolute;
-            top: 35%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .position div {
-            position: absolute;
-            top: 75%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-    .btnposition {
-        vertical-align: middle;
-        text-align: center;
+    th, td {
+        text-align: left;
+        padding: 8px;
     }
 
     <!-- -ms-transform: translate(-50%, -50%); -->
 
 </style>
 @*<h4 style="color:red;">@TempData["mesaj"] </h4>*@
-
-
- 
-
 
 
 <!-- loader class'ın; display'i none olarak set edildi! -->
@@ -89,13 +68,15 @@ else
     <br />
 
 /*     foreach (int item in Model.diziler)
-    {
-        <div>@item</div>
+            {
+            <div>@item</div>
+
+            width="100%" border="0" cellspacing="0" cellpadding="100%"
     } */
 
-    <div class="panel panel-primary">
-        <div class="panel panel-body">
-            <table class="table table-hover table-bordered table-responsive-lg" id="tab2" width="100%" border="0" cellspacing="0" cellpadding="100%">
+    <div style="overflow-x:auto;">
+
+        <table class="table table-hover table-bordered table-responsive-lg" id="tab2">
                 <thead class="thead-light">
                     <tr>
                         <th>Index</th>
@@ -144,7 +125,7 @@ else
                             }
                             else
                             {
-                                <td class="position">
+                                <td class="position contentre">
                                     <p>Açıklama girebilirsiniz.</p>
                                 </td>
                             }
@@ -167,11 +148,11 @@ else
                     }
                 </tbody>
             </table>
-        </div>
+         
     </div>
 }
 
-
+/* scrollable */
 <div class="modal fade" id="CRUDFoodModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
@@ -374,30 +355,36 @@ else if (TempData["messageFood_InOtherUsersList"] != null)
     }
 
 
-    $(function () {
-        $("#tab1").on("click", "[value=addNewFoodValue]", function () {
-            $.ajax({
-                //url: '@@Url.Action("AddFoodAjax","Food")',
-                url: 'AddFoodAjax',
-                type: 'GET',
-                dataType: 'html',
-                success: function (data) {
-                    $("#CRUDFood").html(data);
-                    CRUDFoodModalLoaded();
+    $(
+        function () 
+        {
+            $("#tab1").on(
+                "click", "[value=addNewFoodValue]", function () 
+                {
+                    $.ajax({
+                        //url: '@@Url.Action("AddFoodAjax","Food")',
+                        url: 'AddFoodAjax',
+                        type: 'GET',
+                        dataType: 'html',
+                        success: function (data) {
+                            $("#CRUDFood").html(data);
+                            CRUDFoodModalLoaded();
 
-                },
-/*                 beforeSend: function () {
-                    $('.loader').show(); // Assuming that you have some loader defined
-                },
-                complete: function () {
-                    $('.loader').hide(); //Hide this loader
-                }, */
-                error: function () {
-                    alert("Hata alındı.");
+                        },
+/*                         beforeSend: function () {
+                            $('.loader').show(); // Assuming that you have some loader defined
+                        },
+                        complete: function () {
+                            $('.loader').hide(); //Hide this loader
+                        }, */
+                        error: function () {
+                            alert("Hata alındı.");
+                        }
+                    });
                 }
-            });
-        });
-    });
+            );
+        }
+    );
 
     $(function () {
 
@@ -429,25 +416,33 @@ else if (TempData["messageFood_InOtherUsersList"] != null)
     });
 
 
-    $(function () {
+    $(
+        function () {
 
-        $("#tab2").on("click", "[value=deleteFoodValue]", function () {
-            $.ajax({
+            $("#tab2").on("click", "[value=deleteFoodValue]", 
+            
+                function () {
+                    $.ajax(
+                        {
 
-                url: 'DeleteFoodAjax',
-                data: { foodID: $(this).attr("data-FoodID") },
-                type: 'GET',
-                dataType: 'html',
-                success: function (data) {
-                    $("#CRUDFood").html(data);
-                    CRUDFoodModalLoaded();
+                        url: 'DeleteFoodAjax',
+                        data: { foodID: $(this).attr("data-FoodID") },
+                        type: 'GET',
+                        dataType: 'html',
+                        success: function (data) {
+                            $("#CRUDFood").html(data);
+                            CRUDFoodModalLoaded();
 
-                },
-                error: function () {
-                    alert("Hata alındı.");
+                        },
+                        error: function () 
+                        {
+                            alert("Hata alındı.");
+                        }
+                    });
                 }
-            });
-        });
-    });
+            );
+        }
+    
+    );
 
 </script>

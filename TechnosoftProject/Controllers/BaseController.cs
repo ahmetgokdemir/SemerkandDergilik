@@ -12,6 +12,15 @@ namespace Technosoft_Project.Controllers
         protected RoleManager<AppRole> roleManager { get; } // admincontroller'da kullanılacak.. AppRole class'ı
 
         protected AppUser CurrentUser => userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
+
+        
+        //protected AppUser CurrentUser => userManager.FindByEmailAsync(HttpContext.User.Claims.).Result
+        protected bool IsAuthenticated => HttpContext.User.Identity.IsAuthenticated;
+        private List<char> deneme => HttpContext.User.Identity.AuthenticationType.ToList();
+
+        // private List<char> deneme => HttpContext.User..ToList();
+
+
         //AppUser user = userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result;
 
         /*public AppUser CurrentUser   // property

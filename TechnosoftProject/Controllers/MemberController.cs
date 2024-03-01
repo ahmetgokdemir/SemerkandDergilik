@@ -384,9 +384,10 @@ namespace Technosoft_Project.Controllers
             // bool result = principal.HasClaim(x => x.Type == "ExpireDateExchange");
 
             // Claim'in var mı yok mu yoksa aşağıda eklenir..
+            // sanırım AspNetUserClaims kontorl edilecek 
             bool result = User.HasClaim(x => x.Type == "ExpireDateExchange");
 
-            // first enter..
+            // 1 first enter.. ise AspNetUserClaims tablosuna kayıt yapacak
             if (!result)
             {
                 // use view until DateTime.Now.AddDays(30)
@@ -399,7 +400,7 @@ namespace Technosoft_Project.Controllers
                 AppUser user = CurrentUser;
 
 
-                await userManager.AddClaimAsync(/*CurrentUser*/ user, ExpireDateExchange); // AspNetUserClaims tablosuna eklendi..
+                await userManager.AddClaimAsync(/*CurrentUser*/ user, ExpireDateExchange); // 2 AspNetUserClaims tablosuna eklendi..
 
                 // cookie güncellendi..
                 await signInManager.SignOutAsync();

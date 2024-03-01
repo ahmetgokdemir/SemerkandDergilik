@@ -41,7 +41,7 @@ namespace Project.DAL.Repositories.Abstracts
         void Update(T entity); // T Update(T entity);
         void UpdateRange(List<T> list);
 
-        //Linq
+        // Linq Expression
         // List<T> Where(Expression<Func<T, bool>> exp);  
         IQueryable<T> Where(Expression<Func<T, bool>> predicate);
 

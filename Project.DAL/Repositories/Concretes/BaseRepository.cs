@@ -159,6 +159,7 @@ namespace Project.DAL.Repositories.Concretes
              
              */
 
+            // var toBeDeleted
             var toBeUpdated = _context.Set<T>().Find(entity.ID);
             // var toBeUpdated = _context.Set<T>().FindAsync(entity.ID) as T;
             _context.Entry(toBeUpdated).CurrentValues.SetValues(entity);
