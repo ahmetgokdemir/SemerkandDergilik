@@ -311,10 +311,12 @@ namespace Technosoft_Project.Areas.Admin.Controllers
                 if (activation_Status.ToLower() == "aktif")
                 {
                     user.IsConfirmedAccount = (IsConfirmedAccount)1;
+                    // user.IsConfirmedAccount = 1;
                 }
                 else
                 {
-                    user.IsConfirmedAccount = (IsConfirmedAccount)0;
+                    //user.IsConfirmedAccount = (IsConfirmedAccount)0;
+                    user.IsConfirmedAccount = 0;
                 }
 
             }

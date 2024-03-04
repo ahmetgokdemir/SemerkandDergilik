@@ -132,7 +132,9 @@ namespace Technosoft_Project.Controllers
                 else
                 {
                     // kod tekrarı önlendi..
-                    AddModelError(result);
+                    AddModelError(result); // _Custom metod
+
+
                     /*foreach (IdentityError item in result.Errors)
                     {
                         ModelState.AddModelError("",item.Description);
@@ -147,7 +149,7 @@ namespace Technosoft_Project.Controllers
         // ConfirmEmail      
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
-            var user = await userManager.FindByIdAsync(userId);
+            var user = await userManager.FindByIdAsync(userId); // AppUser
 
             IdentityResult result = await userManager.ConfirmEmailAsync(user, token);//**
 

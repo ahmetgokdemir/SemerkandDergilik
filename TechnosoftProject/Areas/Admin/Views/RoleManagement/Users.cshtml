@@ -41,32 +41,36 @@
 
                 <td user-roles="@user.Id"></td>
 
- @*               @{
-                    string selectforApproval = user.Id.ToString();
-                }*@
+            @*  
+            @{
+            string selectforApproval = user.Id.ToString();
+            }   
+            *@
 
-                @{
-                    UserManager<AppUser> identity_Data; // identity_Data
-                    identity_Data = (UserManager<AppUser>)TempData["userManager"];
+            @{
+            UserManager<AppUser> identity_Data; // identity_Data
+            identity_Data = (UserManager<AppUser>)TempData["userManager"];
 
                     // string[] roles = identity_Data.GetRolesAsync(user);
-                    // List<string> roles = await identity_Data.GetRolesAsync(user);
+                    //List<string> roles = await identity_Data.GetRolesAsync(user);
+
                     IList<string> roles_Data = await identity_Data.GetRolesAsync(user);
 
                     TempData["admin_approval"] = null;
                 }
 
-                    <td>
-                       @{
+                <td>
+                @{
                         foreach (var _role in roles_Data)
                         {
                             if (_role.ToLower() == "admin")
                             {
-                                <select class="form-control" id="@user.Id" value="@user.ID" asp-for="@user.IsConfirmedAccount" disabled>
+                                <select class="form-control" disabled>
+                                    <!--id="@@user.Id" value="@@user.ID" asp-for="@@user.IsConfirmedAccount"-->
 
                                     <option id="@user.Id">Admin</option>
 
-                                  @{ 
+                                @{ 
                                       /* 
                                        * @foreach (SelectListItem item in Html.GetEnumSelectList<Project.ENTITIES.Enums.IsConfirmedAccount>())
                                         {
@@ -78,7 +82,7 @@
                                         }
 
                                         */
-                                    }
+                                }
 
                                 </select>
 
@@ -87,29 +91,29 @@
                             }
                         }
 
-                       }
+                }
 
-                       @{
+                @{
 
-                        if (TempData["admin_approval"] == null)
+                    if (TempData["admin_approval"] == null)
+                    {
+                        <select class="form-control" id="@user.Id" asp-for="@user.IsConfirmedAccount">
+
+                        <!-- Project.ENTITIES.Enums.IsConfirmedAccount>() yerine SelectListItem -->
+                        @foreach (SelectListItem item in Html.GetEnumSelectList<Project.ENTITIES.Enums.IsConfirmedAccount>())
                         {
-                            <select class="form-control" id="@user.Id" asp-for="@user.IsConfirmedAccount">
-
-                                <!-- Project.ENTITIES.Enums.IsConfirmedAccount>() yerine SelectListItem -->
-                                @foreach (SelectListItem item in Html.GetEnumSelectList<Project.ENTITIES.Enums.IsConfirmedAccount>())
-                                {
                                     // data: { id: $(this).attr("data-id") }, // this, value=formaintenance'ı (button) temsil eder..
                                     // <button id="unnecessary" class="btn btn-danger" data-id=@item.ID value="formaintenance">Bakıma Al</button>
 
-                                    <option>@item.Text</option>
-                                }
-                            </select>
+                            <option>@item.Text</option>
                         }
+                        </select>
+                    }
 
-                       }
+                }
 
                     
-                    </td>
+                </td>
 
 
 @*                <input type="hidden" asp-for="FoodDTO.ID" />
