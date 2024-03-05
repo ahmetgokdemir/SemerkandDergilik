@@ -32,7 +32,8 @@ namespace Technosoft_Project.CustomTagHelpers
             // html code tarafı
             string html = string.Empty;     // *** string.Empty
 
-            var sb = new System.Text.StringBuilder();
+            //var sb = new System.Text.StringBuilder();
+
             // roles to html
             // x : herbir rol
             roles.ToList().ForEach(x =>
